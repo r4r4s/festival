@@ -79,6 +79,16 @@ Every commit that adds, removes, renames, or moves folders or files **must** upd
 
 An outdated `docs/documentacion.md` is a bug. This rule applies to humans and Claude alike.
 
+## Markdown review rule (MANDATORY)
+
+Before making any modification, agents **must** review the applicable project `.md` files:
+
+- Always read `CLAUDE.md` for the project contract.
+- Read `docs/documentacion.md` before structural changes.
+- Read the relevant `.claude/agents/*.md` and `.claude/skills/*/README.md` files for the touched area.
+
+If no specific agent or skill applies, still review `CLAUDE.md` and any nearby `.md` that documents the files being changed.
+
 ## Configuration
 
 - Environment configuration lives in `src/environments/` (`environment.ts`, `environment.prod.ts`). **That** is where base URLs, feature flags, and endpoints belong — never hardcode them in services.

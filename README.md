@@ -126,32 +126,14 @@ festiVal/
 
 Próximas mejoras planificadas:
 
-- [ ] 🔐 Sistema de autenticación para usuarios registrados.
-- [ ] ❤️ Función "Favoritos" para guardar festivales de interés.
 - [ ] 📅 Calendario interactivo con todos los festivales del año.
 - [ ] 🎟️ Integración con plataformas de venta de entradas (Dice, Ticketmaster).
 - [ ] 🗣️ Versiones multilingüe (valenciano e inglés).
-- [ ] 🤝 Sección de comentarios y valoraciones de usuarios.
-- [ ] 📊 Panel de administración para gestionar contenido.
 - [ ] 🌙 Modo oscuro.
-- [ ] 📲 Versión PWA instalable en dispositivos móviles.
 - [ ] 🎧 Integración con Spotify para escuchar a los artistas del cartel.
 
 ---
 
-## 🤝 Contribuir
-
-¡Las contribuciones son bienvenidas! Si quieres aportar a festiVal, sigue estos pasos:
-
-1. Haz un **fork** del repositorio.
-2. Crea una rama para tu feature: `git checkout -b feature/nombre-feature`.
-3. Realiza tus cambios y haz commit: `git commit -m "feat: añade nueva característica"`.
-4. Sube tu rama: `git push origin feature/nombre-feature`.
-5. Abre un **Pull Request** describiendo los cambios.
-
-Por favor, asegúrate de que tu código pasa el linter y los tests antes de abrir el PR. Para cambios importantes, abre primero un *issue* para discutir la propuesta.
-
----
 
 ## 👤 Autor
 
@@ -159,13 +141,3 @@ Proyecto desarrollado por **Rares Ngheru**.
 
 - ✉️ Email: [rngheru@gmail.com](mailto:rngheru@gmail.com)
 - 🐙 GitHub: [@R4r4s](https://github.com/R4r4s)
-
----
-
-## 📄 Licencia
-
-Este proyecto está distribuido bajo la licencia **MIT**. Consulta el archivo [LICENSE](LICENSE) para más detalles.
-
----
-
-<p align="center">Hecho con 🎶 desde la Comunidad Valenciana</p>
