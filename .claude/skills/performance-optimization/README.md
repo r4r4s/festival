@@ -1,6 +1,6 @@
 # ⚡ Performance Optimization
 
-Guidelines to keep **festiVal** fast on mobile devices during festival season traffic spikes.
+Guidelines to keep **festiVAL** fast on mobile devices during festival season traffic spikes.
 
 ## Targets
 

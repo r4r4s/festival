@@ -1,6 +1,6 @@
 # 🧪 Testing Patterns
 
-Conventions for unit, component, and end-to-end tests in **festiVal**, and the **pre-commit gate** that enforces them.
+Conventions for unit, component, and end-to-end tests in **festiVAL**, and the **pre-commit gate** that enforces them.
 
 ## Layers
 

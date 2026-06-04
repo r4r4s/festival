@@ -1,6 +1,6 @@
 # ♿ Accessibility (a11y)
 
-WCAG 2.1 AA compliance for the **festiVal** portal.
+WCAG 2.1 AA compliance for the **festiVAL** portal.
 
 ## Purpose
 

@@ -1,6 +1,6 @@
-# Audit festiVal Architecture
+# Audit festiVAL Architecture
 
-Automated architecture auditor for the festiVal Angular project.
+Automated architecture auditor for the festiVAL Angular project.
 
 Read-only. Strict. Objective. Reports — never modifies.
 

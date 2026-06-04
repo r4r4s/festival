@@ -1,6 +1,6 @@
 # 🧩 UI Components
 
-Reusable presentational component library for **festiVal**.
+Reusable presentational component library for **festiVAL**.
 
 ## Purpose
 

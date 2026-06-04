@@ -1,4 +1,4 @@
-# Documentación del proyecto festiVal
+# Documentación del proyecto festiVAL
 
 > Portal informativo de los principales festivales de música de la Comunidad Valenciana.
 > Aplicación Angular 21 con SSR, arquitectura feature-sliced y boundaries forzados.
@@ -16,7 +16,7 @@ Responsable: cualquier agente o persona que realice el commit. La regla se aplic
 ## Estructura raíz
 
 ```
-festiVal/
+festiVAL/
 ├── .claude/            → Desarrollo asistido por IA (agentes, skills, workflows)
 ├── .vscode/            → Configuración del editor VS Code
 ├── design/             → Assets de diseño (mockups, paletas de color, fuentes fuente)
@@ -76,7 +76,7 @@ Contiene la configuración de agentes especializados, skills reutilizables y wor
 
 ## `design/` — Assets de diseño
 
-Contiene recursos visuales como mockups, paletas de color, inspiraciones y otros materiales de diseño relacionados con el proyecto festiVal.
+Contiene recursos visuales como mockups, paletas de color, inspiraciones y otros materiales de diseño relacionados con el proyecto festiVAL.
 
 ```
 design/
@@ -126,7 +126,7 @@ public/
 
 ```
 src/
-├── index.html           → Documento HTML principal. `lang="es-ES"`, título `festiVal`,
+├── index.html           → Documento HTML principal. `lang="es-ES"`, título `festiVAL`,
 │                          meta theme-color (#07070C), favicon SVG + .ico, monta <fv-root>.
 ├── main.ts              → Punto de entrada del cliente. Llama a bootstrapApplication con la
 │                          configuración de app.config.ts.
@@ -174,7 +174,7 @@ src/environments/
 ```
 src/assets/
 ├── branding/            → Assets SVG de la marca
-│   ├── main-logo.svg    → Logotipo completo de festiVal
+│   ├── main-logo.svg    → Logotipo completo de festiVAL
 │   ├── logo-icon.svg    → Isotipo (variante compacta)
 │   └── favicon.svg      → Favicon vectorial
 ├── i18n/                → Ficheros de traducción JSON: es.json (fuente), ca.json, en.json
@@ -239,7 +239,7 @@ Cargado eagerly. Compone la estructura visual que envuelve todas las rutas.
 src/app/layout/
 ├── shell/               → Componente host del <router-outlet>. Organiza nav-bar + contenido + footer.
 │   └── .gitkeep
-├── nav-bar/             → Barra de navegación superior: panel glass, marca festiVal, enlaces
+├── nav-bar/             → Barra de navegación superior: panel glass, marca festiVAL, enlaces
 │   └── .gitkeep           principales, botones de acción. Sticky en la parte superior.
 └── footer/              → Pie de página: navegación secundaria, enlaces legales, atribución.
     └── .gitkeep
@@ -312,7 +312,7 @@ src/app/shared/
 
 ### `angular.json`
 
-Configuración de Angular CLI para el proyecto `festiVal`:
+Configuración de Angular CLI para el proyecto `festiVAL`:
 
 - **Build**: builder `@angular/build:application`, entry browser `src/main.ts`, server `src/main.server.ts`, SSR con Express (`src/server.ts`).
 - **Estilos**: SCSS como preprocesador, `stylePreprocessorOptions.includePaths: ["src"]` para permitir `@use 'styles/...'` desde componentes.
@@ -388,7 +388,7 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-04 | Limpieza de bloat en `design/font/` | Eliminadas las subcarpetas `*/static/` (instancias estáticas nunca servidas) y `design/font/Space_Grotesk/`. |
 | 2026-06-04 | Eliminadas carpetas placeholder | `sanity/` y `scripts/` borradas hasta que arranquen sus fases. Quedan documentadas como reintroducción futura. |
 | 2026-06-04 | Limpieza `assets/icons/` | Eliminados `logo-icon.svg` y `main-logo.svg` duplicados de `assets/branding/`. La carpeta queda reservada para iconos adicionales a Lucide. |
-| 2026-06-04 | `index.html` localizado | `lang="es-ES"`, título `festiVal`, meta theme-color, favicon SVG enlazado. |
+| 2026-06-04 | `index.html` localizado | `lang="es-ES"`, título `festiVAL`, meta theme-color, favicon SVG enlazado. |
 | 2026-06-04 | Reset del placeholder Angular | `src/app/app.html` reducido a `<router-outlet />`. `app.ts` migrado a OnPush sin `title` signal. `app.spec.ts` ahora verifica el outlet en vez del título. |
 | 2026-06-04 | Registro de locale `es-ES` | `src/app/app.config.ts` registra `LOCALE_ID: 'es-ES'` y `registerLocaleData(localeEs)` conforme a CLAUDE.md. |
 | 2026-06-04 | Eliminación de la abstracción de fuentes | Borrados `shared/util/font/` (incluido el barrel `index.ts`), `shared/directives/font.directive.ts` y `shared/pipes/font.pipe.ts`. La selección de fuente se hace directamente con `var(--fv-font-*)` o las clases utilitarias `.fv-font-*` de `_fonts.scss`. |
@@ -397,3 +397,4 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-04 | ESLint boundaries activado | `eslint-plugin-boundaries` configurado en `eslint.config.js`. Forzadas las reglas duras de `project-structure` (aislamiento de features, sólo `<feature>.routes.ts` como surface pública). |
 | 2026-06-04 | `tsconfig` paths | Eliminado el alias `@styles/*` (sin uso; el namespace SCSS se resuelve por `includePaths`). |
 | 2026-06-04 | README reescrito | `README.md` alineado con la arquitectura feature-sliced real, el stack canónico de `CLAUDE.md` y el roadmap por fases. |
+| 2026-06-04 | Rebranding `festiVal` → `festiVAL` | Renombrada la marca en todo el proyecto: copy en `.claude/`, `docs/`, `README.md`, `src/index.html` (título), cabeceras SCSS, identificador del proyecto Angular (`angular.json`) y script `serve:ssr:festiVAL` en `package.json`. El paquete npm sigue siendo `festi-val` (npm exige kebab-case minúsculas). |

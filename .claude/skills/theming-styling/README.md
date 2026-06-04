@@ -1,6 +1,6 @@
 # 🎨 Theming & Styling
 
-SCSS architecture and design tokens for **festiVal**.
+SCSS architecture and design tokens for **festiVAL**.
 
 ## Purpose
 
@@ -15,7 +15,7 @@ This skill defines the **what** (token values) and the **how** (where they live,
 All design tokens are exposed as CSS custom properties under the `--fv-*` prefix. The prefix:
 
 - Avoids collisions with third-party CSS that uses unprefixed variables.
-- Makes greppable "is this a festiVal token?" trivially answerable.
+- Makes greppable "is this a festiVAL token?" trivially answerable.
 - Matches the existing `--fv-font-*` family already in production.
 
 SCSS primitive variables keep a `$fv-` prefix where they are exported, raw scalars otherwise.

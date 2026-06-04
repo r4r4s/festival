@@ -4,7 +4,7 @@ Patterns for reactive forms used in search, filtering, and (future) authenticati
 
 ## Purpose
 
-Centralize form construction, validation, and error messaging for **festiVal**.
+Centralize form construction, validation, and error messaging for **festiVAL**.
 
 ## Use Cases
 

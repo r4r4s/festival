@@ -1,6 +1,6 @@
 # 🌍 Internationalization (i18n)
 
-Multi-language support for **festiVal**.
+Multi-language support for **festiVAL**.
 
 ## Purpose
 

@@ -9,7 +9,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "festiVal": {
+    "festiVAL": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -80,10 +80,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "festiVal:build:production"
+              "buildTarget": "festiVAL:build:production"
             },
             "development": {
-              "buildTarget": "festiVal:build:development"
+              "buildTarget": "festiVAL:build:development"
             }
           },
           "defaultConfiguration": "development"

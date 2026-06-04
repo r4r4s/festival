@@ -1,6 +1,6 @@
 # 🛑 Error Handling
 
-Unified error capture, presentation, and reporting for **festiVal**.
+Unified error capture, presentation, and reporting for **festiVAL**.
 
 ## Purpose
 

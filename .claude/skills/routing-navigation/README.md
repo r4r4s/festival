@@ -1,6 +1,6 @@
 # 🧭 Routing & Navigation
 
-Conventions for Angular Router usage across **festiVal**.
+Conventions for Angular Router usage across **festiVAL**.
 
 ## Purpose
 

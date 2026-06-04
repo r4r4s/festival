@@ -1,4 +1,4 @@
-# 🎵 festiVal
+# 🎵 festiVAL
 
 > Tu portal de los principales festivales de música de la Comunidad Valenciana.
 
@@ -6,7 +6,7 @@
 
 ## 📖 Descripción
 
-**festiVal** es una aplicación web desarrollada con **Angular 21 + SSR** que reúne, en un único lugar, la información esencial sobre los festivales de música más importantes de la Comunidad Valenciana (España). Desde el FIB hasta Arenal Sound, pasando por Low Festival, Medusa, Reggaeton Beach o SanSan, festiVal está pensada para que melómanos, festivaleros y curiosos puedan descubrir, comparar y planificar su próxima experiencia musical en tierras valencianas.
+**festiVAL** es una aplicación web desarrollada con **Angular 21 + SSR** que reúne, en un único lugar, la información esencial sobre los festivales de música más importantes de la Comunidad Valenciana (España). Desde el FIB hasta Arenal Sound, pasando por Low Festival, Medusa, Reggaeton Beach o SanSan, festiVAL está pensada para que melómanos, festivaleros y curiosos puedan descubrir, comparar y planificar su próxima experiencia musical en tierras valencianas.
 
 La aplicación funciona como un portal informativo: muestra fechas, ubicaciones, géneros musicales, cartel de artistas, precios orientativos y enlaces oficiales para que el usuario tome la mejor decisión antes de comprar su entrada. Su interfaz, completamente en **español (es-ES)**, ha sido diseñada con un enfoque moderno y mobile-first sobre una superficie premium oscura.
 
@@ -78,7 +78,7 @@ La aplicación arranca en [http://localhost:4200](http://localhost:4200) y se re
 | `npm test`                    | Tests unitarios (Vitest)                                 |
 | `npm run lint`                | Linter (ESLint + Angular ESLint + boundaries)            |
 | `npm run watch`               | Build en modo desarrollo con observación de cambios      |
-| `npm run serve:ssr:festiVal`  | Sirve el build SSR (Express, puerto 4000)                |
+| `npm run serve:ssr:festiVAL`  | Sirve el build SSR (Express, puerto 4000)                |
 
 ---
 

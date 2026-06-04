@@ -1,6 +1,6 @@
 # 🧠 State Management
 
-Reusable patterns for managing application state across the **festiVal** Angular app.
+Reusable patterns for managing application state across the **festiVAL** Angular app.
 
 ## Purpose
 

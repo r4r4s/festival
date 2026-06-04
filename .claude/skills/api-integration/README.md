@@ -4,7 +4,7 @@ Patterns for communicating with backend services that supply festival data.
 
 ## Purpose
 
-Standardize HTTP communication for the **festiVal** portal — fetching festival listings from the **Sanity** headless CMS, artist line-ups, venue information, and (in the future) ticketing partners like Dice or Ticketmaster.
+Standardize HTTP communication for the **festiVAL** portal — fetching festival listings from the **Sanity** headless CMS, artist line-ups, venue information, and (in the future) ticketing partners like Dice or Ticketmaster.
 
 ## Scope
 
