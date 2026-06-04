@@ -164,6 +164,8 @@ src/environments/
 
 ```
 src/assets/
+├── branding/            → Assets SVG de la marca (main-logo, logo-icon, favicon)
+│   └── .gitkeep
 ├── i18n/                → Ficheros de traducción JSON: es.json (fuente), ca.json, en.json
 │   └── .gitkeep
 ├── icons/               → Iconos SVG adicionales a Lucide
@@ -366,3 +368,4 @@ Estas reglas serán forzadas por `eslint-plugin-boundaries` cuando se configure.
 | --- | --- | --- |
 | 2026-06-04 | Nueva carpeta `design/` | Carpeta creada en la raíz del proyecto para almacenar mockups, paletas de color, ideas e inspiraciones de diseño. |
 | 2026-06-04 | Reubicación `.claude` | Movido `CLAUDE.md` a `.claude/` y `autocommit.md` a `.claude/commands/`. |
+| 2026-06-04 | Nueva carpeta `branding/` | Creada `src/assets/branding/` para los assets base de la marca. |
