@@ -26,8 +26,7 @@
       "@shared/pipes/*": ["src/app/shared/pipes/*"],
       "@shared/directives/*": ["src/app/shared/directives/*"],
       "@shared/testing/*": ["src/app/shared/testing/*"],
-      "@env/*": ["src/environments/*"],
-      "@styles/*": ["src/styles/*"]
+      "@env/*": ["src/environments/*"]
     }
   },
   "angularCompilerOptions": {

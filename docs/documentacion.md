@@ -326,7 +326,7 @@ Configuración de Angular CLI para el proyecto `festiVal`:
 Configuración base de TypeScript:
 
 - **Target**: ES2022, `module: "preserve"`, `strict: true`.
-- **Path aliases**: `@core/*`, `@layout/*`, `@features/*`, `@shared/*` (ui, data-access, domain, util, pipes, directives, testing), `@env/*`, `@styles/*`.
+- **Path aliases**: `@core/*`, `@layout/*`, `@features/*`, `@shared/*` (ui, data-access, domain, util, pipes, directives, testing), `@env/*`. El namespace SCSS se resuelve por `stylePreprocessorOptions.includePaths: ["src"]`; no hay alias TS para estilos.
 - **Angular compiler**: templates estrictos, parámetros de inyección estrictos, inputs estrictos.
 
 ### `tsconfig.app.json`
@@ -341,7 +341,7 @@ Extiende `tsconfig.json`. Output en `out-tsc/spec`. Incluye `*.spec.ts` y `*.d.t
 
 Configuración flat de ESLint:
 
-- Para `**/*.ts`: reglas recomendadas de ESLint + TypeScript ESLint + Angular ESLint. Procesador de templates inline. Selectores forzados a prefix `fv-` (components kebab-case, directives camelCase).
+- Para `**/*.ts`: reglas recomendadas de ESLint + TypeScript ESLint + Angular ESLint. Procesador de templates inline. Selectores forzados a prefix `fv-` (components kebab-case, directives camelCase). `eslint-plugin-boundaries` configurado con elementos `core / layout / feature / shared / app / env` y la matriz de dependencias `features → core/shared/env`, `layout → core/shared/env`, `shared → core/shared/env`, `core → core/shared/env`; la única superficie pública de una feature es su `<feature>.routes.ts`.
 - Para `**/*.html`: reglas recomendadas de templates Angular + reglas de accesibilidad en templates.
 
 ### `.editorconfig`
@@ -369,7 +369,7 @@ core      →  core (solo a sí mismo)
 - Dentro de una feature, **ui/ nunca importa de data-access/**.
 - La **única superficie pública** de una feature es su `<feature>.routes.ts`.
 
-Estas reglas serán forzadas por `eslint-plugin-boundaries` cuando se configure.
+Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `eslint.config.js`).
 
 ---
 
@@ -394,3 +394,5 @@ Estas reglas serán forzadas por `eslint-plugin-boundaries` cuando se configure.
 | 2026-06-04 | Eliminación de la abstracción de fuentes | Borrados `shared/util/font/` (incluido el barrel `index.ts`), `shared/directives/font.directive.ts` y `shared/pipes/font.pipe.ts`. La selección de fuente se hace directamente con `var(--fv-font-*)` o las clases utilitarias `.fv-font-*` de `_fonts.scss`. |
 | 2026-06-04 | Sistema de tokens completo | Añadidos partials `_tokens`, `_semantic`, `_typography`, `_spacing`, `_radii`, `_shadows`, `_motion`, `_breakpoints`, `_mixins`, `_animations`, `_reset` en `src/styles/`. `styles.scss` los compone en orden de dependencia. `_fonts.scss` purgado del duplicado `--fv-font-mono`. |
 | 2026-06-04 | Stack canónico instalado (baseline MVP) | Añadidas dependencias `zod`, `date-fns`, `@sanity/client` y `eslint-plugin-boundaries`. |
+| 2026-06-04 | ESLint boundaries activado | `eslint-plugin-boundaries` configurado en `eslint.config.js`. Forzadas las reglas duras de `project-structure` (aislamiento de features, sólo `<feature>.routes.ts` como surface pública). |
+| 2026-06-04 | `tsconfig` paths | Eliminado el alias `@styles/*` (sin uso; el namespace SCSS se resuelve por `includePaths`). |
