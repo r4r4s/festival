@@ -79,6 +79,17 @@ Contiene la configuración de agentes especializados, skills reutilizables y wor
 
 Contiene recursos visuales como mockups, paletas de color, inspiraciones y otros materiales de diseño relacionados con el proyecto festiVal.
 
+```
+design/
+├── font/                → Fuentes tipográficas del design system (archivos fuente originales)
+│   ├── Inter/           → Inter variable font (UI text, data, hero default)
+│   ├── JetBrains_Mono/  → JetBrains Mono variable font (mono: fechas, IDs, logs)
+│   ├── Sora/            → Sora variable font (headings, brand, hero emphasis)
+│   └── Space_Grotesk/   → Space Grotesk (reservada para uso futuro)
+├── logo/                → Logotipos y variantes de la marca
+└── palettle/            → Paletas de color y esquemas cromáticos
+```
+
 ---
 
 ## `docs/` — Documentación
@@ -96,7 +107,13 @@ Servidos directamente por el servidor sin procesamiento. No pasan por el pipelin
 
 ```
 public/
-└── favicon.ico          → Icono del sitio mostrado en la pestaña del navegador
+├── favicon.ico          → Icono del sitio mostrado en la pestaña del navegador
+└── fonts/               → Fuentes variable self-hosted servidas por el servidor
+    ├── Inter-VariableFont_opsz,wght.ttf
+    ├── Inter-Italic-VariableFont_opsz,wght.ttf
+    ├── Sora-VariableFont_wght.ttf
+    ├── JetBrainsMono-VariableFont_wght.ttf
+    └── JetBrainsMono-Italic-VariableFont_wght.ttf
 ```
 
 ---
@@ -139,7 +156,7 @@ src/
 ├── server.ts            → Servidor Express para SSR. Sirve ficheros estáticos de /browser,
 │                          delega el resto a AngularNodeAppEngine para renderizado server-side.
 │                          Puerto por defecto: 4000.
-└── styles.scss          → Punto de entrada SCSS global. Importa todos los partials de src/styles/.
+└── styles/              → Directorio de estilos globales (ver sección dedicada más abajo).
 ```
 
 ### `src/styles/` — Estilos globales
@@ -148,7 +165,11 @@ Partials SCSS consumidos por `styles.scss`. Los componentes importan tokens a tr
 
 ```
 src/styles/
-└── .gitkeep             → (Futuro: _tokens.scss, _semantic.scss, _typography.scss, _spacing.scss,
+├── styles.scss          → Punto de entrada SCSS global. Importa todos los partials del directorio.
+└── _fonts.scss          → @font-face para Inter, Sora y JetBrains Mono (variable fonts self-hosted).
+                           CSS custom properties con tokens de rol (--fv-font-ui, --fv-font-heading, etc.)
+                           y clases utilitarias (.fv-font-ui, .fv-font-heading, .fv-font-mono, etc.).
+                           (Futuro: _tokens.scss, _semantic.scss, _typography.scss, _spacing.scss,
                             _radii.scss, _shadows.scss, _motion.scss, _breakpoints.scss, _mixins.scss,
                             _animations.scss, _reset.scss — ver skill theming-styling)
 ```
@@ -286,11 +307,19 @@ src/app/shared/
 │   └── .gitkeep           festival.model.ts, artist.model.ts, venue.model.ts,
 │                          festival-error.model.ts. El schema Zod vive junto al tipo inferido.
 ├── pipes/               → Pipes genéricos reutilizables: locale-date (date-fns), truncate,
-│   └── .gitkeep           festival-image (URLs de Sanity CDN con ?fm=webp).
+│   │                      festival-image (URLs de Sanity CDN con ?fm=webp).
+│   └── font.pipe.ts     → Pipe fvFont: resuelve un FontRole o FontContext a un valor CSS
+│                           var(--fv-font-*) para usar con [style.font-family].
 ├── directives/          → Directivas genéricas compartidas.
-│   └── .gitkeep
+│   └── font.directive.ts → Directiva fvFont: asigna font-family declarativamente por rol.
+│                           Soporta string shorthand, objetos FontContext e inputs granulares
+│                           (fvFontImportance, fvFontEmphasis).
 ├── util/                → Funciones puras sin dependencia de Angular: formateo, helpers,
-│   └── .gitkeep           validators/ (dniValidator, dateRangeValidator, priceRangeValidator).
+│   │                      validators/ (dniValidator, dateRangeValidator, priceRangeValidator).
+│   └── font/            → Módulo de selección de fuentes por rol semántico.
+│       ├── font.types.ts  → Tipos: FontRole, FontImportance, FontFamily, FontContext.
+│       ├── get-font.ts    → getFont() y getFontCssVar(): lógica de mapeo rol → fuente.
+│       └── index.ts       → Barrel export del módulo.
 └── testing/             → Helpers de test reutilizables entre specs: fixtures, mocks de
     └── .gitkeep           HttpClient, fábricas de datos de prueba.
 ```
@@ -369,3 +398,5 @@ Estas reglas serán forzadas por `eslint-plugin-boundaries` cuando se configure.
 | 2026-06-04 | Nueva carpeta `design/` | Carpeta creada en la raíz del proyecto para almacenar mockups, paletas de color, ideas e inspiraciones de diseño. |
 | 2026-06-04 | Reubicación `.claude` | Movido `CLAUDE.md` a `.claude/` y `autocommit.md` a `.claude/commands/`. |
 | 2026-06-04 | Nueva carpeta `branding/` | Creada `src/assets/branding/` para los assets base de la marca. |
+| 2026-06-04 | Fuentes en `design/font/` | Añadidos archivos fuente Inter, Sora, JetBrains Mono y Space Grotesk. |
+| 2026-06-04 | Font system completo | Añadido `public/fonts/` (variable fonts self-hosted), `src/styles/_fonts.scss` (reglas @font-face, tokens CSS, clases utilitarias), `src/styles/styles.scss` (reubicado desde `src/`), `shared/util/font/` (getFont, tipos), `shared/pipes/font.pipe.ts` (pipe fvFont), `shared/directives/font.directive.ts` (directiva fvFont). Actualizado `angular.json` con nueva ruta de estilos. |
