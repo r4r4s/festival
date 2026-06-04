@@ -69,6 +69,16 @@ If either fails:
 
 The agent **prueba** owns this gate. Pure documentation changes (no files under `src/`) are the only exception.
 
+## Documentation rule (MANDATORY)
+
+Every commit that adds, removes, renames, or moves folders or files **must** update `docs/documentacion.md` in the same commit. This includes:
+
+- Adding the new folder or file to the corresponding tree diagram.
+- Describing its purpose in Spanish.
+- Adding an entry to the "Historial de cambios estructurales" table at the bottom.
+
+An outdated `docs/documentacion.md` is a bug. This rule applies to humans and Claude alike.
+
 ## Configuration
 
 - Environment configuration lives in `src/environments/` (`environment.ts`, `environment.prod.ts`). **That** is where base URLs, feature flags, and endpoints belong — never hardcode them in services.

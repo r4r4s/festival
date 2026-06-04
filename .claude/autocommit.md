@@ -218,6 +218,16 @@ Examples:
 
 If a change cannot be explained by the same sentence, split it.
 
+## Documentation rule
+
+If any commit adds, removes, renames, or moves folders or files, `docs/documentacion.md` **must** be updated in the same commit:
+
+- Add the new entry to the corresponding tree diagram.
+- Describe its purpose in Spanish.
+- Add a row to the "Historial de cambios estructurales" table at the bottom.
+
+Include `docs/documentacion.md` in the same semantic group as the structural change — do not create a separate commit for the documentation update.
+
 ## Safety rules
 
 Never commit:
