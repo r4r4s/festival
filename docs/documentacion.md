@@ -188,14 +188,14 @@ src/assets/
 
 ```
 src/app/
-├── app.ts               → Componente raíz (selector: fv-root). Importa RouterOutlet.
+├── app.ts               → Componente raíz (selector: fv-root, OnPush). Importa RouterOutlet.
 │                          Punto de montaje de la aplicación.
-├── app.html             → Template del componente raíz. Actualmente contiene el placeholder
-│                          de Angular CLI (será reemplazado por el shell de la app).
+├── app.html             → Template del componente raíz. Contiene únicamente <router-outlet />.
 ├── app.scss             → Estilos del componente raíz. Actualmente vacío.
-├── app.spec.ts          → Tests del componente raíz. Verifica que se crea y renderiza el título.
-├── app.config.ts        → Configuración de la aplicación cliente: provideRouter, provideClientHydration.
-│                          Aquí se registrarán interceptores, LOCALE_ID y APP_INITIALIZERs.
+├── app.spec.ts          → Tests del componente raíz. Verifica creación y presencia de router-outlet.
+├── app.config.ts        → Configuración de la aplicación cliente: registra es-ES (LOCALE_ID +
+│                          registerLocaleData), provideRouter, provideClientHydration con event replay.
+│                          Aquí se registrarán interceptores y APP_INITIALIZERs.
 ├── app.config.server.ts → Configuración de la aplicación servidor. Extiende app.config.ts con
 │                          provideServerRendering y las rutas de SSR.
 ├── app.routes.ts        → Definición de rutas top-level. Cada feature se carga con loadChildren
@@ -388,3 +388,5 @@ Estas reglas serán forzadas por `eslint-plugin-boundaries` cuando se configure.
 | 2026-06-04 | Eliminadas carpetas placeholder | `sanity/` y `scripts/` borradas hasta que arranquen sus fases. Quedan documentadas como reintroducción futura. |
 | 2026-06-04 | Limpieza `assets/icons/` | Eliminados `logo-icon.svg` y `main-logo.svg` duplicados de `assets/branding/`. La carpeta queda reservada para iconos adicionales a Lucide. |
 | 2026-06-04 | `index.html` localizado | `lang="es-ES"`, título `festiVal`, meta theme-color, favicon SVG enlazado. |
+| 2026-06-04 | Reset del placeholder Angular | `src/app/app.html` reducido a `<router-outlet />`. `app.ts` migrado a OnPush sin `title` signal. `app.spec.ts` ahora verifica el outlet en vez del título. |
+| 2026-06-04 | Registro de locale `es-ES` | `src/app/app.config.ts` registra `LOCALE_ID: 'es-ES'` y `registerLocaleData(localeEs)` conforme a CLAUDE.md. |
