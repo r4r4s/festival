@@ -44,6 +44,7 @@ layout    →  shared, core
 ```
 festiVal/
 ├── .claude/                   # AI-assisted development (agents + skills) — do not move
+├── docs/                      # project documentation (documentacion.md) — update on every structural commit
 ├── sanity/                    # Sanity Studio (headless CMS) — independently deployable
 │   └── schemas/               # content schemas, mirror the Zod schemas in @shared/domain
 ├── scripts/                   # Node build scripts (WebP converter — see [[performance-optimization]])
