@@ -20,7 +20,7 @@ describe('NavBar', () => {
     expect(img?.getAttribute('ng-img')).toBe('true');
     expect(img?.getAttribute('alt')).toBe('festiVAL');
     expect(img?.getAttribute('src') ?? '').toContain(
-      'assets/branding/logo1.webp',
+      'assets/branding/festi-val-logo.webp',
     );
   });
 

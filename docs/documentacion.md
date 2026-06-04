@@ -54,6 +54,7 @@ Contiene la configuración específica de Codex para agentes, skills y comandos 
 │   ├── audit-structure.md  → Auditoría automatizada de arquitectura y estructura
 │   └── autocommit.md       → Workflow de commits semánticos con pre-commit gate
 └── skills/                 → Skills reutilizables que documentan patrones del proyecto
+    └── asset-organization/README.md  → Reglas obligatorias para carpetas, nombres y limpieza de assets visuales
 ```
 
 ---
@@ -77,6 +78,7 @@ Contiene la configuración de agentes especializados, skills reutilizables y wor
 │   ├── audit-structure.md    → Auditoría automatizada de arquitectura: valida estructura, tokens, skills
 │   └── autocommit.md        → Workflow de commits semánticos (Conventional Commits + pre-commit gate)
 └── skills/                  → Skills reutilizables que documentan patrones del proyecto
+    ├── asset-organization/README.md     → Reglas obligatorias para carpetas, nombres y limpieza de assets visuales
     ├── accessibility/README.md          → WCAG 2.1 AA: contraste, focus, ARIA, navegación por teclado
     ├── api-integration/README.md        → Servicios HTTP tipados, validación Zod en frontera, caching
     ├── error-handling/README.md         → FestivalError normalizado, Sentry, mensajes i18n al usuario
@@ -196,18 +198,20 @@ src/environments/
 ```
 src/assets/
 ├── branding/            → Assets de marca servidos en runtime
-│   ├── logo1.webp       → Logo principal (versión rasterizada usada por la cabecera)
-│   ├── main-logo.svg    → Logotipo completo vectorial
-│   ├── logo-icon.svg    → Isotipo (variante compacta)
-│   └── favicon.svg      → Favicon vectorial
+│   ├── festi-val-logo.webp → Logo principal (versión rasterizada usada por la cabecera)
+│   └── favicon.svg         → Favicon vectorial
 ├── i18n/                → Ficheros de traducción JSON: es.json (fuente), ca.json, en.json
 │   └── .gitkeep
 ├── icons/               → Iconos SVG adicionales a Lucide
 │   └── .gitkeep
 ├── images/              → Imágenes WebP generadas por el conversor Sharp. Comiteadas, nunca editadas a mano.
-│   └── .gitkeep
+│   └── backgrounds/     → Fondos y hero images optimizadas para runtime
+│       ├── home-hero-sunset-beach-800.webp
+│       ├── home-hero-sunset-beach-1200.webp
+│       └── home-hero-sunset-beach-1600.webp
 ├── images-src/          → Imágenes fuente (PNG/JPEG). Comiteadas pero nunca servidas al usuario.
-│   └── .gitkeep
+│   └── backgrounds/     → Fuentes de fondos y hero images antes de la conversión
+│       └── home-hero-sunset-beach.jpg
 └── maps/                → Fichero JSON de estilo MapLibre (tema dark del mapa)
     └── .gitkeep
 ```
@@ -264,7 +268,7 @@ Cargado eagerly. Compone la estructura visual que envuelve todas las rutas.
 src/app/layout/
 ├── shell/               → Componente host del <router-outlet>. Organiza nav-bar + contenido + footer.
 │   └── .gitkeep
-├── nav-bar/             → Cabecera estática del sitio (sticky). Logo `assets/branding/logo1.webp`
+├── nav-bar/             → Cabecera estática del sitio (sticky). Logo `assets/branding/festi-val-logo.webp`
 │   ├── nav-bar.ts         vía `NgOptimizedImage` (`priority`), navegación principal (Home,
 │   ├── nav-bar.html       Festivals, Calendar, Explore, About), icono de búsqueda y toggle de
 │   ├── nav-bar.scss       tema. Mobile-first: en <1024 px sólo aparecen logo, búsqueda y
@@ -298,6 +302,16 @@ features/<nombre>/
 src/app/features/
 ├── home/                → Página de inicio. Muestra festivales destacados, hero con glow
 │                          atmosférico, acceso rápido a búsqueda y filtros.
+│   ├── feature/
+│   │   ├── home.page.ts    → Página de inicio standalone. Renderiza una única card con imagen
+│   │   ├── home.page.html  → Template mínimo de la home: solo la card contenedora y la imagen
+│   │   ├── home.page.scss  → Layout y estilos de la card (radio, sombra, responsive)
+│   │   └── home.page.spec.ts → Test de render de la card de imagen
+│   ├── ui/
+│   │   └── .gitkeep
+│   ├── data-access/
+│   │   └── .gitkeep
+│   └── home.routes.ts   → Superficie pública de la feature. Expone HOME_ROUTES con loadComponent
 ├── festival-list/       → Listado completo de festivales con filtros (provincia, mes, género,
 │                          precio). UI local: filter-chip, grid de cards. Stores: filters, catalogue.
 ├── festival-detail/     → Ficha de festival individual. UI local: festival-hero, lineup-grid,
@@ -407,6 +421,9 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 
 | Fecha | Cambio | Descripción |
 | --- | --- | --- |
+| 2026-06-04 | Skill `asset-organization` | Añadidas `.codex/skills/asset-organization/README.md` y `.claude/skills/asset-organization/README.md` como fuente de verdad para las reglas de gestión de assets visuales. Actualizadas las listas de skills en ambos contratos y esta documentación. |
+| 2026-06-04 | Ordenación de `images/` | Reubicados los assets de la home en `src/assets/images/backgrounds/` y `src/assets/images-src/backgrounds/` para cumplir la skill `asset-organization`. Actualizadas sus referencias en la feature `home` y esta documentación. |
+| 2026-06-04 | Home mínima con card de imagen | Añadidos `src/app/features/home/feature/home.page.{ts,html,scss,spec.ts}`, `src/app/features/home/home.routes.ts`, cableada la ruta raíz en `src/app/app.routes.ts` y añadidos los assets `src/assets/images-src/backgrounds/home-hero-sunset-beach.jpg` + `src/assets/images/backgrounds/home-hero-sunset-beach-{800,1200,1600}.webp`. |
 | 2026-06-04 | Rename `.codex/prompts/` → `.codex/commands/` | Renombrada la carpeta de comandos de Codex y actualizadas sus referencias en `AGENTS.md` y esta documentación. |
 | 2026-06-04 | Nueva carpeta `design/` | Carpeta creada en la raíz del proyecto para almacenar mockups, paletas de color, ideas e inspiraciones de diseño. |
 | 2026-06-04 | Reubicación `.claude` | Movido `CLAUDE.md` a `.claude/` y `autocommit.md` a `.claude/commands/`. |
@@ -429,5 +446,6 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-04 | `tsconfig` paths | Eliminado el alias `@styles/*` (sin uso; el namespace SCSS se resuelve por `includePaths`). |
 | 2026-06-04 | README reescrito | `README.md` alineado con la arquitectura feature-sliced real, el stack canónico de `CLAUDE.md` y el roadmap por fases. |
 | 2026-06-04 | Rebranding `festiVal` → `festiVAL` | Renombrada la marca en todo el proyecto: copy en `.claude/`, `docs/`, `README.md`, `src/index.html` (título), cabeceras SCSS, identificador del proyecto Angular (`angular.json`) y script `serve:ssr:festiVAL` en `package.json`. El paquete npm sigue siendo `festi-val` (npm exige kebab-case minúsculas). |
-| 2026-06-04 | Cabecera estática | Añadido `src/app/layout/nav-bar/` (`nav-bar.{ts,html,scss,spec.ts}`) con la cabecera estática del brief: logo `assets/branding/logo1.webp` vía `NgOptimizedImage`, navegación, búsqueda y toggle de tema. Cableado en `app.ts`/`app.html`; `app.scss` fija el fondo sand de la página. Paleta Mediterránea (sand #F8F5F0, navy #0F172A) scopeada al componente — pendiente de promover a `_tokens.scss`/`_semantic.scss` si se confirma el pivote de identidad visual. |
-| 2026-06-04 | Assets runtime | `src/assets/branding/logo1.webp` copiado desde `design/logo/`. `angular.json` ahora sirve `src/assets/` bajo `/assets/` (el bloque sólo exponía `public/`, dejando los SVG de marca inalcanzables en runtime). |
+| 2026-06-04 | Cabecera estática | Añadido `src/app/layout/nav-bar/` (`nav-bar.{ts,html,scss,spec.ts}`) con la cabecera estática del brief: logo `assets/branding/festi-val-logo.webp` vía `NgOptimizedImage`, navegación, búsqueda y toggle de tema. Cableado en `app.ts`/`app.html`; `app.scss` fija el fondo sand de la página. Paleta Mediterránea (sand #F8F5F0, navy #0F172A) scopeada al componente — pendiente de promover a `_tokens.scss`/`_semantic.scss` si se confirma el pivote de identidad visual. |
+| 2026-06-04 | Assets runtime | `src/assets/branding/festi-val-logo.webp` copiado desde `design/logo/`. `angular.json` ahora sirve `src/assets/` bajo `/assets/` (el bloque sólo exponía `public/`, dejando los SVG de marca inalcanzables en runtime). |
+| 2026-06-04 | Limpieza branding | Renombrado `logo1.webp` a `festi-val-logo.webp` para cumplir la convención de naming de assets y eliminadas las variantes no usadas `main-logo.svg` y `logo-icon.svg` de `src/assets/branding/`. |
