@@ -56,16 +56,19 @@ If you find yourself adding any of the above, stop and reconsider.
 
 The full palette and ramps live in [[theming-styling]]. The shorthand:
 
-- **Backgrounds**: `--bg-canvas` (deepest), `--bg-surface`, `--bg-elevated`, `--bg-overlay` (translucent glass).
-- **Borders**: `--border-subtle` (hairline), `--border-default`, `--border-strong`.
-- **Text**: `--text-primary`, `--text-secondary`, `--text-muted`, `--text-inverse`.
-- **Accents**: `--accent-violet`, `--accent-blue`, `--accent-green` (live/success only).
-- **Gradients**: `--gradient-violet-blue` (primary brand), `--gradient-hero-glow` (radial atmospheric).
-- **Shadows**: `--shadow-card`, `--shadow-elevated`, `--shadow-focus`.
-- **Radii**: `--radius-sm 8`, `--radius-md 12`, `--radius-lg 16`, `--radius-xl 24`, `--radius-pill 999`.
-- **Spacing scale**: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 (px), exposed as `--space-1…9`.
-- **Type ramp**: `--text-xs 12 / --text-sm 14 / --text-base 16 / --text-lg 18 / --text-xl 20 / --text-2xl 24 / --text-3xl 32 / --text-4xl 44 / --text-display 64`.
-- **Motion**: `--ease-out-quint`, `--duration-fast 150ms`, `--duration-base 240ms`, `--duration-slow 400ms`.
+All tokens are exposed under the `--fv-*` namespace.
+
+- **Backgrounds**: `--fv-bg-canvas` (deepest), `--fv-bg-surface`, `--fv-bg-elevated`, `--fv-bg-overlay` (translucent glass).
+- **Borders**: `--fv-border-subtle` (hairline), `--fv-border-default`, `--fv-border-strong`.
+- **Text**: `--fv-text-primary`, `--fv-text-secondary`, `--fv-text-muted`, `--fv-text-inverse`.
+- **Accents**: `--fv-accent-violet`, `--fv-accent-blue`, `--fv-accent-green` (live/success only).
+- **Gradients**: `--fv-gradient-brand` (violet → blue), `--fv-gradient-hero-glow` (radial atmospheric).
+- **Shadows**: `--fv-shadow-card`, `--fv-shadow-elevated`, `--fv-shadow-focus`.
+- **Radii**: `--fv-radius-sm 8`, `--fv-radius-md 12`, `--fv-radius-lg 16`, `--fv-radius-xl 24`, `--fv-radius-pill 999`.
+- **Spacing scale**: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 / 128 (px), exposed as `--fv-space-1…10`.
+- **Type ramp**: `--fv-text-xs 12 / --fv-text-sm 14 / --fv-text-base 16 / --fv-text-lg 18 / --fv-text-xl 20 / --fv-text-2xl 24 / --fv-text-3xl 32 / --fv-text-4xl 44 / --fv-text-display 64`.
+- **Fonts**: `--fv-font-ui` (Inter, body), `--fv-font-heading` (Sora, headings), `--fv-font-mono` (JetBrains Mono), `--fv-font-hero-emphasis` (Sora, hero display), `--fv-font-brand` (Sora).
+- **Motion**: `--fv-ease-standard`, `--fv-duration-fast 150ms`, `--fv-duration-base 240ms`, `--fv-duration-slow 400ms`.
 
 ## Operating Rules
 
@@ -82,7 +85,7 @@ The full palette and ramps live in [[theming-styling]]. The shorthand:
   ```
 - **Mobile-first** media queries; never desktop-first overrides.
 - **Images**: `NgOptimizedImage` with explicit dimensions; descriptive `alt`. **WebP only** — JPEG/PNG references in templates are forbidden. Posters never crop the artist names. Full pipeline in [[performance-optimization]].
-- **Fonts**: Inter (body) + Space Grotesk (display). Loaded via `<link rel="preconnect">` + `<link rel="stylesheet">` in `index.html`. Variable axes only.
+- **Fonts**: Inter (body), Sora (display/headings/brand/hero emphasis), JetBrains Mono (code/dates). Self-hosted variable fonts under `public/fonts/`, declared with `@font-face` in `src/styles/_fonts.scss`, consumed via the `--fv-font-*` tokens. Variable axes only.
 
 ## Definition of Done
 

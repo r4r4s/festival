@@ -122,7 +122,7 @@ The project defines reusable skills in `.claude/skills/` that document patterns 
 - **`performance-optimization`** — OnPush, `@defer`, `NgOptimizedImage`, budgets, SSR.
 - **`testing-patterns`** — Testing layers, HTTP mocking, `data-testid`, coverage.
 - **`accessibility`** — WCAG 2.1 AA, contrast, visible focus, minimal ARIA, keyboard navigation.
-- **`theming-styling`** — Primitive and semantic tokens, dark mode, Mediterranean palette (blue + citrus orange).
+- **`theming-styling`** — Primitive and semantic tokens (`--fv-*` namespace), premium dark surface with deep navy canvas and violet/blue gradient identity. Light mode out of scope until the roadmap reaches it.
 - **`seo-meta`** — Title/description per route, JSON-LD `Event`, canonicals, sitemap, Open Graph.
 - **`error-handling`** — Normalized `FestivalError`, `HttpInterceptor` + global `ErrorHandler`, user-facing messages via i18n.
 - **`search`** — Client-side fuzzy search with MiniSearch, field boosts, diacritic-stripping for Spanish.

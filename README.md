@@ -6,32 +6,45 @@
 
 ## 📖 Descripción
 
-**festiVal** es una aplicación web desarrollada con **Angular** que reúne, en un único lugar, la información esencial sobre los festivales de música más importantes de la Comunidad Valenciana (España). Desde el FIB hasta Arenal Sound, pasando por Low Festival, Medusa, Reggaeton Beach o SanSan, festiVal está pensada para que melómanos, festivaleros y curiosos puedan descubrir, comparar y planificar su próxima experiencia musical en tierras valencianas.
+**festiVal** es una aplicación web desarrollada con **Angular 21 + SSR** que reúne, en un único lugar, la información esencial sobre los festivales de música más importantes de la Comunidad Valenciana (España). Desde el FIB hasta Arenal Sound, pasando por Low Festival, Medusa, Reggaeton Beach o SanSan, festiVal está pensada para que melómanos, festivaleros y curiosos puedan descubrir, comparar y planificar su próxima experiencia musical en tierras valencianas.
 
-La aplicación funciona como un portal informativo: muestra fechas, ubicaciones, géneros musicales, cartel de artistas, precios orientativos y cualquier dato relevante para que el usuario tome la mejor decisión antes de comprar su entrada. Su interfaz, completamente en **español**, ha sido diseñada con un enfoque moderno, responsive y centrado en la experiencia de usuario.
+La aplicación funciona como un portal informativo: muestra fechas, ubicaciones, géneros musicales, cartel de artistas, precios orientativos y enlaces oficiales para que el usuario tome la mejor decisión antes de comprar su entrada. Su interfaz, completamente en **español (es-ES)**, ha sido diseñada con un enfoque moderno y mobile-first sobre una superficie premium oscura.
 
 ---
 
 ## ✨ Características
 
-- 🎪 **Listado de festivales** — Catálogo completo de los principales festivales celebrados en Valencia, Alicante y Castellón.
-- 📄 **Páginas de detalle** — Ficha individual de cada festival con información ampliada: cartel, horarios, servicios y datos prácticos.
-- 🔍 **Búsqueda** — Buscador rápido por nombre de festival o artista.
-- 🎚️ **Filtros avanzados** — Filtra por provincia, mes, género musical (electrónica, indie, reggaeton, rock, pop...) o rango de precios.
-- 📍 **Información de ubicación** — Mapa y datos de localización de cada recinto, con indicaciones para llegar.
-- 📱 **Diseño responsive** — Experiencia optimizada para móvil, tablet y escritorio.
-- 🎨 **Interfaz moderna** — UI limpia, animaciones suaves y accesibilidad cuidada.
+- 🎪 **Catálogo de festivales** — Todos los principales eventos de Valencia, Alicante y Castellón.
+- 📄 **Páginas de detalle** — Ficha individual con cartel completo, datos del recinto y enlaces oficiales.
+- 🔍 **Búsqueda fuzzy** — Buscador rápido por nombre de festival o artista (MiniSearch, client-side).
+- 🎚️ **Filtros** — Filtra por provincia, mes, género musical o rango de precios.
+- 📍 **Mapas** — Ubicación de cada recinto con MapLibre GL JS + Protomaps.
+- 📱 **Responsive** — Experiencia optimizada para móvil, tablet y escritorio.
+- ⚡ **SSR + prerenderizado** — Rutas SEO-críticas servidas pre-renderizadas para mejor LCP y SEO.
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Tecnología       | Uso                                       |
-| ---------------- | ----------------------------------------- |
-| **Angular**      | Framework principal del frontend          |
-| **TypeScript**   | Lenguaje de programación tipado           |
-| **HTML5**        | Marcado semántico                         |
-| **SCSS**         | Estilos modulares y variables de diseño   |
+Las decisiones canónicas viven en [`.claude/CLAUDE.md`](.claude/CLAUDE.md). Resumen:
+
+| Capa             | Tecnología                            |
+| ---------------- | ------------------------------------- |
+| Framework        | Angular 21 (standalone, Signals, SSR) |
+| Lenguaje         | TypeScript 5.x (strict)               |
+| Estilos          | SCSS + design tokens (`--fv-*`)       |
+| Iconos           | Lucide (`lucide-angular`)             |
+| Fechas           | date-fns + `locale/es`                |
+| Validación       | Zod (en frontera HTTP)                |
+| Mapas            | MapLibre GL JS + Protomaps            |
+| Búsqueda         | MiniSearch                            |
+| CMS              | Sanity (headless)                     |
+| Hosting          | Cloudflare Pages + Workers            |
+| Analítica        | Cloudflare Web Analytics              |
+| Errores          | Sentry                                |
+| Tests            | Vitest, Angular Testing Library, Playwright (E2E roadmap) |
+
+Quedan **fuera de scope** por decisión arquitectónica: Tailwind, Material/PrimeNG, Algolia/Typesense, GraphQL, Redis, Stripe, Nx/Turborepo.
 
 ---
 
@@ -39,101 +52,89 @@ La aplicación funciona como un portal informativo: muestra fechas, ubicaciones,
 
 ### Prerrequisitos
 
-- [Node.js](https://nodejs.org/) (versión 18 o superior)
-- [Angular CLI](https://angular.io/cli) instalado globalmente
+- [Node.js](https://nodejs.org/) ≥ 20
+- npm 11+
 - [Git](https://git-scm.com/)
 
 ### Pasos
 
-1. **Clonar el repositorio**
+```bash
+git clone https://github.com/R4r4s/festiVAL.git
+cd festiVAL
+npm install
+npm start
+```
 
-   ```bash
-   git clone https://github.com/tu-usuario/festiVal.git
-   cd festiVal
-   ```
-
-2. **Instalar dependencias**
-
-   ```bash
-   npm install
-   ```
-
-3. **Arrancar el servidor de desarrollo**
-
-   ```bash
-   ng serve
-   ```
-
-   Abre tu navegador en [http://localhost:4200](http://localhost:4200). La aplicación se recargará automáticamente al detectar cambios.
+La aplicación arranca en [http://localhost:4200](http://localhost:4200) y se recarga automáticamente al detectar cambios.
 
 ---
 
 ## 📜 Scripts disponibles
 
-| Comando           | Descripción                                                     |
-| ----------------- | --------------------------------------------------------------- |
-| `npm start`       | Arranca el servidor de desarrollo en `http://localhost:4200`    |
-| `npm run build`   | Compila la aplicación para producción en la carpeta `dist/`     |
-| `npm test`        | Ejecuta los tests unitarios                                     |
-| `npm run lint`    | Analiza el código con el linter para detectar errores de estilo |
-| `npm run watch`   | Compila en modo desarrollo y observa cambios                    |
+| Comando                       | Descripción                                              |
+| ----------------------------- | -------------------------------------------------------- |
+| `npm start`                   | Servidor de desarrollo en `http://localhost:4200`        |
+| `npm run build`               | Build de producción en `dist/`                           |
+| `npm test`                    | Tests unitarios (Vitest)                                 |
+| `npm run lint`                | Linter (ESLint + Angular ESLint + boundaries)            |
+| `npm run watch`               | Build en modo desarrollo con observación de cambios      |
+| `npm run serve:ssr:festiVal`  | Sirve el build SSR (Express, puerto 4000)                |
 
 ---
 
 ## 📁 Estructura del proyecto
 
+Arquitectura **feature-sliced** con boundaries forzados por ESLint. El detalle completo vive en [`.claude/skills/project-structure/README.md`](.claude/skills/project-structure/README.md). Resumen:
+
 ```
-festiVal/
-├── src/
-│   ├── app/
-│   │   ├── components/        # Componentes reutilizables (cards, navbar, footer...)
-│   │   │   ├── festival-card/
-│   │   │   ├── navbar/
-│   │   │   ├── footer/
-│   │   │   └── search-bar/
-│   │   ├── pages/             # Vistas/rutas principales
-│   │   │   ├── home/
-│   │   │   ├── festival-list/
-│   │   │   ├── festival-detail/
-│   │   │   └── about/
-│   │   ├── services/          # Lógica de negocio y acceso a datos
-│   │   │   └── festival.service.ts
-│   │   ├── models/            # Interfaces y tipos TypeScript
-│   │   │   └── festival.model.ts
-│   │   ├── pipes/             # Pipes personalizados (filtros, formato fechas...)
-│   │   ├── guards/            # Route guards
-│   │   ├── app.routes.ts      # Configuración de rutas
-│   │   ├── app.component.ts
-│   │   └── app.config.ts
-│   ├── assets/                # Imágenes, iconos, fuentes
-│   │   ├── images/
-│   │   └── icons/
-│   ├── environments/          # Configuración por entorno
-│   ├── styles/                # Estilos globales y variables SCSS
-│   │   ├── _variables.scss
-│   │   ├── _mixins.scss
-│   │   └── styles.scss
-│   └── index.html
-├── angular.json
-├── package.json
-├── tsconfig.json
-└── README.md
+src/app/
+├── core/        # singletons cross-cutting (interceptores, ErrorHandler, initializers, SSR helpers)
+├── layout/      # shell de la app (shell, nav-bar, footer), cargado eagerly
+├── features/    # vertical slices, cada una un chunk lazy
+│   └── <feature>/
+│       ├── feature/        # página smart vinculada a la ruta
+│       ├── ui/             # componentes presentacionales locales
+│       ├── data-access/    # stores, servicios HTTP, resolvers, schemas Zod
+│       └── <feature>.routes.ts   # ÚNICA superficie pública de la feature
+└── shared/      # reutilizable entre ≥ 2 features; nunca importa de una feature
+    ├── ui/ data-access/ domain/ pipes/ directives/ util/ testing/
 ```
+
+Reglas duras (forzadas por `eslint-plugin-boundaries`):
+
+- Una feature **nunca** importa de otra feature.
+- `shared/` nunca importa de `features/` ni de `layout/`.
+- La única superficie pública de una feature es su `<feature>.routes.ts`.
+- No hay barrel files (`index.ts`), no hay NgModules, todo es standalone.
+
+El catálogo completo de carpetas y ficheros se mantiene en [`docs/documentacion.md`](docs/documentacion.md).
 
 ---
 
 ## 🗺️ Roadmap
 
-Próximas mejoras planificadas:
+Por fases (detalle canónico en [`.claude/CLAUDE.md`](.claude/CLAUDE.md)):
 
-- [ ] 📅 Calendario interactivo con todos los festivales del año.
-- [ ] 🎟️ Integración con plataformas de venta de entradas (Dice, Ticketmaster).
-- [ ] 🗣️ Versiones multilingüe (valenciano e inglés).
-- [ ] 🌙 Modo oscuro.
-- [ ] 🎧 Integración con Spotify para escuchar a los artistas del cartel.
+1. **MVP informativo** — catálogo, búsqueda, filtros, páginas de detalle. Sin auth.
+2. **Personalización** — favoritos persistidos, modo oscuro avanzado, PWA instalable.
+3. **Cuentas de usuario** — registro, login, valoraciones, comentarios.
+4. **Integraciones** — Spotify (preview de artistas), ticketing (Dice, Ticketmaster), calendario anual interactivo.
+5. **Multilingüe** — `ca-ES-valencia` y `en-GB` con `hreflang`.
 
 ---
 
+## 🤖 Desarrollo asistido por IA
+
+Este proyecto está preparado para colaboración con **Claude Code**:
+
+- `.claude/CLAUDE.md` — contrato del proyecto.
+- `.claude/agents/` — agentes especializados (sistemas, vistas, contenido, prueba, rendimiento).
+- `.claude/skills/` — patrones reutilizables (project-structure, theming-styling, api-integration, …).
+- `.claude/commands/` — workflows automatizados (`/audit-structure`, `/autocommit`).
+
+Antes de cualquier modificación es **obligatorio** leer `CLAUDE.md` y los skills aplicables al área tocada.
+
+---
 
 ## 👤 Autor
 
