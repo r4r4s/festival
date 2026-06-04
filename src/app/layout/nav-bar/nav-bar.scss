@@ -34,14 +34,14 @@
 .nav-bar__inner {
   max-width: 1320px;
   margin: 0 auto;
-  padding: 10px 20px;
+  padding: 8px 16px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 12px;
 
   @media (min-width: 768px) {
     padding: 12px 28px;
-    gap: 28px;
+    gap: 20px;
   }
 
   @media (min-width: 1024px) {
@@ -58,12 +58,19 @@
   text-decoration: none;
   color: inherit;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .nav-bar__brand-img {
   display: block;
-  height: 52px;
+  height: 40px;
   width: auto;
+  transform: scale(1.14);
+  transform-origin: left center;
+
+  @media (min-width: 768px) {
+    height: 46px;
+  }
 
   @media (min-width: 1024px) {
     height: 65px;
@@ -88,7 +95,7 @@
 .nav-bar__nav-link {
   font-family: var(--fv-font-ui);
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 700;
   color: var(--nav-navy);
   text-decoration: none;
   padding: 8px 2px;
@@ -98,10 +105,15 @@
 // ---- Right-side actions -----------------------------------------------------
 
 .nav-bar__actions {
-  margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
+  margin-left: auto;
+  flex-shrink: 0;
+
+  @media (min-width: 768px) {
+    gap: 8px;
+  }
 
   @media (min-width: 1024px) {
     gap: 12px;
@@ -109,8 +121,8 @@
 }
 
 .nav-bar__icon-btn {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 12px;
   border: 0;
   background: transparent;
@@ -119,6 +131,11 @@
   place-items: center;
   cursor: pointer;
   padding: 0;
+
+  @media (min-width: 768px) {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 .nav-bar__theme-toggle {
@@ -133,10 +150,23 @@
 // ---- Breakpoint reveals -----------------------------------------------------
 
 @media (min-width: 1024px) {
+  .nav-bar__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .nav-bar__brand {
+    justify-self: start;
+  }
+
   .nav-bar__nav {
-    display: flex;
-    flex: 1;
-    justify-content: center;
+    display: block;
+    justify-self: center;
+  }
+
+  .nav-bar__actions {
+    justify-self: end;
   }
 
   .nav-bar__theme-toggle {
