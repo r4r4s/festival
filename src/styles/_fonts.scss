@@ -81,11 +81,6 @@ $font-stack-mono: 'JetBrains Mono', 'Fira Code', 'Source Code Pro',
 // ---------------------------------------------------------------------------
 
 :root {
-  // — Core font stacks (raw values) —
-  --fv-font-inter: #{$font-stack-inter};
-  --fv-font-sora: #{$font-stack-sora};
-  --fv-font-mono: #{$font-stack-mono};
-
   // — Role-based tokens —
   // Role: ui — General UI text (default system readability)
   --fv-font-ui: #{$font-stack-inter};
@@ -181,14 +176,7 @@ $font-stack-mono: 'JetBrains Mono', 'Fira Code', 'Source Code Pro',
 // ---------------------------------------------------------------------------
 // 5. Global base application
 // ---------------------------------------------------------------------------
-// Apply Inter as the default body font so all text inherits it unless
-// overridden by a role-specific class / variable.
+// The default body font binding lives in `_reset.scss`, which consumes
+// `--fv-font-ui` so all text inherits Inter unless overridden by a role-
+// specific class or token.
 // ---------------------------------------------------------------------------
-
-html,
-body {
-  font-family: var(--fv-font-ui);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}

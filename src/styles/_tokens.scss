@@ -1,0 +1,37 @@
+// ============================================================================
+// _tokens.scss — festiVal Design System · Primitive tokens
+// ============================================================================
+// Raw palette and raw scales. SCSS-only — these are NOT exposed as CSS custom
+// properties. Components must consume the semantic tokens in `_semantic.scss`.
+// ============================================================================
+
+// --- Neutrals (deep navy bias, not pure black) ---
+$fv-gray-950: #07070C; // canvas
+$fv-gray-900: #0B0B14; // surface
+$fv-gray-850: #11111D; // elevated
+$fv-gray-800: #181826; // overlay base
+$fv-gray-700: #232336;
+$fv-gray-600: #2F2F47;
+$fv-gray-500: #4A4A66;
+$fv-gray-400: #6B6E85;
+$fv-gray-300: #9CA0B5;
+$fv-gray-200: #C9CCDB;
+$fv-gray-100: #E7E9F2;
+$fv-gray-50:  #F4F4FA;
+
+// --- Brand (violet primary, blue secondary) ---
+$fv-violet-600: #6D4DF2;
+$fv-violet-500: #7C5CFF; // primary brand
+$fv-violet-400: #9D7BFF;
+$fv-violet-300: #B9A0FF;
+
+$fv-blue-500: #4E8CFF;
+$fv-blue-400: #6BA1FF;
+
+// --- Accents (green is reserved for live/success) ---
+$fv-green-500: #4ADE9D;
+$fv-green-400: #6BE8B0;
+
+// --- States ---
+$fv-red-500:   #FF5C7A;
+$fv-amber-500: #F5B544;

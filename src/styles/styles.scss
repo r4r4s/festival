@@ -1,2 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
-@use 'fonts';
+// ============================================================================
+// styles.scss — festiVal · Global stylesheet entry point
+// ============================================================================
+// The only file Angular's `styles` build option references. It composes the
+// design system in dependency order: primitives → semantic → typography
+// (sizes + fonts) → spacing/radii/shadows/motion → reset → animations.
+// ============================================================================
+
+@use 'styles/tokens';
+@use 'styles/semantic';
+@use 'styles/typography';
+@use 'styles/fonts';
+@use 'styles/spacing';
+@use 'styles/radii';
+@use 'styles/shadows';
+@use 'styles/motion';
+@use 'styles/animations';
+@use 'styles/reset';

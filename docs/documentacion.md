@@ -140,17 +140,26 @@ src/
 
 ### `src/styles/` — Estilos globales
 
-Partials SCSS consumidos por `styles.scss`. Los componentes importan tokens a través de `@use 'styles/mixins'` (resuelto por `stylePreprocessorOptions.includePaths`).
+Partials SCSS consumidos por `styles.scss`. Los componentes importan mixins a través de `@use 'styles/mixins' as *` (resuelto por `stylePreprocessorOptions.includePaths: ["src"]`). El namespace canónico de tokens es `--fv-*`.
 
 ```
 src/styles/
-├── styles.scss          → Punto de entrada SCSS global. Importa todos los partials del directorio.
-└── _fonts.scss          → @font-face para Inter, Sora y JetBrains Mono (variable fonts self-hosted).
-                           CSS custom properties con tokens de rol (--fv-font-ui, --fv-font-heading, etc.)
-                           y clases utilitarias (.fv-font-ui, .fv-font-heading, .fv-font-mono, etc.).
-                           (Futuro: _tokens.scss, _semantic.scss, _typography.scss, _spacing.scss,
-                            _radii.scss, _shadows.scss, _motion.scss, _breakpoints.scss, _mixins.scss,
-                            _animations.scss, _reset.scss — ver skill theming-styling)
+├── styles.scss          → Punto de entrada SCSS global. Compone los partials en orden de dependencia.
+├── _tokens.scss         → Tokens primitivos SCSS (paleta cruda $fv-gray-*, $fv-violet-*, …). No expone CSS vars.
+├── _semantic.scss       → Tokens semánticos como CSS custom properties --fv-bg-*, --fv-text-*, --fv-accent-*,
+│                          --fv-border-*, --fv-gradient-*. Son los que consumen los componentes.
+├── _typography.scss     → Escala tipográfica: --fv-text-*, --fv-leading-*, --fv-tracking-*.
+├── _fonts.scss          → @font-face de Inter, Sora y JetBrains Mono (variable fonts self-hosted).
+│                          Tokens de rol --fv-font-ui/heading/hero/hero-emphasis/festival-name/mono/brand,
+│                          más clases utilitarias .fv-font-*.
+├── _spacing.scss        → Escala de espaciado (base 4 px): --fv-space-0..10.
+├── _radii.scss          → Escala de radios: --fv-radius-sm/md/lg/xl/2xl/pill.
+├── _shadows.scss        → Sistema de elevación: --fv-shadow-card/elevated/focus/glow-violet.
+├── _motion.scss         → Duraciones y curvas: --fv-duration-*, --fv-ease-*. Honra prefers-reduced-motion.
+├── _breakpoints.scss    → Mapa SCSS $fv-breakpoints + mixin `from($bp)` (mobile-first).
+├── _mixins.scss         → Mixins reutilizables: glass(), focus-ring, container, truncate, line-clamp.
+├── _animations.scss     → Keyframes fv-fade-up, fv-pulse-soft, fv-live-dot, fv-glow-pulse.
+└── _reset.scss          → Reset opinionado (box-sizing, márgenes, listas, foco, tipografía base).
 ```
 
 ### `src/environments/` — Configuración por entorno
@@ -383,3 +392,4 @@ Estas reglas serán forzadas por `eslint-plugin-boundaries` cuando se configure.
 | 2026-06-04 | Reset del placeholder Angular | `src/app/app.html` reducido a `<router-outlet />`. `app.ts` migrado a OnPush sin `title` signal. `app.spec.ts` ahora verifica el outlet en vez del título. |
 | 2026-06-04 | Registro de locale `es-ES` | `src/app/app.config.ts` registra `LOCALE_ID: 'es-ES'` y `registerLocaleData(localeEs)` conforme a CLAUDE.md. |
 | 2026-06-04 | Eliminación de la abstracción de fuentes | Borrados `shared/util/font/` (incluido el barrel `index.ts`), `shared/directives/font.directive.ts` y `shared/pipes/font.pipe.ts`. La selección de fuente se hace directamente con `var(--fv-font-*)` o las clases utilitarias `.fv-font-*` de `_fonts.scss`. |
+| 2026-06-04 | Sistema de tokens completo | Añadidos partials `_tokens`, `_semantic`, `_typography`, `_spacing`, `_radii`, `_shadows`, `_motion`, `_breakpoints`, `_mixins`, `_animations`, `_reset` en `src/styles/`. `styles.scss` los compone en orden de dependencia. `_fonts.scss` purgado del duplicado `--fv-font-mono`. |
