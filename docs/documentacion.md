@@ -17,6 +17,7 @@ Responsable: cualquier agente o persona que realice el commit. La regla se aplic
 
 ```
 festiVAL/
+├── .codex/             → Desarrollo asistido por IA para Codex (agentes, skills, commands)
 ├── .claude/            → Desarrollo asistido por IA (agentes, skills, workflows)
 ├── .vscode/            → Configuración del editor VS Code
 ├── design/             → Assets de diseño (mockups, paletas de color, fuentes fuente)
@@ -32,6 +33,27 @@ festiVAL/
 ├── tsconfig.json       → Configuración base de TypeScript (strict, paths aliases, target)
 ├── tsconfig.app.json   → Configuración TS para el build de la aplicación (extiende tsconfig.json)
 └── tsconfig.spec.json  → Configuración TS para los tests (extiende tsconfig.json, incluye vitest/globals)
+```
+
+---
+
+## `.codex/` — Desarrollo asistido por IA para Codex
+
+Contiene la configuración específica de Codex para agentes, skills y comandos del proyecto.
+
+```
+.codex/
+├── AGENTS.md               → Contrato del proyecto para Codex
+├── agents/                 → Agentes especializados por dominio
+│   ├── contenido.toml      → Agente editorial: i18n, catálogo y microcopy
+│   ├── prueba.toml         → Agente de testing: unit, component, E2E y gate
+│   ├── rendimiento.toml    → Agente de rendimiento: SEO, bundles y SSR
+│   ├── sistemas.toml       → Agente de arquitectura: servicios, estado y routing
+│   └── vistas.toml         → Agente de UI: componentes, theming y responsive
+├── commands/               → Comandos de workflow y automatización
+│   ├── audit-structure.md  → Auditoría automatizada de arquitectura y estructura
+│   └── autocommit.md       → Workflow de commits semánticos con pre-commit gate
+└── skills/                 → Skills reutilizables que documentan patrones del proyecto
 ```
 
 ---
@@ -385,6 +407,7 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 
 | Fecha | Cambio | Descripción |
 | --- | --- | --- |
+| 2026-06-04 | Rename `.codex/prompts/` → `.codex/commands/` | Renombrada la carpeta de comandos de Codex y actualizadas sus referencias en `AGENTS.md` y esta documentación. |
 | 2026-06-04 | Nueva carpeta `design/` | Carpeta creada en la raíz del proyecto para almacenar mockups, paletas de color, ideas e inspiraciones de diseño. |
 | 2026-06-04 | Reubicación `.claude` | Movido `CLAUDE.md` a `.claude/` y `autocommit.md` a `.claude/commands/`. |
 | 2026-06-04 | Nueva carpeta `branding/` | Creada `src/assets/branding/` para los assets base de la marca. |

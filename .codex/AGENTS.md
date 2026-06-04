@@ -1,4 +1,4 @@
-# CLAUDE.md — festiVAL
+# AGENTS.md — festiVAL
 
 **festiVAL** is an Angular web application that serves as an information portal for the main music festivals in the Valencian Community (Valencia, Alicante, and Castellón provinces of Spain). Users can discover festivals and consult dates, locations, music genres, artist line-ups, starting prices, and official links. The primary UI language is **Spanish (es-ES)**, with Valencian (`ca-ES-valencia`) and English (`en-GB`) on the roadmap.
 
@@ -52,8 +52,13 @@ Explicitly **out of scope**: Nx/Turborepo, Tailwind, Material/PrimeNG, Algolia/T
 
 ## Agent workspace routing
 
-When working as Claude Code, use the `.claude/` folder as the source of truth for agents, skills, and commands.
 When working as Codex, use the `.codex/` folder as the source of truth for agents, skills, and commands.
+When working as Claude Code, use the `.claude/` folder as the source of truth for agents, skills, and commands.
+
+## Slash commands
+
+When the user writes `/autocommit`, load and follow `/Users/rares/Desktop/festiVAL/.codex/commands/autocommit.md`.
+Treat it as a workflow instruction for the current turn, not as plain text to acknowledge.
 
 ## Pre-commit gate (MANDATORY)
 
@@ -82,17 +87,17 @@ Every commit that adds, removes, renames, or moves folders or files **must** upd
 - Describing its purpose in Spanish.
 - Adding an entry to the "Historial de cambios estructurales" table at the bottom.
 
-An outdated `docs/documentacion.md` is a bug. This rule applies to humans and Claude alike.
+An outdated `docs/documentacion.md` is a bug. This rule applies to humans and Codex alike.
 
 ## Markdown review rule (MANDATORY)
 
 Before making any modification, agents **must** review the applicable project `.md` files:
 
-- Always read `CLAUDE.md` for the project contract.
+- Always read `AGENTS.md` for the project contract.
 - Read `docs/documentacion.md` before structural changes.
-- Read the relevant `.claude/agents/*.md` and `.claude/skills/*/README.md` files for the touched area.
+- Read the relevant `.Codex/agents/*.md` and `.Codex/skills/*/README.md` files for the touched area.
 
-If no specific agent or skill applies, still review `CLAUDE.md` and any nearby `.md` that documents the files being changed.
+If no specific agent or skill applies, still review `AGENTS.md` and any nearby `.md` that documents the files being changed.
 
 ## Configuration
 
@@ -103,7 +108,7 @@ If no specific agent or skill applies, still review `CLAUDE.md` and any nearby `
 
 ## Agents
 
-To keep the architecture scalable and responsibilities clear, the project defines five specialized agents in `.claude/agents/`:
+To keep the architecture scalable and responsibilities clear, the project defines five specialized agents in `.Codex/agents/`:
 
 - **`prueba`** 🧪 — Unit, component, and E2E tests (Vitest, Angular Testing Library, Playwright), `axe-core` for a11y, pre-merge validation. Consult it whenever services, components, pipes, guards, or critical flows are touched.
 - **`sistemas`** 🏗️ — Architecture, service layer, state management (Signals / NgRx SignalStore), routing, HTTP interceptors, SSR, environments, DTO contracts. Consult it when a change crosses a component boundary or touches data flow.
@@ -115,7 +120,7 @@ Each agent explicitly declares who it collaborates with to avoid overlapping res
 
 ## Skills
 
-The project defines reusable skills in `.claude/skills/` that document patterns specific to this application. It is **imperative** to consult the matching skill before touching the area it covers:
+The project defines reusable skills in `.Codex/skills/` that document patterns specific to this application. It is **imperative** to consult the matching skill before touching the area it covers:
 
 - **`project-structure`** 🗂️ — **MANDATORY.** Canonical folder layout, naming rules, placement decision tree, path aliases. Consult **before** creating, moving, or renaming any file. The structure is a contract that must remain stable.
 - **`state-management`** — Signal patterns, NgRx SignalStore, persistence of filters and favourites.

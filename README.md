@@ -125,12 +125,26 @@ Por fases (detalle canónico en [`.claude/CLAUDE.md`](.claude/CLAUDE.md)):
 
 ## 🤖 Desarrollo asistido por IA
 
-Este proyecto está preparado para colaboración con **Claude Code**:
+Este proyecto está preparado para colaboración con **Codex** y **Claude Code**.
+
+Regla de uso:
+
+- Cuando trabajes con **Codex**, usa la carpeta `.codex/`.
+- Cuando trabajes con **Claude Code**, usa la carpeta `.claude/`.
+
+Configuración de Claude Code:
 
 - `.claude/CLAUDE.md` — contrato del proyecto.
 - `.claude/agents/` — agentes especializados (sistemas, vistas, contenido, prueba, rendimiento).
 - `.claude/skills/` — patrones reutilizables (project-structure, theming-styling, api-integration, …).
 - `.claude/commands/` — workflows automatizados (`/audit-structure`, `/autocommit`).
+
+Configuración de Codex:
+
+- `.codex/AGENTS.md` — contrato del proyecto para Codex.
+- `.codex/agents/` — agentes especializados para Codex.
+- `.codex/skills/` — patrones reutilizables para Codex.
+- `.codex/commands/` — workflows automatizados para Codex.
 
 Antes de cualquier modificación es **obligatorio** leer `CLAUDE.md` y los skills aplicables al área tocada.
 
