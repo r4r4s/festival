@@ -81,7 +81,7 @@ The full palette and ramps live in [[theming-styling]]. The shorthand:
   └── <name>.component.spec.ts
   ```
 - **Mobile-first** media queries; never desktop-first overrides.
-- **Images**: `NgOptimizedImage` with explicit dimensions; descriptive `alt`. Posters never crop the artist names.
+- **Images**: `NgOptimizedImage` with explicit dimensions; descriptive `alt`. **WebP only** — JPEG/PNG references in templates are forbidden. Posters never crop the artist names. Full pipeline in [[performance-optimization]].
 - **Fonts**: Inter (body) + Space Grotesk (display). Loaded via `<link rel="preconnect">` + `<link rel="stylesheet">` in `index.html`. Variable axes only.
 
 ## Definition of Done

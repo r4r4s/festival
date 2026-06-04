@@ -20,6 +20,7 @@ Make every festival page discoverable through organic search for queries like "f
 
 - **Title**: `{nombreFestival} {año} — Cartel, fechas y entradas | festiVal`
 - **Description**: `Descubre toda la información del {nombre}: fechas, ubicación en {ciudad}, cartel completo y precios.`
+- **OG image**: `1200×630` WebP, served from `src/assets/images/og-*.webp` (built by the [[performance-optimization]] converter pipeline) or from the Sanity CDN with `?fm=webp&w=1200&q=80`. Never PNG / JPEG.
 
 ## Hreflang (future)
 
