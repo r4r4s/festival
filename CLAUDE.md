@@ -50,6 +50,25 @@ Explicitly **out of scope**: Nx/Turborepo, Tailwind, Material/PrimeNG, Algolia/T
 
 **Do not** invoke `ng serve --open` in unattended sessions: it opens the user's browser and is unnecessary for programmatically validating changes. For visual verification, use the `/verify` skill which follows the project's steps.
 
+## Pre-commit gate (MANDATORY)
+
+Any commit that touches `src/` **must** pass the following two commands in order, both exiting `0`, **before** `git commit` is invoked:
+
+```bash
+npm run lint && npm test -- --run
+```
+
+If either fails:
+
+1. **Do not commit.**
+2. Fix the underlying cause — production code, or the test itself.
+3. If the fix is not feasible in the session, **revert** (`git restore` / `git stash`). Never leave broken tests on `main`.
+4. Re-run the gate. Only commit when green.
+
+**Never** bypass with `--no-verify`. **Never** disable a test to make the gate pass. Skipping is allowed only with an expiry per the rules in [[testing-patterns]].
+
+The agent **prueba** owns this gate. Pure documentation changes (no files under `src/`) are the only exception.
+
 ## Configuration
 
 - Environment configuration lives in `src/environments/` (`environment.ts`, `environment.prod.ts`). **That** is where base URLs, feature flags, and endpoints belong — never hardcode them in services.

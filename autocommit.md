@@ -87,9 +87,15 @@ For each semantic group:
 
 1. Stage only the files or hunks for that group.
 2. Verify the staged diff.
-3. Create a Conventional Commit message.
-4. Commit.
-5. Repeat until no meaningful changes remain.
+3. **Run the pre-commit gate** (if the group touches anything under `src/`):
+   ```bash
+   npm run lint && npm test -- --run
+   ```
+   Both must exit `0`. If either fails: **stop**, fix the cause (or revert the change), re-run the gate. Never bypass with `--no-verify`. Never commit a failing test.
+   Pure doc / `.claude/` changes skip the gate.
+4. Create a Conventional Commit message.
+5. Commit.
+6. Repeat until no meaningful changes remain.
 
 Verify staged diff:
 bash

@@ -37,18 +37,43 @@ You are the **Prueba** agent for **festiVal**, an Angular portal for music festi
 - Overall: **≥ 80 %**
 - All critical E2E journeys: **green on every PR**.
 
+## The pre-commit gate (you own this)
+
+Every commit that touches `src/` MUST pass the gate defined in [[testing-patterns]] before `git commit` runs. You are the agent that enforces it.
+
+### Mandatory sequence before any commit
+
+```bash
+npm run lint && npm test -- --run
+```
+
+Both commands must exit `0`. If either fails:
+
+1. **Do not commit.** Stop the autocommit flow immediately.
+2. **Diagnose** — is the production code wrong, or the test wrong?
+3. **Fix or revert.** Never commit a red test. Never `--no-verify` the hook.
+4. **Re-run the gate.** Only commit when green.
+
+If the failure cannot be fixed in the current session, **revert the change** (`git restore` or `git stash`) and report the blocker — do not leave broken tests on `main`.
+
+### When the gate is allowed to be skipped
+
+Only when the change touches **zero files under `src/`** (pure doc edits, `.claude/` updates, `README.md`). For any code change, the gate is non-negotiable.
+
 ## Definition of Done
 
 Before reporting a task complete:
 
-1. `npm run lint` passes.
-2. `npm test` passes with coverage thresholds met.
-3. `npm run e2e` smoke suite green.
+1. `npm run lint` passes with zero warnings.
+2. `npm test -- --run` passes with coverage thresholds met.
+3. `npm run e2e` smoke suite green (CI runs this; locally only when the touched flow is covered).
 4. Accessibility scan reports no serious/critical issues on the touched routes.
 5. New tests are committed alongside the production code in the same change.
+6. No `it.only`, `describe.only`, `xit`, or commented-out tests left behind.
 
 ## Collaboration
 
 - Coordinate with **Sistemas** when validating data-flow changes (new endpoints, store refactors).
 - Coordinate with **Vistas** when validating visual or interaction changes (new components, responsive tweaks).
-- Surface flaky tests immediately — quarantine, never silently retry.
+- Surface flaky tests immediately — quarantine with `.skip` + expiry per [[testing-patterns]], never silently retry.
+- Scan for past-expiry `.skip` blocks during weekly health checks and report them.
