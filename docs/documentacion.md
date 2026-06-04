@@ -288,19 +288,11 @@ src/app/shared/
 │   └── .gitkeep           festival.model.ts, artist.model.ts, venue.model.ts,
 │                          festival-error.model.ts. El schema Zod vive junto al tipo inferido.
 ├── pipes/               → Pipes genéricos reutilizables: locale-date (date-fns), truncate,
-│   │                      festival-image (URLs de Sanity CDN con ?fm=webp).
-│   └── font.pipe.ts     → Pipe fvFont: resuelve un FontRole o FontContext a un valor CSS
-│                           var(--fv-font-*) para usar con [style.font-family].
+│   └── .gitkeep           festival-image (URLs de Sanity CDN con ?fm=webp).
 ├── directives/          → Directivas genéricas compartidas.
-│   └── font.directive.ts → Directiva fvFont: asigna font-family declarativamente por rol.
-│                           Soporta string shorthand, objetos FontContext e inputs granulares
-│                           (fvFontImportance, fvFontEmphasis).
+│   └── .gitkeep
 ├── util/                → Funciones puras sin dependencia de Angular: formateo, helpers,
-│   │                      validators/ (dniValidator, dateRangeValidator, priceRangeValidator).
-│   └── font/            → Módulo de selección de fuentes por rol semántico.
-│       ├── font.types.ts  → Tipos: FontRole, FontImportance, FontFamily, FontContext.
-│       ├── get-font.ts    → getFont() y getFontCssVar(): lógica de mapeo rol → fuente.
-│       └── index.ts       → Barrel export del módulo.
+│   └── .gitkeep           validators (dniValidator, dateRangeValidator, priceRangeValidator).
 └── testing/             → Helpers de test reutilizables entre specs: fixtures, mocks de
     └── .gitkeep           HttpClient, fábricas de datos de prueba.
 ```
@@ -390,3 +382,4 @@ Estas reglas serán forzadas por `eslint-plugin-boundaries` cuando se configure.
 | 2026-06-04 | `index.html` localizado | `lang="es-ES"`, título `festiVal`, meta theme-color, favicon SVG enlazado. |
 | 2026-06-04 | Reset del placeholder Angular | `src/app/app.html` reducido a `<router-outlet />`. `app.ts` migrado a OnPush sin `title` signal. `app.spec.ts` ahora verifica el outlet en vez del título. |
 | 2026-06-04 | Registro de locale `es-ES` | `src/app/app.config.ts` registra `LOCALE_ID: 'es-ES'` y `registerLocaleData(localeEs)` conforme a CLAUDE.md. |
+| 2026-06-04 | Eliminación de la abstracción de fuentes | Borrados `shared/util/font/` (incluido el barrel `index.ts`), `shared/directives/font.directive.ts` y `shared/pipes/font.pipe.ts`. La selección de fuente se hace directamente con `var(--fv-font-*)` o las clases utilitarias `.fv-font-*` de `_fonts.scss`. |
