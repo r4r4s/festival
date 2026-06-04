@@ -22,8 +22,6 @@ festiVal/
 ├── design/             → Assets de diseño (mockups, paletas de color, ideas)
 ├── docs/               → Documentación del proyecto
 ├── public/             → Ficheros estáticos servidos tal cual (favicon, robots.txt, sitemap)
-├── sanity/             → Sanity Studio (CMS headless), desplegable independientemente
-├── scripts/            → Scripts Node para el pipeline de build (conversor de imágenes WebP)
 ├── src/                → Código fuente de la aplicación
 ├── .editorconfig       → Reglas de formato del editor (indentación, charset, trailing whitespace)
 ├── angular.json        → Configuración de Angular CLI (build, serve, test, lint, budgets, SSR)
@@ -118,28 +116,7 @@ public/
     └── JetBrainsMono-Italic-VariableFont_wght.ttf
 ```
 
----
-
-## `sanity/` — Sanity Studio (CMS)
-
-Proyecto independiente para gestionar el catálogo de festivales. Desplegable por separado. Los schemas aquí deben reflejar los schemas Zod de `@shared/domain/`.
-
-```
-sanity/
-└── schemas/             → Schemas de contenido de Sanity (festival, artista, venue)
-    └── .gitkeep
-```
-
----
-
-## `scripts/` — Scripts de build
-
-Scripts Node ejecutados durante el pipeline de build. No son código de la aplicación.
-
-```
-scripts/
-└── .gitkeep             → (Futuro: convert-images.mjs — conversor Sharp de PNG/JPEG a WebP)
-```
+> Cuando arranque la fase CMS se reintroducirán las carpetas `sanity/` (Sanity Studio independiente con `sanity.config.ts` + schemas que reflejen los Zod de `@shared/domain/`) y `scripts/` (conversor Sharp PNG/JPEG → WebP). Se eliminaron del repositorio mientras estuvieron vacías para no dejar deuda visible.
 
 ---
 
@@ -406,3 +383,4 @@ Estas reglas serán forzadas por `eslint-plugin-boundaries` cuando se configure.
 | 2026-06-04 | Reconciliación del contrato visual | `CLAUDE.md`, `theming-styling` skill, `vistas` agent y `README.md` consolidados: paleta navy/violet/blue premium, fuente display **Sora**, namespace de tokens **`--fv-*`**. Eliminado Space Grotesk del design system. |
 | 2026-06-04 | Rename `design/palettle/` → `design/palette/` | Corrección del nombre de carpeta. |
 | 2026-06-04 | Limpieza de bloat en `design/font/` | Eliminadas las subcarpetas `*/static/` (instancias estáticas nunca servidas) y `design/font/Space_Grotesk/`. |
+| 2026-06-04 | Eliminadas carpetas placeholder | `sanity/` y `scripts/` borradas hasta que arranquen sus fases. Quedan documentadas como reintroducción futura. |
