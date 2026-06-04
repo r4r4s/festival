@@ -4,6 +4,8 @@
 
 ## Technologies
 
+Core framework and language:
+
 - **Angular 21** (standalone components, Signals, `@defer`, `NgOptimizedImage`)
 - **TypeScript** 5.x (strict mode)
 - **HTML5** semantic markup
@@ -11,7 +13,32 @@
 - **Angular CLI** 21.x for tooling
 - **Vitest** for unit tests (configured by Angular CLI)
 - **Playwright** planned for E2E
-- **Angular Universal** planned for SSR / prerendering of SEO-critical routes
+- **Angular Universal** for SSR / prerendering of SEO-critical routes
+
+Project stack (canonical choices — agents must respect these):
+
+| Layer            | Technology                          | Notes                                                                 |
+| ---------------- | ----------------------------------- | --------------------------------------------------------------------- |
+| Framework        | Angular 21 + SSR                    | Standalone, Signals-first                                              |
+| Icons            | **Lucide** (`lucide-angular`)       | Single icon system, tree-shakeable, line style consistent with the UI |
+| Dates            | **date-fns** + `locale/es`          | Spanish formatting (`"12 – 16 jul 2026"`). Owned by **contenido**     |
+| Validation       | **Zod**                             | Boundary validation of HTTP DTOs. Owned by **sistemas**               |
+| Maps             | **MapLibre GL JS** + Protomaps tiles | OSS, no Mapbox/Google fees. Used in venue/festival detail pages       |
+| Search           | **MiniSearch**                      | Client-side fuzzy search with field boosts (`nombre`, `cabezasDeCartel`) |
+| Content (CMS)    | **Sanity**                          | Hosted headless CMS for the festival catalogue                        |
+| Hosting          | **Cloudflare Pages + Workers**      | Workers V8 isolates — vigilar el límite de 1 MB gz en plan free       |
+| Analytics        | **Cloudflare Web Analytics**        | Privacy-friendly, sin cookies, sin banner RGPD                        |
+| Error monitoring | **Sentry**                          | Frontend errors; integrated via the `ErrorHandler` in **error-handling** |
+
+Adoption phasing:
+
+- **MVP** — todo lo de la tabla.
+- **Personalization phase** — `@angular/service-worker` (PWA) + `idb-keyval` para favoritos persistentes.
+- **User accounts phase** — evaluar Supabase Auth o Better Auth.
+- **Multilingual phase** — Transloco + script de merge i18n (no `@angular/localize`, que requiere build por idioma).
+- **Ticketing phase** — APIs de Dice / Ticketmaster directas, sin librería intermedia.
+
+Explicitly **out of scope**: Nx/Turborepo, Tailwind, Material/PrimeNG, Algolia/Typesense, GraphQL, Redis, Stripe. Cualquier propuesta de añadirlos debe justificarse contra esta tabla.
 
 ## Project scripts
 
@@ -59,6 +86,8 @@ The project defines reusable skills in `.claude/skills/` that document patterns 
 - **`theming-styling`** — Primitive and semantic tokens, dark mode, Mediterranean palette (blue + citrus orange).
 - **`seo-meta`** — Title/description per route, JSON-LD `Event`, canonicals, sitemap, Open Graph.
 - **`error-handling`** — Normalized `FestivalError`, `HttpInterceptor` + global `ErrorHandler`, user-facing messages via i18n.
+- **`search`** — Client-side fuzzy search with MiniSearch, field boosts, diacritic-stripping for Spanish.
+- **`maps`** — MapLibre GL JS + Protomaps tiles, lazy-loaded, SSR-safe, accessible with text equivalents.
 
 ## Architecture
 
