@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50" width="100%" height="100%">
+  <g transform="translate(25, 33)">
+    <rect x="-22" y="-4" width="24" height="8" rx="4" transform="rotate(60)" fill="#2D9CDB"/>
+    <rect x="-2" y="-4" width="24" height="8" rx="4" transform="rotate(-60)" fill="#FF4D4D"/>
+    <circle cx="0" cy="-16" r="4.5" fill="#FF8A3D"/>
+  </g>
+  <text x="52" y="34" font-family="Inter, Poppins, system-ui, sans-serif" font-size="24" font-weight="600" fill="#0F172A" letter-spacing="-0.5">festi<tspan fill="#2D9CDB" font-weight="800">VAL</tspan></text>
+</svg>
