@@ -19,6 +19,7 @@ Responsable: cualquier agente o persona que realice el commit. La regla se aplic
 festiVal/
 ├── .claude/            → Desarrollo asistido por IA (agentes, skills, workflows)
 ├── .vscode/            → Configuración del editor VS Code
+├── design/             → Assets de diseño (mockups, paletas de color, ideas)
 ├── docs/               → Documentación del proyecto
 ├── public/             → Ficheros estáticos servidos tal cual (favicon, robots.txt, sitemap)
 ├── sanity/             → Sanity Studio (CMS headless), desplegable independientemente
@@ -70,6 +71,12 @@ Contiene la configuración de agentes especializados, skills reutilizables y wor
     ├── theming-styling/README.md        → Tokens SCSS, paleta dark premium, glassmorphism, motion
     └── ui-components/README.md          → Catálogo de componentes, variantes, interacciones, estados
 ```
+
+---
+
+## `design/` — Assets de diseño
+
+Contiene recursos visuales como mockups, paletas de color, inspiraciones y otros materiales de diseño relacionados con el proyecto festiVal.
 
 ---
 
@@ -350,3 +357,10 @@ core      →  core (solo a sí mismo)
 
 Estas reglas serán forzadas por `eslint-plugin-boundaries` cuando se configure.
 
+---
+
+## Historial de cambios estructurales
+
+| Fecha | Cambio | Descripción |
+| --- | --- | --- |
+| 2026-06-04 | Nueva carpeta `design/` | Carpeta creada en la raíz del proyecto para almacenar mockups, paletas de color, ideas e inspiraciones de diseño. |
