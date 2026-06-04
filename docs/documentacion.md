@@ -19,9 +19,9 @@ Responsable: cualquier agente o persona que realice el commit. La regla se aplic
 festiVal/
 ├── .claude/            → Desarrollo asistido por IA (agentes, skills, workflows)
 ├── .vscode/            → Configuración del editor VS Code
-├── design/             → Assets de diseño (mockups, paletas de color, ideas)
+├── design/             → Assets de diseño (mockups, paletas de color, fuentes fuente)
 ├── docs/               → Documentación del proyecto
-├── public/             → Ficheros estáticos servidos tal cual (favicon, robots.txt, sitemap)
+├── public/             → Ficheros estáticos servidos tal cual (favicon, fuentes runtime)
 ├── src/                → Código fuente de la aplicación
 ├── .editorconfig       → Reglas de formato del editor (indentación, charset, trailing whitespace)
 ├── angular.json        → Configuración de Angular CLI (build, serve, test, lint, budgets, SSR)
@@ -396,3 +396,4 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-04 | Stack canónico instalado (baseline MVP) | Añadidas dependencias `zod`, `date-fns`, `@sanity/client` y `eslint-plugin-boundaries`. |
 | 2026-06-04 | ESLint boundaries activado | `eslint-plugin-boundaries` configurado en `eslint.config.js`. Forzadas las reglas duras de `project-structure` (aislamiento de features, sólo `<feature>.routes.ts` como surface pública). |
 | 2026-06-04 | `tsconfig` paths | Eliminado el alias `@styles/*` (sin uso; el namespace SCSS se resuelve por `includePaths`). |
+| 2026-06-04 | README reescrito | `README.md` alineado con la arquitectura feature-sliced real, el stack canónico de `CLAUDE.md` y el roadmap por fases. |
