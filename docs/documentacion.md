@@ -27,7 +27,6 @@ festiVal/
 ├── src/                → Código fuente de la aplicación
 ├── .editorconfig       → Reglas de formato del editor (indentación, charset, trailing whitespace)
 ├── angular.json        → Configuración de Angular CLI (build, serve, test, lint, budgets, SSR)
-├── CLAUDE.md           → Guía del proyecto para desarrollo asistido con IA
 ├── eslint.config.js    → Configuración de ESLint (Angular ESLint + template accessibility)
 ├── package.json        → Dependencias, scripts npm y metadatos del proyecto
 ├── package-lock.json   → Lockfile de dependencias (versionado exacto)
@@ -47,13 +46,15 @@ Contiene la configuración de agentes especializados, skills reutilizables y wor
 .claude/
 ├── .claude-plugin/
 │   └── plugin.json          → Manifiesto del plugin (nombre y descripción del proyecto para Claude)
+├── CLAUDE.md                → Guía del proyecto para desarrollo asistido con IA
 ├── agents/                  → Agentes especializados con responsabilidades definidas
 │   ├── contenido.md         → Agente editorial: i18n, curación del catálogo de festivales, microcopy UX
 │   ├── prueba.md            → Agente de testing: unit, component, E2E, a11y, pre-commit gate
 │   ├── rendimiento.md       → Agente de rendimiento: Core Web Vitals, SEO, SSR, bundles, JSON-LD
 │   ├── sistemas.md          → Agente de arquitectura: servicios, estado, routing, interceptores, SSR
 │   └── vistas.md            → Agente de UI: componentes, design system, theming, responsive, accesibilidad
-├── autocommit.md            → Workflow de commits semánticos (Conventional Commits + pre-commit gate)
+├── commands/                → Comandos de workflow y automatización
+│   └── autocommit.md        → Workflow de commits semánticos (Conventional Commits + pre-commit gate)
 └── skills/                  → Skills reutilizables que documentan patrones del proyecto
     ├── accessibility/README.md          → WCAG 2.1 AA: contraste, focus, ARIA, navegación por teclado
     ├── api-integration/README.md        → Servicios HTTP tipados, validación Zod en frontera, caching
@@ -364,3 +365,4 @@ Estas reglas serán forzadas por `eslint-plugin-boundaries` cuando se configure.
 | Fecha | Cambio | Descripción |
 | --- | --- | --- |
 | 2026-06-04 | Nueva carpeta `design/` | Carpeta creada en la raíz del proyecto para almacenar mockups, paletas de color, ideas e inspiraciones de diseño. |
+| 2026-06-04 | Reubicación `.claude` | Movido `CLAUDE.md` a `.claude/` y `autocommit.md` a `.claude/commands/`. |
