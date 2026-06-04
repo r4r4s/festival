@@ -164,8 +164,10 @@ src/environments/
 
 ```
 src/assets/
-├── branding/            → Assets SVG de la marca (main-logo, logo-icon, favicon)
-│   └── .gitkeep
+├── branding/            → Assets SVG de la marca
+│   ├── main-logo.svg    → Logotipo completo de festiVal
+│   ├── logo-icon.svg    → Isotipo (variante compacta)
+│   └── favicon.svg      → Favicon vectorial
 ├── i18n/                → Ficheros de traducción JSON: es.json (fuente), ca.json, en.json
 │   └── .gitkeep
 ├── icons/               → Iconos SVG adicionales a Lucide
@@ -384,3 +386,4 @@ Estas reglas serán forzadas por `eslint-plugin-boundaries` cuando se configure.
 | 2026-06-04 | Rename `design/palettle/` → `design/palette/` | Corrección del nombre de carpeta. |
 | 2026-06-04 | Limpieza de bloat en `design/font/` | Eliminadas las subcarpetas `*/static/` (instancias estáticas nunca servidas) y `design/font/Space_Grotesk/`. |
 | 2026-06-04 | Eliminadas carpetas placeholder | `sanity/` y `scripts/` borradas hasta que arranquen sus fases. Quedan documentadas como reintroducción futura. |
+| 2026-06-04 | Limpieza `assets/icons/` | Eliminados `logo-icon.svg` y `main-logo.svg` duplicados de `assets/branding/`. La carpeta queda reservada para iconos adicionales a Lucide. |
