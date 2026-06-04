@@ -350,17 +350,4 @@ core      →  core (solo a sí mismo)
 
 Estas reglas serán forzadas por `eslint-plugin-boundaries` cuando se configure.
 
----
 
-## Historial de cambios estructurales
-
-> Cada commit que modifique la estructura debe añadir una entrada aquí.
-
-| Fecha | Commit | Descripción |
-| --- | --- | --- |
-| 2026-06-04 | `1c18361` | Selector raíz renombrado de `app-root` a `fv-root` |
-| 2026-06-04 | `76b5d52` | ESLint instalado con Angular ESLint, prefix `fv-` |
-| 2026-06-04 | `8d7ab92` | Migración a feature-sliced: `core/`, `layout/`, `features/`, `shared/` |
-| 2026-06-04 | `0df71b5` | Budgets de bundle apretados en `angular.json` |
-| 2026-06-04 | `2e84ea8` | Scaffold inicial de carpetas (folder-by-type, ya reemplazado) |
-| 2026-06-04 | `0bf2aca` | Primer commit del proyecto Angular 21 |
