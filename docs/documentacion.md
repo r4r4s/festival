@@ -82,14 +82,15 @@ Contiene recursos visuales como mockups, paletas de color, inspiraciones y otros
 
 ```
 design/
-├── font/                → Fuentes tipográficas del design system (archivos fuente originales)
+├── font/                → Fuentes tipográficas del design system (sólo variable fonts originales)
 │   ├── Inter/           → Inter variable font (UI text, data, hero default)
 │   ├── JetBrains_Mono/  → JetBrains Mono variable font (mono: fechas, IDs, logs)
-│   ├── Sora/            → Sora variable font (headings, brand, hero emphasis)
-│   └── Space_Grotesk/   → Space Grotesk (reservada para uso futuro)
+│   └── Sora/            → Sora variable font (headings, brand, hero emphasis)
 ├── logo/                → Logotipos y variantes de la marca
-└── palettle/            → Paletas de color y esquemas cromáticos
+└── palette/             → Paletas de color y esquemas cromáticos (palette1.svg, palette2.svg)
 ```
+
+Las instancias estáticas (`*/static/`) y la familia Space Grotesk se eliminaron: la app sólo sirve los ejes variable desde `public/fonts/` y la fuente display canónica es **Sora**.
 
 ---
 
@@ -403,3 +404,5 @@ Estas reglas serán forzadas por `eslint-plugin-boundaries` cuando se configure.
 | 2026-06-04 | Font system completo | Añadido `public/fonts/` (variable fonts self-hosted), `src/styles/_fonts.scss` (reglas @font-face, tokens CSS, clases utilitarias), `src/styles/styles.scss` (reubicado desde `src/`), `shared/util/font/` (getFont, tipos), `shared/pipes/font.pipe.ts` (pipe fvFont), `shared/directives/font.directive.ts` (directiva fvFont). Actualizado `angular.json` con nueva ruta de estilos. |
 | 2026-06-04 | Comando `audit-structure` | Añadido `.claude/commands/audit-structure.md`: auditoría automatizada de arquitectura, estructura, design system y compliance de skills. |
 | 2026-06-04 | Reconciliación del contrato visual | `CLAUDE.md`, `theming-styling` skill, `vistas` agent y `README.md` consolidados: paleta navy/violet/blue premium, fuente display **Sora**, namespace de tokens **`--fv-*`**. Eliminado Space Grotesk del design system. |
+| 2026-06-04 | Rename `design/palettle/` → `design/palette/` | Corrección del nombre de carpeta. |
+| 2026-06-04 | Limpieza de bloat en `design/font/` | Eliminadas las subcarpetas `*/static/` (instancias estáticas nunca servidas) y `design/font/Space_Grotesk/`. |
