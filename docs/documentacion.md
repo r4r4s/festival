@@ -54,6 +54,7 @@ Contiene la configuración de agentes especializados, skills reutilizables y wor
 │   ├── sistemas.md          → Agente de arquitectura: servicios, estado, routing, interceptores, SSR
 │   └── vistas.md            → Agente de UI: componentes, design system, theming, responsive, accesibilidad
 ├── commands/                → Comandos de workflow y automatización
+│   ├── audit-structure.md    → Auditoría automatizada de arquitectura: valida estructura, tokens, skills
 │   └── autocommit.md        → Workflow de commits semánticos (Conventional Commits + pre-commit gate)
 └── skills/                  → Skills reutilizables que documentan patrones del proyecto
     ├── accessibility/README.md          → WCAG 2.1 AA: contraste, focus, ARIA, navegación por teclado
@@ -400,3 +401,4 @@ Estas reglas serán forzadas por `eslint-plugin-boundaries` cuando se configure.
 | 2026-06-04 | Nueva carpeta `branding/` | Creada `src/assets/branding/` para los assets base de la marca. |
 | 2026-06-04 | Fuentes en `design/font/` | Añadidos archivos fuente Inter, Sora, JetBrains Mono y Space Grotesk. |
 | 2026-06-04 | Font system completo | Añadido `public/fonts/` (variable fonts self-hosted), `src/styles/_fonts.scss` (reglas @font-face, tokens CSS, clases utilitarias), `src/styles/styles.scss` (reubicado desde `src/`), `shared/util/font/` (getFont, tipos), `shared/pipes/font.pipe.ts` (pipe fvFont), `shared/directives/font.directive.ts` (directiva fvFont). Actualizado `angular.json` con nueva ruta de estilos. |
+| 2026-06-04 | Comando `audit-structure` | Añadido `.claude/commands/audit-structure.md`: auditoría automatizada de arquitectura, estructura, design system y compliance de skills. |
