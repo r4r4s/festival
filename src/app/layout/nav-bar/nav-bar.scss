@@ -1,0 +1,149 @@
+// ============================================================================
+// nav-bar.scss — festiVAL · Layout · Static header
+// ============================================================================
+// NOTE: This component uses the Mediterranean brand palette declared in the
+// design brief (sand / navy / coral / orange / blue). Those values are
+// scoped to :host so they don't leak into the existing dark-surface tokens.
+// Once the brand pivot is confirmed at the contract level, these values
+// should be promoted into _tokens.scss / _semantic.scss.
+// ============================================================================
+
+:host {
+  --nav-sand:        #F8F5F0;
+  --nav-navy:        #0F172A;
+  --nav-coral:       #FF4D4D;
+  --nav-orange:      #FF8A3D;
+  --nav-blue:        #2D9CDB;
+  --nav-white:       #FFFFFF;
+  --nav-border:      rgba(15, 23, 42, 0.07);
+  --nav-icon-hover:  rgba(15, 23, 42, 0.05);
+  display: block;
+  width: 100%;
+}
+
+.nav-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--nav-sand);
+  border-bottom: 1px solid var(--nav-border);
+  color: var(--nav-navy);
+  font-family: var(--fv-font-ui);
+}
+
+.nav-bar__inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  @media (min-width: 768px) {
+    padding: 16px 28px;
+    gap: 28px;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 18px 40px;
+    gap: 32px;
+  }
+}
+
+// ---- Brand ------------------------------------------------------------------
+
+.nav-bar__brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.nav-bar__brand-img {
+  display: block;
+  height: 56px;
+  width: auto;
+
+  @media (min-width: 1024px) {
+    height: 64px;
+  }
+}
+
+// ---- Primary navigation -----------------------------------------------------
+
+.nav-bar__nav {
+  display: none; // mobile-first; revealed at lg
+}
+
+.nav-bar__nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+
+.nav-bar__nav-link {
+  font-family: var(--fv-font-ui);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--nav-navy);
+  text-decoration: none;
+  padding: 8px 2px;
+  letter-spacing: -0.005em;
+}
+
+// ---- Right-side actions -----------------------------------------------------
+
+.nav-bar__actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  @media (min-width: 1024px) {
+    gap: 12px;
+  }
+}
+
+.nav-bar__icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 0;
+  background: transparent;
+  color: var(--nav-navy);
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.nav-bar__theme-toggle {
+  display: none; // desktop-only per spec
+}
+
+.nav-bar__menu {
+  // Hamburger — shown only on mobile per spec.
+  display: inline-grid;
+}
+
+// ---- Breakpoint reveals -----------------------------------------------------
+
+@media (min-width: 1024px) {
+  .nav-bar__nav {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .nav-bar__theme-toggle {
+    display: inline-grid;
+  }
+
+  .nav-bar__menu {
+    display: none;
+  }
+}

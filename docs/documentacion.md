@@ -173,8 +173,9 @@ src/environments/
 
 ```
 src/assets/
-├── branding/            → Assets SVG de la marca
-│   ├── main-logo.svg    → Logotipo completo de festiVAL
+├── branding/            → Assets de marca servidos en runtime
+│   ├── logo1.webp       → Logo principal (versión rasterizada usada por la cabecera)
+│   ├── main-logo.svg    → Logotipo completo vectorial
 │   ├── logo-icon.svg    → Isotipo (variante compacta)
 │   └── favicon.svg      → Favicon vectorial
 ├── i18n/                → Ficheros de traducción JSON: es.json (fuente), ca.json, en.json
@@ -197,10 +198,12 @@ src/assets/
 
 ```
 src/app/
-├── app.ts               → Componente raíz (selector: fv-root, OnPush). Importa RouterOutlet.
-│                          Punto de montaje de la aplicación.
-├── app.html             → Template del componente raíz. Contiene únicamente <router-outlet />.
-├── app.scss             → Estilos del componente raíz. Actualmente vacío.
+├── app.ts               → Componente raíz (selector: fv-root, OnPush). Importa RouterOutlet
+│                          y NavBar (cabecera estática del sitio).
+├── app.html             → Template del componente raíz: <fv-nav-bar /> + <main> con
+│                          <router-outlet />.
+├── app.scss             → Estilos del componente raíz. Define el fondo de página
+│                          (--app-page-bg) sand sobre el que se asienta el mockup del header.
 ├── app.spec.ts          → Tests del componente raíz. Verifica creación y presencia de router-outlet.
 ├── app.config.ts        → Configuración de la aplicación cliente: registra es-ES (LOCALE_ID +
 │                          registerLocaleData), provideRouter, provideClientHydration con event replay.
@@ -239,8 +242,12 @@ Cargado eagerly. Compone la estructura visual que envuelve todas las rutas.
 src/app/layout/
 ├── shell/               → Componente host del <router-outlet>. Organiza nav-bar + contenido + footer.
 │   └── .gitkeep
-├── nav-bar/             → Barra de navegación superior: panel glass, marca festiVAL, enlaces
-│   └── .gitkeep           principales, botones de acción. Sticky en la parte superior.
+├── nav-bar/             → Cabecera estática del sitio (sticky). Logo `assets/branding/logo1.webp`
+│   ├── nav-bar.ts         vía `NgOptimizedImage` (`priority`), navegación principal (Home,
+│   ├── nav-bar.html       Festivals, Calendar, Explore, About), icono de búsqueda y toggle de
+│   ├── nav-bar.scss       tema. Mobile-first: en <1024 px sólo aparecen logo, búsqueda y
+│   └── nav-bar.spec.ts    hamburguesa. Fondo sand (paleta Mediterránea del brief) scopeado
+│                          localmente vía CSS custom properties.
 └── footer/              → Pie de página: navegación secundaria, enlaces legales, atribución.
     └── .gitkeep
 ```
@@ -315,6 +322,7 @@ src/app/shared/
 Configuración de Angular CLI para el proyecto `festiVAL`:
 
 - **Build**: builder `@angular/build:application`, entry browser `src/main.ts`, server `src/main.server.ts`, SSR con Express (`src/server.ts`).
+- **Assets**: además de `public/` (servido en raíz), `src/assets/` se sirve bajo `/assets/` para imágenes, fuentes adicionales, iconos, etc.
 - **Estilos**: SCSS como preprocesador, `stylePreprocessorOptions.includePaths: ["src"]` para permitir `@use 'styles/...'` desde componentes.
 - **Budgets**: inicial ≤ 250 KB warning / 350 KB error; lazy chunks ≤ 80 KB warning / 120 KB error; component styles ≤ 4 KB warning / 8 KB error.
 - **Prefix**: `fv` (todos los componentes generados usan selector `fv-*`).
@@ -398,3 +406,5 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-04 | `tsconfig` paths | Eliminado el alias `@styles/*` (sin uso; el namespace SCSS se resuelve por `includePaths`). |
 | 2026-06-04 | README reescrito | `README.md` alineado con la arquitectura feature-sliced real, el stack canónico de `CLAUDE.md` y el roadmap por fases. |
 | 2026-06-04 | Rebranding `festiVal` → `festiVAL` | Renombrada la marca en todo el proyecto: copy en `.claude/`, `docs/`, `README.md`, `src/index.html` (título), cabeceras SCSS, identificador del proyecto Angular (`angular.json`) y script `serve:ssr:festiVAL` en `package.json`. El paquete npm sigue siendo `festi-val` (npm exige kebab-case minúsculas). |
+| 2026-06-04 | Cabecera estática | Añadido `src/app/layout/nav-bar/` (`nav-bar.{ts,html,scss,spec.ts}`) con la cabecera estática del brief: logo `assets/branding/logo1.webp` vía `NgOptimizedImage`, navegación, búsqueda y toggle de tema. Cableado en `app.ts`/`app.html`; `app.scss` fija el fondo sand de la página. Paleta Mediterránea (sand #F8F5F0, navy #0F172A) scopeada al componente — pendiente de promover a `_tokens.scss`/`_semantic.scss` si se confirma el pivote de identidad visual. |
+| 2026-06-04 | Assets runtime | `src/assets/branding/logo1.webp` copiado desde `design/logo/`. `angular.json` ahora sirve `src/assets/` bajo `/assets/` (el bloque sólo exponía `public/`, dejando los SVG de marca inalcanzables en runtime). |
