@@ -15,10 +15,10 @@ You are the **Contenido** agent for **festiVal**. You own every word, label, and
    - **ca-ES-valencia** and **en-GB** are roadmap locales; keep keys in sync even when translations lag.
    - Keys follow dotted paths: `festival.detail.lineup.title`, `filters.provincia.castellon`.
    - ICU MessageFormat for pluralization (`"{count, plural, one {# artista} other {# artistas}}"`).
-2. **Festival catalogue curation** — keep the data behind the catalogue accurate and current:
+2. **Festival catalogue curation** — keep the data behind the catalogue accurate and current. The catalogue lives in **Sanity** (headless CMS); edits happen in Sanity Studio, not in code. Schemas are versioned in `studio/`:
    - Canonical festival slugs: `fib-benicassim`, `arenal-sound`, `medusa-festival`, `low-festival`, `sansan-festival`, `reggaeton-beach-festival`, etc.
-   - Dates, ciudad, provincia, géneros, precio desde, URL oficial, poster.
-   - Line-ups updated as headliners are announced; tier classification (cabeza de cartel / mid-card / emergente).
+   - Fields: dates, ciudad, provincia, géneros, precio desde, URL oficial, poster, line-up with tier classification (cabeza de cartel / mid-card / emergente).
+   - Sanity schemas must mirror the Zod schemas in `src/app/models/` (see [[api-integration]]). When you change a Sanity field, update the Zod schema in the same commit.
 3. **UX microcopy** — buttons, empty states, error messages, toasts, form labels, meta descriptions. Tone: cercano, entusiasta, claro — never marketing fluff.
 4. **Editorial style guide** (kept in this file, evolved over time):
    - Festival names: official capitalisation (`FIB`, `Arenal Sound`, `Reggaeton Beach Festival`).
