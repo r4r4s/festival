@@ -8,20 +8,22 @@ Provide a consistent, accessible, composable set of building blocks for the dark
 
 ## Core components
 
-| Component                   | Role                                                            |
-| --------------------------- | --------------------------------------------------------------- |
-| `NavBarComponent`           | Top navigation, glass panel, brand mark + primary nav + CTA.    |
-| `ButtonComponent`           | Variants: `primary` (gradient), `secondary` (glass), `ghost`.   |
-| `BadgeComponent`            | Variants: `neutral`, `violet`, `live` (green, with pulse).      |
-| `FestivalCardComponent`     | Poster, dates, ciudad chip, génaros, precio desde, hover-lift.  |
-| `FestivalHeroComponent`     | Full-bleed banner for detail pages, radial glow backdrop.       |
-| `LineupGridComponent`       | Tier-based typography for headliners → mid → emerging.          |
-| `FilterChipComponent`       | Toggleable chip; selected state uses `--accent-violet-soft`.    |
-| `SearchBarComponent`        | Debounced input with leading icon and clear affordance.         |
-| `DateRangeBadgeComponent`   | Formatted Spanish dates (`"12 – 16 jul 2026"`).                 |
-| `EmptyStateComponent`       | Illustration slot + heading + body + optional action.           |
-| `SkeletonLoaderComponent`   | Pulsing block; respects `prefers-reduced-motion`.               |
-| `FestivalToastComponent`    | Transient notification, slides up from bottom-right.            |
+| Component                   | Location                  | Role                                                            |
+| --------------------------- | ------------------------- | --------------------------------------------------------------- |
+| `NavBarComponent`           | `layout/nav-bar/`         | Top navigation, glass panel, brand mark + primary nav + CTA.    |
+| `FooterComponent`           | `layout/footer/`          | Site footer, secondary nav, attribution.                        |
+| `ButtonComponent`           | `@shared/ui/button/`      | Variants: `primary` (gradient), `secondary` (glass), `ghost`.   |
+| `BadgeComponent`            | `@shared/ui/badge/`       | Variants: `neutral`, `violet`, `live` (green, with pulse).      |
+| `FestivalCardComponent`     | `@shared/ui/festival-card/` | Poster, dates, ciudad chip, géneros, precio desde, hover-lift. |
+| `SearchBarComponent`        | `@shared/ui/search-bar/`  | Debounced input with leading icon and clear affordance.         |
+| `DateRangeBadgeComponent`   | `@shared/ui/date-range-badge/` | Formatted Spanish dates (`"12 – 16 jul 2026"`).            |
+| `EmptyStateComponent`       | `@shared/ui/empty-state/` | Illustration slot + heading + body + optional action.           |
+| `SkeletonLoaderComponent`   | `@shared/ui/skeleton-loader/` | Pulsing block; respects `prefers-reduced-motion`.           |
+| `FestivalToastComponent`    | `@shared/ui/festival-toast/` | Transient notification, slides up from bottom-right.         |
+| `FormErrorComponent`        | `@shared/ui/form-error/`  | Reads control state, outputs i18n error message ([[forms-validation]]). |
+| `FestivalHeroComponent`     | `festival-detail/ui/`     | Full-bleed banner for detail pages, radial glow backdrop.       |
+| `LineupGridComponent`       | `festival-detail/ui/`     | Tier-based typography for headliners → mid → emerging.          |
+| `FilterChipComponent`       | `festival-list/ui/`       | Toggleable chip; selected state uses `--accent-violet-soft`.    |
 
 ## Variants and tokens
 
@@ -30,15 +32,26 @@ Provide a consistent, accessible, composable set of building blocks for the dark
 - **Badges** use `--radius-pill`, `--text-xs`, `--tracking-wider`, uppercase.
 - **Glass panels** apply the `glass()` mixin only when content sits over a colored or textured backdrop (hero, modal overlay).
 
+## Where components live
+
+Per the feature-sliced structure (see [[project-structure]]):
+
+- **Shared primitives** reused by ≥ 2 features → `@shared/ui/<name>/` (`button`, `badge`, `festival-card`, `search-bar`, `empty-state`, `skeleton-loader`, `festival-toast`, `form-error`).
+- **Feature-local presentational components** → `features/<feature>/ui/<name>/` (`festival-hero` and `lineup-grid` live in `festival-detail/ui/`; filter widgets live in `festival-list/ui/`).
+- **Shell chrome** (nav, footer) → `layout/`.
+
+A component starts feature-local and moves to `@shared/ui/` the moment a second feature imports it — never anticipatorily.
+
 ## Composition rules
 
-- All components are **standalone**, `OnPush`, signal inputs/outputs.
-- No HTTP and no store access in components under `src/app/components/`. Smart pages inject services and pass data in via inputs.
+- All components are **standalone**, `OnPush`, signal `input()` / `output()`.
+- **Presentational components never inject services or stores.** Smart pages (in `features/*/feature/`) inject `data-access/` and pass data down via inputs. Inside a feature, `ui/` may not import from `data-access/`.
 - No hardcoded strings — every label goes through the i18n pipe (see [[internationalization]]).
 - No hardcoded values for color, spacing, radius, shadow, or motion — only tokens from [[theming-styling]].
+- Selector prefix `fv-` (e.g. `fv-festival-card`).
 - One folder per component, four files only (Angular 21 convention, no `.component` suffix):
   ```
-  src/app/components/<name>/
+  <location>/<name>/
   ├── <name>.ts
   ├── <name>.html
   ├── <name>.scss

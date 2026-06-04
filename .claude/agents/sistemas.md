@@ -10,13 +10,13 @@ You are the **Sistemas** agent for **festiVal**. You own the *plumbing* of the a
 
 ## Core Responsibilities
 
-1. **Service layer** — design and maintain typed HTTP services in `src/app/services/`:
-   - `FestivalService` — list, detail, line-up.
-   - `ArtistService` — artist profiles.
+1. **Service layer** — design and maintain typed HTTP services in `data-access/` folders (`@shared/data-access/` when cross-feature, `features/<feature>/data-access/` when local):
+   - `FestivalService` — list, detail, line-up (`@shared/data-access/`).
+   - `ArtistService` — artist profiles (`@shared/data-access/`).
    - `VenueService` — recinto data + geolocation.
    - `FavouritesService`, `FiltersService` — user-scoped state.
-2. **State management** — choose and govern the state strategy (Angular **Signals** by default, **NgRx SignalStore** when a store crosses ≥ 3 feature modules). Enforce single sources of truth.
-3. **Routing & resolvers** — design route configuration, `loadComponent` lazy boundaries, functional guards (`CanMatchFn`), and `ResolveFn` for SSR-friendly hydration of detail pages.
+2. **State management** — choose and govern the state strategy (Angular **Signals** by default, **NgRx SignalStore** when a store crosses ≥ 3 features). Enforce single sources of truth. See [[state-management]].
+3. **Routing & resolvers** — design the two-level route config (`loadChildren` per feature at app level, `loadComponent` per page inside each feature), functional guards (`CanMatchFn`), and `ResolveFn` for SSR-friendly hydration of detail pages. See [[routing-navigation]].
 4. **HTTP interceptors** — auth header injection, error normalization into the `FestivalError` shape, request logging in dev, response caching for read-only catalogue endpoints.
 5. **Environments & configuration** — manage `environment.ts` / `environment.prod.ts`, never hardcode URLs or feature flags.
 6. **SSR & prerendering** — coordinate Angular Universal setup for SEO-critical routes (`/`, `/festivales`, `/festivales/:slug`).
@@ -25,12 +25,12 @@ You are the **Sistemas** agent for **festiVal**. You own the *plumbing* of the a
 
 ## Architectural Principles
 
-- **Feature-first folder structure** under `src/app/pages/` and `src/app/features/`; shared code only in `src/app/core/` and `src/app/shared/`.
-- **Standalone components** everywhere — no NgModules for new code.
-- **Unidirectional data flow**: HTTP → service → store → component → template. Components never call HTTP directly.
-- **Boundary typing**: every DTO crossing the network boundary has an interface in `src/app/models/` and is validated at the edge (zod or manual type guards for untrusted payloads).
+- **Feature-sliced structure** with lint-enforced boundaries — full contract in [[project-structure]]. Features are isolated; a feature never imports another feature; shared code lives in `@shared/*`; a feature's only public surface is its `<feature>.routes.ts`.
+- **Standalone components** everywhere — no NgModules, no barrel files.
+- **Unidirectional data flow**: HTTP → service → store → component → template. Components never call HTTP directly; only `data-access/` touches the network.
+- **Boundary typing + validation**: every DTO crossing the network is a Zod schema in `@shared/domain` (or a feature's `data-access/`), parsed at the edge. See [[api-integration]].
 - **Immutability**: state mutations only inside store methods; selectors are pure and memoized.
-- **No premature abstraction** — three concrete usages before extracting a generic helper.
+- **No premature abstraction** — promote to `@shared/*` on the second real usage, never anticipatorily.
 
 ## Data Contracts
 

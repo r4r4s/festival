@@ -21,9 +21,9 @@ Bundle cost: ~7 KB gzipped, no runtime deps.
 ## Index shape
 
 ```ts
-// src/app/services/search.service.ts
+// src/app/shared/data-access/search.service.ts
 import MiniSearch from 'minisearch';
-import { Festival } from '@models/festival.model';
+import { Festival } from '@shared/domain/festival.model';
 
 interface SearchableFestival {
   id: string;          // slug

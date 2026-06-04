@@ -13,7 +13,7 @@ Guidelines to keep **festiVal** fast on mobile devices during festival season tr
 ## Techniques
 
 - **OnPush** change detection everywhere.
-- **Standalone components** + lazy `loadComponent` per route.
+- **Standalone components** + per-feature lazy `loadChildren` (chunk boundary) with `loadComponent` for the page inside each feature.
 - **Deferrable views** (`@defer`) for below-the-fold sections like the full line-up grid and the venue map.
 - **Signals** instead of `async` pipe where reactivity is local.
 - **Pre-rendering / SSR** with Angular Universal for festival detail pages (SEO win too).
@@ -39,7 +39,7 @@ Images are the dominant payload on the festival portal — posters, heroes, arti
    https://cdn.sanity.io/images/<project>/<dataset>/<asset-id>.jpg
      ?fm=webp&w=800&q=75&auto=format&fit=max
    ```
-   The `FestivalImagePipe` (under `src/app/pipes/`) builds these URLs. Components **never** concatenate Sanity URLs by hand.
+   The `FestivalImagePipe` (under `@shared/pipes/`) builds these URLs. Components **never** concatenate Sanity URLs by hand.
 
 2. **Static UI images** (default poster fallback, OG share cards, illustrations for empty states) live in `src/assets/images-src/` as the highest-quality source the designer provides (PNG or JPEG). The build step converts them to WebP variants in `src/assets/images/` — see the **converter** section below.
 

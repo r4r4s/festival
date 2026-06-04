@@ -21,7 +21,7 @@ You are the **Rendimiento** agent for **festiVal**. The portal lives or dies by 
    - Initial < **250 KB gzipped**.
    - Lazy chunks < **80 KB gzipped** each.
    - Fail the build when exceeded.
-3. **Lazy loading** — every route uses `loadComponent`; heavy below-the-fold sections use `@defer` with appropriate triggers (`on viewport`, `on idle`).
+3. **Lazy loading** — every feature is a lazy chunk via `loadChildren` (page loaded with `loadComponent` inside the feature's routes); heavy below-the-fold sections use `@defer` with appropriate triggers (`on viewport`, `on idle`).
 4. **Image strategy** — `NgOptimizedImage` everywhere; explicit `width`/`height`; AVIF/WebP with fallback; `priority` only on the hero LCP image.
 5. **Change detection** — `OnPush` is non-negotiable; flag any `Default` component.
 6. **Caching** — service-layer stale-while-revalidate for the festival catalogue; HTTP cache headers reviewed with the backend team.

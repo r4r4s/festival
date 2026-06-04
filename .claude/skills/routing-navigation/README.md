@@ -20,8 +20,23 @@ Define a predictable, SEO-friendly URL structure and lazy-loading strategy for t
 
 ## Patterns
 
-- **Standalone components** + `loadComponent` for every route.
-- **Route-level data resolvers** for festival detail pages to avoid template flicker.
+Routing is **two-level**, matching the feature-sliced structure (see [[project-structure]]):
+
+- **App level** (`app.routes.ts`): each feature is lazy-loaded with `loadChildren` pointing at its `<feature>.routes.ts`. This is the chunk boundary.
+  ```ts
+  { path: 'festivales/:slug',
+    loadChildren: () => import('@features/festival-detail/festival-detail.routes')
+      .then(m => m.FESTIVAL_DETAIL_ROUTES) }
+  ```
+- **Feature level** (`<feature>.routes.ts`): the page component is lazy-loaded with `loadComponent`, and resolvers/guards are attached here.
+  ```ts
+  export const FESTIVAL_DETAIL_ROUTES: Routes = [
+    { path: '', loadComponent: () => import('./feature/festival-detail.page')
+        .then(m => m.FestivalDetailPageComponent),
+      resolve: { festival: festivalResolver } },
+  ];
+  ```
+- **Route-level data resolvers** (`ResolveFn`) for festival detail pages to avoid template flicker and to feed SSR.
 - **Functional guards** (`CanMatchFn`) instead of class-based.
 - Slugs are kebab-case and stable: `fib-benicassim`, `arenal-sound`, `medusa-festival`.
 

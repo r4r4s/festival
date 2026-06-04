@@ -16,7 +16,7 @@ Centralize form construction, validation, and error messaging for **festiVal**.
 
 - **Reactive Forms** only — no template-driven forms.
 - Form groups typed with `FormGroup<...>` and explicit `FormControl<T>` generics.
-- Validators composed from a shared `validators/` library.
+- Validators composed from a shared library in `@shared/util/validators/`.
 - Async validators return `Observable<ValidationErrors | null>` and use `debounceTime`.
 
 ## Custom Validators (planned)
@@ -27,5 +27,5 @@ Centralize form construction, validation, and error messaging for **festiVal**.
 
 ## Error Display
 
-- Single `<festival-form-error>` component reads control state and outputs i18n messages.
+- Single `fv-form-error` component (in `@shared/ui/form-error/`) reads control state and outputs i18n messages.
 - Errors shown only after `touched || dirty`.

@@ -9,7 +9,7 @@ Standardize HTTP communication for the **festiVal** portal — fetching festival
 ## Scope
 
 - Typed services built on `HttpClient`.
-- Strongly-typed DTOs in `src/app/models/`.
+- Strongly-typed DTOs in `@shared/domain/` (cross-feature) or a feature's own `data-access/` (feature-local).
 - **Runtime boundary validation with Zod** — every payload that crosses the network is parsed before reaching the rest of the app.
 - HTTP interceptors for auth tokens, error normalization, request logging, and caching.
 - Caching of read-only endpoints (festival catalogue rarely changes mid-session).
@@ -30,7 +30,7 @@ The **only** place Zod runs is at the HTTP boundary. Once a payload is parsed, t
 Each model file declares the Zod schema **and** exports the inferred type. Components and stores import the type; only the service imports the schema.
 
 ```ts
-// src/app/models/festival.model.ts
+// src/app/shared/domain/festival.model.ts
 import { z } from 'zod';
 
 export const ProvinciaSchema = z.enum(['Valencia', 'Alicante', 'Castellón']);
@@ -55,7 +55,7 @@ export type Festival = z.infer<typeof FestivalSchema>;
 ### Service usage
 
 ```ts
-// src/app/services/festival.service.ts
+// src/app/shared/data-access/festival.service.ts
 @Injectable({ providedIn: 'root' })
 export class FestivalService {
   private readonly http = inject(HttpClient);
@@ -72,7 +72,7 @@ export class FestivalService {
 ### Rules
 
 - **Parse, never validate** — use `.parse()` (or `.safeParse()` when the failure is a user-facing concern, not a bug). A failed parse is an error.
-- **Schemas live next to types**, in `src/app/models/`. Never inside services.
+- **Schemas live next to types**, in `@shared/domain/` (or a feature's `data-access/`). Never inside services.
 - **One schema per DTO**. Compose with `z.object({ ... }).extend(...)`, never duplicate.
 - **Never re-validate downstream**. Once parsed, the type is trusted.
 - **Coerce, don't convert**: use `z.coerce.date()` for ISO strings that need to become `Date` at the boundary; never do `new Date(x)` later.

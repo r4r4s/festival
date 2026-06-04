@@ -110,37 +110,40 @@ The project defines reusable skills in `.claude/skills/` that document patterns 
 
 ## Architecture
 
-The entire application hangs from `src/app/` under the following **feature-first** convention:
+The project uses a **feature-sliced** structure with **enforced module boundaries**. The full contract — folder tree, decision tree, hard rules, and ESLint boundary enforcement — lives in the [[project-structure]] skill. Summary:
 
 ```
 src/app/
-├── core/              # global singletons: HttpInterceptors, ErrorHandler, APP_INITIALIZER
-├── shared/            # reusable stateless utilities and pipes
-├── components/        # standalone presentational components (dumb)
-├── pages/             # smart components per route (home, festival-list, festival-detail, about)
-├── services/          # typed HTTP services (FestivalService, ArtistService, VenueService)
-├── models/            # DTO interfaces (Festival, Artist, Venue, FestivalError)
-├── stores/            # Signal stores and NgRx SignalStore
-├── pipes/             # custom pipes (Spanish date formatting, genres)
-├── guards/            # functional CanMatchFn
-├── app.routes.ts      # route configuration with loadComponent
-├── app.config.ts      # providers, LOCALE_ID, interceptors
-└── app.component.ts
+├── core/        # cross-cutting singletons (interceptors, ErrorHandler, initializers, SSR helpers)
+├── layout/      # the app shell (shell, nav-bar, footer), loaded eagerly
+├── features/    # vertical slices, each a lazy chunk — home, festival-list, festival-detail, ...
+│   └── <feature>/
+│       ├── feature/        # smart, route-bound page
+│       ├── ui/             # dumb presentational components local to this feature
+│       ├── data-access/    # stores, services, resolvers, Zod schemas
+│       └── <feature>.routes.ts   # the feature's ONLY public surface
+└── shared/      # reused across ≥ 2 features; never imports a feature
+    ├── ui/ data-access/ domain/ pipes/ directives/ util/ testing/
 ```
+
+Dependency rule (one-directional, lint-enforced via `eslint-plugin-boundaries`):
+`features → shared → ∅`, `features → core`, `layout → shared/core`. **A feature never imports another feature.** A feature's only public surface is its `<feature>.routes.ts`.
 
 ### Architectural principles
 
-- **Standalone components** in all new code — no NgModules.
-- **Unidirectional data flow**: HTTP → service → store → component → template. Components never call `HttpClient` directly.
-- **Typing at the boundary**: every DTO that crosses the network has an `interface` in `src/app/models/`.
+- **Feature isolation**: features never import each other; shared code is promoted to `shared/` (threshold: 2 uses, never anticipatory).
+- **Standalone components** in all new code — no NgModules, no barrel files.
+- **Lazy by default**: every feature is loaded via `loadChildren` from `app.routes.ts`.
+- **Unidirectional data flow**: HTTP → service → store → component → template. Components never call `HttpClient` directly; only `data-access/` folders touch the network.
+- **Typing + validation at the boundary**: every DTO is a Zod schema in `@shared/domain` (or a feature's `data-access/`), parsed once at the HTTP edge. See [[api-integration]].
 - **Immutability** of state: mutations only inside store methods; selectors are pure.
-- **No premature abstraction**: three concrete usages before extracting a generic helper.
+- **Path aliases always**: `@core`, `@layout`, `@features`, `@shared/*`. No relative import climbs above a feature root.
 - **Strings never hardcoded**: all copy flows through the i18n pipe.
-- **Tokens never hardcoded**: no literal colors or spacings; always via CSS custom properties or SCSS variables.
+- **Tokens never hardcoded**: no literal colors or spacings; always design tokens. See [[theming-styling]].
 
 ### The festival catalogue
 
-The core of the domain is the `Festival` entity:
+The core of the domain is the `Festival` entity, declared as a Zod schema in `@shared/domain/festival.model.ts` (the schema lives next to the inferred type — see [[api-integration]]). Shape:
 
 ```ts
 interface Festival {

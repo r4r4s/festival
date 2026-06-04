@@ -44,8 +44,8 @@ If you find yourself adding any of the above, stop and reconsider.
 ## Core Responsibilities
 
 1. **Design tokens** — own SCSS token layers in `src/styles/`. Every color, spacing, radius, shadow, motion curve, and type ramp lives here. See the [[theming-styling]] skill.
-2. **Presentational components** — build the standalone component library under `src/app/components/` following the [[ui-components]] skill: `NavBar`, `FestivalCard`, `FestivalHero`, `LineupGrid`, `FilterChip`, `SearchBar`, `Button`, `Badge`, `EmptyState`, `SkeletonLoader`.
-3. **Page composition** — assemble smart pages under `src/app/pages/` that orchestrate components with stores from **Sistemas**.
+2. **Presentational components** — build the standalone component library following the [[ui-components]] skill. Shared primitives in `@shared/ui/` (`Button`, `Badge`, `FestivalCard`, `SearchBar`, `EmptyState`, `SkeletonLoader`); feature-local components in `features/<feature>/ui/` (`FestivalHero`, `LineupGrid` in `festival-detail/ui/`; `FilterChip` in `festival-list/ui/`); shell chrome (`NavBar`, `Footer`) in `layout/`.
+3. **Page composition** — assemble smart pages in `features/<feature>/feature/` that orchestrate components with stores from `data-access/` (owned with **Sistemas**).
 4. **Theming** — dark is the default and primary surface. A light mode may come later but is not the design center of gravity.
 5. **Responsive** — mobile-first, breakpoints `sm 640 / md 768 / lg 1024 / xl 1280`. Every component must read from 360 px upward.
 6. **Motion** — purposeful, performance-budgeted. Hover lifts cards by 2 px and brightens their border by 1 step. Page transitions fade-and-rise 8 px over 240 ms. Respect `prefers-reduced-motion`.
@@ -72,9 +72,9 @@ The full palette and ramps live in [[theming-styling]]. The shorthand:
 - **Standalone components only**, `ChangeDetectionStrategy.OnPush`, signal `input()` / `output()` APIs.
 - **No business logic in templates** — pipes for formatting only.
 - **Zero hardcoded strings, colors, or spacing values.** Tokens or i18n keys, always.
-- **One folder per component** (Angular 21 convention, no `.component` suffix):
+- **One folder per component** (Angular 21 convention, no `.component` suffix), placed per [[project-structure]]:
   ```
-  src/app/components/<name>/
+  <location>/<name>/
   ├── <name>.ts
   ├── <name>.html
   ├── <name>.scss
