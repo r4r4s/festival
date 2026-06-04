@@ -109,6 +109,9 @@ design/
 │   ├── JetBrains_Mono/  → JetBrains Mono variable font (mono: fechas, IDs, logs)
 │   └── Sora/            → Sora variable font (headings, brand, hero emphasis)
 ├── logo/                → Logotipos y variantes de la marca
+├── mockups/             → Referencias visuales y capturas de apoyo para iteraciones de UI
+│   ├── Gemini_Generated_Image_l8rwoql8rwoql8rw.png → Mockup/export visual usado como referencia externa
+│   └── image.png        → Captura de apoyo para validación visual del layout
 └── palette/             → Paletas de color y esquemas cromáticos (palette1.svg, palette2.svg)
 ```
 
@@ -449,3 +452,4 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-04 | Cabecera estática | Añadido `src/app/layout/nav-bar/` (`nav-bar.{ts,html,scss,spec.ts}`) con la cabecera estática del brief: logo `assets/branding/festi-val-logo.webp` vía `NgOptimizedImage`, navegación, búsqueda y toggle de tema. Cableado en `app.ts`/`app.html`; `app.scss` fija el fondo sand de la página. Paleta Mediterránea (sand #F8F5F0, navy #0F172A) scopeada al componente — pendiente de promover a `_tokens.scss`/`_semantic.scss` si se confirma el pivote de identidad visual. |
 | 2026-06-04 | Assets runtime | `src/assets/branding/festi-val-logo.webp` copiado desde `design/logo/`. `angular.json` ahora sirve `src/assets/` bajo `/assets/` (el bloque sólo exponía `public/`, dejando los SVG de marca inalcanzables en runtime). |
 | 2026-06-04 | Limpieza branding | Renombrado `logo1.webp` a `festi-val-logo.webp` para cumplir la convención de naming de assets y eliminadas las variantes no usadas `main-logo.svg` y `logo-icon.svg` de `src/assets/branding/`. |
+| 2026-06-04 | Nuevo material en `design/mockups/` | Añadidos `Gemini_Generated_Image_l8rwoql8rwoql8rw.png` e `image.png` como referencias visuales para iteraciones de interfaz. |
