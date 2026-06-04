@@ -36,13 +36,13 @@ Provide a consistent, accessible, composable set of building blocks for the dark
 - No HTTP and no store access in components under `src/app/components/`. Smart pages inject services and pass data in via inputs.
 - No hardcoded strings — every label goes through the i18n pipe (see [[internationalization]]).
 - No hardcoded values for color, spacing, radius, shadow, or motion — only tokens from [[theming-styling]].
-- One folder per component, four files only:
+- One folder per component, four files only (Angular 21 convention, no `.component` suffix):
   ```
   src/app/components/<name>/
-  ├── <name>.component.ts
-  ├── <name>.component.html
-  ├── <name>.component.scss
-  └── <name>.component.spec.ts
+  ├── <name>.ts
+  ├── <name>.html
+  ├── <name>.scss
+  └── <name>.spec.ts
   ```
 
 ## Interaction baseline

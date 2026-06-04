@@ -15,13 +15,15 @@ This skill is **MANDATORY**. Before creating, moving, or renaming any file or fo
 ```
 festiVal/
 ├── .claude/                   # AI-assisted development (agents + skills) — do not move
+├── scripts/                   # Node build scripts (e.g. WebP converter — see [[performance-optimization]])
 ├── src/
 │   ├── app/                   # application code (see below)
 │   ├── assets/                # static assets shipped with the app
-│   │   ├── images/            # general imagery, icons, logos
-│   │   ├── posters/           # festival posters (one file per festival, named <slug>.webp)
-│   │   ├── icons/             # SVG icon set
-│   │   └── i18n/              # translation files: es.json (source), ca.json, en.json
+│   │   ├── images/            # generated WebP output — committed, never hand-edited
+│   │   ├── images-src/        # source PNG/JPEG — committed, never shipped to the user
+│   │   ├── icons/             # SVG icon set (additional to Lucide)
+│   │   ├── i18n/              # translation files: es.json (source), ca.json, en.json
+│   │   └── maps/              # MapLibre style JSON (see [[maps]])
 │   ├── environments/          # environment.ts, environment.prod.ts
 │   ├── styles/                # global SCSS (see "Styles" section)
 │   ├── index.html
@@ -36,6 +38,8 @@ festiVal/
 ├── README.md
 └── CLAUDE.md
 ```
+
+Festival posters live in **Sanity**, not in `src/assets/`. See [[performance-optimization]] for the image source split.
 
 ---
 
@@ -87,19 +91,21 @@ src/app/
 ├── resolvers/                 # ResolveFn for SSR-friendly hydration
 ├── app.routes.ts              # route configuration with loadComponent
 ├── app.config.ts              # providers, LOCALE_ID, interceptors
-└── app.component.ts
+├── app.ts                     # root component class
+├── app.html
+└── app.scss
 ```
 
 ### Per-component folder
 
-Every component folder — both in `components/` and `pages/` — has **exactly** this shape:
+Every component folder — both in `components/` and `pages/` — has **exactly** this shape, following the Angular 21 CLI convention (no `.component` suffix):
 
 ```
 <name>/
-├── <name>.component.ts
-├── <name>.component.html
-├── <name>.component.scss
-└── <name>.component.spec.ts
+├── <name>.ts
+├── <name>.html
+├── <name>.scss
+└── <name>.spec.ts
 ```
 
 No `index.ts` barrel files. No co-located sub-components — extract them to their own folder under `components/`.
@@ -110,16 +116,20 @@ No `index.ts` barrel files. No co-located sub-components — extract them to the
 
 ```
 src/styles/
-├── _tokens.scss               # primitive tokens (colors, scales, radii)
-├── _semantic.scss             # semantic tokens (--surface, --text-primary, --accent)
-├── _typography.scss
-├── _spacing.scss
+├── _tokens.scss               # primitive tokens (raw palette)
+├── _semantic.scss             # semantic tokens (--bg-canvas, --text-primary, --accent-violet)
+├── _typography.scss           # font families, type ramp, line-heights, tracking
+├── _spacing.scss              # 4 px base scale
+├── _radii.scss                # border radii
+├── _shadows.scss              # elevation system (optional partial — may be inlined in _semantic.scss)
+├── _motion.scss               # easing curves, durations, prefers-reduced-motion
 ├── _breakpoints.scss          # sm 640, md 768, lg 1024, xl 1280
-├── _mixins.scss
-└── _reset.scss
+├── _mixins.scss               # glass, focus-ring, container, truncate, line-clamp
+├── _animations.scss           # keyframes (fade-up, pulse-soft, live-dot)
+└── _reset.scss                # opinionated reset
 ```
 
-The root `src/styles.scss` is the only file that `@use`s these partials. Component SCSS imports tokens via `@use 'styles/tokens' as *;`.
+The root `src/styles.scss` is the only file that `@use`s these partials. Component SCSS imports tokens via `@use 'styles/mixins' as *;` (path alias resolved through `stylePreprocessorOptions.includePaths: ["src"]` in `angular.json`).
 
 ---
 
@@ -127,7 +137,7 @@ The root `src/styles.scss` is the only file that `@use`s these partials. Compone
 
 - **Folders**: kebab-case (`festival-card`, `festival-list`).
 - **TypeScript files**: kebab-case with a role suffix (`festival.service.ts`, `festival.model.ts`, `festivals.store.ts`, `auth.guard.ts`, `festival.resolver.ts`).
-- **Component files**: `<name>.component.ts/html/scss/spec.ts`.
+- **Component files**: `<name>.ts/html/scss/spec.ts` (Angular 21 default — no `.component` suffix).
 - **Classes**: PascalCase matching the file name (`FestivalCardComponent`, `FestivalService`).
 - **Signal stores**: PascalCase ending in `Store` (`FestivalsStore`).
 - **SCSS partials**: leading underscore (`_tokens.scss`).

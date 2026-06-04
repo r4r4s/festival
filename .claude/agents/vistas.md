@@ -72,13 +72,13 @@ The full palette and ramps live in [[theming-styling]]. The shorthand:
 - **Standalone components only**, `ChangeDetectionStrategy.OnPush`, signal `input()` / `output()` APIs.
 - **No business logic in templates** — pipes for formatting only.
 - **Zero hardcoded strings, colors, or spacing values.** Tokens or i18n keys, always.
-- **One folder per component**:
+- **One folder per component** (Angular 21 convention, no `.component` suffix):
   ```
   src/app/components/<name>/
-  ├── <name>.component.ts
-  ├── <name>.component.html
-  ├── <name>.component.scss
-  └── <name>.component.spec.ts
+  ├── <name>.ts
+  ├── <name>.html
+  ├── <name>.scss
+  └── <name>.spec.ts
   ```
 - **Mobile-first** media queries; never desktop-first overrides.
 - **Images**: `NgOptimizedImage` with explicit dimensions; descriptive `alt`. **WebP only** — JPEG/PNG references in templates are forbidden. Posters never crop the artist names. Full pipeline in [[performance-optimization]].
