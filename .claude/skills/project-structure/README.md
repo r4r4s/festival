@@ -1,12 +1,41 @@
 # 🗂️ Project Structure
 
-Canonical, **non-negotiable** folder structure for the **festiVal** Angular application.
+Canonical, **non-negotiable** architecture for the **festiVal** Angular application. The project uses a **feature-sliced** structure with **enforced module boundaries** — the professional standard for Angular apps that need to scale past a handful of routes.
 
 ## Purpose
 
-Guarantee that the project layout remains identical across every feature, contributor, and AI-assisted change. Predictable structure makes navigation, code review, lazy loading, and onboarding trivial — and prevents the slow drift toward inconsistency that kills mid-size Angular codebases.
+Guarantee that the project layout remains identical across every feature, contributor, and AI-assisted change. The structure optimizes for four things, in order:
 
-This skill is **MANDATORY**. Before creating, moving, or renaming any file or folder, consult this document. Any deviation must be discussed and, if accepted, the deviation is added here — never left undocumented.
+1. **Lazy-loading by default** — every feature is a self-contained chunk; nothing leaks into the initial bundle.
+2. **Cognitive locality** — everything a feature needs lives in one folder.
+3. **Safe deletion** — removing a feature is `rm -rf` plus one route line.
+4. **Enforced boundaries** — ESLint stops the architecture from rotting over time.
+
+This skill is **MANDATORY**. Consult it before creating, moving, or renaming any file. The structure is a contract; deviations are documented here or they do not happen.
+
+---
+
+## Mental model: three layers
+
+```
+core / layout   →   reusable, app-wide, loaded eagerly
+features/*      →   vertical slices, loaded lazily, isolated from each other
+shared/*        →   horizontal toolbox, imported by features, never imports them
+```
+
+The dependency rule is one-directional and absolute:
+
+```
+features  →  shared  →  (nothing)
+   │            ▲
+   └──→ core ───┘
+features  →  core
+layout    →  shared, core
+```
+
+- A **feature never imports another feature**.
+- **shared never imports a feature or layout**.
+- **core never imports a feature, layout, or shared/ui** (core is the lowest layer).
 
 ---
 
@@ -15,19 +44,23 @@ This skill is **MANDATORY**. Before creating, moving, or renaming any file or fo
 ```
 festiVal/
 ├── .claude/                   # AI-assisted development (agents + skills) — do not move
-├── scripts/                   # Node build scripts (e.g. WebP converter — see [[performance-optimization]])
+├── sanity/                    # Sanity Studio (headless CMS) — independently deployable
+│   └── schemas/               # content schemas, mirror the Zod schemas in @shared/domain
+├── scripts/                   # Node build scripts (WebP converter — see [[performance-optimization]])
 ├── src/
 │   ├── app/                   # application code (see below)
-│   ├── assets/                # static assets shipped with the app
+│   ├── assets/
 │   │   ├── images/            # generated WebP output — committed, never hand-edited
 │   │   ├── images-src/        # source PNG/JPEG — committed, never shipped to the user
 │   │   ├── icons/             # SVG icon set (additional to Lucide)
 │   │   ├── i18n/              # translation files: es.json (source), ca.json, en.json
 │   │   └── maps/              # MapLibre style JSON (see [[maps]])
 │   ├── environments/          # environment.ts, environment.prod.ts
-│   ├── styles/                # global SCSS (see "Styles" section)
+│   ├── styles/                # global SCSS (see "Global styles" below)
 │   ├── index.html
 │   ├── main.ts
+│   ├── main.server.ts
+│   ├── server.ts
 │   └── styles.scss            # entry point importing src/styles/*
 ├── public/                    # static files served as-is (favicon, robots.txt, sitemap.xml)
 ├── angular.json
@@ -43,62 +76,91 @@ Festival posters live in **Sanity**, not in `src/assets/`. See [[performance-opt
 
 ---
 
-## `src/app/` — application structure
+## `src/app/` — feature-sliced application
 
 ```
 src/app/
-├── core/                      # global singletons — provided once at root
-│   ├── interceptors/          # HttpInterceptors (auth, error, logging, cache)
-│   ├── handlers/              # ErrorHandler implementations
-│   ├── initializers/          # APP_INITIALIZER factories
-│   └── tokens/                # InjectionTokens
-├── shared/                    # reusable stateless utilities
-│   ├── pipes/                 # generic pipes (truncate, safe-html)
-│   ├── directives/            # generic directives
-│   ├── utils/                 # pure functions, no Angular dependencies
-│   └── testing/               # test helpers reused across specs
-├── components/                # standalone presentational components (DUMB — no HTTP, no store)
-│   ├── festival-card/
-│   ├── festival-hero/
-│   ├── lineup-grid/
-│   ├── filter-chip/
-│   ├── search-bar/
-│   ├── date-range-badge/
-│   ├── empty-state/
-│   ├── skeleton-loader/
-│   └── festival-toast/
-├── pages/                     # smart components — one folder per route
+├── app.ts / app.html / app.scss   # root component
+├── app.config.ts                  # providers, LOCALE_ID, interceptors, hydration
+├── app.routes.ts                  # top-level routes → lazy-load each feature's routes
+│
+├── core/                          # cross-cutting singletons, provided once at root
+│   ├── interceptors/              # HttpInterceptors: auth, error, cache, Zod-validation
+│   ├── handlers/                  # ErrorHandler → Sentry (see [[error-handling]])
+│   ├── initializers/              # APP_INITIALIZER factories (locale, theme, store hydration)
+│   ├── tokens/                    # InjectionTokens
+│   └── platform/                  # SSR helpers (isPlatformBrowser wrappers, window guards)
+│
+├── layout/                        # the app shell, loaded eagerly
+│   ├── shell/                     # hosts <router-outlet>, nav, footer
+│   ├── nav-bar/
+│   └── footer/
+│
+├── features/                      # ── lazy chunk boundary ──
 │   ├── home/
+│   │   ├── feature/               # the smart, route-bound page component
+│   │   │   └── home.page.{ts,html,scss,spec.ts}
+│   │   ├── ui/                    # presentational components used ONLY by home
+│   │   ├── data-access/           # stores + services + Zod schemas local to home
+│   │   └── home.routes.ts         # the feature's ONLY public surface
 │   ├── festival-list/
+│   │   ├── feature/festival-list.page.*
+│   │   ├── ui/                    # festival-list-filters/, festival-list-grid/
+│   │   ├── data-access/           # festivals.store.ts, filters.store.ts
+│   │   └── festival-list.routes.ts
 │   ├── festival-detail/
+│   │   ├── feature/festival-detail.page.*
+│   │   ├── ui/                    # festival-hero/, lineup-grid/, venue-map/
+│   │   ├── data-access/           # festival-detail.store.ts, festival-detail.resolver.ts
+│   │   └── festival-detail.routes.ts
 │   ├── artist-detail/
+│   ├── search/
 │   └── about/
-├── services/                  # typed HTTP services
-│   ├── festival.service.ts
-│   ├── artist.service.ts
-│   └── venue.service.ts
-├── stores/                    # state stores (Signals / NgRx SignalStore)
-│   ├── festivals.store.ts
-│   ├── filters.store.ts
-│   └── favourites.store.ts
-├── models/                    # DTO interfaces and domain types
-│   ├── festival.model.ts
-│   ├── artist.model.ts
-│   ├── venue.model.ts
-│   └── festival-error.model.ts
-├── pipes/                     # domain-specific pipes (Spanish dates, genre formatting)
-├── guards/                    # functional CanMatchFn
-├── resolvers/                 # ResolveFn for SSR-friendly hydration
-├── app.routes.ts              # route configuration with loadComponent
-├── app.config.ts              # providers, LOCALE_ID, interceptors
-├── app.ts                     # root component class
-├── app.html
-└── app.scss
+│
+└── shared/                        # reused across ≥ 2 features; imports nothing from features
+    ├── ui/                        # primitives: button/, badge/, festival-card/, empty-state/, ...
+    ├── data-access/               # SanityClientService, SearchService (MiniSearch), AnalyticsService
+    ├── domain/                    # models + Zod schemas: festival.model.ts, artist.model.ts, ...
+    ├── pipes/                     # generic pipes: locale-date.pipe.ts, truncate.pipe.ts
+    ├── directives/                # generic directives
+    ├── util/                      # pure functions, zero Angular dependencies
+    └── testing/                   # test helpers reused across specs
+```
+
+### Anatomy of a feature
+
+Every feature has the same four parts. This shape is **fixed**:
+
+| Part               | Contains                                                        | Rules                                                              |
+| ------------------ | -------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `feature/`         | The smart page component bound to the route.                   | Injects stores/services, orchestrates `ui/`. One page per folder. |
+| `ui/`              | Dumb presentational components local to this feature.          | No HTTP, no store injection. Data in via `input()`, events via `output()`. |
+| `data-access/`     | Stores (Signals/SignalStore), services, resolvers, schemas.    | The only place this feature talks to the network or holds state.  |
+| `<feature>.routes.ts` | The lazy route config.                                      | **The feature's only public export.** Nothing else is imported from outside. |
+
+A feature is loaded exactly once, lazily, from `app.routes.ts`:
+
+```ts
+// app.routes.ts
+export const routes: Routes = [
+  {
+    path: '',
+    component: ShellComponent,        // from @layout/shell
+    children: [
+      { path: '', loadChildren: () => import('@features/home/home.routes').then(m => m.HOME_ROUTES) },
+      { path: 'festivales', loadChildren: () => import('@features/festival-list/festival-list.routes').then(m => m.FESTIVAL_LIST_ROUTES) },
+      { path: 'festivales/:slug', loadChildren: () => import('@features/festival-detail/festival-detail.routes').then(m => m.FESTIVAL_DETAIL_ROUTES) },
+      { path: 'artistas/:slug', loadChildren: () => import('@features/artist-detail/artist-detail.routes').then(m => m.ARTIST_DETAIL_ROUTES) },
+      { path: 'buscar', loadChildren: () => import('@features/search/search.routes').then(m => m.SEARCH_ROUTES) },
+      { path: 'sobre-nosotros', loadChildren: () => import('@features/about/about.routes').then(m => m.ABOUT_ROUTES) },
+    ],
+  },
+];
 ```
 
 ### Per-component folder
 
-Every component folder — both in `components/` and `pages/` — has **exactly** this shape, following the Angular 21 CLI convention (no `.component` suffix):
+Every component — in `features/*/ui/`, `features/*/feature/`, `layout/`, or `shared/ui/` — has **exactly** this shape (Angular 21 convention, no `.component` suffix):
 
 ```
 <name>/
@@ -108,11 +170,11 @@ Every component folder — both in `components/` and `pages/` — has **exactly*
 └── <name>.spec.ts
 ```
 
-No `index.ts` barrel files. No co-located sub-components — extract them to their own folder under `components/`.
+Route-bound pages use the `.page` suffix on the class file: `home.page.ts`. No `index.ts` barrel files anywhere — they defeat tree-shaking and obscure the import graph.
 
 ---
 
-## `src/styles/` — global stylesheets
+## Global styles
 
 ```
 src/styles/
@@ -121,7 +183,7 @@ src/styles/
 ├── _typography.scss           # font families, type ramp, line-heights, tracking
 ├── _spacing.scss              # 4 px base scale
 ├── _radii.scss                # border radii
-├── _shadows.scss              # elevation system (optional partial — may be inlined in _semantic.scss)
+├── _shadows.scss              # elevation system (optional partial)
 ├── _motion.scss               # easing curves, durations, prefers-reduced-motion
 ├── _breakpoints.scss          # sm 640, md 768, lg 1024, xl 1280
 ├── _mixins.scss               # glass, focus-ring, container, truncate, line-clamp
@@ -129,91 +191,158 @@ src/styles/
 └── _reset.scss                # opinionated reset
 ```
 
-The root `src/styles.scss` is the only file that `@use`s these partials. Component SCSS imports tokens via `@use 'styles/mixins' as *;` (path alias resolved through `stylePreprocessorOptions.includePaths: ["src"]` in `angular.json`).
+The root `src/styles.scss` is the only file that `@use`s these partials. Component SCSS imports tokens via `@use 'styles/mixins' as *;` (resolved through `stylePreprocessorOptions.includePaths: ["src"]` in `angular.json`). See [[theming-styling]].
+
+---
+
+## Path aliases
+
+Configured in `tsconfig.json`. **Imports must always use an alias** — never a relative path that climbs out of the current folder.
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@core/*":               ["src/app/core/*"],
+      "@layout/*":             ["src/app/layout/*"],
+      "@features/*":           ["src/app/features/*"],
+      "@shared/ui/*":          ["src/app/shared/ui/*"],
+      "@shared/data-access/*": ["src/app/shared/data-access/*"],
+      "@shared/domain/*":      ["src/app/shared/domain/*"],
+      "@shared/util/*":        ["src/app/shared/util/*"],
+      "@shared/pipes/*":       ["src/app/shared/pipes/*"],
+      "@shared/directives/*":  ["src/app/shared/directives/*"],
+      "@shared/testing/*":     ["src/app/shared/testing/*"],
+      "@env/*":                ["src/environments/*"],
+      "@styles/*":             ["src/styles/*"]
+    }
+  }
+}
+```
+
+Inside a single feature, relative imports (`./ui/festival-hero/...`) are fine — they never climb above the feature root. Crossing any layer boundary requires an alias.
 
 ---
 
 ## Naming rules
 
 - **Folders**: kebab-case (`festival-card`, `festival-list`).
-- **TypeScript files**: kebab-case with a role suffix (`festival.service.ts`, `festival.model.ts`, `festivals.store.ts`, `auth.guard.ts`, `festival.resolver.ts`).
-- **Component files**: `<name>.ts/html/scss/spec.ts` (Angular 21 default — no `.component` suffix).
-- **Classes**: PascalCase matching the file name (`FestivalCardComponent`, `FestivalService`).
-- **Signal stores**: PascalCase ending in `Store` (`FestivalsStore`).
+- **Page classes**: `<feature>.page.ts` → `HomePageComponent`, `FestivalListPageComponent`.
+- **Components**: `<name>.ts` → `FestivalCardComponent`. Selector prefix `fv-` (e.g. `fv-festival-card`).
+- **Services**: `<name>.service.ts` → `FestivalService`.
+- **Stores**: `<name>.store.ts` → `FestivalsStore` (PascalCase, `Store` suffix).
+- **Models + schemas**: `<name>.model.ts` → exports both the Zod schema (`FestivalSchema`) and the inferred type (`Festival`).
+- **Guards / resolvers**: `<name>.guard.ts` / `<name>.resolver.ts`, functional.
+- **Route files**: `<feature>.routes.ts`, exporting `UPPER_SNAKE_ROUTES`.
 - **SCSS partials**: leading underscore (`_tokens.scss`).
-- **Festival slugs**: kebab-case, lowercase, ASCII (`fib-benicassim`, `arenal-sound`). Immutable once published.
+- **Festival slugs**: kebab-case, lowercase, ASCII (`fib-benicassim`). Immutable once published.
 - **i18n keys**: dotted path, lowercase (`festival.detail.lineup.title`).
 
 ---
 
 ## Placement decision tree
 
-When creating a new file, ask the questions in order — stop at the first **yes**:
+When creating a new file, ask in order — stop at the first **yes**:
 
-1. Is it a global singleton, interceptor, error handler, or initializer? → `src/app/core/`.
-2. Is it a stateless utility, generic pipe, or directive with no domain knowledge? → `src/app/shared/`.
-3. Is it a smart component bound to a route? → `src/app/pages/<route>/`.
-4. Is it a presentational component reusable across pages? → `src/app/components/<name>/`.
-5. Is it a service that calls `HttpClient`? → `src/app/services/`.
-6. Is it a state store? → `src/app/stores/`.
-7. Is it a DTO or domain type? → `src/app/models/`.
-8. Is it a domain-specific pipe (dates, genres, currency formatting)? → `src/app/pipes/`.
-9. Is it a route guard or resolver? → `src/app/guards/` or `src/app/resolvers/`.
-10. None of the above? → **Stop and discuss before creating**. Do not invent a new top-level folder.
+1. Is it a global singleton, interceptor, error handler, initializer, or SSR/platform helper? → `core/<subfolder>/`.
+2. Is it part of the app shell (nav, footer, outlet host)? → `layout/`.
+3. Does it belong to exactly **one** feature?
+   - The route-bound page? → `features/<feature>/feature/`.
+   - A presentational component? → `features/<feature>/ui/<name>/`.
+   - A store, service, resolver, or schema? → `features/<feature>/data-access/`.
+4. Is it reused by **two or more** features?
+   - A presentational component? → `shared/ui/<name>/`.
+   - A service or store? → `shared/data-access/`.
+   - A model/schema? → `shared/domain/`.
+   - A pipe / directive? → `shared/pipes/` or `shared/directives/`.
+   - A pure helper? → `shared/util/`.
+5. None of the above? → **Stop and discuss.** Do not invent a new top-level folder.
+
+**The "three uses" rule does not apply to `shared/` promotion — the threshold is two.** A component used by a single feature stays in that feature. The moment a second feature needs it, it moves to `shared/ui/`. Anticipatory placement in `shared/` is forbidden: do not put something in `shared/` because you *think* another feature will use it.
 
 ---
 
 ## Hard rules (NEVER violate)
 
-1. **Never** add a new top-level folder under `src/app/` without updating this document.
-2. **Never** place HTTP calls outside `src/app/services/`.
-3. **Never** place state mutations outside `src/app/stores/`.
-4. **Never** add NgModules — every component, directive, and pipe is **standalone**.
-5. **Never** create `index.ts` barrel files. They defeat tree-shaking and obscure imports.
-6. **Never** mix smart and dumb components in the same folder.
-7. **Never** import from `pages/` into `components/`. Components are leaves; pages compose them.
-8. **Never** import from a sibling page (`pages/home` cannot import from `pages/festival-list`). Shared logic moves to `shared/` or a store.
-9. **Never** use relative paths deeper than two levels (`../../`). Configure `paths` in `tsconfig.json` and use `@app/...` aliases.
-10. **Never** colocate translation strings, colors, or spacing values inside components.
+1. **A feature never imports from another feature.** Shared code goes to `shared/`.
+2. **`shared/` never imports from `features/` or `layout/`.**
+3. **`core/` never imports from `features/`, `layout/`, or `shared/ui/`.**
+4. Inside a feature, **`ui/` never imports from `data-access/`.** Presentational components receive data via inputs.
+5. **A feature's only public surface is its `<feature>.routes.ts`.** Never deep-import `features/x/ui/...` or `features/x/data-access/...` from outside the feature.
+6. **No NgModules.** Every component, directive, and pipe is standalone.
+7. **No `index.ts` barrel files.**
+8. **No HTTP calls outside a `data-access/` folder** (feature-local or `shared/data-access/`).
+9. **No state mutations outside a store.**
+10. **No relative import that climbs above a feature root.** Use a path alias instead.
+11. **No new top-level folder under `src/app/`** without updating this document.
+12. **No hardcoded strings, colors, or spacing** in components — i18n keys and design tokens only.
+
+Rules 1–5 and 10 are enforced automatically — see below.
 
 ---
 
-## Path aliases
+## Enforcing boundaries (ESLint)
 
-Configured in `tsconfig.json`:
+Boundaries are not honor-system. They are enforced with **`eslint-plugin-boundaries`** (configured when tooling lands). Element types map to folders:
 
-```json
+```jsonc
+// .eslintrc — boundaries config (sketch)
 {
-  "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@app/*":        ["src/app/*"],
-      "@core/*":       ["src/app/core/*"],
-      "@shared/*":     ["src/app/shared/*"],
-      "@components/*": ["src/app/components/*"],
-      "@pages/*":      ["src/app/pages/*"],
-      "@services/*":   ["src/app/services/*"],
-      "@stores/*":     ["src/app/stores/*"],
-      "@models/*":     ["src/app/models/*"],
-      "@env/*":        ["src/environments/*"],
-      "@styles/*":     ["src/styles/*"]
-    }
+  "settings": {
+    "boundaries/elements": [
+      { "type": "core",    "pattern": "src/app/core/*" },
+      { "type": "layout",  "pattern": "src/app/layout/*" },
+      { "type": "feature", "pattern": "src/app/features/*", "capture": ["name"] },
+      { "type": "shared",  "pattern": "src/app/shared/*" }
+    ]
+  },
+  "rules": {
+    "boundaries/element-types": ["error", {
+      "default": "disallow",
+      "rules": [
+        { "from": "feature", "allow": ["shared", "core", ["feature", { "name": "${from.name}" }]] },
+        { "from": "layout",  "allow": ["shared", "core"] },
+        { "from": "shared",  "allow": ["shared", "core"] },
+        { "from": "core",    "allow": ["core"] }
+      ]
+    }],
+    "boundaries/entry-point": ["error", {
+      "default": "disallow",
+      "rules": [
+        { "target": ["feature"], "allow": "*.routes.ts" }
+      ]
+    }]
   }
 }
 ```
 
-Imports must always use the alias — never reach into the relative graph beyond a sibling folder.
+A violating import fails `npm run lint`, which fails the pre-commit gate (see [[testing-patterns]]). This is how the structure stays optimal years from now.
+
+---
+
+## Why this structure is optimal
+
+- **Maximal code-splitting** — each feature (UI + store + services) is one lazy chunk. The initial bundle carries only `core` + `layout` + the landing feature.
+- **Deletion is trivial** — `rm -rf features/x/` plus removing one line in `app.routes.ts` removes a feature cleanly, with zero orphaned files elsewhere.
+- **Ownership is obvious** — a person or agent owns `features/x/` end to end.
+- **Tests run faster** — `vitest --changed` re-runs only the touched feature's specs (see [[testing-patterns]]).
+- **SSR is per-feature** — the pre-render decision lives in each `<feature>.routes.ts`, not in one global list.
+- **Refactors are local** — changing how `festival-detail` fetches data touches only `features/festival-detail/data-access/`.
+- **The boundary lint makes it self-healing** — accidental coupling fails CI instead of silently accumulating.
 
 ---
 
 ## When the structure must evolve
 
-If a new feature genuinely doesn't fit (e.g. introducing `auth/` when user accounts land, or `admin/` when the back-office arrives):
+A new feature is just a new `features/<name>/` folder with the four standard parts — that is **not** an evolution, it is normal use.
 
-1. Propose the change in a PR description.
-2. Add the new folder to this document with its purpose and placement rule.
-3. Update the decision tree above.
-4. Update the path aliases in `tsconfig.json`.
+A genuine structural change (a new top-level layer, a new `core/` subfolder) requires:
+
+1. Propose it in the PR description.
+2. Add it to this document with its purpose and a placement rule.
+3. Update the decision tree and hard rules above.
+4. Update the path aliases in `tsconfig.json` and the boundaries config.
 5. Update `CLAUDE.md` so all agents see the new convention.
 
 **No silent additions.** The structure is a contract.
