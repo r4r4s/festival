@@ -126,8 +126,8 @@ public/
 
 ```
 src/
-├── index.html           → Documento HTML principal. Carga las fuentes (Inter, Space Grotesk),
-│                          define el meta theme-color (#07070C) y monta <fv-root>.
+├── index.html           → Documento HTML principal. `lang="es-ES"`, título `festiVal`,
+│                          meta theme-color (#07070C), favicon SVG + .ico, monta <fv-root>.
 ├── main.ts              → Punto de entrada del cliente. Llama a bootstrapApplication con la
 │                          configuración de app.config.ts.
 ├── main.server.ts       → Punto de entrada del servidor SSR. Bootstrap de la app con la
@@ -387,3 +387,4 @@ Estas reglas serán forzadas por `eslint-plugin-boundaries` cuando se configure.
 | 2026-06-04 | Limpieza de bloat en `design/font/` | Eliminadas las subcarpetas `*/static/` (instancias estáticas nunca servidas) y `design/font/Space_Grotesk/`. |
 | 2026-06-04 | Eliminadas carpetas placeholder | `sanity/` y `scripts/` borradas hasta que arranquen sus fases. Quedan documentadas como reintroducción futura. |
 | 2026-06-04 | Limpieza `assets/icons/` | Eliminados `logo-icon.svg` y `main-logo.svg` duplicados de `assets/branding/`. La carpeta queda reservada para iconos adicionales a Lucide. |
+| 2026-06-04 | `index.html` localizado | `lang="es-ES"`, título `festiVal`, meta theme-color, favicon SVG enlazado. |
