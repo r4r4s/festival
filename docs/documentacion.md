@@ -238,7 +238,7 @@ features/<nombre>/
 │   └── .gitkeep           Reciben datos por input(), emiten eventos por output().
 ├── data-access/         → Stores (Signals/SignalStore), servicios HTTP, resolvers y schemas Zod
 │   └── .gitkeep           locales a esta feature.
-└── <nombre>.routes.ts   → (Futuro) Configuración de rutas de la feature. Exporta
+└── <nombre>.routes.ts   → Configuración obligatoria de rutas de la feature. Exporta
                            NOMBRE_ROUTES con loadComponent hacia feature/.
 ```
 
@@ -349,5 +349,4 @@ core      →  core (solo a sí mismo)
 - La **única superficie pública** de una feature es su `<feature>.routes.ts`.
 
 Estas reglas serán forzadas por `eslint-plugin-boundaries` cuando se configure.
-
 
