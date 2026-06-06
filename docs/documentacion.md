@@ -54,8 +54,9 @@ Contiene la configuración específica de Codex para agentes, skills y comandos 
 │   ├── audit-structure.md  → Auditoría automatizada de arquitectura y estructura
 │   └── autocommit.md       → Workflow de commits semánticos con pre-commit gate
 └── skills/                 → Skills reutilizables que documentan patrones del proyecto
-    ├── asset-organization/README.md         → Reglas obligatorias para carpetas, nombres y limpieza de assets visuales
-    └── design-responsive-validation/README.md → Identidad visual no genérica + validación responsive obligatoria
+    ├── asset-organization/README.md           → Reglas obligatorias para carpetas, nombres y limpieza de assets visuales
+    ├── design-responsive-validation/README.md → Identidad visual no genérica + validación responsive obligatoria
+    └── i18n-commit-policy/README.md           → Política de traducción en commits: sólo es.json en desarrollo, propagación a todos los locales al cerrar
 ```
 
 ---
@@ -81,6 +82,7 @@ Contiene la configuración de agentes especializados, skills reutilizables y wor
 └── skills/                  → Skills reutilizables que documentan patrones del proyecto
     ├── asset-organization/README.md     → Reglas obligatorias para carpetas, nombres y limpieza de assets visuales
     ├── design-responsive-validation/README.md → Identidad visual no genérica + validación responsive obligatoria
+    ├── i18n-commit-policy/README.md     → Política de traducción en commits: sólo es.json en desarrollo, propagación a todos los locales al cerrar
     ├── accessibility/README.md          → WCAG 2.1 AA: contraste, focus, ARIA, navegación por teclado
     ├── api-integration/README.md        → Servicios HTTP tipados, validación Zod en frontera, caching
     ├── error-handling/README.md         → FestivalError normalizado, Sentry, mensajes i18n al usuario
@@ -207,8 +209,54 @@ src/assets/
 │   └── favicon.svg         → Favicon vectorial
 ├── i18n/                → Ficheros de traducción JSON: es.json (fuente), ca.json, en.json
 │   ├── ca.json          → Locale roadmap ca-ES-valencia. Mantiene paridad de claves con `es.json`.
+│   ├── az-az.json       → Azerbaiyán (azerí)
+│   ├── be-by.json       → Bielorrusia (bielorruso)
+│   ├── bg-bg.json       → Bulgaria (búlgaro)
+│   ├── bs-ba.json       → Bosnia y Herzegovina (bosnio)
+│   ├── cs-cz.json       → República Checa (checo)
+│   ├── da-dk.json       → Dinamarca (danés)
+│   ├── de-at.json       → Austria (alemán)
+│   ├── de-ch.json       → Suiza (alemán)
+│   ├── de-de.json       → Alemania (alemán)
+│   ├── de-li.json       → Liechtenstein (alemán)
+│   ├── el-cy.json       → Chipre (griego)
+│   ├── el-gr.json       → Grecia (griego)
 │   ├── en.json          → Locale roadmap en-GB. Mantiene paridad de claves con `es.json`.
+│   ├── en-gb.json       → Reino Unido (inglés)
+│   ├── en-ie.json       → Irlanda (inglés)
 │   └── es.json          → Fuente de verdad es-ES. Claves con puntos (nav.home, home.hero.title…).
+│   ├── es-es.json       → España (español)
+│   ├── et-ee.json       → Estonia (estonio)
+│   ├── fi-fi.json       → Finlandia (finés)
+│   ├── fr-fr.json       → Francia (francés)
+│   ├── hr-hr.json       → Croacia (croata)
+│   ├── hu-hu.json       → Hungría (húngaro)
+│   ├── hy-am.json       → Armenia (armenio)
+│   ├── is-is.json       → Islandia (islandés)
+│   ├── it-it.json       → Italia (italiano)
+│   ├── it-sm.json       → San Marino (italiano)
+│   ├── ka-ge.json       → Georgia (georgiano)
+│   ├── kk-kz.json       → Kazajistán (kazajo)
+│   ├── lb-lu.json       → Luxemburgo (luxemburgués)
+│   ├── lt-lt.json       → Lituania (lituano)
+│   ├── lv-lv.json       → Letonia (letón)
+│   ├── mt-mt.json       → Malta (maltés)
+│   ├── nl-be.json       → Bélgica (neerlandés)
+│   ├── nl-nl.json       → Países Bajos (neerlandés)
+│   ├── no-no.json       → Noruega (noruego)
+│   ├── pl-pl.json       → Polonia (polaco)
+│   ├── pt-pt.json       → Portugal (portugués)
+│   ├── ro-ro.json       → Rumanía (rumano)
+│   ├── ru-ru.json       → Rusia (ruso)
+│   ├── sk-sk.json       → Eslovaquia (eslovaco)
+│   ├── sl-si.json       → Eslovenia (esloveno)
+│   ├── sq-al.json       → Albania (albanés)
+│   ├── sq-xk.json       → Kosovo (albanés)
+│   ├── sr-me.json       → Montenegro (serbio)
+│   ├── sr-rs.json       → Serbia (serbio)
+│   ├── sv-se.json       → Suecia (sueco)
+│   ├── tr-tr.json       → Turquía (turco)
+│   └── uk-ua.json       → Ucrania (ucraniano)
 ├── icons/               → Iconos SVG adicionales a Lucide
 │   └── .gitkeep
 ├── images/              → Imágenes WebP generadas por el conversor Sharp. Comiteadas, nunca editadas a mano.
@@ -458,4 +506,6 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-04 | Limpieza branding | Renombrado `logo1.webp` a `festi-val-logo.webp` para cumplir la convención de naming de assets y eliminadas las variantes no usadas `main-logo.svg` y `logo-icon.svg` de `src/assets/branding/`. |
 | 2026-06-04 | Nuevo material en `design/mockups/` | Añadidos `Gemini_Generated_Image_l8rwoql8rwoql8rw.png` e `image.png` como referencias visuales para iteraciones de interfaz. |
 | 2026-06-06 | Hero editorial e i18n base | Añadidos `src/assets/i18n/ca.json` y `src/assets/i18n/en.json` para mantener paridad de claves con `es.json`. La home deja de ser una superficie sólo visual y consume el copy de `home.hero.*` desde los JSON de locales, manteniendo los CTA como botones estáticos. |
+| 2026-06-06 | Locales europeos por país | Añadidos archivos de locale por país en `src/assets/i18n/` (`sq-al.json`, `de-de.json`, `hy-am.json`, `de-at.json`, `az-az.json`, `nl-be.json`, `be-by.json`, `bs-ba.json`, `bg-bg.json`, `el-cy.json`, `hr-hr.json`, `da-dk.json`, `sk-sk.json`, `sl-si.json`, `es-es.json`, `et-ee.json`, `fi-fi.json`, `fr-fr.json`, `ka-ge.json`, `el-gr.json`, `hu-hu.json`, `en-ie.json`, `is-is.json`, `it-it.json`, `kk-kz.json`, `sq-xk.json`, `lv-lv.json`, `de-li.json`, `lt-lt.json`, `lb-lu.json`, `mt-mt.json`, `sr-me.json`, `no-no.json`, `nl-nl.json`, `pl-pl.json`, `pt-pt.json`, `en-gb.json`, `cs-cz.json`, `ro-ro.json`, `ru-ru.json`, `it-sm.json`, `sr-rs.json`, `sv-se.json`, `de-ch.json`, `tr-tr.json`, `uk-ua.json`). `es.json` sigue siendo la fuente de verdad y el resto mantiene paridad de claves. |
 | 2026-06-06 | Skill `design-responsive-validation` | Añadidas `.claude/skills/design-responsive-validation/README.md` y `.codex/skills/design-responsive-validation/README.md` como fuente de verdad para la identidad visual no genérica y la validación responsive obligatoria (desktop / laptop / tablet / mobile 320 px). Cada tarea de UI debe terminar con un Design & Responsive Validation Report. Listadas en `CLAUDE.md`, `AGENTS.md` y esta documentación. |
+| 2026-06-06 | Skill `i18n-commit-policy` | Añadidas `.claude/skills/i18n-commit-policy/README.md` y `.codex/skills/i18n-commit-policy/README.md`. Política: durante el desarrollo sólo se edita `src/assets/i18n/es.json`; al preparar un commit se propagan las claves modificadas a los 44 locales europeos soportados (matriz país → BCP-47 incluida en la skill), se valida la paridad JSON y se emite un i18n Commit Translation Report antes de `git commit`. Listada en `CLAUDE.md`, `AGENTS.md` y esta documentación. |

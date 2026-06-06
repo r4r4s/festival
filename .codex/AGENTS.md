@@ -103,7 +103,7 @@ If no specific agent or skill applies, still review `AGENTS.md` and any nearby `
 
 - Environment configuration lives in `src/environments/` (`environment.ts`, `environment.prod.ts`). **That** is where base URLs, feature flags, and endpoints belong — never hardcode them in services.
 - The default locale is registered in `src/app/app.config.ts` with `registerLocaleData(localeEs)` and `LOCALE_ID: 'es-ES'`.
-- Translations live in `src/assets/i18n/{es,ca,en}.json`. The `es-ES` locale is the source of truth and must never diverge in keys from `ca` and `en` (see the **contenido** agent).
+- Translations live in `src/assets/i18n/*.json`. `es.json` is the source of truth and every additional locale file must stay in key parity with it (see the **contenido** agent).
 - Bundle budgets are defined in `angular.json` under `budgets`. Initial < 250 KB gzipped, lazy chunks < 80 KB.
 
 ## Agents
@@ -139,6 +139,7 @@ The project defines reusable skills in `.Codex/skills/` that document patterns s
 - **`search`** — Client-side fuzzy search with MiniSearch, field boosts, diacritic-stripping for Spanish.
 - **`maps`** — MapLibre GL JS + Protomaps tiles, lazy-loaded, SSR-safe, accessible with text equivalents.
 - **`design-responsive-validation`** 🎨 — **MANDATORY for every UI task.** Bans generic AI-looking layouts, requires a distinctive festiVAL identity, enforces responsive checks across desktop / laptop / tablet / mobile (320 px floor), and demands a Design & Responsive Validation Report at task completion.
+- **`i18n-commit-policy`** 🌍 — **MANDATORY at commit time.** During normal development only `es.json` is edited; at commit / finalization the matching keys are propagated to every supported European locale (44 countries), JSON parity is verified, and an i18n Commit Translation Report is emitted before `git commit` runs.
 
 ## Architecture
 
