@@ -18,6 +18,31 @@
       "description": "Troba dates, ubicacions i informació sobre els principals festivals de la Comunitat Valenciana.",
       "primaryCta": "Explorar festivals",
       "secondaryCta": "Veure calendari"
+    },
+    "featured": {
+      "title": "Festivals destacats",
+      "cards": {
+        "arenalSound": {
+          "date": "AGO 27-28",
+          "name": "Arenal Sound",
+          "location": "Borriana, Castelló"
+        },
+        "lasFallas": {
+          "date": "MAR 15-19",
+          "name": "Les Falles",
+          "location": "València"
+        },
+        "laTomatina": {
+          "date": "AGO 28",
+          "name": "La Tomatina",
+          "location": "Bunyol, València"
+        },
+        "fibBenicassim": {
+          "date": "JUL 18-20",
+          "name": "FIB Benicàssim",
+          "location": "Benicàssim, Castelló"
+        }
+      }
     }
   }
 }

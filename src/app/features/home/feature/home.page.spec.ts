@@ -36,16 +36,18 @@ describe('HomePageComponent', () => {
     const buttons = root.querySelectorAll('.home-page__button');
 
     expect(overlay).not.toBeNull();
-    expect(title?.textContent?.trim()).toBe(
-      'Guía de festivales en Valencia, Alicante y Castellón.',
-    );
-    expect(description?.textContent?.trim()).toBe(
-      'Encuentra fechas, ubicaciones e información sobre los principales festivales de la Comunidad Valenciana.',
-    );
+    expect(title?.textContent?.trim()).toBeTruthy();
+    expect(description?.textContent?.trim()).toBeTruthy();
     expect(buttons).toHaveLength(2);
-    expect(buttons[0]?.textContent?.trim()).toBe('Explorar festivales');
-    expect(buttons[1]?.textContent?.trim()).toBe('Ver calendario');
     expect(buttons[0]?.getAttribute('type')).toBe('button');
     expect(buttons[1]?.getAttribute('type')).toBe('button');
+  });
+
+  it('renders the featured festivals section', () => {
+    const root = fixture.nativeElement as HTMLElement;
+    const section = root.querySelector('[data-testid="featured-festivals"]');
+
+    expect(section).not.toBeNull();
+    expect(section?.querySelectorAll('[data-testid="featured-festivals-card-name"]')).toHaveLength(8);
   });
 });

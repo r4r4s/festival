@@ -7,7 +7,10 @@
 
 .home-page {
   width: 100%;
+  background: var(--fv-bg-page);
   padding: var(--fv-space-4) var(--fv-space-4) var(--fv-space-7);
+  display: grid;
+  gap: var(--fv-space-6);
 
   @include from(md) {
     padding:
@@ -23,6 +26,7 @@
 
 .home-page__card {
   position: relative;
+  width: 100%;
   max-width: 1320px;
   margin: 0 auto;
   overflow: hidden;
@@ -40,7 +44,7 @@
   }
 
   @include from(lg) {
-    aspect-ratio: 16 / 5.6;
+    aspect-ratio: 16 / 6.4;
   }
 }
 
@@ -106,7 +110,11 @@
   max-width: 100%;
 
   @include from(md) {
-    max-width: 38rem;
+    max-width: 40rem;
+  }
+
+  @include from(lg) {
+    max-width: 44rem;
   }
 }
 
@@ -117,28 +125,32 @@
 
 .home-page__title {
   font-family: var(--fv-font-hero-emphasis);
-  font-size: clamp(
-    calc(var(--fv-text-2xl) + var(--fv-space-1)),
-    8.8vw,
-    calc(var(--fv-text-4xl) + var(--fv-space-2))
-  );
+  font-size: var(--fv-text-3xl);
   // Hero display leading — tighter than --fv-leading-tight (1.15) so the
   // headline reads as a single editorial block on small viewports.
   line-height: 1.08;
-  letter-spacing: var(--fv-tracking-tight);
+  letter-spacing: 0;
   color: var(--fv-text-primary);
   text-wrap: balance;
+
+  @include from(md) {
+    font-size: var(--fv-text-4xl);
+  }
+
+  @include from(lg) {
+    font-size: var(--fv-text-display);
+  }
 }
 
 .home-page__description {
   max-width: 100%;
-  font-size: clamp(var(--fv-text-base), 4.2vw, var(--fv-text-lg));
+  font-size: var(--fv-text-base);
   line-height: var(--fv-leading-relaxed);
   color: var(--fv-text-secondary);
 
   @include from(md) {
     max-width: 28rem;
-    font-size: clamp(var(--fv-text-base), 2vw, var(--fv-text-lg));
+    font-size: var(--fv-text-lg);
   }
 }
 

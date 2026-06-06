@@ -18,6 +18,31 @@
       "description": "Find dates, locations and key information about the main festivals in the Valencian Community.",
       "primaryCta": "Explore festivals",
       "secondaryCta": "View calendar"
+    },
+    "featured": {
+      "title": "Featured festivals",
+      "cards": {
+        "arenalSound": {
+          "date": "AUG 27-28",
+          "name": "Arenal Sound",
+          "location": "Burriana, Castellón"
+        },
+        "lasFallas": {
+          "date": "MAR 15-19",
+          "name": "Las Fallas",
+          "location": "Valencia"
+        },
+        "laTomatina": {
+          "date": "AUG 28",
+          "name": "La Tomatina",
+          "location": "Buñol, Valencia"
+        },
+        "fibBenicassim": {
+          "date": "JUL 18-20",
+          "name": "FIB Benicàssim",
+          "location": "Benicàssim, Castellón"
+        }
+      }
     }
   }
 }

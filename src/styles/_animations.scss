@@ -35,3 +35,13 @@
   0%, 100% { opacity: 0.85; }
   50%      { opacity: 1; }
 }
+
+@keyframes fv-featured-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - (var(--featured-card-gap) / 2)));
+  }
+}

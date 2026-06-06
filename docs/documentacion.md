@@ -206,7 +206,7 @@ src/styles/
 ├── _motion.scss         → Duraciones y curvas: --fv-duration-*, --fv-ease-*. Honra prefers-reduced-motion.
 ├── _breakpoints.scss    → Mapa SCSS $fv-breakpoints + mixin `from($bp)` (mobile-first).
 ├── _mixins.scss         → Mixins reutilizables: glass(), focus-ring, container, truncate, line-clamp.
-├── _animations.scss     → Keyframes fv-fade-up, fv-pulse-soft, fv-live-dot, fv-glow-pulse.
+├── _animations.scss     → Keyframes fv-fade-up, fv-pulse-soft, fv-live-dot, fv-glow-pulse y fv-featured-marquee.
 └── _reset.scss          → Reset opinionado (box-sizing, márgenes, listas, foco, tipografía base).
 ```
 
@@ -334,12 +334,22 @@ src/app/features/
 ├── home/                → Página de inicio. Muestra festivales destacados, hero con glow
 │                          atmosférico, acceso rápido a búsqueda y filtros.
 │   ├── feature/
-│   │   ├── home.page.ts    → Página de inicio standalone. Renderiza una única card con imagen
-│   │   ├── home.page.html  → Template mínimo de la home: solo la card contenedora y la imagen
-│   │   ├── home.page.scss  → Layout y estilos de la card (radio, sombra, responsive)
-│   │   └── home.page.spec.ts → Test de render de la card de imagen
+│   │   ├── home.page.ts    → Página de inicio standalone. Orquesta el hero editorial y el carrusel
+│   │   │                     local `featured-festivals`.
+│   │   ├── home.page.html  → Hero con CTAs + inserción del componente de festivales destacados.
+│   │   ├── home.page.scss  → Layout de la home: espaciado vertical, hero card y responsive.
+│   │   └── home.page.spec.ts → Test de render del hero y de la sección animada de tarjetas.
 │   ├── ui/
-│   │   └── .gitkeep
+│   │   ├── .gitkeep
+│   │   └── featured-festivals/
+│   │       ├── featured-festivals.ts      → Componente local standalone con datos de festivales
+│   │       │                                destacados.
+│   │       ├── featured-festivals.html    → Header "Festivales destacados" y tarjetas con imagen,
+│   │       │                                fecha, nombre y ubicación.
+│   │       ├── featured-festivals.scss    → Carrusel horizontal sin fondo propio: movimiento continuo
+│   │       │                                en desktop, avance cada 5 s en móvil y sin lift en hover.
+│   │       └── featured-festivals.spec.ts → Tests de render, ausencia del CTA "Ver todos", pista duplicada
+│   │                                        y pausa/reanudación del carrusel.
 │   ├── data-access/
 │   │   └── .gitkeep
 │   └── home.routes.ts   → Superficie pública de la feature. Expone HOME_ROUTES con loadComponent
@@ -501,3 +511,4 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-06 | Token `--fv-blur-glass` | Añadido a `_semantic.scss` como custom property bajo la sección "Effects". Consumido por el botón secundario del hero (`backdrop-filter: blur(var(--fv-blur-glass))`) y disponible para futuros componentes glass. Anotados como deliberados los literales magic-number residuales del hero (`aspect-ratio: 4/5.2`, `line-height: 1.08`, `translateY(-2px)`). |
 | 2026-06-06 | Limpieza stack | Eliminada la dependencia huérfana `lucide` de `package.json` (sin consumidores). El paquete activo es `@lucide/angular` — la tabla de stack canónico de `CLAUDE.md` y `AGENTS.md` actualizada para reflejar el nombre real. |
 | 2026-06-06 | Nueva carpeta `tasks/` | Creada `/tasks/` como fuente única de verdad para planificación. Añadidos `ROADMAP.md` (roadmap por fases), `BACKLOG.md` (backlog priorizado), `IN_PROGRESS.md` (trabajo activo), `COMPLETED.md` (archivo de items completados). Removido el roadmap inline de `README.md` y reemplazado por referencia a `tasks/ROADMAP.md`. Actualizada esta documentación. |
+| 2026-06-06 | Carrusel local `featured-festivals` en home | Añadida la carpeta `src/app/features/home/ui/featured-festivals/` con `featured-festivals.{ts,html,scss,spec.ts}`. `home.page.*` mantiene el hero superior y monta debajo una sección de festivales destacados con tarjetas de imagen: carrusel sin fondo propio, sin CTA "Ver todos", movimiento continuo en desktop, avance cada 5 s en móvil y sin desplazamiento de tarjeta en hover. `src/assets/i18n/{es,ca,en}.json` amplía `home.featured.*` para el copy de la sección y las cuatro tarjetas. |

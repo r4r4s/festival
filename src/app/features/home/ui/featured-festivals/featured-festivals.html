@@ -1,0 +1,78 @@
+<section class="featured-festivals" data-testid="featured-festivals">
+  <header class="featured-festivals__header">
+    <h2 class="featured-festivals__title" data-testid="featured-festivals-title">
+      {{ 'home.featured.title' | t }}
+    </h2>
+  </header>
+
+  <div
+    class="featured-festivals__viewport"
+    data-testid="featured-festivals-viewport"
+    tabindex="0"
+    (mouseenter)="pause()"
+    (mouseleave)="resume()"
+    (focusin)="pause()"
+    (focusout)="resume()"
+  >
+    <div
+      class="featured-festivals__track"
+      [class.featured-festivals__track--paused]="isPaused()"
+      data-testid="featured-festivals-track"
+    >
+      @for (group of [0, 1]; track group) {
+        <ul
+          class="featured-festivals__group"
+          role="list"
+          [attr.aria-hidden]="group === 1 ? 'true' : null"
+        >
+          @for (festival of festivals; track festival.slug) {
+            <li class="featured-festivals__item">
+              <article
+                class="featured-festivals__card"
+                [attr.data-testid]="'featured-festivals-card-' + festival.slug"
+              >
+                <img
+                  class="featured-festivals__image"
+                  [ngSrc]="festival.image.src"
+                  [alt]="festival.image.alt"
+                  width="600"
+                  height="800"
+                  sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                />
+
+                <div class="featured-festivals__overlay" aria-hidden="true"></div>
+
+                <span class="featured-festivals__date">
+                  <svg
+                    lucideCalendar
+                    focusable="false"
+                    aria-hidden="true"
+                    size="14"
+                    strokeWidth="2"
+                  ></svg>
+                  {{ festival.dateKey | t }}
+                </span>
+
+                <div class="featured-festivals__body">
+                  <h3 class="featured-festivals__name" data-testid="featured-festivals-card-name">
+                    {{ festival.nameKey | t }}
+                  </h3>
+                  <p class="featured-festivals__location">
+                    <svg
+                      lucideMapPin
+                      focusable="false"
+                      aria-hidden="true"
+                      size="14"
+                      strokeWidth="2"
+                    ></svg>
+                    <span>{{ festival.locationKey | t }}</span>
+                  </p>
+                </div>
+              </article>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+</section>
