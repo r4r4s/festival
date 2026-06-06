@@ -2,6 +2,7 @@
 @use 'styles/mixins' as *;
 
 :host {
+  --featured-date-badge-height: 1.875rem;
   display: block;
 }
 
@@ -143,7 +144,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--fv-space-2);
-  min-height: 1.875rem;
+  min-height: var(--featured-date-badge-height);
   padding: 0 var(--fv-space-3);
   border-radius: var(--fv-radius-pill);
   background: var(--fv-text-primary);
@@ -170,7 +171,7 @@
   margin: 0;
   font-family: var(--fv-font-hero-emphasis);
   font-size: var(--fv-text-lg);
-  line-height: 1.1;
+  line-height: var(--fv-leading-display);
   text-wrap: balance;
 
   @include from(md) {

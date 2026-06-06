@@ -2,6 +2,8 @@
 @use 'styles/mixins' as *;
 
 :host {
+  --home-cta-min-height: 4rem;
+  --home-btn-icon-size: 1.125rem;
   display: block;
 }
 
@@ -170,7 +172,7 @@
   gap: var(--fv-space-2);
   border: 1px solid transparent;
   border-radius: var(--fv-radius-pill);
-  min-height: 4rem;
+  min-height: var(--home-cta-min-height);
   width: 100%;
   justify-content: space-between;
   padding-inline: calc(var(--fv-space-4) + var(--fv-space-1));
@@ -212,8 +214,8 @@
   justify-content: center;
 
   svg {
-    width: 1.125rem;
-    height: 1.125rem;
+    width: var(--home-btn-icon-size);
+    height: var(--home-btn-icon-size);
   }
 }
 

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, DeferBlockBehavior, DeferBlockState, TestBed } from '@angular/core/testing';
 
 import { HomePageComponent } from './home.page';
 
@@ -9,6 +9,7 @@ describe('HomePageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HomePageComponent],
+      deferBlockBehavior: DeferBlockBehavior.Manual,
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomePageComponent);
@@ -43,7 +44,11 @@ describe('HomePageComponent', () => {
     expect(buttons[1]?.getAttribute('type')).toBe('button');
   });
 
-  it('renders the featured festivals section', () => {
+  it('renders the featured festivals section', async () => {
+    const deferBlocks = await fixture.getDeferBlocks();
+    await deferBlocks[0].render(DeferBlockState.Complete);
+    fixture.detectChanges();
+
     const root = fixture.nativeElement as HTMLElement;
     const section = root.querySelector('[data-testid="featured-festivals"]');
 

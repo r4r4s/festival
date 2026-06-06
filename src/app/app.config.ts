@@ -13,12 +13,13 @@ import { provideTransloco, TranslocoService } from '@jsverse/transloco';
 import { lastValueFrom } from 'rxjs';
 
 import { TranslocoHttpLoader } from '@core/initializers/transloco.loader';
+import { environment } from '@env/environment';
 import { routes } from './app.routes';
 
 registerLocaleData(localeEs);
 
 function preloadDefaultLang(transloco: TranslocoService): () => Promise<void> {
-  return () => lastValueFrom(transloco.load('es'));
+  return () => lastValueFrom(transloco.load('es')).then(() => void 0);
 }
 
 export const appConfig: ApplicationConfig = {
@@ -34,7 +35,7 @@ export const appConfig: ApplicationConfig = {
         defaultLang: 'es',
         fallbackLang: 'es',
         reRenderOnLangChange: true,
-        prodMode: false,
+        prodMode: environment.production,
         missingHandler: { useFallbackTranslation: true },
       },
       loader: TranslocoHttpLoader,

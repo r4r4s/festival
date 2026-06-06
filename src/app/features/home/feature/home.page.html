@@ -48,5 +48,9 @@
     </div>
   </article>
 
-  <fv-featured-festivals />
+  @defer (on viewport) {
+    <fv-featured-festivals />
+  } @placeholder {
+    <div class="home-page__festivals-placeholder" aria-hidden="true"></div>
+  }
 </section>
