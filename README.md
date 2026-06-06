@@ -113,13 +113,7 @@ El catálogo completo de carpetas y ficheros se mantiene en [`docs/documentacion
 
 ## 🗺️ Roadmap
 
-Por fases (detalle canónico en [`.claude/CLAUDE.md`](.claude/CLAUDE.md)):
-
-1. **MVP informativo** — catálogo, búsqueda, filtros, páginas de detalle. Sin auth.
-2. **Personalización** — favoritos persistidos, modo oscuro avanzado, PWA instalable.
-3. **Cuentas de usuario** — registro, login, valoraciones, comentarios.
-4. **Integraciones** — Spotify (preview de artistas), ticketing (Dice, Ticketmaster), calendario anual interactivo.
-5. **Multilingüe** — `ca-ES-valencia` y `en-GB` con `hreflang`.
+See [`tasks/ROADMAP.md`](tasks/ROADMAP.md) for the complete project roadmap, organized by phase with acceptance criteria and architectural decisions.
 
 ---
 

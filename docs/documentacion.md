@@ -24,6 +24,7 @@ festiVAL/
 ├── docs/               → Documentación del proyecto
 ├── public/             → Ficheros estáticos servidos tal cual (favicon, fuentes runtime)
 ├── src/                → Código fuente de la aplicación
+├── tasks/              → Planificación de proyectos, backlog, progreso y roadmap
 ├── .editorconfig       → Reglas de formato del editor (indentación, charset, trailing whitespace)
 ├── angular.json        → Configuración de Angular CLI (build, serve, test, lint, budgets, SSR)
 ├── eslint.config.js    → Configuración de ESLint (Angular ESLint + template accessibility)
@@ -128,6 +129,22 @@ Las instancias estáticas (`*/static/`) y la familia Space Grotesk se eliminaron
 ```
 docs/
 └── documentacion.md     → Este fichero. Propósito de cada carpeta y función de cada fichero del proyecto.
+```
+
+---
+
+## `tasks/` — Planificación y seguimiento
+
+Fuente única de verdad para la planificación del proyecto, roadmap, backlog y progreso. Reemplaza el roadmap inline en `README.md`.
+
+```
+tasks/
+├── ROADMAP.md           → Roadmap del proyecto por fases (MVP, Personalización, Cuentas, Integraciones, i18n).
+│                          Detalles de aceptación, dependencias y decisiones arquitectónicas.
+├── BACKLOG.md           → Backlog priorizado de mejoras, refactorings y deuda técnica.
+│                          Categorizado por prioridad: Alta, Media, Baja, Bloqueado.
+├── IN_PROGRESS.md       → Trabajo activo en desarrollo o revisión. Actualizado al sprint planning.
+└── COMPLETED.md         → Archivo de items completados, features entregadas, hitos cerrados.
 ```
 
 ---
@@ -483,3 +500,4 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-06 | Nav-bar con Router + i18n | `src/app/layout/nav-bar/nav-bar.ts` ahora importa `RouterLink` y `TranslatePipe`. `nav-bar.html` reemplaza `href="#"` y los hrefs absolutos por `routerLink` (`/`, `/festivales`, `/calendario`, `/explorar`, `/sobre-nosotros`); los 5 textos de las links y los aria-labels de las 3 acciones se resuelven con la pipe (`nav.home`, `nav.festivals`, …, `nav.aria.primary`). `nav-bar.spec.ts` provee router e inspecciona los labels traducidos. |
 | 2026-06-06 | Token `--fv-blur-glass` | Añadido a `_semantic.scss` como custom property bajo la sección "Effects". Consumido por el botón secundario del hero (`backdrop-filter: blur(var(--fv-blur-glass))`) y disponible para futuros componentes glass. Anotados como deliberados los literales magic-number residuales del hero (`aspect-ratio: 4/5.2`, `line-height: 1.08`, `translateY(-2px)`). |
 | 2026-06-06 | Limpieza stack | Eliminada la dependencia huérfana `lucide` de `package.json` (sin consumidores). El paquete activo es `@lucide/angular` — la tabla de stack canónico de `CLAUDE.md` y `AGENTS.md` actualizada para reflejar el nombre real. |
+| 2026-06-06 | Nueva carpeta `tasks/` | Creada `/tasks/` como fuente única de verdad para planificación. Añadidos `ROADMAP.md` (roadmap por fases), `BACKLOG.md` (backlog priorizado), `IN_PROGRESS.md` (trabajo activo), `COMPLETED.md` (archivo de items completados). Removido el roadmap inline de `README.md` y reemplazado por referencia a `tasks/ROADMAP.md`. Actualizada esta documentación. |
