@@ -210,56 +210,12 @@ src/assets/
 ├── branding/            → Assets de marca servidos en runtime
 │   ├── festi-val-logo.webp → Logo principal (versión rasterizada usada por la cabecera)
 │   └── favicon.svg         → Favicon vectorial
-├── i18n/                → Ficheros de traducción JSON: es.json (fuente), ca.json, en.json
-│   ├── ca.json          → Locale roadmap ca-ES-valencia. Mantiene paridad de claves con `es.json`.
-│   ├── az-az.json       → Azerbaiyán (azerí)
-│   ├── be-by.json       → Bielorrusia (bielorruso)
-│   ├── bg-bg.json       → Bulgaria (búlgaro)
-│   ├── bs-ba.json       → Bosnia y Herzegovina (bosnio)
-│   ├── cs-cz.json       → República Checa (checo)
-│   ├── da-dk.json       → Dinamarca (danés)
-│   ├── de-at.json       → Austria (alemán)
-│   ├── de-ch.json       → Suiza (alemán)
-│   ├── de-de.json       → Alemania (alemán)
-│   ├── de-li.json       → Liechtenstein (alemán)
-│   ├── el-cy.json       → Chipre (griego)
-│   ├── el-gr.json       → Grecia (griego)
-│   ├── en.json          → Locale roadmap en-GB. Mantiene paridad de claves con `es.json`.
-│   ├── en-gb.json       → Reino Unido (inglés)
-│   ├── en-ie.json       → Irlanda (inglés)
-│   └── es.json          → Fuente de verdad es-ES. Claves con puntos (nav.home, home.hero.title…).
-│   ├── es-es.json       → España (español)
-│   ├── et-ee.json       → Estonia (estonio)
-│   ├── fi-fi.json       → Finlandia (finés)
-│   ├── fr-fr.json       → Francia (francés)
-│   ├── hr-hr.json       → Croacia (croata)
-│   ├── hu-hu.json       → Hungría (húngaro)
-│   ├── hy-am.json       → Armenia (armenio)
-│   ├── is-is.json       → Islandia (islandés)
-│   ├── it-it.json       → Italia (italiano)
-│   ├── it-sm.json       → San Marino (italiano)
-│   ├── ka-ge.json       → Georgia (georgiano)
-│   ├── kk-kz.json       → Kazajistán (kazajo)
-│   ├── lb-lu.json       → Luxemburgo (luxemburgués)
-│   ├── lt-lt.json       → Lituania (lituano)
-│   ├── lv-lv.json       → Letonia (letón)
-│   ├── mt-mt.json       → Malta (maltés)
-│   ├── nl-be.json       → Bélgica (neerlandés)
-│   ├── nl-nl.json       → Países Bajos (neerlandés)
-│   ├── no-no.json       → Noruega (noruego)
-│   ├── pl-pl.json       → Polonia (polaco)
-│   ├── pt-pt.json       → Portugal (portugués)
-│   ├── ro-ro.json       → Rumanía (rumano)
-│   ├── ru-ru.json       → Rusia (ruso)
-│   ├── sk-sk.json       → Eslovaquia (eslovaco)
-│   ├── sl-si.json       → Eslovenia (esloveno)
-│   ├── sq-al.json       → Albania (albanés)
-│   ├── sq-xk.json       → Kosovo (albanés)
-│   ├── sr-me.json       → Montenegro (serbio)
-│   ├── sr-rs.json       → Serbia (serbio)
-│   ├── sv-se.json       → Suecia (sueco)
-│   ├── tr-tr.json       → Turquía (turco)
-│   └── uk-ua.json       → Ucrania (ucraniano)
+├── i18n/                → Ficheros de traducción JSON. `es.json` es la fuente de verdad; el resto
+│   │                      mantiene paridad de claves. La propagación a los 44 locales europeos
+│   │                      soportados ocurre durante un commit (skill `i18n-commit-policy`).
+│   ├── es.json          → Fuente de verdad es-ES. Claves con puntos (nav.home, home.hero.title…).
+│   ├── ca.json          → Locale roadmap ca-ES-valencia.
+│   └── en.json          → Locale roadmap en-GB.
 ├── icons/               → Iconos SVG adicionales a Lucide
 │   └── .gitkeep
 ├── images/              → Imágenes WebP generadas por el conversor Sharp. Comiteadas, nunca editadas a mano.
@@ -392,13 +348,22 @@ src/app/shared/
 │   └── .gitkeep           search-bar, date-range-badge, empty-state, skeleton-loader,
 │                          festival-toast, form-error. Todos standalone, OnPush, prefix fv-.
 ├── data-access/         → Servicios y stores compartidos: FestivalService (Sanity HTTP),
-│   └── .gitkeep           ArtistService, VenueService, SearchService (MiniSearch),
-│                          CatalogueStore, FavouritesStore, SanityClientService, AnalyticsService.
+│   │                      ArtistService, VenueService, SearchService (MiniSearch),
+│   │                      CatalogueStore, FavouritesStore, SanityClientService, AnalyticsService.
+│   └── i18n/            → Capa i18n MVP basada en Signals.
+│       ├── translations.ts            → Importa `es.json` vía `@assets/i18n/es.json`. Exporta
+│       │                                `ES_TRANSLATIONS`, el tipo `Translations` y el tipo
+│       │                                `TranslationKey` (literal union de dotted paths).
+│       ├── translation.service.ts     → `TranslationService` (providedIn: 'root'). `t(key)`
+│       │                                resuelve dotted paths con fallback al key crudo.
+│       └── translation.service.spec.ts → Specs del servicio.
 ├── domain/              → Modelos de dominio: interfaces TypeScript + schemas Zod.
 │   └── .gitkeep           festival.model.ts, artist.model.ts, venue.model.ts,
 │                          festival-error.model.ts. El schema Zod vive junto al tipo inferido.
-├── pipes/               → Pipes genéricos reutilizables: locale-date (date-fns), truncate,
-│   └── .gitkeep           festival-image (URLs de Sanity CDN con ?fm=webp).
+├── pipes/               → Pipes genéricos reutilizables.
+│   ├── translate.pipe.ts      → Pipe puro `| t` que delega en `TranslationService`.
+│   │                            Uso: `{{ 'nav.home' | t }}`.
+│   └── translate.pipe.spec.ts → Spec del pipe sobre un host standalone.
 ├── directives/          → Directivas genéricas compartidas.
 │   └── .gitkeep
 ├── util/                → Funciones puras sin dependencia de Angular: formateo, helpers,
@@ -428,7 +393,7 @@ Configuración de Angular CLI para el proyecto `festiVAL`:
 Configuración base de TypeScript:
 
 - **Target**: ES2022, `module: "preserve"`, `strict: true`.
-- **Path aliases**: `@core/*`, `@layout/*`, `@features/*`, `@shared/*` (ui, data-access, domain, util, pipes, directives, testing), `@env/*`. El namespace SCSS se resuelve por `stylePreprocessorOptions.includePaths: ["src"]`; no hay alias TS para estilos.
+- **Path aliases**: `@core/*`, `@layout/*`, `@features/*`, `@shared/*` (ui, data-access, domain, util, pipes, directives, testing), `@env/*`, `@assets/*` (registrado en `eslint-plugin-boundaries` como elemento `asset`; sólo `shared` puede importarlo). El namespace SCSS se resuelve por `stylePreprocessorOptions.includePaths: ["src"]`; no hay alias TS para estilos.
 - **Angular compiler**: templates estrictos, parámetros de inyección estrictos, inputs estrictos.
 
 ### `tsconfig.app.json`
@@ -509,7 +474,9 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-04 | Limpieza branding | Renombrado `logo1.webp` a `festi-val-logo.webp` para cumplir la convención de naming de assets y eliminadas las variantes no usadas `main-logo.svg` y `logo-icon.svg` de `src/assets/branding/`. |
 | 2026-06-04 | Nuevo material en `design/mockups/` | Añadidos `Gemini_Generated_Image_l8rwoql8rwoql8rw.png` e `image.png` como referencias visuales para iteraciones de interfaz. |
 | 2026-06-06 | Hero editorial e i18n base | Añadidos `src/assets/i18n/ca.json` y `src/assets/i18n/en.json` para mantener paridad de claves con `es.json`. La home deja de ser una superficie sólo visual y consume el copy de `home.hero.*` desde los JSON de locales, manteniendo los CTA como botones estáticos. |
-| 2026-06-06 | Locales europeos por país | Añadidos archivos de locale por país en `src/assets/i18n/` (`sq-al.json`, `de-de.json`, `hy-am.json`, `de-at.json`, `az-az.json`, `nl-be.json`, `be-by.json`, `bs-ba.json`, `bg-bg.json`, `el-cy.json`, `hr-hr.json`, `da-dk.json`, `sk-sk.json`, `sl-si.json`, `es-es.json`, `et-ee.json`, `fi-fi.json`, `fr-fr.json`, `ka-ge.json`, `el-gr.json`, `hu-hu.json`, `en-ie.json`, `is-is.json`, `it-it.json`, `kk-kz.json`, `sq-xk.json`, `lv-lv.json`, `de-li.json`, `lt-lt.json`, `lb-lu.json`, `mt-mt.json`, `sr-me.json`, `no-no.json`, `nl-nl.json`, `pl-pl.json`, `pt-pt.json`, `en-gb.json`, `cs-cz.json`, `ro-ro.json`, `ru-ru.json`, `it-sm.json`, `sr-rs.json`, `sv-se.json`, `de-ch.json`, `tr-tr.json`, `uk-ua.json`). `es.json` sigue siendo la fuente de verdad y el resto mantiene paridad de claves. |
+| 2026-06-06 | Revocada la fila "Locales europeos por país" | La fila previa afirmaba que se habían añadido 45 archivos de locale por país en `src/assets/i18n/`. Esos archivos nunca llegaron a un commit y se eliminaron del working tree para respetar la skill `i18n-commit-policy` (modo desarrollo edita sólo `es.json`; la propagación a los locales soportados ocurre durante un commit con su Translation Report). El estado real del directorio es: `es.json` (fuente), `ca.json`, `en.json`. |
 | 2026-06-06 | Skill `design-responsive-validation` | Añadidas `.claude/skills/design-responsive-validation/README.md` y `.codex/skills/design-responsive-validation/README.md` como fuente de verdad para la identidad visual no genérica y la validación responsive obligatoria (desktop / laptop / tablet / mobile 320 px). Cada tarea de UI debe terminar con un Design & Responsive Validation Report. Listadas en `CLAUDE.md`, `AGENTS.md` y esta documentación. |
 | 2026-06-06 | Skill `i18n-commit-policy` | Añadidas `.claude/skills/i18n-commit-policy/README.md` y `.codex/skills/i18n-commit-policy/README.md`. Política: durante el desarrollo sólo se edita `src/assets/i18n/es.json`; al preparar un commit se propagan las claves modificadas a los 44 locales europeos soportados (matriz país → BCP-47 incluida en la skill), se valida la paridad JSON y se emite un i18n Commit Translation Report antes de `git commit`. Listada en `CLAUDE.md`, `AGENTS.md` y esta documentación. |
 | 2026-06-06 | Entornos baseline | Eliminado `src/environments/.gitkeep`; creados `src/environments/environment.ts` y `environment.prod.ts` con `production`, `defaultLocale: 'es-ES'` y bloque `sanity` (projectId, dataset, apiVersion, useCdn). Cierra la deuda señalada en auditorías previas: las URL base, flags y endpoints viven aquí, nunca hardcodeados en servicios. |
+| 2026-06-06 | Alias `@assets/*` | Añadido al `tsconfig.json` (`@assets/*: ["src/assets/*"]`) y registrado en `eslint.config.js` como elemento `asset` de `eslint-plugin-boundaries` (sólo `shared` puede importar de `asset`; `asset` se autoreferencia). Resuelve la regla "path aliases always" para los JSON de i18n. |
+| 2026-06-06 | Capa i18n MVP en `@shared` | Añadidos `src/app/shared/data-access/i18n/translations.ts` (importa `es.json` vía el alias nuevo `@assets/*`, expone `ES_TRANSLATIONS` y el tipo `TranslationKey` con paths punteados), `translation.service.ts` (Signals: `t(key)` resuelve dotted paths con fallback) y sus specs. Añadido `src/app/shared/pipes/translate.pipe.ts` (`{{ 'nav.home' \| t }}`) standalone y puro. Añadida la clave `nav.aria.primary` en `es.json`, `ca.json`, `en.json` para mantener paridad. Eliminados los `.gitkeep` de `shared/data-access/` y `shared/pipes/`. |

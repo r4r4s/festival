@@ -7,7 +7,10 @@
     "about": "Sobre nosaltres",
     "search": "Buscar",
     "theme": "Canviar tema",
-    "menu": "Obrir menú"
+    "menu": "Obrir menú",
+    "aria": {
+      "primary": "Navegació principal"
+    }
   },
   "home": {
     "hero": {

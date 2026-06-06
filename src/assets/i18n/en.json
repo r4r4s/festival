@@ -7,7 +7,10 @@
     "about": "About us",
     "search": "Search",
     "theme": "Change theme",
-    "menu": "Open menu"
+    "menu": "Open menu",
+    "aria": {
+      "primary": "Primary navigation"
+    }
   },
   "home": {
     "hero": {
