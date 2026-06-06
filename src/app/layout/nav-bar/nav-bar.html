@@ -77,20 +77,6 @@
       </ul>
     </nav>
 
-    <div class="nav-bar__lang-switcher" role="group" [attr.aria-label]="'nav.langSwitcher' | t">
-      @for (lang of availableLangs; track lang.code) {
-        <button
-          class="nav-bar__lang-btn"
-          [class.nav-bar__lang-btn--active]="activeLang() === lang.code"
-          type="button"
-          [attr.aria-pressed]="activeLang() === lang.code"
-          (click)="setLang(lang.code)"
-        >
-          {{ lang.label }}
-        </button>
-      }
-    </div>
-
     <div class="nav-bar__actions">
       <button
         class="nav-bar__icon-btn nav-bar__search"
