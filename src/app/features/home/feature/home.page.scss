@@ -126,9 +126,7 @@
 .home-page__title {
   font-family: var(--fv-font-hero-emphasis);
   font-size: var(--fv-text-3xl);
-  // Hero display leading — tighter than --fv-leading-tight (1.15) so the
-  // headline reads as a single editorial block on small viewports.
-  line-height: 1.08;
+  line-height: var(--fv-leading-display);
   letter-spacing: 0;
   color: var(--fv-text-primary);
   text-wrap: balance;
@@ -227,9 +225,7 @@
 .home-page__button--primary {
   background: var(--fv-text-primary);
   color: var(--fv-text-inverse);
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  box-shadow: var(--fv-shadow-hero-btn-primary);
 }
 
 .home-page__button--secondary {
@@ -237,9 +233,7 @@
   border-color: color-mix(in srgb, var(--fv-text-primary) 54%, transparent);
   color: var(--fv-text-primary);
   backdrop-filter: blur(var(--fv-blur-glass));
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 10px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--fv-shadow-hero-btn-secondary);
 }
 
 @media (prefers-reduced-motion: reduce) {
