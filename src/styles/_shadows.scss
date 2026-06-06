@@ -19,4 +19,13 @@
     0 0 0 4px var(--fv-accent-violet);
 
   --fv-shadow-glow-violet: 0 0 40px rgba(124, 92, 255, 0.25);
+
+  // Hero CTA button elevations — warm-on-dark lift for the primary action,
+  // subtle glass rim for the secondary ghost button.
+  --fv-shadow-hero-btn-primary:
+    0 10px 30px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  --fv-shadow-hero-btn-secondary:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 10px 24px rgba(0, 0, 0, 0.12);
 }
