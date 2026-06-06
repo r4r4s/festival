@@ -156,3 +156,101 @@ Rules for the report:
 | 6 | Stage all `i18n/*.json` files together with the source change. |
 | 7 | Emit the i18n Commit Translation Report. |
 | 8 | Only then proceed with `git commit`. |
+
+---
+
+## Examples
+
+### es.json — new key added during development
+
+```json
+// src/assets/i18n/es.json  ← the ONLY file you touch during dev
+{
+  "nav": {
+    "home":      "Inicio",
+    "festivals": "Festivales"
+  },
+  "festival": {
+    "card": {
+      "priceFrom": "Desde {price} €"
+    }
+  }
+}
+```
+
+### Propagated locale at commit time — ca.json + en.json
+
+```json
+// src/assets/i18n/ca.json  ← synced at commit time with same key structure
+{
+  "nav": {
+    "home":      "Inici",
+    "festivals": "Festivals"
+  },
+  "festival": {
+    "card": {
+      "priceFrom": "Des de {price} €"
+    }
+  }
+}
+```
+
+```json
+// src/assets/i18n/en.json
+{
+  "nav": {
+    "home":      "Home",
+    "festivals": "Festivals"
+  },
+  "festival": {
+    "card": {
+      "priceFrom": "From {price} €"
+    }
+  }
+}
+```
+
+### Key parity validation script (runs pre-commit)
+
+```ts
+// scripts/validate-i18n-parity.mjs
+import { readFile, readdir } from 'node:fs/promises';
+import { join } from 'node:path';
+
+const DIR = 'src/assets/i18n';
+
+function flatKeys(obj, prefix = '') {
+  return Object.entries(obj).flatMap(([k, v]) =>
+    typeof v === 'object' && v !== null
+      ? flatKeys(v, prefix ? `${prefix}.${k}` : k)
+      : [`${prefix ? `${prefix}.` : ''}${k}`],
+  );
+}
+
+const files   = await readdir(DIR);
+const source  = JSON.parse(await readFile(join(DIR, 'es.json'), 'utf8'));
+const esKeys  = new Set(flatKeys(source));
+let   hasError = false;
+
+for (const file of files.filter(f => f.endsWith('.json') && f !== 'es.json')) {
+  const locale = JSON.parse(await readFile(join(DIR, file), 'utf8'));
+  const keys   = new Set(flatKeys(locale));
+
+  const missing = [...esKeys].filter(k => !keys.has(k));
+  const extra   = [...keys].filter(k => !esKeys.has(k));
+
+  if (missing.length || extra.length) {
+    console.error(`❌ ${file}: missing=[${missing}] extra=[${extra}]`);
+    hasError = true;
+  } else {
+    console.log(`✅ ${file}`);
+  }
+}
+
+if (hasError) process.exit(1);
+```
+
+```bash
+# Add to package.json scripts and run before git commit
+node scripts/validate-i18n-parity.mjs
+```

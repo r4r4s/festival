@@ -86,3 +86,102 @@ Maps are graphical and unreachable by screen readers by default. Mitigations:
 ## When to graduate
 
 If we add per-festival heatmaps, hourly stage schedules with isochrones, or routing between stages, evaluate moving to a tile pipeline with server-side rendering. Until then, the static `.pmtiles` setup is sufficient and free.
+
+---
+
+## Examples
+
+### VenueMapComponent — lazy MapLibre + SSR guard
+
+```ts
+// src/app/features/festival-detail/ui/venue-map/venue-map.ts
+import {
+  AfterViewInit, ChangeDetectionStrategy, Component,
+  ElementRef, inject, input, OnDestroy, PLATFORM_ID, viewChild,
+} from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import type { Map as MapLibreMap } from 'maplibre-gl';
+
+@Component({
+  selector: 'fv-venue-map',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <figure class="venue-map" [attr.aria-label]="ariaLabel()">
+      <div #mapContainer class="venue-map__canvas"></div>
+    </figure>
+  `,
+  styleUrl: './venue-map.scss',
+})
+export class VenueMapComponent implements AfterViewInit, OnDestroy {
+  readonly lat      = input.required<number>();
+  readonly lng      = input.required<number>();
+  readonly ariaLabel = input('Mapa de ubicación del festival');
+
+  private readonly platformId  = inject(PLATFORM_ID);
+  private readonly mapContainer = viewChild.required<ElementRef>('mapContainer');
+  private map: MapLibreMap | undefined;
+
+  async ngAfterViewInit(): Promise<void> {
+    if (!isPlatformBrowser(this.platformId)) return;   // SSR guard
+
+    const { Map, Marker } = await import('maplibre-gl');  // lazy
+
+    this.map = new Map({
+      container: this.mapContainer().nativeElement,
+      style:     '/assets/maps/festival-dark.json',
+      center:    [this.lng(), this.lat()],
+      zoom:      13,
+    });
+
+    new Marker({ color: 'var(--fv-accent-violet)' })
+      .setLngLat([this.lng(), this.lat()])
+      .addTo(this.map);
+  }
+
+  ngOnDestroy(): void {
+    this.map?.remove();
+  }
+}
+```
+
+```scss
+// venue-map.scss
+.venue-map {
+  margin: 0;
+  border-radius: var(--fv-radius-lg);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+
+  &__canvas {
+    width: 100%;
+    height: 100%;
+  }
+}
+```
+
+### Usage in festival-detail page — deferred below the fold
+
+```html
+<!-- festival-detail.page.html -->
+<section class="detail-venue">
+  <!-- Text equivalent always present — map is decorative on top -->
+  <address class="detail-venue__address">
+    <p>{{ festival().ciudad }}, {{ festival().provincia }}</p>
+    <a [href]="directionsUrl()" target="_blank" rel="noopener">
+      {{ 'festival.detail.directions' | t }}
+    </a>
+  </address>
+
+  <!-- Map deferred until viewport — users who don't scroll pay nothing -->
+  @defer (on viewport) {
+    <fv-venue-map
+      [lat]="festival().ubicacion.lat"
+      [lng]="festival().ubicacion.lng"
+      [ariaLabel]="'festival.detail.mapLabel' | t"
+    />
+  } @placeholder {
+    <div class="venue-map-placeholder" aria-hidden="true"></div>
+  }
+</section>
+```

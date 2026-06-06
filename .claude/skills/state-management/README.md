@@ -59,3 +59,119 @@ Persistence is wired through the store, never read directly by components. Hydra
 - Sharing `Subject`s between unrelated components.
 - Reading `localStorage` / IndexedDB directly from a component instead of through a store.
 - A feature reaching into another feature's store (forbidden by the boundary rules — promote to `@shared/data-access/` instead).
+
+---
+
+## Examples
+
+### NgRx SignalStore — FiltersStore
+
+```ts
+// src/app/features/festival-list/data-access/filters.store.ts
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import { computed } from '@angular/core';
+import type { Provincia } from '@shared/domain/festival.model';
+
+interface FiltersState {
+  provincia: Provincia | null;
+  mes: number | null;          // 1–12
+  genero: string | null;
+  precioMax: number | null;
+}
+
+const initialState: FiltersState = {
+  provincia: null,
+  mes: null,
+  genero: null,
+  precioMax: null,
+};
+
+export const FiltersStore = signalStore(
+  { providedIn: 'root' },
+  withState(initialState),
+  withComputed(({ provincia, mes, genero, precioMax }) => ({
+    hasActiveFilters: computed(
+      () => provincia() !== null || mes() !== null || genero() !== null || precioMax() !== null,
+    ),
+    activeCount: computed(
+      () => [provincia(), mes(), genero(), precioMax()].filter(Boolean).length,
+    ),
+  })),
+  withMethods((store) => ({
+    setProvincia(p: Provincia | null): void {
+      patchState(store, { provincia: p });
+    },
+    setMes(m: number | null): void {
+      patchState(store, { mes: m });
+    },
+    setGenero(g: string | null): void {
+      patchState(store, { genero: g });
+    },
+    setPrecioMax(p: number | null): void {
+      patchState(store, { precioMax: p });
+    },
+    reset(): void {
+      patchState(store, initialState);
+    },
+  })),
+);
+```
+
+### Local component state with Signals
+
+```ts
+// Inside a smart page component — never in a presentational ui/ component
+@Component({ /* ... */ changeDetection: ChangeDetectionStrategy.OnPush })
+export class FestivalListPageComponent {
+  private readonly catalogue = inject(CatalogueStore);
+  private readonly filters   = inject(FiltersStore);
+
+  readonly festivals = computed(() => {
+    const all    = this.catalogue.festivals();
+    const prov   = this.filters.provincia();
+    const genero = this.filters.genero();
+    return all
+      .filter(f => !prov   || f.provincia === prov)
+      .filter(f => !genero || f.generos.includes(genero));
+  });
+}
+```
+
+### Effect — persist theme to localStorage
+
+```ts
+// src/app/core/initializers/theme.initializer.ts
+import { effect, inject, signal } from '@angular/core';
+
+export const theme = signal<'dark' | 'light'>('dark');
+
+// Call once in app.config.ts or an initializer
+export function wireThemePersistence(): void {
+  const saved = localStorage.getItem('fv-theme') as 'dark' | 'light' | null;
+  if (saved) theme.set(saved);
+
+  effect(() => {
+    localStorage.setItem('fv-theme', theme());
+    document.documentElement.setAttribute('data-theme', theme());
+  });
+}
+```
+
+### APP_INITIALIZER — hydrate catalogue before first render
+
+```ts
+// src/app/core/initializers/catalogue.initializer.ts
+import { inject } from '@angular/core';
+import { CatalogueStore } from '@shared/data-access/catalogue.store';
+
+export function provideCatalogueInit() {
+  return {
+    provide: APP_INITIALIZER,
+    useFactory: () => {
+      const store = inject(CatalogueStore);
+      return () => store.load();   // returns Promise; router waits for it
+    },
+    multi: true,
+  };
+}
+```

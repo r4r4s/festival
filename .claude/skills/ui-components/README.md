@@ -72,3 +72,134 @@ Every list/detail surface ships with these three states designed before being ma
 - **Loading** — skeleton with the same outer shape.
 - **Empty** — `EmptyStateComponent` with a helpful next action.
 - **Error** — message + retry CTA, copy via [[internationalization]].
+
+---
+
+## Examples
+
+### FestivalCard — standalone component (canonical pattern)
+
+```ts
+// src/app/shared/ui/festival-card/festival-card.ts
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { NgOptimizedImage } from '@angular/common';
+import { TranslatePipe } from '@shared/pipes/translate.pipe';
+import type { Festival } from '@shared/domain/festival.model';
+
+@Component({
+  selector: 'fv-festival-card',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterLink, NgOptimizedImage, TranslatePipe],
+  templateUrl: './festival-card.html',
+  styleUrl: './festival-card.scss',
+})
+export class FestivalCardComponent {
+  readonly festival = input.required<Festival>();
+}
+```
+
+```html
+<!-- festival-card.html -->
+<article class="festival-card">
+  <a [routerLink]="['/festivales', festival().slug]" class="festival-card__link">
+    <div class="festival-card__poster">
+      <img
+        [ngSrc]="festival().poster.src"
+        [alt]="festival().poster.alt"
+        width="400" height="560"
+      />
+    </div>
+    <div class="festival-card__body">
+      <h3 class="festival-card__name">{{ festival().nombre }}</h3>
+      <p class="festival-card__city">{{ festival().ciudad }}</p>
+      <p class="festival-card__price">
+        {{ 'festival.card.priceFrom' | t : { price: festival().precioDesde } }}
+      </p>
+    </div>
+  </a>
+</article>
+```
+
+```scss
+// festival-card.scss — tokens only, never hardcoded values
+.festival-card {
+  border-radius: var(--fv-radius-lg);
+  background: var(--fv-bg-surface);
+  border: 1px solid var(--fv-border-subtle);
+  overflow: hidden;
+  transition: transform var(--fv-duration-base) var(--fv-ease-standard),
+              box-shadow var(--fv-duration-base) var(--fv-ease-standard);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--fv-shadow-elevated);
+  }
+
+  &__link { display: block; color: inherit; text-decoration: none; }
+  &__name  { font-family: var(--fv-font-heading); color: var(--fv-text-primary); }
+  &__city  { color: var(--fv-text-secondary); font-size: var(--fv-text-sm); }
+  &__price { color: var(--fv-accent-violet); font-size: var(--fv-text-sm); }
+}
+```
+
+### Loading / Empty / Error states — pattern in a page
+
+```html
+<!-- Smart page orchestrates the three states -->
+@defer (when catalogue.loaded()) {
+  @if (festivals().length > 0) {
+    <ul class="festival-grid">
+      @for (f of festivals(); track f.slug) {
+        <li><fv-festival-card [festival]="f" /></li>
+      }
+    </ul>
+  } @else {
+    <fv-empty-state
+      icon="calendar-x"
+      [title]="'festivals.empty.title' | t"
+      [body]="'festivals.empty.body' | t"
+    />
+  }
+} @loading {
+  <ul class="festival-grid">
+    @for (_ of [1,2,3,4,5,6]; track $index) {
+      <li><fv-skeleton-loader variant="card" /></li>
+    }
+  </ul>
+} @error {
+  <fv-empty-state
+    icon="wifi-off"
+    [title]="'errors.network.message' | t"
+    [action]="'errors.retry' | t"
+    (actionClick)="reload()"
+  />
+}
+```
+
+### Output — event emitted from a presentational component
+
+```ts
+// Presentational components never call stores or services.
+// They emit events upward via output().
+@Component({ selector: 'fv-filter-chip', /* ... */ })
+export class FilterChipComponent {
+  readonly label    = input.required<string>();
+  readonly selected = input(false);
+  readonly toggled  = output<boolean>();
+
+  toggle(): void {
+    this.toggled.emit(!this.selected());
+  }
+}
+```
+
+```html
+<!-- Parent smart page handles the event -->
+<fv-filter-chip
+  [label]="'Valencia'"
+  [selected]="filters.provincia() === 'Valencia'"
+  (toggled)="filters.setProvincia($event ? 'Valencia' : null)"
+/>
+```

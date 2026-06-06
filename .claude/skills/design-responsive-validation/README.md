@@ -139,3 +139,77 @@ Rules for the report:
 | 4 | Run the app and walk the four breakpoints. |
 | 5 | Fix anything that fails the checklist. |
 | 6 | Emit the Design & Responsive Validation Report. |
+
+---
+
+## Examples
+
+### Mobile-first SCSS with the `from()` mixin
+
+```scss
+// ✅ Mobile-first: base styles are for 320 px, each breakpoint enhances upward.
+.festival-grid {
+  display: grid;
+  gap: var(--fv-space-4);
+
+  // Mobile default: single column, full width
+  grid-template-columns: 1fr;
+
+  // Tablet (768 px+): two columns
+  @include from(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // Desktop (1024 px+): three columns, wider gap
+  @include from(lg) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--fv-space-6);
+  }
+}
+
+// ❌ DON'T — desktop-first with max-width overrides
+.festival-grid {
+  grid-template-columns: repeat(3, 1fr);
+  @media (max-width: 768px) { grid-template-columns: 1fr; }
+}
+```
+
+### Touch target — minimum 44×44 px on mobile
+
+```scss
+// ✅ Filter chips and icon buttons must be large enough on touch devices
+.fv-filter-chip {
+  min-height: 44px;
+  padding: var(--fv-space-2) var(--fv-space-4);
+
+  @include from(lg) {
+    min-height: 36px;  // relaxed on pointer devices
+  }
+}
+```
+
+### Playwright — responsive validation across viewports
+
+```ts
+// e2e/responsive.spec.ts — run against the live dev server
+import { test, expect } from '@playwright/test';
+
+const VIEWPORTS = [
+  { name: 'mobile',   width: 320,  height: 667  },
+  { name: 'tablet',   width: 768,  height: 1024 },
+  { name: 'laptop',   width: 1024, height: 768  },
+  { name: 'desktop',  width: 1440, height: 900  },
+];
+
+for (const vp of VIEWPORTS) {
+  test(`festival list — no horizontal scroll at ${vp.name} (${vp.width}px)`, async ({ page }) => {
+    await page.setViewportSize({ width: vp.width, height: vp.height });
+    await page.goto('/festivales');
+
+    const scrollWidth  = await page.evaluate(() => document.documentElement.scrollWidth);
+    const clientWidth  = await page.evaluate(() => document.documentElement.clientWidth);
+
+    expect(scrollWidth).toBeLessThanOrEqual(clientWidth);
+  });
+}
+```

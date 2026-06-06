@@ -66,3 +66,77 @@ AI assistants working on this repository must automatically:
 ## Review rule
 
 Asset organization is part of project structure quality and must be reviewed during structure audits.
+
+---
+
+## Examples
+
+### NgOptimizedImage — correct usage in a component
+
+```html
+<!-- ✅ DO — explicit width/height, WebP, descriptive alt, priority on hero -->
+<img
+  ngSrc="assets/images/backgrounds/home-hero-sunset-beach-1200.webp"
+  width="1200"
+  height="630"
+  alt="Atardecer en la playa con festivaleros en la Comunidad Valenciana"
+  priority
+/>
+
+<!-- Festival poster in FestivalCard — no priority (below the fold) -->
+<img
+  ngSrc="assets/images/festivals/fib-benicassim-poster-2026.webp"
+  width="400"
+  height="560"
+  [alt]="'Cartel de ' + festival.nombre + ' ' + year"
+/>
+```
+
+```html
+<!-- ❌ DON'T — JPEG/PNG, generic alt, no dimensions -->
+<img src="assets/images/poster.jpg" alt="imagen" />
+```
+
+### Folder placement decision tree
+
+```
+¿Es una imagen de la marca (logo, favicon)?
+  → src/assets/branding/
+
+¿Es un fondo o imagen hero de una sección?
+  → src/assets/images/backgrounds/
+
+¿Es el póster oficial de un festival?
+  → src/assets/images/festivals/<slug>/
+
+¿Es una foto de artista?
+  → src/assets/images/artists/<artist-slug>/
+
+¿Es la fuente original (PNG/JPEG antes de convertir a WebP)?
+  → src/assets/images-src/<misma-subcarpeta>/   ← nunca servida al usuario
+
+¿Es un SVG de icono adicional a Lucide?
+  → src/assets/icons/
+```
+
+### WebP conversion — Sharp pipeline (scripts/ phase)
+
+```ts
+// scripts/convert-images.mjs — runs at build time, not committed to runtime assets
+import sharp from 'sharp';
+import { glob } from 'glob';
+
+const sources = await glob('src/assets/images-src/**/*.{jpg,jpeg,png}');
+
+for (const src of sources) {
+  const dest = src
+    .replace('images-src', 'images')
+    .replace(/\.(jpg|jpeg|png)$/, '.webp');
+
+  await sharp(src)
+    .webp({ quality: 85 })
+    .toFile(dest);
+}
+// Output files go to src/assets/images/ — committed and served.
+// Source files in images-src/ are committed but never served.
+```

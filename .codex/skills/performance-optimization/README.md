@@ -205,3 +205,75 @@ Add a second `.avif()` pipeline only for hero presets when you measure a meaning
 - **Lighthouse CI** in the Cloudflare Pages deploy pipeline; fail PRs that regress > 5 points on Performance.
 - Track Core Web Vitals via the **`web-vitals`** library posting to Cloudflare Web Analytics.
 - Image size audit: `du -sh src/assets/images/` should stay under 2 MB total. If it grows beyond, revisit presets and quality.
+
+---
+
+## Examples
+
+### OnPush + Signals — the right default
+
+```ts
+// ✅ Every component uses OnPush. Signals are the reactive primitive.
+@Component({
+  selector: 'fv-festival-list-page',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,   // non-negotiable
+  imports: [FestivalCardComponent, AsyncPipe],
+  template: `
+    @for (f of visibleFestivals(); track f.slug) {
+      <fv-festival-card [festival]="f" />
+    }
+  `,
+})
+export class FestivalListPageComponent {
+  private readonly catalogue = inject(CatalogueStore);
+  private readonly filters   = inject(FiltersStore);
+
+  // Derived signal — no manual subscription, no async pipe needed
+  readonly visibleFestivals = computed(() =>
+    this.catalogue.festivals().filter(f =>
+      !this.filters.provincia() || f.provincia === this.filters.provincia(),
+    ),
+  );
+}
+```
+
+### @defer — lazy sections below the fold
+
+```html
+<!-- festival-detail.page.html -->
+
+<!-- Hero image is above the fold — loads eagerly, has priority -->
+<fv-festival-hero [festival]="festival()" />
+
+<!-- Line-up is below the fold — deferred until the user scrolls there -->
+@defer (on viewport) {
+  <fv-lineup-grid [cartel]="festival().cartel" />
+} @loading (minimum 200ms) {
+  <fv-skeleton-loader variant="lineup" />
+} @placeholder {
+  <div class="lineup-placeholder" style="height: 400px;"></div>
+}
+
+<!-- Map is the heaviest dependency — deferred on viewport, never in initial bundle -->
+@defer (on viewport) {
+  <fv-venue-map
+    [lat]="festival().ubicacion.lat"
+    [lng]="festival().ubicacion.lng"
+  />
+} @placeholder {
+  <div class="map-placeholder" style="aspect-ratio: 16/9;"></div>
+}
+```
+
+### Bundle analysis — check after adding a dependency
+
+```bash
+# Build with stats and open the visualizer
+npm run build -- --stats-json
+npx webpack-bundle-analyzer dist/festiVAL/browser/stats.json
+
+# Quick budget check — initial bundle must stay under 250 KB gzipped
+ls -lh dist/festiVAL/browser/*.js | sort -k5 -rh | head -5
+gzip -c dist/festiVAL/browser/main-*.js | wc -c   # bytes gzipped
+```

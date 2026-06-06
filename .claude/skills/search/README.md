@@ -92,3 +92,110 @@ If any of these become true, evaluate a server-side search backend (Typesense se
 - Multi-language search is needed (Valencian + English + Spanish) with stemming per locale.
 
 Until then, MiniSearch is sufficient.
+
+---
+
+## Examples
+
+### Full SearchService
+
+```ts
+// src/app/shared/data-access/search.service.ts
+import { Injectable, inject } from '@angular/core';
+import MiniSearch from 'minisearch';
+import { CatalogueStore } from './catalogue.store';
+import type { Festival } from '@shared/domain/festival.model';
+
+interface SearchableDoc {
+  id:       string;
+  nombre:   string;
+  ciudad:   string;
+  provincia: string;
+  generos:  string;
+  cartel:   string;
+}
+
+export interface SearchResult {
+  slug:          string;
+  score:         number;
+  matchedFields: string[];
+}
+
+const normalize = (s: string) =>
+  s.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+
+@Injectable({ providedIn: 'root' })
+export class SearchService {
+  private readonly catalogue = inject(CatalogueStore);
+  private readonly index = new MiniSearch<SearchableDoc>({
+    fields:       ['nombre', 'cartel', 'ciudad', 'generos', 'provincia'],
+    storeFields:  ['id'],
+    searchOptions: {
+      boost:       { nombre: 3, cartel: 2.5, ciudad: 1, provincia: 0.5, generos: 1 },
+      prefix:      true,
+      fuzzy:       0.2,
+      combineWith: 'AND',
+    },
+    processTerm: normalize,
+  });
+
+  // Called from APP_INITIALIZER after CatalogueStore.load()
+  buildIndex(festivals: Festival[]): void {
+    this.index.removeAll();
+    this.index.addAll(festivals.map(this.toDoc));
+  }
+
+  search(query: string): SearchResult[] {
+    if (!query.trim()) return [];
+    return this.index
+      .search(normalize(query))
+      .map(r => ({ slug: r.id, score: r.score, matchedFields: r.match ? Object.keys(r.match) : [] }));
+  }
+
+  private toDoc(f: Festival): SearchableDoc {
+    return {
+      id:        f.slug,
+      nombre:    f.nombre,
+      ciudad:    f.ciudad,
+      provincia: f.provincia,
+      generos:   f.generos.join(' '),
+      cartel:    f.cartel.map(a => a.nombre).join(' '),
+    };
+  }
+}
+```
+
+### SearchBarComponent — debounce in the component
+
+```ts
+// src/app/shared/ui/search-bar/search-bar.ts
+@Component({
+  selector: 'fv-search-bar',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ReactiveFormsModule, TranslatePipe],
+  template: `
+    <label class="sr-only" for="search">{{ 'search.label' | t }}</label>
+    <input
+      id="search"
+      type="search"
+      [formControl]="queryControl"
+      [placeholder]="'search.placeholder' | t"
+      autocomplete="off"
+    />
+  `,
+})
+export class SearchBarComponent implements OnInit {
+  private readonly searchService = inject(SearchService);
+  readonly results = output<SearchResult[]>();
+
+  readonly queryControl = new FormControl('', { nonNullable: true });
+
+  ngOnInit(): void {
+    this.queryControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+    ).subscribe(q => this.results.emit(this.searchService.search(q)));
+  }
+}
+```

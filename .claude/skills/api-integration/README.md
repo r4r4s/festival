@@ -97,3 +97,84 @@ A failed `parse()` throws `ZodError`. The HTTP interceptor catches it and normal
 ## Error Handling
 
 Delegated to [[error-handling]] via an `HttpInterceptor` that catches both network errors and `ZodError`s.
+
+---
+
+## Examples
+
+### Service with caching — stale-while-revalidate
+
+```ts
+// src/app/shared/data-access/festival.service.ts
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, shareReplay } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { z } from 'zod';
+import { environment } from '@env/environment';
+import { FestivalSchema } from '@shared/domain/festival.model';
+import type { Festival } from '@shared/domain/festival.model';
+
+@Injectable({ providedIn: 'root' })
+export class FestivalService {
+  private readonly http = inject(HttpClient);
+  private readonly base = environment.apiBaseUrl;
+
+  // Cached for the session — catalogue rarely changes mid-session.
+  // shareReplay(1) multicasts to all subscribers without re-fetching.
+  private readonly catalogue$ = this.http
+    .get<unknown>(`${this.base}/festivals`)
+    .pipe(
+      map(raw => z.array(FestivalSchema).parse(raw)),
+      shareReplay(1),
+    );
+
+  list(): Observable<Festival[]> {
+    return this.catalogue$;
+  }
+
+  getBySlug(slug: string): Observable<Festival> {
+    return this.http
+      .get<unknown>(`${this.base}/festivals/${slug}`)
+      .pipe(map(raw => FestivalSchema.parse(raw)));
+  }
+}
+```
+
+### Interceptor registration in app.config.ts
+
+```ts
+// src/app/app.config.ts
+import { ApplicationConfig } from '@angular/core';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { httpErrorInterceptor } from '@core/interceptors/http-error.interceptor';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideHttpClient(
+      withInterceptors([httpErrorInterceptor]),
+    ),
+    // ... other providers
+  ],
+};
+```
+
+### HttpResource — declarative resource (Angular 19+)
+
+```ts
+// Declarative alternative when a single resource is tied to route params
+@Component({ /* ... */ })
+export class FestivalDetailPageComponent {
+  private readonly route = inject(ActivatedRoute);
+
+  // Automatically re-fetches when the slug param changes.
+  // Zod parsing happens in the service; the component just reads the resource.
+  readonly festivalResource = httpResource<Festival>(() => ({
+    url:  `/api/festivals/${this.route.snapshot.params['slug']}`,
+    method: 'GET',
+  }));
+
+  readonly festival = this.festivalResource.value;   // Signal<Festival | undefined>
+  readonly loading  = this.festivalResource.isLoading; // Signal<boolean>
+}
+```
