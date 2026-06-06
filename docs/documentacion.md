@@ -271,6 +271,11 @@ src/assets/
 │       ├── rbf/         → logo-rbf.png
 │       ├── reve/        → logo-reve.jpeg
 │       └── zevra/       → logo-zevra.png
+│   └── sponsors/        → Logos de patrocinadores e instituciones (GVA, entidades culturales).
+│       │                  Reservados para el footer — no usados aún en ningún componente.
+│       ├── logo-gva-conselleria-educacio-cultura-esport.png → Logo de la Conselleria d'Educació,
+│       │                                                      Cultura, Innovació i Esport (GVA).
+│       └── logo-mediterranean-musix.png                     → Logo de Mediterranean Musix.
 ├── images-src/          → Imágenes fuente (PNG/JPEG). Comiteadas pero nunca servidas al usuario.
 │   ├── backgrounds/     → Fuentes de fondos y hero images antes de la conversión
 │   │   └── home-hero-sunset-beach.jpg
@@ -566,4 +571,5 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-06 | Nuevo material en `design/info-festivales/` | Añadida la carpeta `design/info-festivales/` con material gráfico de referencia para BIGSOUND, Latin Fest, Medusa, RBF, REVE Fest y Zevra: logos, carteles, creatividades por días y piezas de artistas destacados. |
 | 2026-06-06 | Cartel Valencia de Latin Fest | Añadido `design/info-festivales/latin/latin-cartel-valencia.webp` como cartel específico de Valencia para el material gráfico de referencia de Latin Fest. |
 | 2026-06-07 | Assets de festivales reales en `src/assets/` | Creadas las carpetas `src/assets/images/festivals/<slug>/` (6 festivales: bigsound, latin-fest, medusa, rbf, reve, zevra) con logos servibles, y `src/assets/images-src/festivals/<slug>/` con carteles fuente (PNG/JPEG/JXL, nunca servidos). El carrusel `featured-festivals` actualizado: 6 festivales reales (Bigsound, Latin Fest, Medusa, RBF, Reve, Zevra), logos con `object-fit: contain`, keyframe `fv-featured-marquee` añadido, animación mobile recalibrada para 6 items. Claves i18n `home.featured.cards.*` reemplazadas en `es.json`, `ca.json` y `en.json`. |
+| 2026-06-07 | Logos patrocinadores en `src/assets/images/sponsors/` | Creada la carpeta `src/assets/images/sponsors/` con los logos institucionales destinados al footer: `logo-gva-conselleria-educacio-cultura-esport.png` (Conselleria d'Educació, Cultura, Innovació i Esport de la GVA) y `logo-mediterranean-musix.png`. Renombrados desde nombres originales no conformes a kebab-case sin espacios. No usados en ningún componente aún. |
 | 2026-06-07 | Integración Transloco + hreflang + script de merge | **Step 1 — Transloco**: instalado `@jsverse/transloco@8.x`; añadido `src/app/core/initializers/transloco.loader.ts` (TranslocoHttpLoader); `app.config.ts` ampliado con `provideHttpClient(withFetch())`, `provideTransloco` (es/ca/en, fallback es) y `APP_INITIALIZER` que precarga 'es'; `TranslationService` refactorizado para inyectar `TranslocoService` de forma opcional (tests usan el fallback estático); `TranslatePipe` cambiado a `pure: false` y lee la signal `activeLang`; `NavBar` expone selector ES/CA/EN con `TranslationService.setLang()`; añadida clave `nav.langSwitcher` en los 3 JSON. **Step 2 — script de merge**: creada carpeta `scripts/` con `i18n-sync.mjs`; añadidos scripts `i18n:sync` e `i18n:check` a `package.json`. **Step 3 — hreflang**: añadido `baseUrl` a `Environment` y a ambos `environment.ts`; creado `src/app/core/platform/hreflang.service.ts`; `App` inyecta el servicio en su constructor. |
