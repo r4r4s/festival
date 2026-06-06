@@ -115,7 +115,7 @@ design/
 │   └── Sora/            → Sora variable font (headings, brand, hero emphasis)
 ├── info-festivales/     → Material gráfico de referencia para fichas informativas por festival
 │   ├── bigsound/        → Logo, carteles por sede y creatividades por días de BIGSOUND
-│   ├── latin/           → Logo y cartel base de Latin Fest
+│   ├── latin/           → Logo, cartel base y cartel de Valencia de Latin Fest
 │   ├── medusa/          → Logo, cartel por días y creatividades diarias de Medusa
 │   ├── rbf/             → Logo y creatividades de artistas destacados de RBF
 │   ├── reve/            → Logo y cartel base de REVE Fest
@@ -520,3 +520,4 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-06 | Nueva carpeta `tasks/` | Creada `/tasks/` como fuente única de verdad para planificación. Añadidos `ROADMAP.md` (roadmap por fases), `BACKLOG.md` (backlog priorizado), `IN_PROGRESS.md` (trabajo activo), `COMPLETED.md` (archivo de items completados). Removido el roadmap inline de `README.md` y reemplazado por referencia a `tasks/ROADMAP.md`. Actualizada esta documentación. |
 | 2026-06-06 | Carrusel local `featured-festivals` en home | Añadida la carpeta `src/app/features/home/ui/featured-festivals/` con `featured-festivals.{ts,html,scss,spec.ts}`. `home.page.*` mantiene el hero superior y monta debajo una sección de festivales destacados con tarjetas de imagen: carrusel sin fondo propio, sin CTA "Ver todos", movimiento continuo en desktop, avance cada 5 s en móvil y sin desplazamiento de tarjeta en hover. `src/assets/i18n/{es,ca,en}.json` amplía `home.featured.*` para el copy de la sección y las cuatro tarjetas. |
 | 2026-06-06 | Nuevo material en `design/info-festivales/` | Añadida la carpeta `design/info-festivales/` con material gráfico de referencia para BIGSOUND, Latin Fest, Medusa, RBF, REVE Fest y Zevra: logos, carteles, creatividades por días y piezas de artistas destacados. |
+| 2026-06-06 | Cartel Valencia de Latin Fest | Añadido `design/info-festivales/latin/latin-cartel-valencia.webp` como cartel específico de Valencia para el material gráfico de referencia de Latin Fest. |
