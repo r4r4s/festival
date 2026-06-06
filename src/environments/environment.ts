@@ -5,15 +5,24 @@
 // services. See `CLAUDE.md` § Configuration.
 // ============================================================================
 
+export interface Environment {
+  production: boolean;
+  defaultLocale: 'es-ES';
+  sanity: {
+    projectId: string;
+    dataset: 'development' | 'production';
+    apiVersion: '2024-01-01';
+    useCdn: boolean;
+  };
+}
+
 export const environment = {
   production: false,
-  defaultLocale: 'es-ES' as const,
+  defaultLocale: 'es-ES',
   sanity: {
     projectId: '',
     dataset: 'development',
     apiVersion: '2024-01-01',
     useCdn: false,
   },
-} as const;
-
-export type Environment = typeof environment;
+} satisfies Environment;
