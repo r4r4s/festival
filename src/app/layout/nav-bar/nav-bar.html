@@ -14,7 +14,15 @@
     <nav class="nav-bar__nav" [attr.aria-label]="'nav.aria.primary' | t">
       <ul class="nav-bar__nav-list">
         <li>
-          <a class="nav-bar__nav-link" data-testid="nav-link-inicio" routerLink="/">
+          <a
+            class="nav-bar__nav-link"
+            data-testid="nav-link-inicio"
+            routerLink="/"
+            routerLinkActive="nav-bar__nav-link--active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            #rlaHome="routerLinkActive"
+            [attr.aria-current]="rlaHome.isActive ? 'page' : null"
+          >
             {{ 'nav.home' | t }}
           </a>
         </li>
@@ -23,6 +31,9 @@
             class="nav-bar__nav-link"
             data-testid="nav-link-festivales"
             routerLink="/festivales"
+            routerLinkActive="nav-bar__nav-link--active"
+            #rlaFestivales="routerLinkActive"
+            [attr.aria-current]="rlaFestivales.isActive ? 'page' : null"
           >
             {{ 'nav.festivals' | t }}
           </a>
@@ -32,12 +43,22 @@
             class="nav-bar__nav-link"
             data-testid="nav-link-calendario"
             routerLink="/calendario"
+            routerLinkActive="nav-bar__nav-link--active"
+            #rlaCalendario="routerLinkActive"
+            [attr.aria-current]="rlaCalendario.isActive ? 'page' : null"
           >
             {{ 'nav.calendar' | t }}
           </a>
         </li>
         <li>
-          <a class="nav-bar__nav-link" data-testid="nav-link-explorar" routerLink="/explorar">
+          <a
+            class="nav-bar__nav-link"
+            data-testid="nav-link-explorar"
+            routerLink="/explorar"
+            routerLinkActive="nav-bar__nav-link--active"
+            #rlaExplorar="routerLinkActive"
+            [attr.aria-current]="rlaExplorar.isActive ? 'page' : null"
+          >
             {{ 'nav.explore' | t }}
           </a>
         </li>
@@ -46,6 +67,9 @@
             class="nav-bar__nav-link"
             data-testid="nav-link-sobre-nosotros"
             routerLink="/sobre-nosotros"
+            routerLinkActive="nav-bar__nav-link--active"
+            #rlaSobre="routerLinkActive"
+            [attr.aria-current]="rlaSobre.isActive ? 'page' : null"
           >
             {{ 'nav.about' | t }}
           </a>
