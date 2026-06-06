@@ -25,11 +25,23 @@
 
         <div class="home-page__actions" data-testid="home-hero-actions">
           <button class="home-page__button home-page__button--primary" type="button">
-            {{ 'home.hero.primaryCta' | t }}
+            <span class="home-page__button-icon" aria-hidden="true">
+              <svg lucideCalendar focusable="false" size="22" strokeWidth="2"></svg>
+            </span>
+            <span class="home-page__button-label">{{ 'home.hero.primaryCta' | t }}</span>
+            <span class="home-page__button-arrow" aria-hidden="true">
+              <svg lucideArrowRight focusable="false" size="22" strokeWidth="2"></svg>
+            </span>
           </button>
 
           <button class="home-page__button home-page__button--secondary" type="button">
-            {{ 'home.hero.secondaryCta' | t }}
+            <span class="home-page__button-icon" aria-hidden="true">
+              <svg lucideCalendar focusable="false" size="22" strokeWidth="2"></svg>
+            </span>
+            <span class="home-page__button-label">{{ 'home.hero.secondaryCta' | t }}</span>
+            <span class="home-page__button-arrow" aria-hidden="true">
+              <svg lucideArrowRight focusable="false" size="22" strokeWidth="2"></svg>
+            </span>
           </button>
         </div>
       </div>

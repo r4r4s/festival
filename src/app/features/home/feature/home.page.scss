@@ -155,17 +155,20 @@
 }
 
 .home-page__button {
-  @include focus-ring;
+  align-items: center;
+  display: inline-flex;
+  gap: var(--fv-space-2);
   border: 1px solid transparent;
   border-radius: var(--fv-radius-pill);
-  min-height: calc(var(--fv-space-8) - var(--fv-space-1));
+  min-height: 4rem;
   width: 100%;
-  justify-content: center;
-  padding-inline: var(--fv-space-5);
+  justify-content: space-between;
+  padding-inline: calc(var(--fv-space-4) + var(--fv-space-1));
   font: inherit;
-  font-size: var(--fv-text-base);
+  font-size: var(--fv-text-sm);
   font-weight: 700;
   line-height: 1;
+  text-align: left;
   cursor: pointer;
   transition:
     transform var(--fv-duration-base) var(--fv-ease-standard),
@@ -174,10 +177,16 @@
     box-shadow var(--fv-duration-base) var(--fv-ease-standard),
     color var(--fv-duration-base) var(--fv-ease-standard);
 
-  &:hover {
-    // Sub-token micro-lift (~2 px). Intentional sub-grid offset for the
-    // editorial CTA — not promoted to a spacing token.
-    transform: translateY(-2px);
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      // Sub-token micro-lift (~2 px). Intentional sub-grid offset for the
+      // editorial CTA — not promoted to a spacing token.
+      transform: translateY(-2px);
+    }
   }
 
   @include from(md) {
@@ -185,25 +194,51 @@
   }
 }
 
+.home-page__button-icon,
+.home-page__button-arrow {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+
+  svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+}
+
+.home-page__button-label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .home-page__button--primary {
-  background: var(--fv-gradient-brand);
-  color: var(--fv-text-primary);
-  box-shadow: var(--fv-shadow-elevated);
+  background: var(--fv-text-primary);
+  color: var(--fv-text-inverse);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .home-page__button--secondary {
-  background: color-mix(in srgb, var(--fv-bg-overlay) 92%, transparent);
-  border-color: var(--fv-border-strong);
+  background: color-mix(in srgb, var(--fv-text-primary) 6%, transparent);
+  border-color: color-mix(in srgb, var(--fv-text-primary) 54%, transparent);
   color: var(--fv-text-primary);
   backdrop-filter: blur(var(--fv-blur-glass));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 10px 24px rgba(0, 0, 0, 0.12);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .home-page__button {
     transition: none;
+  }
+}
 
-    &:hover {
-      transform: none;
-    }
+@media (hover: none), (pointer: coarse), (max-width: 767px) {
+  .home-page__button {
+    transition: none;
+    transform: none;
   }
 }
