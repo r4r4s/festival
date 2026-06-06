@@ -1,5 +1,5 @@
-<section class="home-page" aria-label="Inicio">
-  <article class="home-page__card">
+<section class="home-page" aria-label="Inicio" data-testid="home-page">
+  <article class="home-page__card" data-testid="home-hero-card">
     <img
       class="home-page__image"
       ngSrc="/assets/images/backgrounds/home-hero-sunset-beach-1200.webp"
@@ -13,6 +13,24 @@
 
     <div class="home-page__overlay" aria-hidden="true"></div>
 
-    <div class="home-page__content" aria-hidden="true"></div>
+    <div class="home-page__content">
+      <div class="home-page__copy">
+        <h1 class="home-page__title" data-testid="home-hero-title">{{ heroCopy.title }}</h1>
+
+        <p class="home-page__description" data-testid="home-hero-description">
+          {{ heroCopy.description }}
+        </p>
+
+        <div class="home-page__actions" data-testid="home-hero-actions">
+          <button class="home-page__button home-page__button--primary" type="button">
+            {{ heroCopy.primaryCta }}
+          </button>
+
+          <button class="home-page__button home-page__button--secondary" type="button">
+            {{ heroCopy.secondaryCta }}
+          </button>
+        </div>
+      </div>
+    </div>
   </article>
 </section>

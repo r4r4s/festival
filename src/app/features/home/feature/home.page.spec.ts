@@ -28,15 +28,24 @@ describe('HomePageComponent', () => {
     );
   });
 
-  it('keeps the hero as an image-only surface with overlay and empty content layers', () => {
+  it('renders the hero copy and static buttons', () => {
     const root = fixture.nativeElement as HTMLElement;
     const overlay = root.querySelector('.home-page__overlay');
-    const content = root.querySelector('.home-page__content');
+    const title = root.querySelector('[data-testid="home-hero-title"]');
+    const description = root.querySelector('[data-testid="home-hero-description"]');
+    const buttons = root.querySelectorAll('.home-page__button');
 
     expect(overlay).not.toBeNull();
-    expect(content).not.toBeNull();
-    expect(content?.children.length).toBe(0);
-    expect(content?.textContent?.trim()).toBe('');
-    expect(root.querySelector('h1, h2, h3, p, button')).toBeNull();
+    expect(title?.textContent?.trim()).toBe(
+      'Guía de festivales en Valencia, Alicante y Castellón.',
+    );
+    expect(description?.textContent?.trim()).toBe(
+      'Encuentra fechas, ubicaciones e información sobre los principales festivales de la Comunidad Valenciana.',
+    );
+    expect(buttons).toHaveLength(2);
+    expect(buttons[0]?.textContent?.trim()).toBe('Explorar festivales');
+    expect(buttons[1]?.textContent?.trim()).toBe('Ver calendario');
+    expect(buttons[0]?.getAttribute('type')).toBe('button');
+    expect(buttons[1]?.getAttribute('type')).toBe('button');
   });
 });

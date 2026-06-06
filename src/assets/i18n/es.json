@@ -1,0 +1,20 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "festivals": "Festivales",
+    "calendar": "Calendario",
+    "explore": "Explorar",
+    "about": "Sobre nosotros",
+    "search": "Buscar",
+    "theme": "Cambiar tema",
+    "menu": "Abrir menú"
+  },
+  "home": {
+    "hero": {
+      "title": "Guía de festivales en Valencia, Alicante y Castellón.",
+      "description": "Encuentra fechas, ubicaciones e información sobre los principales festivales de la Comunidad Valenciana.",
+      "primaryCta": "Explorar festivales",
+      "secondaryCta": "Ver calendario"
+    }
+  }
+}

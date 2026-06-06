@@ -1,19 +1,22 @@
+@use 'styles/breakpoints' as *;
+@use 'styles/mixins' as *;
+
 :host {
   display: block;
 }
 
 .home-page {
   width: 100%;
-  padding: var(--fv-space-4) var(--fv-space-5) var(--fv-space-7);
+  padding: var(--fv-space-4) var(--fv-space-4) var(--fv-space-7);
 
-  @media (min-width: 768px) {
+  @include from(md) {
     padding:
       var(--fv-space-5)
       calc(var(--fv-space-6) + var(--fv-space-1))
       var(--fv-space-7);
   }
 
-  @media (min-width: 1024px) {
+  @include from(lg) {
     padding: var(--fv-space-5) var(--fv-space-7) var(--fv-space-8);
   }
 }
@@ -24,19 +27,18 @@
   margin: 0 auto;
   overflow: hidden;
   isolation: isolate;
-  border-radius: 28px;
-  aspect-ratio: 4 / 3.2;
+  // Default (mobile): --fv-radius-xl (24px) — falls back to token below at md+
+  border-radius: var(--fv-radius-xl);
+  aspect-ratio: 4 / 5.2;
 
-  @media (min-width: 768px) {
+  @include from(md) {
+    // Slightly larger radius on wider viewports — between xl (24px) and 2xl (32px)
+    border-radius: calc(var(--fv-radius-xl) + var(--fv-space-1));
     aspect-ratio: 16 / 8;
   }
 
-  @media (min-width: 1024px) {
+  @include from(lg) {
     aspect-ratio: 16 / 5.6;
-  }
-
-  @media (max-width: 767px) {
-    border-radius: 24px;
   }
 }
 
@@ -79,19 +81,123 @@
 
 .home-page__content {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
-  padding: var(--fv-space-6);
+  padding: var(--fv-space-5);
   z-index: 2;
-  pointer-events: none;
 
-  @media (min-width: 768px) {
+  @include from(md) {
+    align-items: center;
     padding: var(--fv-space-7);
   }
 
-  @media (min-width: 1024px) {
+  @include from(lg) {
     padding:
       calc(var(--fv-space-8) + var(--fv-space-1))
       calc(var(--fv-space-8) + var(--fv-space-4));
+  }
+}
+
+.home-page__copy {
+  display: grid;
+  gap: var(--fv-space-3);
+  max-width: 100%;
+
+  @include from(md) {
+    max-width: 38rem;
+  }
+}
+
+.home-page__title,
+.home-page__description {
+  margin: 0;
+}
+
+.home-page__title {
+  font-family: var(--fv-font-hero-emphasis);
+  font-size: clamp(
+    calc(var(--fv-text-2xl) + var(--fv-space-1)),
+    8.8vw,
+    calc(var(--fv-text-4xl) + var(--fv-space-2))
+  );
+  line-height: 1.08;
+  letter-spacing: var(--fv-tracking-tight);
+  color: var(--fv-text-primary);
+  text-wrap: balance;
+}
+
+.home-page__description {
+  max-width: 100%;
+  font-size: clamp(var(--fv-text-base), 4.2vw, var(--fv-text-lg));
+  line-height: var(--fv-leading-relaxed);
+  color: var(--fv-text-secondary);
+
+  @include from(md) {
+    max-width: 28rem;
+    font-size: clamp(var(--fv-text-base), 2vw, var(--fv-text-lg));
+  }
+}
+
+.home-page__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fv-space-3);
+  pointer-events: auto;
+
+  @include from(md) {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+.home-page__button {
+  @include focus-ring;
+  border: 1px solid transparent;
+  border-radius: var(--fv-radius-pill);
+  min-height: calc(var(--fv-space-8) - var(--fv-space-1));
+  width: 100%;
+  justify-content: center;
+  padding-inline: var(--fv-space-5);
+  font: inherit;
+  font-size: var(--fv-text-base);
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    transform var(--fv-duration-base) var(--fv-ease-standard),
+    border-color var(--fv-duration-base) var(--fv-ease-standard),
+    background-color var(--fv-duration-base) var(--fv-ease-standard),
+    box-shadow var(--fv-duration-base) var(--fv-ease-standard),
+    color var(--fv-duration-base) var(--fv-ease-standard);
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  @include from(md) {
+    width: auto;
+  }
+}
+
+.home-page__button--primary {
+  background: var(--fv-gradient-brand);
+  color: var(--fv-text-primary);
+  box-shadow: var(--fv-shadow-elevated);
+}
+
+.home-page__button--secondary {
+  background: color-mix(in srgb, var(--fv-bg-overlay) 92%, transparent);
+  border-color: var(--fv-border-strong);
+  color: var(--fv-text-primary);
+  backdrop-filter: blur(16px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page__button {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
   }
 }

@@ -1,0 +1,20 @@
+{
+  "nav": {
+    "home": "Inici",
+    "festivals": "Festivals",
+    "calendar": "Calendari",
+    "explore": "Explora",
+    "about": "Sobre nosaltres",
+    "search": "Buscar",
+    "theme": "Canviar tema",
+    "menu": "Obrir menú"
+  },
+  "home": {
+    "hero": {
+      "title": "Guia de festivals a València, Alacant i Castelló.",
+      "description": "Troba dates, ubicacions i informació sobre els principals festivals de la Comunitat Valenciana.",
+      "primaryCta": "Explorar festivals",
+      "secondaryCta": "Veure calendari"
+    }
+  }
+}

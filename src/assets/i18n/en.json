@@ -1,0 +1,20 @@
+{
+  "nav": {
+    "home": "Home",
+    "festivals": "Festivals",
+    "calendar": "Calendar",
+    "explore": "Explore",
+    "about": "About us",
+    "search": "Search",
+    "theme": "Change theme",
+    "menu": "Open menu"
+  },
+  "home": {
+    "hero": {
+      "title": "Festival guide for Valencia, Alicante and Castellon.",
+      "description": "Find dates, locations and key information about the main festivals in the Valencian Community.",
+      "primaryCta": "Explore festivals",
+      "secondaryCta": "View calendar"
+    }
+  }
+}

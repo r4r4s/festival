@@ -206,7 +206,9 @@ src/assets/
 │   ├── festi-val-logo.webp → Logo principal (versión rasterizada usada por la cabecera)
 │   └── favicon.svg         → Favicon vectorial
 ├── i18n/                → Ficheros de traducción JSON: es.json (fuente), ca.json, en.json
-│   └── .gitkeep
+│   ├── ca.json          → Locale roadmap ca-ES-valencia. Mantiene paridad de claves con `es.json`.
+│   ├── en.json          → Locale roadmap en-GB. Mantiene paridad de claves con `es.json`.
+│   └── es.json          → Fuente de verdad es-ES. Claves con puntos (nav.home, home.hero.title…).
 ├── icons/               → Iconos SVG adicionales a Lucide
 │   └── .gitkeep
 ├── images/              → Imágenes WebP generadas por el conversor Sharp. Comiteadas, nunca editadas a mano.
@@ -455,3 +457,5 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-04 | Assets runtime | `src/assets/branding/festi-val-logo.webp` copiado desde `design/logo/`. `angular.json` ahora sirve `src/assets/` bajo `/assets/` (el bloque sólo exponía `public/`, dejando los SVG de marca inalcanzables en runtime). |
 | 2026-06-04 | Limpieza branding | Renombrado `logo1.webp` a `festi-val-logo.webp` para cumplir la convención de naming de assets y eliminadas las variantes no usadas `main-logo.svg` y `logo-icon.svg` de `src/assets/branding/`. |
 | 2026-06-04 | Nuevo material en `design/mockups/` | Añadidos `Gemini_Generated_Image_l8rwoql8rwoql8rw.png` e `image.png` como referencias visuales para iteraciones de interfaz. |
+| 2026-06-06 | Hero editorial e i18n base | Añadidos `src/assets/i18n/ca.json` y `src/assets/i18n/en.json` para mantener paridad de claves con `es.json`. La home deja de ser una superficie sólo visual y consume el copy de `home.hero.*` desde los JSON de locales, manteniendo los CTA como botones estáticos. |
+| 2026-06-06 | Skill `design-responsive-validation` | Añadidas `.claude/skills/design-responsive-validation/README.md` y `.codex/skills/design-responsive-validation/README.md` como fuente de verdad para la identidad visual no genérica y la validación responsive obligatoria (desktop / laptop / tablet / mobile 320 px). Cada tarea de UI debe terminar con un Design & Responsive Validation Report. Listadas en `CLAUDE.md`, `AGENTS.md` y esta documentación. |
