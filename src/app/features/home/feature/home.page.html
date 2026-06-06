@@ -15,19 +15,21 @@
 
     <div class="home-page__content">
       <div class="home-page__copy">
-        <h1 class="home-page__title" data-testid="home-hero-title">{{ heroCopy.title }}</h1>
+        <h1 class="home-page__title" data-testid="home-hero-title">
+          {{ 'home.hero.title' | t }}
+        </h1>
 
         <p class="home-page__description" data-testid="home-hero-description">
-          {{ heroCopy.description }}
+          {{ 'home.hero.description' | t }}
         </p>
 
         <div class="home-page__actions" data-testid="home-hero-actions">
           <button class="home-page__button home-page__button--primary" type="button">
-            {{ heroCopy.primaryCta }}
+            {{ 'home.hero.primaryCta' | t }}
           </button>
 
           <button class="home-page__button home-page__button--secondary" type="button">
-            {{ heroCopy.secondaryCta }}
+            {{ 'home.hero.secondaryCta' | t }}
           </button>
         </div>
       </div>

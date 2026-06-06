@@ -1,15 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 
-import esTranslations from '../../../../assets/i18n/es.json';
+import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
   selector: 'fv-home-page',
-  imports: [NgOptimizedImage],
+  imports: [NgOptimizedImage, TranslatePipe],
   templateUrl: './home.page.html',
   styleUrl: './home.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomePageComponent {
-  protected readonly heroCopy = esTranslations.home.hero;
-}
+export class HomePageComponent {}
