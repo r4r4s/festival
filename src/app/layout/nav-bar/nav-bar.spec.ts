@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { NavBar } from './nav-bar';
 
@@ -7,6 +8,7 @@ describe('NavBar', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [NavBar],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 
@@ -24,13 +26,21 @@ describe('NavBar', () => {
     );
   });
 
-  it('renders five primary navigation links', () => {
+  it('renders five primary navigation links with Spanish labels', () => {
     const fixture = TestBed.createComponent(NavBar);
     fixture.detectChanges();
     const links = (fixture.nativeElement as HTMLElement).querySelectorAll(
       '.nav-bar__nav-link',
     );
     expect(links.length).toBe(5);
+    const labels = Array.from(links).map((link) => link.textContent?.trim());
+    expect(labels).toEqual([
+      'Inicio',
+      'Festivales',
+      'Calendario',
+      'Explorar',
+      'Sobre nosotros',
+    ]);
   });
 
   it('exposes the search, theme toggle and hamburger controls', () => {

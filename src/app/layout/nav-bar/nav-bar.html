@@ -1,6 +1,6 @@
 <header class="nav-bar">
   <div class="nav-bar__inner">
-    <a class="nav-bar__brand" href="#" aria-label="festiVAL — inicio">
+    <a class="nav-bar__brand" routerLink="/" [attr.aria-label]="'nav.home' | t">
       <img
         class="nav-bar__brand-img"
         ngSrc="assets/branding/festi-val-logo.webp"
@@ -11,13 +11,45 @@
       />
     </a>
 
-    <nav class="nav-bar__nav" aria-label="Navegación principal">
+    <nav class="nav-bar__nav" [attr.aria-label]="'nav.aria.primary' | t">
       <ul class="nav-bar__nav-list">
-        <li><a class="nav-bar__nav-link" data-testid="nav-link-inicio" href="/">Inicio</a></li>
-        <li><a class="nav-bar__nav-link" data-testid="nav-link-festivales" href="/festivales">Festivales</a></li>
-        <li><a class="nav-bar__nav-link" data-testid="nav-link-calendario" href="#">Calendario</a></li>
-        <li><a class="nav-bar__nav-link" data-testid="nav-link-explorar" href="#">Explorar</a></li>
-        <li><a class="nav-bar__nav-link" data-testid="nav-link-sobre-nosotros" href="/sobre-nosotros">Sobre nosotros</a></li>
+        <li>
+          <a class="nav-bar__nav-link" data-testid="nav-link-inicio" routerLink="/">
+            {{ 'nav.home' | t }}
+          </a>
+        </li>
+        <li>
+          <a
+            class="nav-bar__nav-link"
+            data-testid="nav-link-festivales"
+            routerLink="/festivales"
+          >
+            {{ 'nav.festivals' | t }}
+          </a>
+        </li>
+        <li>
+          <a
+            class="nav-bar__nav-link"
+            data-testid="nav-link-calendario"
+            routerLink="/calendario"
+          >
+            {{ 'nav.calendar' | t }}
+          </a>
+        </li>
+        <li>
+          <a class="nav-bar__nav-link" data-testid="nav-link-explorar" routerLink="/explorar">
+            {{ 'nav.explore' | t }}
+          </a>
+        </li>
+        <li>
+          <a
+            class="nav-bar__nav-link"
+            data-testid="nav-link-sobre-nosotros"
+            routerLink="/sobre-nosotros"
+          >
+            {{ 'nav.about' | t }}
+          </a>
+        </li>
       </ul>
     </nav>
 
@@ -26,7 +58,7 @@
         class="nav-bar__icon-btn nav-bar__search"
         data-testid="nav-btn-buscar"
         type="button"
-        aria-label="Buscar"
+        [attr.aria-label]="'nav.search' | t"
       >
         <svg lucideSearch aria-hidden="true" focusable="false" size="20" strokeWidth="2"></svg>
       </button>
@@ -35,7 +67,7 @@
         class="nav-bar__icon-btn nav-bar__theme-toggle"
         data-testid="nav-btn-tema"
         type="button"
-        aria-label="Cambiar tema"
+        [attr.aria-label]="'nav.theme' | t"
       >
         <svg lucideMoon aria-hidden="true" focusable="false" size="20" strokeWidth="2"></svg>
       </button>
@@ -44,7 +76,7 @@
         class="nav-bar__icon-btn nav-bar__menu"
         data-testid="nav-btn-menu"
         type="button"
-        aria-label="Abrir menú"
+        [attr.aria-label]="'nav.menu' | t"
       >
         <svg lucideMenu aria-hidden="true" focusable="false" size="22" strokeWidth="2"></svg>
       </button>
