@@ -34,6 +34,13 @@
   --fv-accent-danger:      #{$fv-red-500};
   --fv-accent-warning:     #{$fv-amber-500};
 
+  // --- Nav / light-surface (Mediterranean canvas) ---
+  --fv-bg-nav:              #{$fv-sand-50};      // nav-bar background
+  --fv-text-nav:            #{$fv-navy-950};     // nav text on sand
+  --fv-border-nav:          rgba(15, 23, 42, 0.07); // hairline on sand
+  --fv-bg-nav-icon-hover:   rgba(15, 23, 42, 0.05);
+  --fv-bg-page:             #{$fv-sand-50};      // page-level canvas
+
   // --- Gradients ---
   --fv-gradient-brand:
     linear-gradient(135deg, #{$fv-violet-500} 0%, #{$fv-blue-500} 100%);

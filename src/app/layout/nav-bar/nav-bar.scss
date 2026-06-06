@@ -1,22 +1,16 @@
 // ============================================================================
 // nav-bar.scss — festiVAL · Layout · Static header
 // ============================================================================
-// NOTE: This component uses the Mediterranean brand palette declared in the
-// design brief (sand / navy / coral / orange / blue). Those values are
-// scoped to :host so they don't leak into the existing dark-surface tokens.
-// Once the brand pivot is confirmed at the contract level, these values
-// should be promoted into _tokens.scss / _semantic.scss.
-// ============================================================================
 
+@use 'styles/breakpoints' as *;
+
+// Component-level sizing values that fall outside the global token scale.
 :host {
-  --nav-sand:        #F8F5F0;
-  --nav-navy:        #0F172A;
-  --nav-coral:       #FF4D4D;
-  --nav-orange:      #FF8A3D;
-  --nav-blue:        #2D9CDB;
-  --nav-white:       #FFFFFF;
-  --nav-border:      rgba(15, 23, 42, 0.07);
-  --nav-icon-hover:  rgba(15, 23, 42, 0.05);
+  // Icon-button touch targets (UI sizing, not spacing tokens)
+  --nav-icon-size-sm: calc(var(--fv-space-6) + var(--fv-space-1)); // 36px
+  --nav-icon-size-md: calc(var(--fv-space-6) + var(--fv-space-2)); // 40px
+  // Nav link font size sits between --fv-text-sm (14px) and --fv-text-base (16px)
+  --nav-link-font-size: 15px;
   display: block;
   width: 100%;
 }
@@ -25,28 +19,28 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background: var(--nav-sand);
-  border-bottom: 1px solid var(--nav-border);
-  color: var(--nav-navy);
+  background: var(--fv-bg-nav);
+  border-bottom: 1px solid var(--fv-border-nav);
+  color: var(--fv-text-nav);
   font-family: var(--fv-font-ui);
 }
 
 .nav-bar__inner {
   max-width: 1320px;
   margin: 0 auto;
-  padding: 8px 16px;
+  padding: var(--fv-space-2) var(--fv-space-4);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--fv-space-3);
 
-  @media (min-width: 768px) {
-    padding: 12px 28px;
-    gap: 20px;
+  @include from(md) {
+    padding: var(--fv-space-3) calc(var(--fv-space-5) + var(--fv-space-1));
+    gap: calc(var(--fv-space-4) + var(--fv-space-1));
   }
 
-  @media (min-width: 1024px) {
-    padding: 12px 40px;
-    gap: 32px;
+  @include from(lg) {
+    padding: var(--fv-space-3) calc(var(--fv-space-6) + var(--fv-space-2));
+    gap: var(--fv-space-6);
   }
 }
 
@@ -68,11 +62,11 @@
   transform: scale(1.14);
   transform-origin: left center;
 
-  @media (min-width: 768px) {
+  @include from(md) {
     height: 46px;
   }
 
-  @media (min-width: 1024px) {
+  @include from(lg) {
     height: 65px;
   }
 }
@@ -89,17 +83,17 @@
   padding: 0;
   display: flex;
   align-items: center;
-  gap: 36px;
+  gap: calc(var(--fv-space-6) + var(--fv-space-1));
 }
 
 .nav-bar__nav-link {
   font-family: var(--fv-font-ui);
-  font-size: 15px;
+  font-size: var(--nav-link-font-size);
   font-weight: 700;
-  color: var(--nav-navy);
+  color: var(--fv-text-nav);
   text-decoration: none;
-  padding: 8px 2px;
-  letter-spacing: -0.005em;
+  padding: var(--fv-space-2) var(--fv-space-0);
+  letter-spacing: var(--fv-tracking-snug);
 }
 
 // ---- Right-side actions -----------------------------------------------------
@@ -107,34 +101,38 @@
 .nav-bar__actions {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--fv-space-1);
   margin-left: auto;
   flex-shrink: 0;
 
-  @media (min-width: 768px) {
-    gap: 8px;
+  @include from(md) {
+    gap: var(--fv-space-2);
   }
 
-  @media (min-width: 1024px) {
-    gap: 12px;
+  @include from(lg) {
+    gap: var(--fv-space-3);
   }
 }
 
 .nav-bar__icon-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 12px;
+  width: var(--nav-icon-size-sm);
+  height: var(--nav-icon-size-sm);
+  border-radius: var(--fv-radius-md);
   border: 0;
   background: transparent;
-  color: var(--nav-navy);
+  color: var(--fv-text-nav);
   display: inline-grid;
   place-items: center;
   cursor: pointer;
   padding: 0;
 
-  @media (min-width: 768px) {
-    width: 40px;
-    height: 40px;
+  &:hover {
+    background: var(--fv-bg-nav-icon-hover);
+  }
+
+  @include from(md) {
+    width: var(--nav-icon-size-md);
+    height: var(--nav-icon-size-md);
   }
 }
 
@@ -149,7 +147,7 @@
 
 // ---- Breakpoint reveals -----------------------------------------------------
 
-@media (min-width: 1024px) {
+@include from(lg) {
   .nav-bar__inner {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);

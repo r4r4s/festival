@@ -1,16 +1,11 @@
 // ============================================================================
 // app.scss — festiVAL · Root component
 // ============================================================================
-// Temporary page surface scoped to :host so the static nav-bar mockup reads
-// against its intended Mediterranean canvas (#F8F5F0). When the brand pivot
-// is confirmed, this background moves into _semantic.scss as --fv-bg-canvas.
-// ============================================================================
 
 :host {
-  --app-page-bg: #F8F5F0;
   display: block;
   min-height: 100vh;
-  background: var(--app-page-bg);
+  background: var(--fv-bg-page);
 }
 
 .app__main {

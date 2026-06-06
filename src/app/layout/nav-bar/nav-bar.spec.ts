@@ -37,8 +37,8 @@ describe('NavBar', () => {
     const fixture = TestBed.createComponent(NavBar);
     fixture.detectChanges();
     const root = fixture.nativeElement as HTMLElement;
-    expect(root.querySelector('.nav-bar__search')).not.toBeNull();
-    expect(root.querySelector('.nav-bar__theme-toggle')).not.toBeNull();
-    expect(root.querySelector('.nav-bar__menu')).not.toBeNull();
+    expect(root.querySelector('.nav-bar__search svg[lucidesearch]')).not.toBeNull();
+    expect(root.querySelector('.nav-bar__theme-toggle svg[lucidemoon]')).not.toBeNull();
+    expect(root.querySelector('.nav-bar__menu svg[lucidemenu]')).not.toBeNull();
   });
 });
