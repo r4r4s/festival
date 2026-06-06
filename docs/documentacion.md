@@ -24,6 +24,7 @@ festiVAL/
 ├── docs/               → Documentación del proyecto
 ├── public/             → Ficheros estáticos servidos tal cual (favicon, fuentes runtime)
 ├── src/                → Código fuente de la aplicación
+├── scripts/            → Scripts de utilidad Node.js no relacionados con el build de Angular
 ├── tasks/              → Planificación de proyectos, backlog, progreso y roadmap
 ├── .editorconfig       → Reglas de formato del editor (indentación, charset, trailing whitespace)
 ├── angular.json        → Configuración de Angular CLI (build, serve, test, lint, budgets, SSR)
@@ -131,6 +132,20 @@ Las instancias estáticas (`*/static/`) y la familia Space Grotesk se eliminaron
 
 ---
 
+## `scripts/` — Utilidades de proyecto
+
+Scripts Node.js ESM que complementan los comandos de Angular CLI. No forman parte del bundle.
+
+```
+scripts/
+└── i18n-sync.mjs   → Sincronizador de locales: lee es.json y propaga claves ausentes a ca.json
+                       y en.json usando el valor español como placeholder. Acepta --check para
+                       modo de sólo lectura (exit 1 si hay divergencias, útil en CI).
+                       Uso: npm run i18n:sync | npm run i18n:check
+```
+
+---
+
 ## `docs/` — Documentación
 
 ```
@@ -222,8 +237,8 @@ src/styles/
 ```
 src/environments/
 ├── environment.ts       → Entorno por defecto (development). `production: false`, `defaultLocale: 'es-ES'`,
-│                          bloque `sanity` (projectId, dataset, apiVersion, useCdn). Exporta el tipo `Environment`.
-└── environment.prod.ts  → Entorno de producción. Hereda el tipo `Environment` y fija `production: true`,
+│                          `baseUrl: 'http://localhost:4200'`, bloque `sanity`. Exporta el tipo `Environment`.
+└── environment.prod.ts  → Entorno de producción. `production: true`, `baseUrl: 'https://festival.example.com'`,
                            `useCdn: true` y `dataset: 'production'`.
 ```
 
@@ -279,15 +294,18 @@ src/assets/
 ```
 src/app/
 ├── app.ts               → Componente raíz (selector: fv-root, OnPush). Importa RouterOutlet
-│                          y NavBar (cabecera estática del sitio).
+│                          y NavBar. En el constructor inyecta HreflangService.apply() para
+│                          registrar las etiquetas hreflang en <head> al arrancar.
 ├── app.html             → Template del componente raíz: <fv-nav-bar /> + <main> con
 │                          <router-outlet />.
 ├── app.scss             → Estilos del componente raíz. Define el fondo de página
 │                          (--app-page-bg) sand sobre el que se asienta el mockup del header.
 ├── app.spec.ts          → Tests del componente raíz. Verifica creación y presencia de router-outlet.
 ├── app.config.ts        → Configuración de la aplicación cliente: registra es-ES (LOCALE_ID +
-│                          registerLocaleData), provideRouter, provideClientHydration con event replay.
-│                          Aquí se registrarán interceptores y APP_INITIALIZERs.
+│                          registerLocaleData), provideRouter, provideClientHydration, provideHttpClient
+│                          (withFetch), provideTransloco (availableLangs: es/ca/en, defaultLang: es,
+│                          loader: TranslocoHttpLoader) y APP_INITIALIZER que precarga 'es' antes del
+│                          primer render para evitar parpadeo de claves sin traducir.
 ├── app.config.server.ts → Configuración de la aplicación servidor. Extiende app.config.ts con
 │                          provideServerRendering y las rutas de SSR.
 ├── app.routes.ts        → Definición de rutas top-level. Cada feature se carga con loadChildren
@@ -307,11 +325,16 @@ src/app/core/
 ├── handlers/            → Implementaciones de ErrorHandler: log a consola en dev, envío a Sentry
 │   └── .gitkeep           en producción con tags de ruta, locale y festival slug.
 ├── initializers/        → Factorías APP_INITIALIZER: carga del catálogo desde Sanity, registro de
-│   └── .gitkeep           locale, hidratación de preferencias de tema desde localStorage.
+│   ├── .gitkeep           locale, hidratación de preferencias de tema desde localStorage.
+│   └── transloco.loader.ts → TranslocoHttpLoader: carga los ficheros JSON de traducción desde
+│                            `/assets/i18n/<lang>.json`. Inyectado en provideTransloco (app.config.ts).
 ├── tokens/              → InjectionTokens tipados para configuración inyectable.
 │   └── .gitkeep
 └── platform/            → Helpers de SSR: wrappers de isPlatformBrowser, guardas para APIs
-    └── .gitkeep           incompatibles con server (window, document, localStorage).
+    ├── .gitkeep           incompatibles con server (window, document, localStorage).
+    └── hreflang.service.ts → HreflangService: inyecta <link rel="alternate" hreflang="…"> para
+                             es/ca/en y x-default en <head>. Usa environment.baseUrl. Llamado una
+                             vez en el constructor de App.
 ```
 
 ### `src/app/layout/` — Shell de la aplicación
@@ -326,8 +349,9 @@ src/app/layout/
 │   ├── nav-bar.ts         vía `NgOptimizedImage` (`priority`), navegación principal (Home,
 │   ├── nav-bar.html       Festivals, Calendar, Explore, About), icono de búsqueda y toggle de
 │   ├── nav-bar.scss       tema. Mobile-first: en <1024 px sólo aparecen logo, búsqueda y
-│   └── nav-bar.spec.ts    hamburguesa. Fondo sand (paleta Mediterránea del brief) scopeado
-│                          localmente vía CSS custom properties.
+│   └── nav-bar.spec.ts    hamburguesa. Incluye selector de idioma ES/CA/EN (visible en desktop)
+│                          que llama a TranslationService.setLang(). aria-current="page" en el
+│                          enlace activo vía routerLinkActive.
 └── footer/              → Pie de página: navegación secundaria, enlaces legales, atribución.
     └── .gitkeep
 ```
@@ -400,19 +424,23 @@ src/app/shared/
 ├── data-access/         → Servicios y stores compartidos: FestivalService (Sanity HTTP),
 │   │                      ArtistService, VenueService, SearchService (MiniSearch),
 │   │                      CatalogueStore, FavouritesStore, SanityClientService, AnalyticsService.
-│   └── i18n/            → Capa i18n MVP basada en Signals.
+│   └── i18n/            → Capa i18n con Transloco.
 │       ├── translations.ts            → Importa `es.json` vía `@assets/i18n/es.json`. Exporta
 │       │                                `ES_TRANSLATIONS`, el tipo `Translations` y el tipo
 │       │                                `TranslationKey` (literal union de dotted paths).
-│       ├── translation.service.ts     → `TranslationService` (providedIn: 'root'). `t(key)`
-│       │                                resuelve dotted paths con fallback al key crudo.
+│       ├── translation.service.ts     → `TranslationService` (providedIn: 'root'). Inyecta
+│       │                                `TranslocoService` de forma opcional: en producción delega
+│       │                                en Transloco; en tests (sin Transloco provisto) usa el
+│       │                                bundle estático ES_TRANSLATIONS. Expone `t(key)`,
+│       │                                `setLang()` y la signal `activeLang`.
 │       └── translation.service.spec.ts → Specs del servicio.
 ├── domain/              → Modelos de dominio: interfaces TypeScript + schemas Zod.
 │   └── .gitkeep           festival.model.ts, artist.model.ts, venue.model.ts,
 │                          festival-error.model.ts. El schema Zod vive junto al tipo inferido.
 ├── pipes/               → Pipes genéricos reutilizables.
-│   ├── translate.pipe.ts      → Pipe puro `| t` que delega en `TranslationService`.
-│   │                            Uso: `{{ 'nav.home' | t }}`.
+│   ├── translate.pipe.ts      → Pipe impuro `| t` que delega en `TranslationService`.
+│   │                            Lee la signal `activeLang` para que Angular detecte cambios
+│   │                            de idioma y re-ejecute el pipe. Uso: `{{ 'nav.home' | t }}`.
 │   └── translate.pipe.spec.ts → Spec del pipe sobre un host standalone.
 ├── directives/          → Directivas genéricas compartidas.
 │   └── .gitkeep
@@ -467,7 +495,7 @@ Reglas de formato: UTF-8, espacios de 2, newline final, trim trailing whitespace
 
 ### `package.json`
 
-Scripts principales: `start` (ng serve), `build` (ng build), `test` (ng test), `lint` (ng lint), `watch` (ng build --watch). Prettier configurado inline. Dependencias principales: Angular 21, Express 5, RxJS 7, TypeScript 5.9. Dev: Angular CLI, Vitest, Angular ESLint.
+Scripts principales: `start` (ng serve), `build` (ng build), `test` (ng test), `lint` (ng lint), `watch` (ng build --watch), `i18n:sync` (propaga claves de es.json a ca.json/en.json), `i18n:check` (verifica paridad sin escribir; falla con exit 1 en CI). Prettier configurado inline. Dependencias principales: Angular 21, Express 5, RxJS 7, TypeScript 5.9, @jsverse/transloco 8.x. Dev: Angular CLI, Vitest, Angular ESLint.
 
 ---
 
@@ -538,3 +566,4 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-06 | Nuevo material en `design/info-festivales/` | Añadida la carpeta `design/info-festivales/` con material gráfico de referencia para BIGSOUND, Latin Fest, Medusa, RBF, REVE Fest y Zevra: logos, carteles, creatividades por días y piezas de artistas destacados. |
 | 2026-06-06 | Cartel Valencia de Latin Fest | Añadido `design/info-festivales/latin/latin-cartel-valencia.webp` como cartel específico de Valencia para el material gráfico de referencia de Latin Fest. |
 | 2026-06-07 | Assets de festivales reales en `src/assets/` | Creadas las carpetas `src/assets/images/festivals/<slug>/` (6 festivales: bigsound, latin-fest, medusa, rbf, reve, zevra) con logos servibles, y `src/assets/images-src/festivals/<slug>/` con carteles fuente (PNG/JPEG/JXL, nunca servidos). El carrusel `featured-festivals` actualizado: 6 festivales reales (Bigsound, Latin Fest, Medusa, RBF, Reve, Zevra), logos con `object-fit: contain`, keyframe `fv-featured-marquee` añadido, animación mobile recalibrada para 6 items. Claves i18n `home.featured.cards.*` reemplazadas en `es.json`, `ca.json` y `en.json`. |
+| 2026-06-07 | Integración Transloco + hreflang + script de merge | **Step 1 — Transloco**: instalado `@jsverse/transloco@8.x`; añadido `src/app/core/initializers/transloco.loader.ts` (TranslocoHttpLoader); `app.config.ts` ampliado con `provideHttpClient(withFetch())`, `provideTransloco` (es/ca/en, fallback es) y `APP_INITIALIZER` que precarga 'es'; `TranslationService` refactorizado para inyectar `TranslocoService` de forma opcional (tests usan el fallback estático); `TranslatePipe` cambiado a `pure: false` y lee la signal `activeLang`; `NavBar` expone selector ES/CA/EN con `TranslationService.setLang()`; añadida clave `nav.langSwitcher` en los 3 JSON. **Step 2 — script de merge**: creada carpeta `scripts/` con `i18n-sync.mjs`; añadidos scripts `i18n:sync` e `i18n:check` a `package.json`. **Step 3 — hreflang**: añadido `baseUrl` a `Environment` y a ambos `environment.ts`; creado `src/app/core/platform/hreflang.service.ts`; `App` inyecta el servicio en su constructor. |

@@ -8,6 +8,8 @@
 export interface Environment {
   production: boolean;
   defaultLocale: 'es-ES';
+  /** Absolute base URL used for hreflang and canonical tags. No trailing slash. */
+  baseUrl: string;
   sanity: {
     projectId: string;
     dataset: 'development' | 'production';
@@ -19,6 +21,7 @@ export interface Environment {
 export const environment = {
   production: false,
   defaultLocale: 'es-ES',
+  baseUrl: 'http://localhost:4200',
   sanity: {
     projectId: '',
     dataset: 'development',

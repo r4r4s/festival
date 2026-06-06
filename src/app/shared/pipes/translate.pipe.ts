@@ -2,9 +2,9 @@
 // translate.pipe.ts — festiVAL · Shared · i18n binding for templates
 // ============================================================================
 // Use:  {{ 'nav.home' | t }}
-// Pure pipe — re-evaluates when the input key changes or when the active
-// dictionary signal updates (Angular's signal-aware change detection covers
-// the latter).
+// Impure so Angular re-runs `transform` whenever change detection fires after
+// a language switch (Transloco's `reRenderOnLangChange: true` triggers a CD
+// cycle on the host view, which is enough to pick up the new value).
 // ============================================================================
 
 import { Pipe, PipeTransform, inject } from '@angular/core';
@@ -12,11 +12,12 @@ import { Pipe, PipeTransform, inject } from '@angular/core';
 import { TranslationService } from '@shared/data-access/i18n/translation.service';
 import type { TranslationKey } from '@shared/data-access/i18n/translations';
 
-@Pipe({ name: 't', pure: true })
+@Pipe({ name: 't', pure: false })
 export class TranslatePipe implements PipeTransform {
-  private readonly translator = inject(TranslationService);
+  readonly #translator = inject(TranslationService);
 
   transform(key: TranslationKey): string {
-    return this.translator.t(key);
+    this.#translator.activeLang(); // read Signal → Angular tracks lang changes
+    return this.#translator.t(key);
   }
 }

@@ -96,6 +96,46 @@
   letter-spacing: var(--fv-tracking-snug);
 }
 
+// ---- Language switcher -------------------------------------------------------
+
+.nav-bar__lang-switcher {
+  display: none; // mobile-first; revealed at lg alongside the nav
+  align-items: center;
+  gap: var(--fv-space-1);
+  flex-shrink: 0;
+}
+
+.nav-bar__lang-btn {
+  height: var(--nav-icon-size-sm);
+  min-width: var(--nav-icon-size-sm);
+  padding: 0 var(--fv-space-2);
+  border-radius: var(--fv-radius-md);
+  border: 1px solid transparent;
+  background: transparent;
+  color: color-mix(in srgb, var(--fv-text-nav) 65%, transparent);
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-xs);
+  font-weight: 700;
+  letter-spacing: var(--fv-tracking-wide);
+  cursor: pointer;
+  transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+
+  &:hover {
+    color: var(--fv-text-nav);
+    background: var(--fv-bg-nav-icon-hover);
+  }
+
+  &--active {
+    color: var(--fv-text-nav);
+    border-color: var(--fv-border-nav);
+    background: var(--fv-bg-nav-icon-hover);
+  }
+
+  @include from(md) {
+    height: var(--nav-icon-size-md);
+  }
+}
+
 // ---- Right-side actions -----------------------------------------------------
 
 .nav-bar__actions {
@@ -148,6 +188,10 @@
 // ---- Breakpoint reveals -----------------------------------------------------
 
 @include from(lg) {
+  .nav-bar__lang-switcher {
+    display: flex;
+  }
+
   .nav-bar__inner {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);

@@ -7,6 +7,7 @@ import type { Environment } from './environment';
 export const environment: Environment = {
   production: true,
   defaultLocale: 'es-ES',
+  baseUrl: 'https://festival.example.com',
   sanity: {
     projectId: '',
     dataset: 'production',

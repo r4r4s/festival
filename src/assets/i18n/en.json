@@ -8,6 +8,7 @@
     "search": "Search",
     "theme": "Change theme",
     "menu": "Open menu",
+    "langSwitcher": "Change language",
     "aria": {
       "primary": "Primary navigation"
     }
