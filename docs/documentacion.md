@@ -197,7 +197,10 @@ src/styles/
 
 ```
 src/environments/
-└── .gitkeep             → (Futuro: environment.ts y environment.prod.ts — URLs base, feature flags)
+├── environment.ts       → Entorno por defecto (development). `production: false`, `defaultLocale: 'es-ES'`,
+│                          bloque `sanity` (projectId, dataset, apiVersion, useCdn). Exporta el tipo `Environment`.
+└── environment.prod.ts  → Entorno de producción. Hereda el tipo `Environment` y fija `production: true`,
+                           `useCdn: true` y `dataset: 'production'`.
 ```
 
 ### `src/assets/` — Recursos estáticos
@@ -509,3 +512,4 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-06 | Locales europeos por país | Añadidos archivos de locale por país en `src/assets/i18n/` (`sq-al.json`, `de-de.json`, `hy-am.json`, `de-at.json`, `az-az.json`, `nl-be.json`, `be-by.json`, `bs-ba.json`, `bg-bg.json`, `el-cy.json`, `hr-hr.json`, `da-dk.json`, `sk-sk.json`, `sl-si.json`, `es-es.json`, `et-ee.json`, `fi-fi.json`, `fr-fr.json`, `ka-ge.json`, `el-gr.json`, `hu-hu.json`, `en-ie.json`, `is-is.json`, `it-it.json`, `kk-kz.json`, `sq-xk.json`, `lv-lv.json`, `de-li.json`, `lt-lt.json`, `lb-lu.json`, `mt-mt.json`, `sr-me.json`, `no-no.json`, `nl-nl.json`, `pl-pl.json`, `pt-pt.json`, `en-gb.json`, `cs-cz.json`, `ro-ro.json`, `ru-ru.json`, `it-sm.json`, `sr-rs.json`, `sv-se.json`, `de-ch.json`, `tr-tr.json`, `uk-ua.json`). `es.json` sigue siendo la fuente de verdad y el resto mantiene paridad de claves. |
 | 2026-06-06 | Skill `design-responsive-validation` | Añadidas `.claude/skills/design-responsive-validation/README.md` y `.codex/skills/design-responsive-validation/README.md` como fuente de verdad para la identidad visual no genérica y la validación responsive obligatoria (desktop / laptop / tablet / mobile 320 px). Cada tarea de UI debe terminar con un Design & Responsive Validation Report. Listadas en `CLAUDE.md`, `AGENTS.md` y esta documentación. |
 | 2026-06-06 | Skill `i18n-commit-policy` | Añadidas `.claude/skills/i18n-commit-policy/README.md` y `.codex/skills/i18n-commit-policy/README.md`. Política: durante el desarrollo sólo se edita `src/assets/i18n/es.json`; al preparar un commit se propagan las claves modificadas a los 44 locales europeos soportados (matriz país → BCP-47 incluida en la skill), se valida la paridad JSON y se emite un i18n Commit Translation Report antes de `git commit`. Listada en `CLAUDE.md`, `AGENTS.md` y esta documentación. |
+| 2026-06-06 | Entornos baseline | Eliminado `src/environments/.gitkeep`; creados `src/environments/environment.ts` y `environment.prod.ts` con `production`, `defaultLocale: 'es-ES'` y bloque `sanity` (projectId, dataset, apiVersion, useCdn). Cierra la deuda señalada en auditorías previas: las URL base, flags y endpoints viven aquí, nunca hardcodeados en servicios. |
