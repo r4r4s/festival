@@ -4,12 +4,12 @@ Multi-language support for **festiVAL**.
 
 ## Purpose
 
-Although the primary language is **Spanish (es-ES)**, the architecture must accommodate **Valencian (ca-ES-valencia)** and **English (en-GB)** as roadmap items.
+Although the primary language is **Spanish (es-ES)**, the architecture must accommodate additional locale files for every supported market without drifting in key structure.
 
 ## Strategy
 
 - **Transloco** for runtime language switching — `@angular/localize` is rejected because it requires one build per locale, which clashes with our Cloudflare Pages deploy model.
-- Translation files live in `src/assets/i18n/{es,ca,en}.json`.
+- Translation files live in `src/assets/i18n/*.json`.
 - Keys follow dotted paths: `festival.detail.lineup.title`.
 
 ## Date and number formatting
@@ -25,7 +25,7 @@ Although the primary language is **Spanish (es-ES)**, the architecture must acco
 - No hardcoded strings in templates or TS files.
 - Date formatting **never** uses `Intl.DateTimeFormat` directly or `new Date().toLocaleString()` — always go through `date-fns` so output is identical across SSR and CSR.
 - Currency through `CurrencyPipe`, never string interpolation with `€`.
-- Locale files must stay in sync (every key present in `es`, even if `ca` / `en` hold `[TODO]` placeholders). Owned by the **contenido** agent.
+- Locale files must stay in sync (every key present in `es.json`, even if non-Spanish locales hold placeholders). Owned by the **contenido** agent.
 
 ## Default Locale
 

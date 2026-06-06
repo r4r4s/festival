@@ -54,7 +54,7 @@ festiVAL/
 │   │   ├── images/            # generated WebP output — committed, never hand-edited
 │   │   ├── images-src/        # source PNG/JPEG — committed, never shipped to the user
 │   │   ├── icons/             # SVG icon set (additional to Lucide)
-│   │   ├── i18n/              # translation files: es.json (source), ca.json, en.json
+│   │   ├── i18n/              # translation files: es.json (source) + additional locale JSON files
 │   │   └── maps/              # MapLibre style JSON (see [[maps]])
 │   ├── environments/          # environment.ts, environment.prod.ts
 │   ├── styles/                # global SCSS (see "Global styles" below)
