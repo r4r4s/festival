@@ -22,39 +22,50 @@ interface FeaturedFestival {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeaturedFestivalsComponent {
-  // Placeholder image reused across cards until each festival has its own poster
-  // committed under src/assets/images/festivals/<slug>/ (asset-organization skill).
-  private static readonly PLACEHOLDER_IMG = '/assets/images/backgrounds/home-hero-sunset-beach-1200.webp';
-
   readonly isPaused = signal(false);
+
   readonly festivals = [
     {
-      slug: 'arenal-sound',
-      dateKey: 'home.featured.cards.arenalSound.date',
-      nameKey: 'home.featured.cards.arenalSound.name',
-      locationKey: 'home.featured.cards.arenalSound.location',
-      image: { src: FeaturedFestivalsComponent.PLACEHOLDER_IMG, alt: 'Arenal Sound' },
+      slug: 'bigsound',
+      dateKey: 'home.featured.cards.bigsound.date',
+      nameKey: 'home.featured.cards.bigsound.name',
+      locationKey: 'home.featured.cards.bigsound.location',
+      image: { src: '/assets/images/festivals/bigsound/logo-bigsound.png', alt: 'Bigsound Festival' },
     },
     {
-      slug: 'las-fallas',
-      dateKey: 'home.featured.cards.lasFallas.date',
-      nameKey: 'home.featured.cards.lasFallas.name',
-      locationKey: 'home.featured.cards.lasFallas.location',
-      image: { src: FeaturedFestivalsComponent.PLACEHOLDER_IMG, alt: 'Las Fallas' },
+      slug: 'latin-fest',
+      dateKey: 'home.featured.cards.latinFest.date',
+      nameKey: 'home.featured.cards.latinFest.name',
+      locationKey: 'home.featured.cards.latinFest.location',
+      image: { src: '/assets/images/festivals/latin-fest/logo-latin-fest.webp', alt: 'Latin Fest' },
     },
     {
-      slug: 'la-tomatina',
-      dateKey: 'home.featured.cards.laTomatina.date',
-      nameKey: 'home.featured.cards.laTomatina.name',
-      locationKey: 'home.featured.cards.laTomatina.location',
-      image: { src: FeaturedFestivalsComponent.PLACEHOLDER_IMG, alt: 'La Tomatina' },
+      slug: 'medusa',
+      dateKey: 'home.featured.cards.medusa.date',
+      nameKey: 'home.featured.cards.medusa.name',
+      locationKey: 'home.featured.cards.medusa.location',
+      image: { src: '/assets/images/festivals/medusa/logo-medusa-2026.png', alt: 'Medusa Festival' },
     },
     {
-      slug: 'fib-benicassim',
-      dateKey: 'home.featured.cards.fibBenicassim.date',
-      nameKey: 'home.featured.cards.fibBenicassim.name',
-      locationKey: 'home.featured.cards.fibBenicassim.location',
-      image: { src: FeaturedFestivalsComponent.PLACEHOLDER_IMG, alt: 'FIB Benicàssim' },
+      slug: 'rbf',
+      dateKey: 'home.featured.cards.rbf.date',
+      nameKey: 'home.featured.cards.rbf.name',
+      locationKey: 'home.featured.cards.rbf.location',
+      image: { src: '/assets/images/festivals/rbf/logo-rbf.png', alt: 'Reggaeton Beach Festival' },
+    },
+    {
+      slug: 'reve',
+      dateKey: 'home.featured.cards.reve.date',
+      nameKey: 'home.featured.cards.reve.name',
+      locationKey: 'home.featured.cards.reve.location',
+      image: { src: '/assets/images/festivals/reve/logo-reve.jpeg', alt: 'Reve Festival' },
+    },
+    {
+      slug: 'zevra',
+      dateKey: 'home.featured.cards.zevra.date',
+      nameKey: 'home.featured.cards.zevra.name',
+      locationKey: 'home.featured.cards.zevra.location',
+      image: { src: '/assets/images/festivals/zevra/logo-zevra.png', alt: 'Zevra Festival' },
     },
   ] as const satisfies readonly FeaturedFestival[];
 

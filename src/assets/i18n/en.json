@@ -22,25 +22,35 @@
     "featured": {
       "title": "Featured festivals",
       "cards": {
-        "arenalSound": {
-          "date": "AUG 27-28",
-          "name": "Arenal Sound",
-          "location": "Burriana, Castellón"
-        },
-        "lasFallas": {
-          "date": "MAR 15-19",
-          "name": "Las Fallas",
+        "bigsound": {
+          "date": "JUN 26-27",
+          "name": "Bigsound Festival",
           "location": "Valencia"
         },
-        "laTomatina": {
-          "date": "AUG 28",
-          "name": "La Tomatina",
-          "location": "Buñol, Valencia"
+        "latinFest": {
+          "date": "JUL 17-18",
+          "name": "Latin Fest",
+          "location": "Valencia"
         },
-        "fibBenicassim": {
-          "date": "JUL 18-20",
-          "name": "FIB Benicàssim",
-          "location": "Benicàssim, Castellón"
+        "medusa": {
+          "date": "AUG 13-17",
+          "name": "Medusa Festival",
+          "location": "Cullera, Valencia"
+        },
+        "rbf": {
+          "date": "AUG 2026",
+          "name": "Reggaeton Beach Festival",
+          "location": "Benidorm, Alicante"
+        },
+        "reve": {
+          "date": "2026",
+          "name": "Reve Festival",
+          "location": "Valencia"
+        },
+        "zevra": {
+          "date": "JUL 24-27",
+          "name": "Zevra Festival",
+          "location": "Cullera, Valencia"
         }
       }
     }

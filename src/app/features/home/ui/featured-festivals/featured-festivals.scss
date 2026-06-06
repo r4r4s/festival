@@ -62,11 +62,12 @@
   display: flex;
   gap: var(--featured-card-gap);
   width: max-content;
-  animation: fv-featured-mobile calc(var(--featured-mobile-step) * 4) ease-in-out infinite;
+  // 6 festivals × 5s each
+  animation: fv-featured-mobile calc(var(--featured-mobile-step) * 6) ease-in-out infinite;
   will-change: transform;
 
   @include from(md) {
-    animation: fv-featured-marquee 28s linear infinite;
+    animation: fv-featured-marquee 42s linear infinite;
   }
 }
 
@@ -95,6 +96,7 @@
   border-radius: var(--fv-radius-xl);
   overflow: hidden;
   isolation: isolate;
+  // Dark surface so transparent-bg logos (Bigsound, Medusa, Zevra) are legible
   background: var(--fv-bg-surface);
 
   @include from(md) {
@@ -107,9 +109,15 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  // contain keeps the logo fully visible; padding adds breathing room
+  object-fit: contain;
   object-position: center;
+  padding: var(--fv-space-5);
   z-index: 0;
+
+  @include from(md) {
+    padding: var(--fv-space-6);
+  }
 }
 
 .featured-festivals__overlay {
@@ -121,9 +129,9 @@
     linear-gradient(
       180deg,
       transparent 0%,
-      transparent 38%,
-      color-mix(in srgb, var(--fv-bg-canvas) 46%, transparent) 64%,
-      color-mix(in srgb, var(--fv-bg-canvas) 82%, transparent) 100%
+      transparent 55%,
+      color-mix(in srgb, var(--fv-bg-surface) 55%, transparent) 75%,
+      color-mix(in srgb, var(--fv-bg-surface) 88%, transparent) 100%
     );
 }
 
@@ -191,24 +199,19 @@
   }
 }
 
+// Infinite marquee — translate by -50% (one full group width) for seamless loop
+@keyframes fv-featured-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+// Mobile step-by-step — 6 festivals, each card = 1/12 of total track (2 groups × 6)
+// Each step = 8.333% = 100% / 12 items
 @keyframes fv-featured-mobile {
-  0%,
-  20% {
-    transform: translateX(0);
-  }
-
-  25%,
-  45% {
-    transform: translateX(-12.5%);
-  }
-
-  50%,
-  70% {
-    transform: translateX(-25%);
-  }
-
-  75%,
-  100% {
-    transform: translateX(-37.5%);
-  }
+  0%,   13% { transform: translateX(0); }
+  16%,  30% { transform: translateX(-8.333%); }
+  33%,  47% { transform: translateX(-16.667%); }
+  50%,  64% { transform: translateX(-25%); }
+  66%,  80% { transform: translateX(-33.333%); }
+  83%, 100% { transform: translateX(-41.667%); }
 }

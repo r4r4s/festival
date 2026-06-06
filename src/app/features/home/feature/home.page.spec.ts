@@ -48,6 +48,6 @@ describe('HomePageComponent', () => {
     const section = root.querySelector('[data-testid="featured-festivals"]');
 
     expect(section).not.toBeNull();
-    expect(section?.querySelectorAll('[data-testid="featured-festivals-card-name"]')).toHaveLength(8);
+    expect(section?.querySelectorAll('[data-testid="featured-festivals-card-name"]')).toHaveLength(12);
   });
 });

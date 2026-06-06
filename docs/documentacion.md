@@ -243,13 +243,29 @@ src/assets/
 ├── icons/               → Iconos SVG adicionales a Lucide
 │   └── .gitkeep
 ├── images/              → Imágenes WebP generadas por el conversor Sharp. Comiteadas, nunca editadas a mano.
-│   └── backgrounds/     → Fondos y hero images optimizadas para runtime
-│       ├── home-hero-sunset-beach-800.webp
-│       ├── home-hero-sunset-beach-1200.webp
-│       └── home-hero-sunset-beach-1600.webp
+│   ├── backgrounds/     → Fondos y hero images optimizadas para runtime
+│   │   ├── home-hero-sunset-beach-800.webp
+│   │   ├── home-hero-sunset-beach-1200.webp
+│   │   └── home-hero-sunset-beach-1600.webp
+│   └── festivals/       → Logos de festivales en su formato original (PNG/WebP/JPEG).
+│       │                  Las variantes WebP multi-resolución se generarán con Sharp cuando se integre
+│       │                  el pipeline de build. Organizadas por slug de festival.
+│       ├── bigsound/    → logo-bigsound.png
+│       ├── latin-fest/  → logo-latin-fest.webp
+│       ├── medusa/      → logo-medusa-2026.png
+│       ├── rbf/         → logo-rbf.png
+│       ├── reve/        → logo-reve.jpeg
+│       └── zevra/       → logo-zevra.png
 ├── images-src/          → Imágenes fuente (PNG/JPEG). Comiteadas pero nunca servidas al usuario.
-│   └── backgrounds/     → Fuentes de fondos y hero images antes de la conversión
-│       └── home-hero-sunset-beach.jpg
+│   ├── backgrounds/     → Fuentes de fondos y hero images antes de la conversión
+│   │   └── home-hero-sunset-beach.jpg
+│   └── festivals/       → Carteles y creatividades fuente de cada festival (organizados por slug).
+│       ├── bigsound/    → cartel-bigsound-valencia-2026.jpg
+│       ├── latin-fest/  → cartel-latin-fest-benidorm-2026.png, cartel-latin-fest-valencia-2026.webp
+│       ├── medusa/      → cartel-medusa-2026.jpg, cartel-medusa-{jueves,viernes,sabado,domingo}-2026.png
+│       ├── rbf/         → (sin cartel por ahora)
+│       ├── reve/        → cartel-reve-roig-arena-valencia-2026.jxl (JPEG XL, requiere conversión)
+│       └── zevra/       → cartel-zevra-2026.jpg, cartel-zevra-{viernes,sabado,domingo}-2026.jpeg
 └── maps/                → Fichero JSON de estilo MapLibre (tema dark del mapa)
     └── .gitkeep
 ```
@@ -521,3 +537,4 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-06 | Carrusel local `featured-festivals` en home | Añadida la carpeta `src/app/features/home/ui/featured-festivals/` con `featured-festivals.{ts,html,scss,spec.ts}`. `home.page.*` mantiene el hero superior y monta debajo una sección de festivales destacados con tarjetas de imagen: carrusel sin fondo propio, sin CTA "Ver todos", movimiento continuo en desktop, avance cada 5 s en móvil y sin desplazamiento de tarjeta en hover. `src/assets/i18n/{es,ca,en}.json` amplía `home.featured.*` para el copy de la sección y las cuatro tarjetas. |
 | 2026-06-06 | Nuevo material en `design/info-festivales/` | Añadida la carpeta `design/info-festivales/` con material gráfico de referencia para BIGSOUND, Latin Fest, Medusa, RBF, REVE Fest y Zevra: logos, carteles, creatividades por días y piezas de artistas destacados. |
 | 2026-06-06 | Cartel Valencia de Latin Fest | Añadido `design/info-festivales/latin/latin-cartel-valencia.webp` como cartel específico de Valencia para el material gráfico de referencia de Latin Fest. |
+| 2026-06-07 | Assets de festivales reales en `src/assets/` | Creadas las carpetas `src/assets/images/festivals/<slug>/` (6 festivales: bigsound, latin-fest, medusa, rbf, reve, zevra) con logos servibles, y `src/assets/images-src/festivals/<slug>/` con carteles fuente (PNG/JPEG/JXL, nunca servidos). El carrusel `featured-festivals` actualizado: 6 festivales reales (Bigsound, Latin Fest, Medusa, RBF, Reve, Zevra), logos con `object-fit: contain`, keyframe `fv-featured-marquee` añadido, animación mobile recalibrada para 6 items. Claves i18n `home.featured.cards.*` reemplazadas en `es.json`, `ca.json` y `en.json`. |
