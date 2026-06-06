@@ -20,7 +20,7 @@ Project stack (canonical choices — agents must respect these):
 | Layer            | Technology                          | Notes                                                                 |
 | ---------------- | ----------------------------------- | --------------------------------------------------------------------- |
 | Framework        | Angular 21 + SSR                    | Standalone, Signals-first                                              |
-| Icons            | **Lucide** (`lucide-angular`)       | Single icon system, tree-shakeable, line style consistent with the UI |
+| Icons            | **Lucide** (`@lucide/angular`)      | Single icon system, tree-shakeable, line style consistent with the UI |
 | Dates            | **date-fns** + `locale/es`          | Spanish formatting (`"12 – 16 jul 2026"`). Owned by **contenido**     |
 | Validation       | **Zod**                             | Boundary validation of HTTP DTOs. Owned by **sistemas**               |
 | Maps             | **MapLibre GL JS** + Protomaps tiles | OSS, no Mapbox/Google fees. Used in venue/festival detail pages       |
