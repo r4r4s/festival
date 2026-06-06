@@ -54,7 +54,8 @@ Contiene la configuración específica de Codex para agentes, skills y comandos 
 │   ├── audit-structure.md  → Auditoría automatizada de arquitectura y estructura
 │   └── autocommit.md       → Workflow de commits semánticos con pre-commit gate
 └── skills/                 → Skills reutilizables que documentan patrones del proyecto
-    └── asset-organization/README.md  → Reglas obligatorias para carpetas, nombres y limpieza de assets visuales
+    ├── asset-organization/README.md         → Reglas obligatorias para carpetas, nombres y limpieza de assets visuales
+    └── design-responsive-validation/README.md → Identidad visual no genérica + validación responsive obligatoria
 ```
 
 ---
@@ -79,6 +80,7 @@ Contiene la configuración de agentes especializados, skills reutilizables y wor
 │   └── autocommit.md        → Workflow de commits semánticos (Conventional Commits + pre-commit gate)
 └── skills/                  → Skills reutilizables que documentan patrones del proyecto
     ├── asset-organization/README.md     → Reglas obligatorias para carpetas, nombres y limpieza de assets visuales
+    ├── design-responsive-validation/README.md → Identidad visual no genérica + validación responsive obligatoria
     ├── accessibility/README.md          → WCAG 2.1 AA: contraste, focus, ARIA, navegación por teclado
     ├── api-integration/README.md        → Servicios HTTP tipados, validación Zod en frontera, caching
     ├── error-handling/README.md         → FestivalError normalizado, Sentry, mensajes i18n al usuario
