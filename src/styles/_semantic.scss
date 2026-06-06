@@ -34,6 +34,9 @@
   --fv-accent-danger:      #{$fv-red-500};
   --fv-accent-warning:     #{$fv-amber-500};
 
+  // --- Effects ---
+  --fv-blur-glass: 16px; // backdrop-filter blur for glass surfaces (see `glass()` mixin)
+
   // --- Nav / light-surface (Mediterranean canvas) ---
   --fv-bg-nav:              #{$fv-sand-50};      // nav-bar background
   --fv-text-nav:            #{$fv-navy-950};     // nav text on sand
