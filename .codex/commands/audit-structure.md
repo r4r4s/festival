@@ -31,7 +31,7 @@ Read in this order — do not skip:
 - `.claude/skills/project-structure/` (folder rules)
 - `.claude/skills/theming-styling/` (token rules)
 - `.claude/skills/api-integration/` (DTO + Zod rules)
-- `.claude/skills/state-management/`, `routing-navigation/`, `performance-optimization/`, `error-handling/`, `internationalization/`, `accessibility/`, `testing-patterns/`, `ui-components/`, `forms-validation/`, `search/`, `maps/`, `seo-meta/` — as available
+- `.claude/skills/state-management/`, `sanity-cms/`, `routing-navigation/`, `performance-optimization/`, `error-handling/`, `internationalization/`, `accessibility/`, `testing-patterns/`, `ui-components/`, `forms-validation/`, `search/`, `maps/`, `seo-meta/` — as available
 - `.claude/agents/*.md` — for agent ownership boundaries
 - `angular.json` — styles entry, budgets, locale, prerender config
 - `tsconfig.json` — path aliases

@@ -95,7 +95,7 @@ Before making any modification, agents **must** review the applicable project `.
 
 - Always read `AGENTS.md` for the project contract.
 - Read `docs/documentacion.md` before structural changes.
-- Read the relevant `.Codex/agents/*.md` and `.Codex/skills/*/README.md` files for the touched area.
+- Read the relevant `.Codex/agents/*.md` and `.Codex/skills/*/SKILL.md` files for the touched area.
 
 If no specific agent or skill applies, still review `AGENTS.md` and any nearby `.md` that documents the files being changed.
 
@@ -125,6 +125,7 @@ The project defines reusable skills in `.Codex/skills/` that document patterns s
 - **`project-structure`** 🗂️ — **MANDATORY.** Canonical folder layout, naming rules, placement decision tree, path aliases. Consult **before** creating, moving, or renaming any file. The structure is a contract that must remain stable.
 - **`state-management`** — Signal patterns, NgRx SignalStore, persistence of filters and favourites.
 - **`api-integration`** — Typed HTTP services, DTOs, interceptors, caching.
+- **`sanity-cms`** — Festival catalogue from Sanity (headless CMS) via `@sanity/client`: GROQ queries, read-only client in `data-access`, Zod validation at the boundary.
 - **`routing-navigation`** — Spanish URL schema (`/festivales/:slug`), lazy loading, resolvers, functional guards.
 - **`ui-components`** — Catalogue of reusable components (`FestivalCard`, `FestivalHero`, `LineupGrid`, `FilterChip`…).
 - **`forms-validation`** — Typed Reactive Forms, custom validators (DNI, date/price ranges), errors via i18n.
@@ -139,7 +140,7 @@ The project defines reusable skills in `.Codex/skills/` that document patterns s
 - **`search`** — Client-side fuzzy search with MiniSearch, field boosts, diacritic-stripping for Spanish.
 - **`maps`** — MapLibre GL JS + Protomaps tiles, lazy-loaded, SSR-safe, accessible with text equivalents.
 - **`design-responsive-validation`** 🎨 — **MANDATORY for every UI task.** Bans generic AI-looking layouts, requires a distinctive festiVAL identity, enforces responsive checks across desktop / laptop / tablet / mobile (320 px floor), and demands a Design & Responsive Validation Report at task completion.
-- **`i18n-commit-policy`** 🌍 — **MANDATORY at commit time.** During normal development only `es.json` is edited; at commit / finalization the matching keys are propagated to every supported European locale (44 countries), JSON parity is verified, and an i18n Commit Translation Report is emitted before `git commit` runs.
+- **`i18n-commit-policy`** 🌍 — **MANDATORY at commit time.** During normal development only `es.json` is edited; at commit / finalization the matching keys are propagated to every supported locale (`ca`, `en`), JSON parity is verified with `npm run i18n:check`, and an i18n Commit Translation Report is emitted before `git commit` runs.
 
 ## Architecture
 

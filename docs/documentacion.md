@@ -55,10 +55,9 @@ Contiene la configuración específica de Codex para agentes, skills y comandos 
 ├── commands/               → Comandos de workflow y automatización
 │   ├── audit-structure.md  → Auditoría automatizada de arquitectura y estructura
 │   └── autocommit.md       → Workflow de commits semánticos con pre-commit gate
-└── skills/                 → Skills reutilizables que documentan patrones del proyecto
-    ├── asset-organization/README.md           → Reglas obligatorias para carpetas, nombres y limpieza de assets visuales
-    ├── design-responsive-validation/README.md → Identidad visual no genérica + validación responsive obligatoria
-    └── i18n-commit-policy/README.md           → Política de traducción en commits: sólo es.json en desarrollo, propagación a todos los locales al cerrar
+└── skills/                 → Skills reutilizables (mismo conjunto y formato SKILL.md que `.claude/skills/`, en paridad)
+    ├── <skill>/SKILL.md                       → Frontmatter (name, description) + cuerpo; espejo 1:1 de `.claude/skills/`
+    └── <skill>/references/                    → (opcional) Material de referencia pesado extraído del SKILL.md
 ```
 
 ---
@@ -81,25 +80,33 @@ Contiene la configuración de agentes especializados, skills reutilizables y wor
 ├── commands/                → Comandos de workflow y automatización
 │   ├── audit-structure.md    → Auditoría automatizada de arquitectura: valida estructura, tokens, skills
 │   └── autocommit.md        → Workflow de commits semánticos (Conventional Commits + pre-commit gate)
-└── skills/                  → Skills reutilizables que documentan patrones del proyecto
-    ├── asset-organization/README.md     → Reglas obligatorias para carpetas, nombres y limpieza de assets visuales
-    ├── design-responsive-validation/README.md → Identidad visual no genérica + validación responsive obligatoria
-    ├── i18n-commit-policy/README.md     → Política de traducción en commits: sólo es.json en desarrollo, propagación a todos los locales al cerrar
-    ├── accessibility/README.md          → WCAG 2.1 AA: contraste, focus, ARIA, navegación por teclado
-    ├── api-integration/README.md        → Servicios HTTP tipados, validación Zod en frontera, caching
-    ├── error-handling/README.md         → FestivalError normalizado, Sentry, mensajes i18n al usuario
-    ├── forms-validation/README.md       → Reactive Forms tipados, validadores custom, errores inline
-    ├── internationalization/README.md   → Transloco, date-fns, locales es/ca/en, ICU MessageFormat
-    ├── maps/README.md                   → MapLibre GL JS + Protomaps, lazy-loading, estilo dark custom
-    ├── performance-optimization/README.md → OnPush, @defer, imágenes WebP, budgets, SSR, Sharp converter
-    ├── project-structure/README.md      → Estructura feature-sliced canónica (este documento la resume)
-    ├── routing-navigation/README.md     → Esquema de URLs en español, loadChildren/loadComponent, resolvers
-    ├── search/README.md                 → MiniSearch: búsqueda fuzzy client-side con boost por campo
-    ├── seo-meta/README.md               → Title/description por ruta, JSON-LD Event, OG, sitemap, canonicals
-    ├── state-management/README.md       → Signals, NgRx SignalStore, persistencia localStorage/idb-keyval
-    ├── testing-patterns/README.md       → Vitest, Playwright, pre-commit gate, data-testid, cobertura
-    ├── theming-styling/README.md        → Tokens SCSS, paleta dark premium, glassmorphism, motion
-    └── ui-components/README.md          → Catálogo de componentes, variantes, interacciones, estados
+└── skills/                  → Skills reutilizables (formato Agent Skill: SKILL.md con frontmatter name/description)
+    ├── <skill>/SKILL.md                 → Cada skill tiene su SKILL.md con frontmatter (name, description) y cuerpo
+    ├── <skill>/references/              → (opcional) Material de referencia pesado extraído del SKILL.md
+    │
+    ├── accessibility/SKILL.md           → WCAG 2.1 AA: contraste, focus, ARIA, navegación por teclado
+    ├── api-integration/SKILL.md         → Servicios HTTP tipados, validación Zod en frontera, caching
+    ├── asset-organization/SKILL.md      → Reglas obligatorias para carpetas, nombres y limpieza de assets visuales
+    ├── design-responsive-validation/SKILL.md → Identidad visual no genérica + validación responsive obligatoria
+    ├── error-handling/SKILL.md          → FestivalError normalizado, Sentry, mensajes i18n al usuario
+    ├── forms-validation/SKILL.md        → Reactive Forms tipados, validadores custom, errores inline
+    ├── i18n-commit-policy/SKILL.md      → Política de traducción en commits: sólo es.json en desarrollo, propagación a ca/en al cerrar
+    ├── internationalization/SKILL.md    → Transloco, date-fns, locales es/ca/en, ICU MessageFormat
+    ├── maps/SKILL.md                    → MapLibre GL JS + Protomaps, lazy-loading, estilo dark custom
+    ├── performance-optimization/SKILL.md → OnPush, @defer, imágenes WebP, budgets, SSR
+    │   └── references/image-converter.md  → Pipeline Sharp scripts/convert-images.mjs (extraído)
+    ├── project-structure/SKILL.md       → Estructura feature-sliced canónica (este documento la resume)
+    │   └── references/eslint-boundaries.md → Config completa de eslint-plugin-boundaries (extraído)
+    ├── routing-navigation/SKILL.md      → Esquema de URLs en español, loadChildren/loadComponent, resolvers
+    ├── sanity-cms/SKILL.md              → Catálogo desde Sanity (CMS) vía @sanity/client: GROQ, cliente en data-access, Zod en frontera
+    ├── search/SKILL.md                  → MiniSearch: búsqueda fuzzy client-side con boost por campo
+    ├── seo-meta/SKILL.md                → Title/description por ruta, JSON-LD Event, OG, sitemap, canonicals
+    ├── state-management/SKILL.md        → Signals, NgRx SignalStore, persistencia localStorage/idb-keyval
+    ├── testing-patterns/SKILL.md        → Vitest, Playwright, pre-commit gate, data-testid, cobertura
+    │   └── references/examples.md         → Ejemplos de test (Vitest, ATL, Zod) extraídos
+    ├── theming-styling/SKILL.md         → Tokens SCSS, paleta dark premium, glassmorphism, motion
+    │   └── references/tokens.md           → Catálogo completo de tokens primitivos/semánticos y escalas (extraído)
+    └── ui-components/SKILL.md           → Catálogo de componentes, variantes, interacciones, estados
 ```
 
 ---
@@ -569,3 +576,4 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-07 | Correcciones auditoría (health 88 → 100) | Eliminado `src/app/core/platform/.gitkeep` (redundante junto a `hreflang.service.ts`). `app.config.ts`: `prodMode` cambiado de literal `false` a `environment.production`. `app.scss`: `72px` extraído a `--app-nav-height`. `home.page.scss`: `4rem` extraído a `--home-cta-min-height`; `1.125rem` extraído a `--home-btn-icon-size`. `featured-festivals.scss`: `1.875rem` extraído a `--featured-date-badge-height`; `line-height: 1.1` sustituido por `var(--fv-leading-display)`. `home.page.html`: `<fv-featured-festivals>` envuelto en `@defer (on viewport)`. `home.page.spec.ts`: actualizado a `DeferBlockBehavior.Manual` y `getDeferBlocks()`. |
 | 2026-06-07 | Auditoría `.claude` — alineación contrato↔código | **Skill `i18n-commit-policy`** (`.claude` + `.codex`): reescrita la matriz de locales fantasma (44 países europeos) a la real `es`/`ca`/`en` (+ roadmap `ca-ES-valencia`/`en-GB`); corregida la referencia al script inexistente `validate-i18n-parity.mjs` → `scripts/i18n-sync.mjs` (`npm run i18n:sync` / `i18n:check`). **Catálogo real** propagado a `CLAUDE.md`, `AGENTS.md`, agentes `contenido`/`sistemas`/`prueba` y skill `state-management`: festivales ficticios (FIB, Arenal Sound, Low, SanSan) → reales (Bigsound, Latin Fest, Medusa, RBF, Reve, Zevra); `README.md` § Descripción actualizado. **Phasing Transloco** aclarado en ambos contratos (infraestructura ya en MVP). **Dead code/assets**: eliminado `TranslationService.setLang()` (sin consumidores tras revert del lang switcher), clave i18n huérfana `nav.langSwitcher` en `es/ca/en.json`, y los dos logos no usados de `src/assets/images/sponsors/` (carpeta eliminada). Limpieza de ficheros `.DS_Store`. |
 | 2026-06-07 | Image loader para la hero (`ngSrcset` real) | `app.config.ts`: añadido `IMAGE_LOADER` (`festivalImageLoader`) con reescritura de ancho **opt-in** vía `loaderParams.variants`; solo la hero (que tiene las variantes `home-hero-sunset-beach-{800,1200,1600}.webp`) lo solicita, de modo que `ngSrcset` resuelve a los ficheros reales. Los logos de festival (fuente única, p. ej. `logo-medusa-2026.webp`) se devuelven intactos → sin 404. `home.page.html`: la hero añade `[loaderParams]="{ variants: true }"`. Resuelve el aviso de NgOptimizedImage por `ngSrcset` sin loader y activa el servido responsive del elemento LCP. |
+| 2026-06-07 | Reorganización `skills/` al estilo Agent Skill (Google) | Las 18 skills de `.claude/skills/` (y su espejo `.codex/skills/`) pasan de `README.md` a **`SKILL.md`** con **frontmatter** `name` + `description` (ahora son Agent Skills descubribles), spine consistente y footer `## Related skills`. Disclosure progresivo: contenido pesado extraído a `references/` en las 4 grandes — `project-structure/references/eslint-boundaries.md`, `theming-styling/references/tokens.md`, `testing-patterns/references/examples.md`, `performance-optimization/references/image-converter.md`. Nueva skill **`sanity-cms`** (hueco real: el CMS Sanity está en el stack). Corregida la contradicción residual "44 locales europeos" en `CLAUDE.md`/`AGENTS.md` → `ca`/`en`. Referencias `skills/*/README.md` → `SKILL.md` en ambos contratos; `sanity-cms` añadida a las listas de skills y al comando `audit-structure`. Paridad `.claude`↔`.codex` verificada (`diff -rq`). |
