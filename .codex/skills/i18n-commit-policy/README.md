@@ -26,7 +26,7 @@ While developing a feature, a fix, or a refactor:
 - **Do not "pre-translate"** new strings into other locales during the development flow.
 - **Spanish is the canonical version** — any divergence between `es.json` and another locale is a bug in the other locale, never in Spanish.
 
-If a task asks you to "add a button", "rename a label", or "write the empty state copy", that is development mode. Touching `de.json`, `fr.json`, etc. in that turn is a violation.
+If a task asks you to "add a button", "rename a label", or "write the empty state copy", that is development mode. Touching `ca.json` or `en.json` in that turn is a violation.
 
 ---
 
@@ -41,13 +41,13 @@ A task is in **commit mode** when any of the following is true:
 Before the commit is created, perform the following 8 required checks in order:
 
 1. **Detect every Spanish key changed in `i18n/`** — added, modified, renamed, or removed in `es.json` since the last commit on the branch (`git diff origin/main -- src/assets/i18n/es.json` is the source of truth).
-2. **Update the equivalent key in every supported locale file** (see matrix below). Missing locale files must be created from the Spanish skeleton.
-3. **Preserve the same translation key structure** — same nesting, same key names, same ICU placeholders (`{count, plural, …}`), same HTML entities. The shape of `de.json` must be identical to `es.json`.
+2. **Update the equivalent key in every supported locale file** (see matrix below). The canonical way to do this is `npm run i18n:sync`, which fills missing keys in every target locale with the Spanish value as a placeholder; then translate the propagated keys.
+3. **Preserve the same translation key structure** — same nesting, same key names, same ICU placeholders (`{count, plural, …}`), same HTML entities. The shape of `ca.json` and `en.json` must be identical to `es.json`.
 4. **Do not remove existing translations** for keys that still exist in `es.json`. Removal is only allowed when the Spanish key itself is removed.
 5. **Do not rename keys** unless the rename also happened in `es.json` in this commit. Locale files follow Spanish, never lead.
-6. **If a translation is uncertain**, keep the Spanish value as a placeholder and add a sibling key with a `// TODO(i18n): translate to <locale>` comment in a co-located `.todo.json` (JSON does not support inline comments — use the sidecar). Never ship a guess as if it were verified.
-7. **Verify all i18n files are valid and consistent** — `JSON.parse` succeeds, key sets are identical to `es.json`, no orphan keys, no duplicate keys.
-8. **Do not mark the commit task as complete** until checks 1–7 are green and the multilingual files are staged alongside the source change.
+6. **If a translation is uncertain**, keep the Spanish value as a placeholder (this is exactly what `i18n:sync` writes) and flag it in the report's `Missing Translation Keys:` row. Never ship a guess as if it were verified.
+7. **Verify all i18n files are valid and consistent** — `npm run i18n:check` exits `0` (JSON parses, key sets identical to `es.json`, no orphan/extra keys).
+8. **Do not mark the commit task as complete** until checks 1–7 are green and the locale files are staged alongside the source change.
 
 If `es.json` was not modified in this commit, checks 1–7 are no-ops and the commit may proceed without locale updates.
 
@@ -55,59 +55,17 @@ If `es.json` was not modified in this commit, checks 1–7 are no-ops and the co
 
 ## Part 3 — Supported locale matrix
 
-Locale files live under `src/assets/i18n/` and use BCP-47 codes. Spanish is `es.json` (no region — it is the source of truth). For every country below, a target locale file must exist when commit mode runs.
+Locale files live under `src/assets/i18n/`. Spanish is `es.json` (the source of truth). The supported set mirrors `CLAUDE.md` § Technologies and the Transloco config in `src/app/app.config.ts` (`availableLangs: ['es', 'ca', 'en']`):
 
-| Country                  | Locale code | Filename          |
-| ------------------------ | ----------- | ----------------- |
-| España (source)          | `es`        | `es.json`         |
-| Alemania                 | `de`        | `de.json`         |
-| Armenia                  | `hy`        | `hy.json`         |
-| Austria                  | `de-AT`     | `de-AT.json`      |
-| Azerbaiyán               | `az`        | `az.json`         |
-| Bélgica                  | `fr-BE`     | `fr-BE.json`      |
-| Bielorrusia              | `be`        | `be.json`         |
-| Bosnia y Herzegovina     | `bs`        | `bs.json`         |
-| Bulgaria                 | `bg`        | `bg.json`         |
-| Chipre                   | `el-CY`     | `el-CY.json`      |
-| Croacia                  | `hr`        | `hr.json`         |
-| Dinamarca                | `da`        | `da.json`         |
-| Eslovaquia               | `sk`        | `sk.json`         |
-| Eslovenia                | `sl`        | `sl.json`         |
-| Estonia                  | `et`        | `et.json`         |
-| Finlandia                | `fi`        | `fi.json`         |
-| Francia                  | `fr`        | `fr.json`         |
-| Georgia                  | `ka`        | `ka.json`         |
-| Grecia                   | `el`        | `el.json`         |
-| Hungría                  | `hu`        | `hu.json`         |
-| Irlanda                  | `en-IE`     | `en-IE.json`      |
-| Islandia                 | `is`        | `is.json`         |
-| Italia                   | `it`        | `it.json`         |
-| Kazajistán               | `kk`        | `kk.json`         |
-| Kosovo                   | `sq-XK`     | `sq-XK.json`      |
-| Letonia                  | `lv`        | `lv.json`         |
-| Liechtenstein            | `de-LI`     | `de-LI.json`      |
-| Lituania                 | `lt`        | `lt.json`         |
-| Luxemburgo               | `lb`        | `lb.json`         |
-| Malta                    | `mt`        | `mt.json`         |
-| Montenegro               | `cnr`       | `cnr.json`        |
-| Noruega                  | `nb`        | `nb.json`         |
-| Países Bajos             | `nl`        | `nl.json`         |
-| Polonia                  | `pl`        | `pl.json`         |
-| Portugal                 | `pt-PT`     | `pt-PT.json`      |
-| Reino Unido              | `en-GB`     | `en-GB.json`      |
-| República Checa          | `cs`        | `cs.json`         |
-| Rumanía                  | `ro`        | `ro.json`         |
-| Rusia                    | `ru`        | `ru.json`         |
-| San Marino               | `it-SM`     | `it-SM.json`      |
-| Serbia                   | `sr`        | `sr.json`         |
-| Suecia                   | `sv`        | `sv.json`         |
-| Suiza                    | `de-CH`     | `de-CH.json`      |
-| Turquía                  | `tr`        | `tr.json`         |
-| Ucrania                  | `uk`        | `uk.json`         |
+| Locale                     | Code  | Filename   | Status                          |
+| -------------------------- | ----- | ---------- | ------------------------------- |
+| Español (source)           | `es`  | `es.json`  | Default UI language, canonical  |
+| Valencià / Català          | `ca`  | `ca.json`  | Active                          |
+| English (en-GB)            | `en`  | `en.json`  | Active                          |
 
-The project's roadmap also tracks **`ca-ES-valencia`** (Valencian) as a first-party locale per `CLAUDE.md`. It is treated identically to the countries above when present.
+The roadmap tracks **`ca-ES-valencia`** (Valencian) and **`en-GB`** as the first-party go-live locales (`CLAUDE.md` § Roadmap, Multilingual phase). Today they are served from `ca.json` / `en.json`; a future regional split is added by **extending this table and `TARGET_LANGS` in `scripts/i18n-sync.mjs` together — never silently**.
 
-Multi-language countries (Belgium, Switzerland, Cyprus, Luxembourg, Ireland) resolve to one canonical UI locale in the matrix to keep parity finite. Additional regional variants can be added later by extending this table — never silently.
+> **Do not invent locales.** Only `es`, `ca`, and `en` exist. Any other locale file (`de.json`, `fr.json`, per-country variants, …) is out of scope and must not be created. Adding one requires updating this table, `app.config.ts`, and `scripts/i18n-sync.mjs` in the same commit.
 
 ---
 
@@ -137,9 +95,9 @@ Notes:
 Rules for the report:
 
 - Both rows must be ✅ before the commit is allowed to proceed.
-- `Missing Translation Keys:` lists every `<locale>:<key>` pair that fell back to Spanish + TODO. If none, write `None.`.
+- `Missing Translation Keys:` lists every `<locale>:<key>` pair that fell back to Spanish as a placeholder. If none, write `None.`.
 - `Files Modified:` lists every `src/assets/i18n/*.json` file changed in this commit. If none (because `es.json` was not touched), write `None — no source-language change in this commit.`.
-- `Notes:` flags anything a reviewer should know (e.g., locale file created from scratch, key rename propagated, ICU placeholder structure change).
+- `Notes:` flags anything a reviewer should know (e.g., key rename propagated, ICU placeholder structure change).
 - Never omit the report on a commit task. Development-mode tasks do not emit it.
 
 ---
@@ -151,8 +109,8 @@ Rules for the report:
 | 1 | Identify the mode: development or commit. |
 | 2 | Development → only edit `es.json`. Stop. |
 | 3 | Commit → diff `es.json` against `origin/main` for changed keys. |
-| 4 | For every supported locale, sync structure and translate (or TODO-stub) the changed keys. |
-| 5 | Validate all JSON files parse and share the same key set as `es.json`. |
+| 4 | Run `npm run i18n:sync`, then translate the propagated `ca` / `en` keys. |
+| 5 | Run `npm run i18n:check` — all locale files share the same key set as `es.json`. |
 | 6 | Stage all `i18n/*.json` files together with the source change. |
 | 7 | Emit the i18n Commit Translation Report. |
 | 8 | Only then proceed with `git commit`. |
@@ -210,47 +168,13 @@ Rules for the report:
 }
 ```
 
-### Key parity validation script (runs pre-commit)
+### Parity validation (real script, runs in CI / pre-commit)
 
-```ts
-// scripts/validate-i18n-parity.mjs
-import { readFile, readdir } from 'node:fs/promises';
-import { join } from 'node:path';
-
-const DIR = 'src/assets/i18n';
-
-function flatKeys(obj, prefix = '') {
-  return Object.entries(obj).flatMap(([k, v]) =>
-    typeof v === 'object' && v !== null
-      ? flatKeys(v, prefix ? `${prefix}.${k}` : k)
-      : [`${prefix ? `${prefix}.` : ''}${k}`],
-  );
-}
-
-const files   = await readdir(DIR);
-const source  = JSON.parse(await readFile(join(DIR, 'es.json'), 'utf8'));
-const esKeys  = new Set(flatKeys(source));
-let   hasError = false;
-
-for (const file of files.filter(f => f.endsWith('.json') && f !== 'es.json')) {
-  const locale = JSON.parse(await readFile(join(DIR, file), 'utf8'));
-  const keys   = new Set(flatKeys(locale));
-
-  const missing = [...esKeys].filter(k => !keys.has(k));
-  const extra   = [...keys].filter(k => !esKeys.has(k));
-
-  if (missing.length || extra.length) {
-    console.error(`❌ ${file}: missing=[${missing}] extra=[${extra}]`);
-    hasError = true;
-  } else {
-    console.log(`✅ ${file}`);
-  }
-}
-
-if (hasError) process.exit(1);
-```
+The project ships the canonical sync + check tool at `scripts/i18n-sync.mjs`, wired into `package.json`:
 
 ```bash
-# Add to package.json scripts and run before git commit
-node scripts/validate-i18n-parity.mjs
+npm run i18n:sync    # fill missing keys in ca/en from es.json (writes files)
+npm run i18n:check   # report-only, no writes — exits 1 on any drift (use in CI / pre-commit)
 ```
+
+`i18n:check` is the gate: it fails the commit if any locale is missing a key from `es.json` or carries an orphan key absent from it.

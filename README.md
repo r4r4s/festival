@@ -6,7 +6,7 @@
 
 ## 📖 Descripción
 
-**festiVAL** es una aplicación web desarrollada con **Angular 21 + SSR** que reúne, en un único lugar, la información esencial sobre los festivales de música más importantes de la Comunidad Valenciana (España). Desde el FIB hasta Arenal Sound, pasando por Low Festival, Medusa, Reggaeton Beach o SanSan, festiVAL está pensada para que melómanos, festivaleros y curiosos puedan descubrir, comparar y planificar su próxima experiencia musical en tierras valencianas.
+**festiVAL** es una aplicación web desarrollada con **Angular 21 + SSR** que reúne, en un único lugar, la información esencial sobre los festivales de música más importantes de la Comunidad Valenciana (España). Desde Bigsound hasta Latin Fest, pasando por Medusa, Reggaeton Beach Festival, Reve o Zevra, festiVAL está pensada para que melómanos, festivaleros y curiosos puedan descubrir, comparar y planificar su próxima experiencia musical en tierras valencianas.
 
 La aplicación funciona como un portal informativo: muestra fechas, ubicaciones, géneros musicales, cartel de artistas, precios orientativos y enlaces oficiales para que el usuario tome la mejor decisión antes de comprar su entrada. Su interfaz, completamente en **español (es-ES)**, ha sido diseñada con un enfoque moderno y mobile-first sobre una superficie premium oscura.
 

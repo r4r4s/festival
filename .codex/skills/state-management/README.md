@@ -17,7 +17,7 @@ A store starts feature-local and is promoted to `@shared/data-access/` the momen
 
 ## Scope
 
-- The festival catalogue store (FIB, Arenal Sound, Medusa, Low Festival, SanSan, etc.).
+- The festival catalogue store (Bigsound, Latin Fest, Medusa, RBF, Reve, Zevra, etc.).
 - Local component state via Angular **Signals**.
 - Persistence of user filters and favourites across sessions.
 

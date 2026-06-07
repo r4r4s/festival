@@ -43,11 +43,6 @@ export class TranslationService {
     return resolveKey(this.#static(), key) ?? key;
   }
 
-  /** Switch the active language (no-op when Transloco is not available). */
-  setLang(lang: 'es' | 'ca' | 'en'): void {
-    this.#transloco?.setActiveLang(lang);
-  }
-
   /** Replace the static dictionary — used by tests. */
   setTranslations(next: Translations): void {
     this.#static.set(next);

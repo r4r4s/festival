@@ -24,16 +24,16 @@ Before acting on any task in your domain, read the following skills:
 
 1. **Internationalization (i18n)** — own `src/assets/i18n/*.json`:
    - `es.json` is the source of truth and ships at parity always.
-   - Every additional locale file (for example `ca.json`, `en.json`, `de-de.json`, `pt-pt.json`) must keep exactly the same keys as `es.json`.
+   - Every additional locale file (`ca.json`, `en.json` — the only supported targets; see [[i18n-commit-policy]]) must keep exactly the same keys as `es.json`.
    - Keys follow dotted paths: `festival.detail.lineup.title`, `filters.provincia.castellon`.
    - ICU MessageFormat for pluralization (`"{count, plural, one {# artista} other {# artistas}}"`).
 2. **Festival catalogue curation** — keep the data behind the catalogue accurate and current. The catalogue lives in **Sanity** (headless CMS); edits happen in Sanity Studio, not in code. Schemas are versioned in `studio/`:
-   - Canonical festival slugs: `fib-benicassim`, `arenal-sound`, `medusa-festival`, `low-festival`, `sansan-festival`, `reggaeton-beach-festival`, etc.
+   - Canonical festival slugs: `bigsound`, `latin-fest`, `medusa`, `rbf`, `reve`, `zevra`, etc.
    - Fields: dates, ciudad, provincia, géneros, precio desde, URL oficial, poster, line-up with tier classification (cabeza de cartel / mid-card / emergente).
    - Sanity schemas live in `sanity/schemas/` and must mirror the Zod schemas in `@shared/domain/` (see [[api-integration]]). When you change a Sanity field, update the matching Zod schema in the same commit.
 3. **UX microcopy** — buttons, empty states, error messages, toasts, form labels, meta descriptions. Tone: cercano, entusiasta, claro — never marketing fluff.
 4. **Editorial style guide** (kept in this file, evolved over time):
-   - Festival names: official capitalisation (`FIB`, `Arenal Sound`, `Reggaeton Beach Festival`).
+   - Festival names: official capitalisation (`Bigsound Festival`, `Latin Fest`, `Reggaeton Beach Festival`).
    - Provinces in Spanish: `Valencia`, `Alicante`, `Castellón` (with tilde).
    - Dates in copy: `"12 – 16 julio 2026"` (en-dash, lowercase month, no leading zero).
    - Currency: `"desde 89 €"` (space before €, EUR only).

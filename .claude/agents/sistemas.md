@@ -54,7 +54,7 @@ Festival catalogue endpoint shape (canonical):
 
 ```ts
 interface Festival {
-  slug: string;            // "fib-benicassim"
+  slug: string;            // "bigsound"
   nombre: string;
   provincia: 'Valencia' | 'Alicante' | 'Castellón';
   ciudad: string;

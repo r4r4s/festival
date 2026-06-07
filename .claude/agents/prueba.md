@@ -25,7 +25,7 @@ Before acting on any task in your domain, read the following skills:
 1. **Unit tests** — services (`FestivalService`, `ArtistService`, `VenueService`), pipes (date formatting, genre translation), pure utilities, and signal stores.
 2. **Component tests** — render + interaction tests for every standalone component, co-located in its folder (`@shared/ui/*`, `features/*/ui/*`, `features/*/feature/*`, `layout/*`).
 3. **End-to-end flows** — Playwright suites covering the critical journeys:
-   - Browse home → open a featured festival (FIB, Arenal Sound, Medusa) → see line-up.
+   - Browse home → open a featured festival (Bigsound, Latin Fest, Medusa) → see line-up.
    - Filter `/festivales` by province (Valencia / Alicante / Castellón), month, and genre.
    - Search by artist name → festival appears in results.
    - Open a festival detail page on mobile viewport (375×667).

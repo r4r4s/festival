@@ -35,7 +35,7 @@ Adoption phasing:
 - **MVP** — todo lo de la tabla.
 - **Personalization phase** — `@angular/service-worker` (PWA) + `idb-keyval` para favoritos persistentes.
 - **User accounts phase** — evaluar Supabase Auth o Better Auth.
-- **Multilingual phase** — Transloco + script de merge i18n (no `@angular/localize`, que requiere build por idioma).
+- **Multilingual phase** — go-live de `ca-ES-valencia` y `en-GB` con hreflang. La infraestructura base (Transloco + `scripts/i18n-sync.mjs`) ya está integrada desde el MVP; esta fase activa los locales adicionales (no `@angular/localize`, que requiere build por idioma).
 - **Ticketing phase** — APIs de Dice / Ticketmaster directas, sin librería intermedia.
 
 Explicitly **out of scope**: Nx/Turborepo, Tailwind, Material/PrimeNG, Algolia/Typesense, GraphQL, Redis, Stripe. Cualquier propuesta de añadirlos debe justificarse contra esta tabla.
@@ -108,7 +108,7 @@ To keep the architecture scalable and responsibilities clear, the project define
 - **`prueba`** 🧪 — Unit, component, and E2E tests (Vitest, Angular Testing Library, Playwright), `axe-core` for a11y, pre-merge validation. Consult it whenever services, components, pipes, guards, or critical flows are touched.
 - **`sistemas`** 🏗️ — Architecture, service layer, state management (Signals / NgRx SignalStore), routing, HTTP interceptors, SSR, environments, DTO contracts. Consult it when a change crosses a component boundary or touches data flow.
 - **`vistas`** 🎨 — Presentational components, design system, theming, SCSS, responsive layout, animations, visual accessibility. Consult it for any change to templates, styles, or visual experience.
-- **`contenido`** 📝 — Internationalization, festival catalogue curation (slugs, dates, line-up, prices), UX microcopy, editorial style guide. Consult it whenever copy or i18n keys are added or festival data is updated (FIB, Arenal Sound, Medusa, Low, SanSan, Reggaeton Beach…).
+- **`contenido`** 📝 — Internationalization, festival catalogue curation (slugs, dates, line-up, prices), UX microcopy, editorial style guide. Consult it whenever copy or i18n keys are added or festival data is updated (Bigsound, Latin Fest, Medusa, RBF, Reve, Zevra…).
 - **`rendimiento`** ⚡ — Core Web Vitals (LCP, CLS, INP), bundles, SSR / prerendering, JSON-LD `Event` schema, sitemap, canonicals, Open Graph, hreflang. Consult it for any change that could move metrics or affect SEO.
 
 Each agent explicitly declares who it collaborates with to avoid overlapping responsibilities.
@@ -175,8 +175,8 @@ The core of the domain is the `Festival` entity, declared as a Zod schema in `@s
 
 ```ts
 interface Festival {
-  slug: string;            // "fib-benicassim" — stable, indexed by search engines
-  nombre: string;          // "FIB" — official name, not translated
+  slug: string;            // "bigsound" — stable, indexed by search engines
+  nombre: string;          // "Bigsound Festival" — official name, not translated
   provincia: 'Valencia' | 'Alicante' | 'Castellón';
   ciudad: string;
   fechaInicio: string;     // ISO-8601, converted to Date at the boundary
@@ -212,12 +212,15 @@ festiVAL is a **public information portal**, not transactional: it does not sell
 
 ### Festivals in the initial catalogue
 
-- **FIB** (Benicàssim, Castellón) — indie, rock, electronic.
-- **Arenal Sound** (Burriana, Castellón) — pop, indie, electronic.
-- **Medusa Festival** (Cullera, Valencia) — electronic.
-- **Low Festival** (Benidorm, Alicante) — indie.
-- **SanSan Festival** (Benicàssim, Castellón) — indie.
-- **Reggaeton Beach Festival** (Benidorm/Cullera) — reggaeton, urban.
+The home carousel (`featured-festivals`), the `home.featured.cards.*` i18n keys, and the
+`src/assets/images/festivals/<slug>/` folders are the source of truth for this seed catalogue:
+
+- **Bigsound Festival** (`bigsound`) — Valencia.
+- **Latin Fest** (`latin-fest`) — Valencia (también Benidorm) — latin, reggaeton.
+- **Medusa Festival** (`medusa`) — Cullera, Valencia — electronic.
+- **Reggaeton Beach Festival** (`rbf`) — Benidorm, Alicante — reggaeton, urban.
+- **Reve Festival** (`reve`) — Valencia (Roig Arena).
+- **Zevra Festival** (`zevra`) — Cullera, Valencia.
 - (… expandable season by season by the **contenido** agent)
 
 ### Roadmap (high level)
