@@ -14,4 +14,9 @@ export const environment: Environment = {
     apiVersion: '2024-01-01',
     useCdn: true,
   },
+  maps: {
+    styleUrl: '/assets/maps/festival-dark.json',
+    center: [-0.40, 39.25],
+    zoom: 7.2,
+  },
 } as const;

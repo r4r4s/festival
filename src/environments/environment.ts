@@ -16,6 +16,13 @@ export interface Environment {
     apiVersion: '2024-01-01';
     useCdn: boolean;
   };
+  maps: {
+    /** MapLibre GL style URL. Replace with self-hosted Protomaps tiles in production. */
+    styleUrl: string;
+    /** Default center [lng, lat] over the Valencian Community. */
+    center: [number, number];
+    zoom: number;
+  };
 }
 
 export const environment = {
@@ -27,5 +34,10 @@ export const environment = {
     dataset: 'development',
     apiVersion: '2024-01-01',
     useCdn: false,
+  },
+  maps: {
+    styleUrl: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+    center: [-0.40, 39.25],
+    zoom: 7.2,
   },
 } satisfies Environment;
