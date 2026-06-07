@@ -11,7 +11,7 @@
     100vw - var(--fv-space-4) - var(--fv-space-4) - var(--fv-space-2) - var(--fv-space-2)
   );
   --featured-card-gap: var(--fv-space-0);
-  --featured-mobile-step: 5s;
+  --featured-mobile-step: 3s;
   display: grid;
   gap: var(--fv-space-5);
   max-width: 1320px;
@@ -63,7 +63,7 @@
   display: flex;
   gap: var(--featured-card-gap);
   width: max-content;
-  // 6 festivals × 5s each
+  // 6 festivals × 3s each
   animation: fv-featured-mobile calc(var(--featured-mobile-step) * 6) ease-in-out infinite;
   will-change: transform;
 
