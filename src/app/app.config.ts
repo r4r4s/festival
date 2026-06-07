@@ -1,11 +1,12 @@
 import {
   APP_INITIALIZER,
   ApplicationConfig,
+  ErrorHandler,
   LOCALE_ID,
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
 import { IMAGE_LOADER, ImageLoaderConfig, registerLocaleData } from '@angular/common';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import localeEs from '@angular/common/locales/es';
 import { provideRouter } from '@angular/router';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
@@ -13,6 +14,8 @@ import { provideTransloco, TranslocoService } from '@jsverse/transloco';
 import { lastValueFrom } from 'rxjs';
 
 import { TranslocoHttpLoader } from '@core/initializers/transloco.loader';
+import { FestivalErrorHandler } from '@core/handlers/festival-error.handler';
+import { errorInterceptor } from '@core/interceptors/error.interceptor';
 import { environment } from '@env/environment';
 import { routes } from './app.routes';
 
@@ -40,10 +43,11 @@ function festivalImageLoader(config: ImageLoaderConfig): string {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
+    { provide: ErrorHandler, useClass: FestivalErrorHandler },
     { provide: LOCALE_ID, useValue: 'es-ES' },
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
-    provideHttpClient(withFetch()),
+    provideHttpClient(withFetch(), withInterceptors([errorInterceptor])),
     { provide: IMAGE_LOADER, useValue: festivalImageLoader },
     provideTransloco({
       config: {
