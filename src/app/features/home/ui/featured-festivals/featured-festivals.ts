@@ -30,7 +30,7 @@ export class FeaturedFestivalsComponent {
       dateKey: 'home.featured.cards.bigsound.date',
       nameKey: 'home.featured.cards.bigsound.name',
       locationKey: 'home.featured.cards.bigsound.location',
-      image: { src: '/assets/images/festivals/bigsound/logo-bigsound.png', alt: 'Bigsound Festival' },
+      image: { src: '/assets/images/festivals/bigsound/logo-bigsound.webp', alt: 'Bigsound Festival' },
     },
     {
       slug: 'latin-fest',
@@ -44,28 +44,28 @@ export class FeaturedFestivalsComponent {
       dateKey: 'home.featured.cards.medusa.date',
       nameKey: 'home.featured.cards.medusa.name',
       locationKey: 'home.featured.cards.medusa.location',
-      image: { src: '/assets/images/festivals/medusa/logo-medusa-2026.png', alt: 'Medusa Festival' },
+      image: { src: '/assets/images/festivals/medusa/logo-medusa-2026.webp', alt: 'Medusa Festival' },
     },
     {
       slug: 'rbf',
       dateKey: 'home.featured.cards.rbf.date',
       nameKey: 'home.featured.cards.rbf.name',
       locationKey: 'home.featured.cards.rbf.location',
-      image: { src: '/assets/images/festivals/rbf/logo-rbf.png', alt: 'Reggaeton Beach Festival' },
+      image: { src: '/assets/images/festivals/rbf/logo-rbf.webp', alt: 'Reggaeton Beach Festival' },
     },
     {
       slug: 'reve',
       dateKey: 'home.featured.cards.reve.date',
       nameKey: 'home.featured.cards.reve.name',
       locationKey: 'home.featured.cards.reve.location',
-      image: { src: '/assets/images/festivals/reve/logo-reve.jpeg', alt: 'Reve Festival' },
+      image: { src: '/assets/images/festivals/reve/logo-reve.webp', alt: 'Reve Festival' },
     },
     {
       slug: 'zevra',
       dateKey: 'home.featured.cards.zevra.date',
       nameKey: 'home.featured.cards.zevra.name',
       locationKey: 'home.featured.cards.zevra.location',
-      image: { src: '/assets/images/festivals/zevra/logo-zevra.png', alt: 'Zevra Festival' },
+      image: { src: '/assets/images/festivals/zevra/logo-zevra.webp', alt: 'Zevra Festival' },
     },
   ] as const satisfies readonly FeaturedFestival[];
 

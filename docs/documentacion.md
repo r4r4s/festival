@@ -262,20 +262,19 @@ src/assets/
 │   │   ├── home-hero-sunset-beach-800.webp
 │   │   ├── home-hero-sunset-beach-1200.webp
 │   │   └── home-hero-sunset-beach-1600.webp
-│   └── festivals/       → Logos de festivales en su formato original (PNG/WebP/JPEG).
-│       │                  Las variantes WebP multi-resolución se generarán con Sharp cuando se integre
-│       │                  el pipeline de build. Organizadas por slug de festival.
-│       ├── bigsound/    → logo-bigsound.png
+│   └── festivals/       → Logos de festivales en WebP listos para runtime, organizados por slug.
+│       │                  La generación multiresolución sigue el pipeline Sharp cuando aplique.
+│       ├── bigsound/    → logo-bigsound.webp
 │       ├── latin-fest/  → logo-latin-fest.webp
-│       ├── medusa/      → logo-medusa-2026.png
-│       ├── rbf/         → logo-rbf.png
-│       ├── reve/        → logo-reve.jpeg
-│       └── zevra/       → logo-zevra.png
+│       ├── medusa/      → logo-medusa-2026.webp
+│       ├── rbf/         → logo-rbf.webp
+│       ├── reve/        → logo-reve.webp
+│       └── zevra/       → logo-zevra.webp
 │   └── sponsors/        → Logos de patrocinadores e instituciones (GVA, entidades culturales).
 │       │                  Reservados para el footer — no usados aún en ningún componente.
-│       ├── logo-gva-conselleria-educacio-cultura-esport.png → Logo de la Conselleria d'Educació,
+│       ├── logo-gva-conselleria-educacio-cultura-esport.webp → Logo de la Conselleria d'Educació,
 │       │                                                      Cultura, Innovació i Esport (GVA).
-│       └── logo-mediterranean-musix.png                     → Logo de Mediterranean Musix.
+│       └── logo-mediterranean-musix.webp                     → Logo de Mediterranean Musix.
 ├── images-src/          → Imágenes fuente (PNG/JPEG). Comiteadas pero nunca servidas al usuario.
 │   ├── backgrounds/     → Fuentes de fondos y hero images antes de la conversión
 │   │   └── home-hero-sunset-beach.jpg
@@ -570,6 +569,6 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-06 | Nuevo material en `design/info-festivales/` | Añadida la carpeta `design/info-festivales/` con material gráfico de referencia para BIGSOUND, Latin Fest, Medusa, RBF, REVE Fest y Zevra: logos, carteles, creatividades por días y piezas de artistas destacados. |
 | 2026-06-06 | Cartel Valencia de Latin Fest | Añadido `design/info-festivales/latin/latin-cartel-valencia.webp` como cartel específico de Valencia para el material gráfico de referencia de Latin Fest. |
 | 2026-06-07 | Assets de festivales reales en `src/assets/` | Creadas las carpetas `src/assets/images/festivals/<slug>/` (6 festivales: bigsound, latin-fest, medusa, rbf, reve, zevra) con logos servibles, y `src/assets/images-src/festivals/<slug>/` con carteles fuente (PNG/JPEG/JXL, nunca servidos). El carrusel `featured-festivals` actualizado: 6 festivales reales (Bigsound, Latin Fest, Medusa, RBF, Reve, Zevra), logos con `object-fit: contain`, keyframe `fv-featured-marquee` añadido, animación mobile recalibrada para 6 items. Claves i18n `home.featured.cards.*` reemplazadas en `es.json`, `ca.json` y `en.json`. |
-| 2026-06-07 | Logos patrocinadores en `src/assets/images/sponsors/` | Creada la carpeta `src/assets/images/sponsors/` con los logos institucionales destinados al footer: `logo-gva-conselleria-educacio-cultura-esport.png` (Conselleria d'Educació, Cultura, Innovació i Esport de la GVA) y `logo-mediterranean-musix.png`. Renombrados desde nombres originales no conformes a kebab-case sin espacios. No usados en ningún componente aún. |
+| 2026-06-07 | Conversión de logos a WebP en `src/assets/images/` | Convertidos a WebP los logos de festivales y patrocinadores en `src/assets/images/festivals/` y `src/assets/images/sponsors/`, eliminando los archivos PNG/JPEG originales de runtime. Actualizado `featured-festivals` para consumir los nuevos `.webp`. |
 | 2026-06-07 | Integración Transloco + hreflang + script de merge | **Step 1 — Transloco**: instalado `@jsverse/transloco@8.x`; añadido `src/app/core/initializers/transloco.loader.ts` (TranslocoHttpLoader); `app.config.ts` ampliado con `provideHttpClient(withFetch())`, `provideTransloco` (es/ca/en, fallback es) y `APP_INITIALIZER` que precarga 'es'; `TranslationService` refactorizado para inyectar `TranslocoService` de forma opcional (tests usan el fallback estático); `TranslatePipe` cambiado a `pure: false` y lee la signal `activeLang`; `NavBar` expone selector ES/CA/EN con `TranslationService.setLang()`; añadida clave `nav.langSwitcher` en los 3 JSON. **Step 2 — script de merge**: creada carpeta `scripts/` con `i18n-sync.mjs`; añadidos scripts `i18n:sync` e `i18n:check` a `package.json`. **Step 3 — hreflang**: añadido `baseUrl` a `Environment` y a ambos `environment.ts`; creado `src/app/core/platform/hreflang.service.ts`; `App` inyecta el servicio en su constructor. |
 | 2026-06-07 | Correcciones auditoría (health 88 → 100) | Eliminado `src/app/core/platform/.gitkeep` (redundante junto a `hreflang.service.ts`). `app.config.ts`: `prodMode` cambiado de literal `false` a `environment.production`. `app.scss`: `72px` extraído a `--app-nav-height`. `home.page.scss`: `4rem` extraído a `--home-cta-min-height`; `1.125rem` extraído a `--home-btn-icon-size`. `featured-festivals.scss`: `1.875rem` extraído a `--featured-date-badge-height`; `line-height: 1.1` sustituido por `var(--fv-leading-display)`. `home.page.html`: `<fv-featured-festivals>` envuelto en `@defer (on viewport)`. `home.page.spec.ts`: actualizado a `DeferBlockBehavior.Manual` y `getDeferBlocks()`. |
