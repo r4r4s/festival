@@ -54,5 +54,117 @@
         }
       }
     }
+  },
+  "festivales": {
+    "map": {
+      "page": {
+        "eyebrow": "Interactive map",
+        "title": "Discover festivals on the map.",
+        "description": "Explore the six seed festivals through a map-first experience with search, filters, and floating cards."
+      },
+      "figure": {
+        "label": "Interactive festival location map"
+      },
+      "search": {
+        "label": "Search festivals, cities, or municipalities",
+        "placeholder": "Search by festival, city, or municipality"
+      },
+      "filters": {
+        "provincePrefix": "Province",
+        "upcoming": "Upcoming",
+        "currentYear": "Current year",
+        "clear": "Clear filters"
+      },
+      "provinces": {
+        "valencia": "Valencia",
+        "alicante": "Alicante",
+        "castellon": "Castellón"
+      },
+      "sidebar": {
+        "title": "Festivals",
+        "empty": "No festivals match the current filters.",
+        "hint": "Click on the markers or on the festivals to see more information.",
+        "sort": {
+          "label": "Sort",
+          "upcoming": "Upcoming",
+          "name": "Name A-Z"
+        }
+      },
+      "marker": {
+        "label": "Open {festival} on the map",
+        "selected": "{festival} is selected",
+        "highlighted": "{festival} is highlighted"
+      },
+      "card": {
+        "eyebrow": "Selected festival",
+        "detailLink": "View festival",
+        "favorite": "Save to favourites",
+        "share": "Share festival"
+      },
+      "mobileSheet": {
+        "label": "Mobile festivals sheet",
+        "toggle": "All festivals"
+      },
+      "fallback": {
+        "title": "Map unavailable",
+        "copy": "The interactive layer could not be loaded. Use the festival panel and directions links to keep exploring."
+      },
+      "attribution": "© Protomaps © OpenStreetMap",
+      "textEquivalent": {
+        "label": "Text list of festival locations",
+        "title": "Locations and directions",
+        "directions": "Get directions"
+      },
+      "festivals": {
+        "bigsound": {
+          "name": "Bigsound Festival",
+          "dates": "26 – 27 Jun 2026",
+          "city": "Torrent",
+          "province": "Valencia",
+          "description": "Two days of urban pop and major live shows in the Valencia metro area.",
+          "howToGetThere": "Get directions to Bigsound"
+        },
+        "latinFest": {
+          "name": "Latin Fest",
+          "dates": "18 Jul 2026",
+          "city": "Alicante",
+          "province": "Alicante",
+          "description": "A one-day event focused on Latin rhythms and reggaeton in a compact format.",
+          "howToGetThere": "Get directions to Latin Fest"
+        },
+        "medusa": {
+          "name": "Medusa Festival",
+          "dates": "13 – 17 Aug 2026",
+          "city": "Cullera",
+          "province": "Valencia",
+          "description": "A beachfront electronic macrofestival with multiple days of programming and immersive staging.",
+          "howToGetThere": "Get directions to Medusa"
+        },
+        "rbf": {
+          "name": "Reggaeton Beach Festival",
+          "dates": "4 Jul 2026",
+          "city": "Alicante",
+          "province": "Alicante",
+          "description": "The Alicante stop of the RBF circuit with a beach-club angle and major Latin urban acts.",
+          "howToGetThere": "Get directions to RBF"
+        },
+        "reve": {
+          "name": "Reve Festival",
+          "dates": "16 Jul 2026",
+          "city": "Valencia",
+          "province": "Valencia",
+          "description": "A night festival in Valencia blending pop, large-scale visuals, and a headline-driven lineup.",
+          "howToGetThere": "Get directions to Reve"
+        },
+        "zevra": {
+          "name": "Zevra Festival",
+          "dates": "24 – 27 Jul 2026",
+          "city": "Cullera",
+          "province": "Valencia",
+          "description": "A beachside experience with urban and Latin acts spread across several Mediterranean-facing days.",
+          "howToGetThere": "Get directions to Zevra"
+        }
+      }
+    }
   }
 }

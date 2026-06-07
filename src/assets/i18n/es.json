@@ -54,5 +54,117 @@
         }
       }
     }
+  },
+  "festivales": {
+    "map": {
+      "page": {
+        "eyebrow": "Mapa interactivo",
+        "title": "Descubre festivales sobre el mapa.",
+        "description": "Explora los seis festivales semilla desde una experiencia cartográfica con búsqueda, filtros y fichas flotantes."
+      },
+      "figure": {
+        "label": "Mapa interactivo de ubicación de festivales"
+      },
+      "search": {
+        "label": "Buscar festivales, ciudades o municipios",
+        "placeholder": "Busca por festival, ciudad o municipio"
+      },
+      "filters": {
+        "provincePrefix": "Provincia",
+        "upcoming": "Próximos",
+        "currentYear": "Año actual",
+        "clear": "Limpiar filtros"
+      },
+      "provinces": {
+        "valencia": "Valencia",
+        "alicante": "Alicante",
+        "castellon": "Castellón"
+      },
+      "sidebar": {
+        "title": "Festivales",
+        "empty": "No hay festivales que coincidan con los filtros actuales.",
+        "hint": "Haz clic en los marcadores o en los festivales para ver más información.",
+        "sort": {
+          "label": "Ordenar",
+          "upcoming": "Próximos",
+          "name": "Nombre A-Z"
+        }
+      },
+      "marker": {
+        "label": "Abrir ficha de {festival} en el mapa",
+        "selected": "{festival} está seleccionado",
+        "highlighted": "{festival} está resaltado"
+      },
+      "card": {
+        "eyebrow": "Festival seleccionado",
+        "detailLink": "Ver festival",
+        "favorite": "Guardar en favoritos",
+        "share": "Compartir festival"
+      },
+      "mobileSheet": {
+        "label": "Panel móvil de festivales",
+        "toggle": "Todos los festivales"
+      },
+      "fallback": {
+        "title": "Mapa no disponible",
+        "copy": "La capa interactiva no se ha podido cargar. Usa el panel de festivales y los enlaces de cómo llegar para seguir explorando."
+      },
+      "attribution": "© Protomaps © OpenStreetMap",
+      "textEquivalent": {
+        "label": "Listado textual de ubicaciones de festivales",
+        "title": "Ubicaciones y cómo llegar",
+        "directions": "Cómo llegar"
+      },
+      "festivals": {
+        "bigsound": {
+          "name": "Bigsound Festival",
+          "dates": "26 – 27 jun 2026",
+          "city": "Torrent",
+          "province": "Valencia",
+          "description": "Dos jornadas de urbano, pop y grandes directos en el área metropolitana de Valencia.",
+          "howToGetThere": "Cómo llegar a Bigsound"
+        },
+        "latinFest": {
+          "name": "Latin Fest",
+          "dates": "18 jul 2026",
+          "city": "Alicante",
+          "province": "Alicante",
+          "description": "Una cita centrada en ritmos latinos y reggaetón con formato intensivo de un día.",
+          "howToGetThere": "Cómo llegar a Latin Fest"
+        },
+        "medusa": {
+          "name": "Medusa Festival",
+          "dates": "13 – 17 ago 2026",
+          "city": "Cullera",
+          "province": "Valencia",
+          "description": "Macrofestival electrónico junto al mar con varios días de programación y puesta en escena inmersiva.",
+          "howToGetThere": "Cómo llegar a Medusa"
+        },
+        "rbf": {
+          "name": "Reggaeton Beach Festival",
+          "dates": "4 jul 2026",
+          "city": "Alicante",
+          "province": "Alicante",
+          "description": "Parada alicantina del circuito RBF con enfoque beach club y nombres clave del urbano latino.",
+          "howToGetThere": "Cómo llegar a RBF"
+        },
+        "reve": {
+          "name": "Reve Festival",
+          "dates": "16 jul 2026",
+          "city": "Valencia",
+          "province": "Valencia",
+          "description": "Festival nocturno en Valencia con mezcla de pop, espectáculo visual y cartel de gran formato.",
+          "howToGetThere": "Cómo llegar a Reve"
+        },
+        "zevra": {
+          "name": "Zevra Festival",
+          "dates": "24 – 27 jul 2026",
+          "city": "Cullera",
+          "province": "Valencia",
+          "description": "Experiencia de playa con cartel urbano y latino repartido en varias jornadas frente al Mediterráneo.",
+          "howToGetThere": "Cómo llegar a Zevra"
+        }
+      }
+    }
   }
 }

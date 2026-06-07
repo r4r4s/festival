@@ -54,5 +54,117 @@
         }
       }
     }
+  },
+  "festivales": {
+    "map": {
+      "page": {
+        "eyebrow": "Mapa interactiu",
+        "title": "Descobrix festivals sobre el mapa.",
+        "description": "Explora els sis festivals llavor des d'una experiència cartogràfica amb cerca, filtres i fitxes flotants."
+      },
+      "figure": {
+        "label": "Mapa interactiu d'ubicació de festivals"
+      },
+      "search": {
+        "label": "Buscar festivals, ciutats o municipis",
+        "placeholder": "Busca per festival, ciutat o municipi"
+      },
+      "filters": {
+        "provincePrefix": "Província",
+        "upcoming": "Pròxims",
+        "currentYear": "Any actual",
+        "clear": "Netejar filtres"
+      },
+      "provinces": {
+        "valencia": "València",
+        "alicante": "Alacant",
+        "castellon": "Castelló"
+      },
+      "sidebar": {
+        "title": "Festivals",
+        "empty": "No hi ha festivals que coincidisquen amb els filtres actuals.",
+        "hint": "Fes clic als marcadors o als festivals per veure més informació.",
+        "sort": {
+          "label": "Ordenar",
+          "upcoming": "Pròxims",
+          "name": "Nom A-Z"
+        }
+      },
+      "marker": {
+        "label": "Obrir la fitxa de {festival} en el mapa",
+        "selected": "{festival} està seleccionat",
+        "highlighted": "{festival} està ressaltat"
+      },
+      "card": {
+        "eyebrow": "Festival seleccionat",
+        "detailLink": "Veure festival",
+        "favorite": "Guardar en favorits",
+        "share": "Compartir festival"
+      },
+      "mobileSheet": {
+        "label": "Panell mòbil de festivals",
+        "toggle": "Tots els festivals"
+      },
+      "fallback": {
+        "title": "Mapa no disponible",
+        "copy": "La capa interactiva no s'ha pogut carregar. Usa el panell de festivals i els enllaços de com arribar-hi per a continuar explorant."
+      },
+      "attribution": "© Protomaps © OpenStreetMap",
+      "textEquivalent": {
+        "label": "Llistat textual d'ubicacions de festivals",
+        "title": "Ubicacions i com arribar-hi",
+        "directions": "Com arribar-hi"
+      },
+      "festivals": {
+        "bigsound": {
+          "name": "Bigsound Festival",
+          "dates": "26 – 27 jun 2026",
+          "city": "Torrent",
+          "province": "València",
+          "description": "Dues jornades d'urbà, pop i grans directes a l'àrea metropolitana de València.",
+          "howToGetThere": "Com arribar a Bigsound"
+        },
+        "latinFest": {
+          "name": "Latin Fest",
+          "dates": "18 jul 2026",
+          "city": "Alacant",
+          "province": "Alacant",
+          "description": "Una cita centrada en ritmes llatins i reggaeton amb format intensiu d'un dia.",
+          "howToGetThere": "Com arribar a Latin Fest"
+        },
+        "medusa": {
+          "name": "Medusa Festival",
+          "dates": "13 – 17 ago 2026",
+          "city": "Cullera",
+          "province": "València",
+          "description": "Macrofestival electrònic vora mar amb diversos dies de programació i una posada en escena immersiva.",
+          "howToGetThere": "Com arribar a Medusa"
+        },
+        "rbf": {
+          "name": "Reggaeton Beach Festival",
+          "dates": "4 jul 2026",
+          "city": "Alacant",
+          "province": "Alacant",
+          "description": "Parada alacantina del circuit RBF amb enfocament beach club i noms clau de l'urbà llatí.",
+          "howToGetThere": "Com arribar a RBF"
+        },
+        "reve": {
+          "name": "Reve Festival",
+          "dates": "16 jul 2026",
+          "city": "València",
+          "province": "València",
+          "description": "Festival nocturn a València amb barreja de pop, espectacle visual i cartell de gran format.",
+          "howToGetThere": "Com arribar a Reve"
+        },
+        "zevra": {
+          "name": "Zevra Festival",
+          "dates": "24 – 27 jul 2026",
+          "city": "Cullera",
+          "province": "València",
+          "description": "Experiència de platja amb cartell urbà i llatí repartit en diverses jornades davant del Mediterrani.",
+          "howToGetThere": "Com arribar a Zevra"
+        }
+      }
+    }
   }
 }
