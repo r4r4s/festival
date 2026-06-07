@@ -1,0 +1,96 @@
+<div class="festivales-map" [class.festivales-map--sheet-open]="mobileSheetOpen()">
+
+  <!-- ── Map canvas ─────────────────────────────────────────── -->
+  <figure class="festivales-map__figure" [attr.aria-label]="'festivales.map.figure.label' | t">
+    <div #mapContainer class="festivales-map__canvas" data-testid="map-canvas"></div>
+
+    @if (mapError()) {
+      <div class="festivales-map__fallback" role="alert" data-testid="map-fallback">
+        <p class="festivales-map__fallback-title">{{ 'festivales.map.fallback.title' | t }}</p>
+        <p class="festivales-map__fallback-copy">{{ 'festivales.map.fallback.copy' | t }}</p>
+      </div>
+    }
+  </figure>
+
+  <!-- ── Sidebar ────────────────────────────────────────────── -->
+  <aside class="festivales-map__sidebar" aria-label="{{ 'festivales.map.sidebar.title' | t }}">
+    <header class="festivales-map__sidebar-header">
+      <span class="festivales-map__sidebar-count" data-testid="sidebar-count">
+        {{ 'festivales.map.sidebar.title' | t }} ({{ festivals.length }})
+      </span>
+
+      <label class="festivales-map__sort" aria-label="{{ 'festivales.map.sidebar.sort.label' | t }}">
+        <span class="festivales-map__sort-prefix">{{ 'festivales.map.sidebar.sort.label' | t }}:</span>
+        <select
+          class="festivales-map__sort-select"
+          [value]="sortOrder()"
+          (change)="setSortOrder($event)"
+          data-testid="sort-select"
+        >
+          <option value="upcoming">{{ 'festivales.map.sidebar.sort.upcoming' | t }}</option>
+          <option value="name">{{ 'festivales.map.sidebar.sort.name' | t }}</option>
+        </select>
+        <svg lucideChevronDown class="festivales-map__sort-icon" focusable="false" size="14" strokeWidth="2" aria-hidden="true"></svg>
+      </label>
+    </header>
+
+    @if (filteredFestivals().length === 0) {
+      <p class="festivales-map__sidebar-empty">{{ 'festivales.map.sidebar.empty' | t }}</p>
+    } @else {
+      <ul class="festivales-map__sidebar-list" role="list">
+        @for (festival of filteredFestivals(); track festival.key) {
+          <li class="festivales-map__sidebar-item" [class.festivales-map__sidebar-item--active]="isSelected(festival.key)">
+            <button
+              class="festivales-map__sidebar-btn"
+              type="button"
+              (click)="selectFestival(festival.key)"
+              [attr.aria-pressed]="isSelected(festival.key)"
+              data-testid="sidebar-festival-btn"
+            >
+              <span
+                class="festivales-map__sidebar-category festivales-map__sidebar-category--{{ categoryTone(festival.category) }}"
+                aria-hidden="true"
+              >
+                <svg lucideMusic focusable="false" size="14" strokeWidth="2"></svg>
+              </span>
+
+              <span class="festivales-map__sidebar-body">
+                <span class="festivales-map__sidebar-name">{{ festival.nameKey | t }}</span>
+                <span class="festivales-map__sidebar-dates">{{ festival.datesKey | t }}</span>
+                <span class="festivales-map__sidebar-location">
+                  <svg lucideMapPin focusable="false" size="12" strokeWidth="2" aria-hidden="true"></svg>
+                  {{ festival.cityKey | t }}, {{ festival.provinceKey | t }}
+                </span>
+              </span>
+
+              <span class="festivales-map__sidebar-marker festivales-map__sidebar-marker--{{ markerTone(festival) }}" aria-hidden="true"></span>
+            </button>
+          </li>
+        }
+      </ul>
+
+      <p class="festivales-map__sidebar-hint">
+        <svg lucideNavigation focusable="false" size="14" strokeWidth="2" aria-hidden="true"></svg>
+        {{ 'festivales.map.sidebar.hint' | t }}
+      </p>
+    }
+  </aside>
+
+  <!-- ── Mobile sheet toggle ────────────────────────────────── -->
+  <button
+    class="festivales-map__mobile-toggle"
+    type="button"
+    (click)="toggleMobileSheet()"
+    [attr.aria-expanded]="mobileSheetOpen()"
+    [attr.aria-label]="'festivales.map.mobileSheet.label' | t"
+    data-testid="mobile-toggle"
+  >
+    <svg lucideChevronDown
+      class="festivales-map__mobile-toggle-icon"
+      [class.festivales-map__mobile-toggle-icon--up]="mobileSheetOpen()"
+      focusable="false" size="18" strokeWidth="2" aria-hidden="true">
+    </svg>
+    <span>{{ 'festivales.map.mobileSheet.toggle' | t }}</span>
+  </button>
+
+</div>
