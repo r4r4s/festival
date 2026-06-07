@@ -1,87 +1,87 @@
-# ✅ Completed
+# ✅ Completado
 
-Archive of finished work items, completed phases, and shipped features.
+Archivo de elementos terminados, fases completadas y funcionalidades entregadas.
 
 ---
 
-## Phase 1: MVP Informative (Baseline)
+## Fase 1: MVP informativo (base)
 
-### Completed Features
+### Funcionalidades completadas
 
-- ✅ **Project scaffold** — Angular 21 standalone, feature-sliced architecture, ESLint boundaries.
+- ✅ **Andamiaje del proyecto** — Angular 21 standalone, arquitectura feature-sliced y límites de ESLint.
   - Commit: [`87da017`](https://github.com/R4r4s/festiVAL/commit/87da017)
-  - Completed: 2026-06-06
+  - Completado: 2026-06-06
 
-- ✅ **Design system** — Tokens (SCSS primitives + CSS custom properties), dark theme, typography, spacing, shadows, animations.
-  - Commits: Feature branch merged to develop.
-  - Completed: 2026-06-04
+- ✅ **Sistema de diseño** — Tokens (primitivas SCSS + propiedades personalizadas CSS), tema oscuro, tipografía, espaciado, sombras y animaciones.
+  - Commits: Rama de funcionalidad fusionada en develop.
+  - Completado: 2026-06-04
 
-- ✅ **Home page** — Hero image, featured festivals highlight, calls to action.
-  - Commits: Multiple feature work.
-  - Completed: 2026-06-04
+- ✅ **Página de inicio** — Imagen hero, destacados de festivales y llamadas a la acción.
+  - Commits: Trabajo de varias funcionalidades.
+  - Completado: 2026-06-04
 
-- ✅ **Navigation bar** — Sticky header with logo, menu links (Home, Festivals, Calendar, Explore, About), search icon, theme toggle.
-  - Commit: Feature branch merged.
-  - Completed: 2026-06-04
+- ✅ **Barra de navegación** — Cabecera fija con logo, enlaces de menú (Inicio, Festivales, Calendario, Explorar, Acerca de), icono de búsqueda y selector de tema.
+  - Commit: Rama de funcionalidad fusionada.
+  - Completado: 2026-06-04
 
-- ✅ **Festival catalogue** — Zod schema, data structure, initial 6+ festivals hardcoded/mocked.
-  - Completed: 2026-06-04
+- ✅ **Catálogo de festivales** — Esquema Zod, estructura de datos y 6+ festivales iniciales en mock/código fijo.
+  - Completado: 2026-06-04
 
-- ✅ **i18n MVP** — TranslationService + translate pipe, es.json as source, ca.json and en.json for parity.
-  - Commits: Feature branch.
-  - Completed: 2026-06-06
+- ✅ **i18n MVP** — TranslationService + pipe de traducción, `es.json` como fuente y `ca.json` y `en.json` con paridad.
+  - Commits: Rama de funcionalidad.
+  - Completado: 2026-06-06
 
-- ✅ **Routing scaffold** — App routes, lazy-loaded features, route guards placeholder.
-  - Completed: 2026-06-04
+- ✅ **Andamiaje de rutas** — Rutas de la aplicación, features cargadas de forma diferida y placeholders de route guards.
+  - Completado: 2026-06-04
 
-### In Progress / Not Yet Started
+### En progreso / Aún no iniciado
 
-- ⏳ **Search** — MiniSearch integration, fuzzy matching, field boosts.
-- ⏳ **Filters** — Province, month, genre, price range UI components.
-- ⏳ **Festival detail page** — Individual festival fiches with map, full line-up.
-- ⏳ **SSR + prerendering** — Angular Universal setup, prerender static routes.
-- ⏳ **Sanity CMS integration** — Replace hardcoded data with live catalog from Sanity.
-
----
-
-## Q2 2026
-
-### Milestones Completed
-
-- 2026-06-04: Design system finalized, tokens system in place.
-- 2026-06-04: Nav-bar with theme toggle and router integration.
-- 2026-06-06: i18n MVP with translate pipe and locale files.
+- ⏳ **Búsqueda** — Integración de MiniSearch, coincidencia difusa y boosts por campo.
+- ⏳ **Filtros** — Componentes de UI para provincia, mes, género y rango de precios.
+- ⏳ **Página de detalle de festival** — Fichas individuales de festivales con mapa y cartel completo.
+- ⏳ **SSR + prerenderizado** — Configuración de Angular Universal y prerender de rutas estáticas.
+- ⏳ **Integración con el CMS de Sanity** — Sustituir los datos hardcoded por un catálogo en vivo de Sanity.
 
 ---
 
-## Ongoing Quality
+## T2 2026
 
-- ✅ **Code reviews** — All PRs reviewed before merge.
-- ✅ **Testing gate** — Pre-commit linting + unit tests enforced.
-- ✅ **Documentation** — Architecture docs kept in sync with code.
+### Hitos completados
+
+- 2026-06-04: Sistema de diseño finalizado, sistema de tokens en marcha.
+- 2026-06-04: Nav-bar con selector de tema e integración con router.
+- 2026-06-06: i18n MVP con pipe de traducción y archivos de locales.
 
 ---
 
-## Release Timeline
+## Calidad continua
 
-| Version | Date | Highlights |
+- ✅ **Revisiones de código** — Todas las PR se revisan antes de fusionar.
+- ✅ **Puerta de pruebas** — Lint pre-commit + tests unitarios obligatorios.
+- ✅ **Documentación** — La documentación de arquitectura se mantiene sincronizada con el código.
+
+---
+
+## Cronograma de lanzamientos
+
+| Versión | Fecha | Destacados |
 | --- | --- | --- |
-| 0.1.0 (MVP) | TBD | Festival catalogue, search, filters, detail pages |
-| 0.2.0 (Personalization) | TBD | Favorites, PWA, theme persistence |
-| 0.3.0 (Accounts) | TBD | Registration, login, ratings, comments |
-| 0.4.0 (Integrations) | TBD | Spotify, ticketing, calendar |
-| 1.0.0 (i18n) | TBD | Valencian + English full support, hreflang |
+| 0.1.0 (MVP) | Por definir | Catálogo de festivales, búsqueda, filtros y páginas de detalle |
+| 0.2.0 (Personalización) | Por definir | Favoritos, PWA y persistencia del tema |
+| 0.3.0 (Cuentas) | Por definir | Registro, inicio de sesión, valoraciones y comentarios |
+| 0.4.0 (Integraciones) | Por definir | Spotify, ticketing y calendario |
+| 1.0.0 (i18n) | Por definir | Soporte completo para valenciano e inglés, hreflang |
 
 ---
 
-## Notes
+## Notas
 
-- **Cadence**: Items move from `IN_PROGRESS.md` → `COMPLETED.md` at end of sprint or upon merge to main.
-- **Retention**: Completed items stay here for 2–3 sprints (historical reference), then archived to git history.
-- **Linking**: All items include commit or PR links for traceability.
+- **Cadencia**: Los elementos pasan de `IN_PROGRESS.md` a `COMPLETED.md` al final del sprint o al fusionarse en main.
+- **Retención**: Los elementos completados permanecen aquí 2–3 sprints (referencia histórica) y después se archivan en el historial de git.
+- **Enlaces**: Todos los elementos incluyen enlaces a commits o PR para trazabilidad.
 
 ---
 
-## Last Updated
+## Última actualización
 
 2026-06-06

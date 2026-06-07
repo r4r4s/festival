@@ -1,90 +1,90 @@
 # 📋 Backlog
 
-Prioritized list of non-critical improvements, refactorings, and quality-of-life enhancements for future sprints.
+Lista priorizada de mejoras no críticas, refactorizaciones y mejoras de usabilidad para futuros sprints.
 
 ---
 
-## High Priority
+## Prioridad alta
 
-### Performance
-- [ ] Image optimization audit — Profile bundle, measure LCP per route, identify lazy-loading opportunities.
-- [ ] CSS-in-JS review — Ensure no runtime style injection; all styles should be static SCSS.
-- [ ] Service worker caching strategy — Define stale-while-revalidate vs. network-first policies per route.
+### Rendimiento
+- [ ] Auditoría de optimización de imágenes — Perfilar el bundle, medir el LCP por ruta e identificar oportunidades de carga diferida.
+- [ ] Revisión de CSS-in-JS — Asegurar que no haya inyección de estilos en tiempo de ejecución; todos los estilos deben ser SCSS estático.
+- [ ] Estrategia de caché del service worker — Definir políticas `stale-while-revalidate` frente a `network-first` por ruta.
 
-### Testing
-- [ ] E2E test suite (Playwright) — Core user flows: search, filter, navigate to detail, open map.
-- [ ] A11y audit with `axe-core` — Verify WCAG 2.1 AA compliance across all pages.
-- [ ] Component snapshot tests — Ensure visual regressions are caught.
+### Pruebas
+- [ ] Suite de pruebas E2E (Playwright) — Flujos principales de usuario: buscar, filtrar, navegar al detalle y abrir el mapa.
+- [ ] Auditoría de accesibilidad con `axe-core` — Verificar cumplimiento WCAG 2.1 AA en todas las páginas.
+- [ ] Tests de snapshots de componentes — Asegurar la detección de regresiones visuales.
 
-### Developer Experience
-- [ ] Storybook setup (optional) — Document component variants and interactions.
-- [ ] Husky + lint-staged — Enforce linting on pre-commit without blocking full lint run.
-- [ ] CI/CD pipeline (GitHub Actions) — Run lint + test on PR, deploy to staging on merge to develop.
+### Experiencia de desarrollo
+- [ ] Configuración de Storybook (opcional) — Documentar variantes e interacciones de componentes.
+- [ ] Husky + lint-staged — Imponer linting en pre-commit sin bloquear la ejecución completa de lint.
+- [ ] Pipeline CI/CD (GitHub Actions) — Ejecutar lint + test en PR y desplegar a staging al fusionar en develop.
 
 ---
 
-## Medium Priority
+## Prioridad media
 
-### Features
-- [ ] Festival comparison tool — Side-by-side comparison of 2–3 festivals.
-- [ ] Sharing features — "Share festival" via social media, generate festival digest link.
-- [ ] User ratings display — Show aggregate ratings for festivals (gating on Phase 3).
-- [ ] Artist profiles — Dedicated artist pages with discography, upcoming festivals, links.
+### Funcionalidades
+- [ ] Herramienta de comparación de festivales — Comparación lado a lado de 2–3 festivales.
+- [ ] Funciones para compartir — "Compartir festival" vía redes sociales y generación de un enlace resumen del festival.
+- [ ] Visualización de valoraciones de usuarios — Mostrar valoraciones agregadas de festivales (bloqueado por la Fase 3).
+- [ ] Perfiles de artistas — Páginas dedicadas a artistas con discografía, próximos festivales y enlaces.
 
 ### UI/UX
-- [ ] Loading states — Skeleton loaders, placeholders, Suspense-driven streaming.
-- [ ] Empty states — Tailored messaging for no search results, no favorites, etc.
-- [ ] Error boundaries — Graceful error recovery on HTTP failures, timeouts.
-- [ ] Animations — Entrance animations (fade-up, slide-in), micro-interactions (ripples, focus rings).
+- [ ] Estados de carga — Skeletons, placeholders y streaming guiado por Suspense.
+- [ ] Estados vacíos — Mensajes adaptados para sin resultados de búsqueda, sin favoritos, etc.
+- [ ] Límites de error — Recuperación elegante ante fallos HTTP y timeouts.
+- [ ] Animaciones — Animaciones de entrada (fade-up, slide-in) y microinteracciones (ripples, focus rings).
 
-### Infrastructure
-- [ ] Sentry integration — Production error monitoring and alerting.
-- [ ] Analytics dashboard — Track user journeys, search patterns, geographic distribution.
-- [ ] Cloudflare Workers — Implement caching headers, security headers, rate limiting.
-
----
-
-## Low Priority
-
-### Nice-to-have
-- [ ] Dark mode CSS variables audit — Ensure all colors use tokens, no hardcoded values.
-- [ ] Font subsetting — Reduce Inter, Sora, JetBrains Mono to used character ranges.
-- [ ] Manifest & install prompt — Customize PWA install dialog, app name, icon.
-- [ ] Open Graph images — Auto-generate OG images per festival (dynamic via Canvas or Cloudinary).
-
-### Documentation
-- [ ] API reference — Sanity CMS schema documentation.
-- [ ] Component library guide — Living style guide with variants and state examples.
-- [ ] Migration guides — Document breaking changes and upgrade paths.
+### Infraestructura
+- [ ] Integración con Sentry — Monitorización y alertas de errores en producción.
+- [ ] Panel de analíticas — Seguir recorridos de usuario, patrones de búsqueda y distribución geográfica.
+- [ ] Cloudflare Workers — Implementar cabeceras de caché, cabeceras de seguridad y limitación de peticiones.
 
 ---
 
-## Technical Debt
+## Prioridad baja
 
-### Refactoring
-- [ ] Review feature-sliced boundaries — Ensure no cross-feature imports are creeping in.
-- [ ] Consolidate token naming — Audit for orphaned or renamed custom properties.
-- [ ] Service simplification — Break down large services into single-responsibility units.
+### Deseable
+- [ ] Auditoría de variables CSS para modo oscuro — Asegurar que todos los colores usen tokens y no haya valores hardcoded.
+- [ ] Subconjunto de fuentes — Reducir Inter, Sora y JetBrains Mono a los rangos de caracteres usados.
+- [ ] Manifest y prompt de instalación — Personalizar el diálogo de instalación PWA, nombre de la app e icono.
+- [ ] Imágenes Open Graph — Generar automáticamente imágenes OG por festival (dinámico vía Canvas o Cloudinary).
 
-### Dependencies
-- [ ] Audit transitive dependencies — Check for security vulnerabilities, unused packages.
-- [ ] Update Angular ESLint rules — Stay current with v21+ recommendations.
-- [ ] Review Zod schemas — Ensure runtime validation matches TS inference.
-
----
-
-## Blocked / Waiting
-
-(Items awaiting decisions, external blockers, or phase dependencies)
-
-- [ ] Sanity CMS schema — Blocked on content model finalization.
-- [ ] Authentication UX — Blocked on Phase 3 start (auth backend decision).
-- [ ] Ticketing API integration — Blocked on Dice/Ticketmaster partnership agreement.
+### Documentación
+- [ ] Referencia de API — Documentación de los esquemas del CMS de Sanity.
+- [ ] Guía de la librería de componentes — Guía viva con variantes y ejemplos de estados.
+- [ ] Guías de migración — Documentar cambios rompientes y rutas de actualización.
 
 ---
 
-## Notes
+## Deuda técnica
 
-- **Estimated effort**: High-priority items are 1–3 sprint cycles each. Medium-priority items are 3–8 cycles. Low-priority is nice-to-have, not blocking a release.
-- **Ownership**: Backlog is maintained by the team and reviewed at sprint planning. Individual items are claimed by **prueba** (testing), **vistas** (UI), **sistemas** (architecture), **rendimiento** (performance), or **contenido** (editorial).
-- **Last updated**: 2026-06-06
+### Refactorización
+- [ ] Revisar los límites feature-sliced — Asegurar que no se estén colando importaciones entre features.
+- [ ] Consolidar la nomenclatura de tokens — Auditar propiedades personalizadas huérfanas o renombradas.
+- [ ] Simplificación de servicios — Dividir servicios grandes en unidades de responsabilidad única.
+
+### Dependencias
+- [ ] Auditar dependencias transitivas — Revisar vulnerabilidades de seguridad y paquetes sin uso.
+- [ ] Actualizar reglas de Angular ESLint — Mantenerse al día con las recomendaciones de v21+.
+- [ ] Revisar esquemas Zod — Asegurar que la validación en runtime coincide con la inferencia de TypeScript.
+
+---
+
+## Bloqueado / En espera
+
+(Elementos pendientes de decisiones, bloqueos externos o dependencias de fase)
+
+- [ ] Esquema del CMS de Sanity — Bloqueado hasta la finalización del modelo de contenido.
+- [ ] UX de autenticación — Bloqueado hasta el inicio de la Fase 3 (decisión del backend de autenticación).
+- [ ] Integración de la API de ticketing — Bloqueado por el acuerdo de colaboración entre Dice/Ticketmaster.
+
+---
+
+## Notas
+
+- **Esfuerzo estimado**: Los elementos de prioridad alta requieren 1–3 ciclos de sprint cada uno. Los de prioridad media requieren 3–8 ciclos. La prioridad baja es deseable, pero no bloquea una release.
+- **Responsabilidad**: El backlog lo mantiene el equipo y se revisa en la planificación de sprint. Los elementos individuales los asumen **prueba** (testing), **vistas** (UI), **sistemas** (arquitectura), **rendimiento** (performance) o **contenido** (editorial).
+- **Última actualización**: 2026-06-06

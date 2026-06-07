@@ -1,53 +1,53 @@
-# 🚀 In Progress
+# 🚀 En progreso
 
-Active work items currently being developed or reviewed.
+Elementos de trabajo activos que se están desarrollando o revisando.
 
 ---
 
-## Current Sprint
+## Sprint actual
 
-(Update as work moves through stages: todo → in-progress → review → done)
+(Actualizar a medida que el trabajo avance por etapas: por hacer → en progreso → revisión → hecho)
 
-### Features in Development
+### Funcionalidades en desarrollo
 
 - [ ] **i18n MVP** (Translation Service + Pipe)
-  - Status: Completed ✓
-  - Branch: `develop`
-  - PR: (merged)
-  - Started: 2026-06-06
-  - Completed: 2026-06-06
+  - Estado: Completado ✓
+  - Rama: `develop`
+  - PR: (fusionada)
+  - Inicio: 2026-06-06
+  - Completado: 2026-06-06
 
-### Bug Fixes
+### Correcciones de errores
 
-(Items under active investigation or repair)
-
----
-
-## Review Queue
-
-(PRs awaiting code review, QA, or design sign-off)
-
-- (none currently)
+(Elementos bajo investigación activa o reparación)
 
 ---
 
-## Testing / Validation
+## Cola de revisión
 
-(Features in test phase or awaiting final sign-off before merge)
+(PR pendientes de revisión de código, QA o validación de diseño)
 
-- (none currently)
-
----
-
-## Notes
-
-- **Update frequency**: This file is updated at sprint planning and at end-of-day standups.
-- **Archive strategy**: Completed items move to [`COMPLETED.md`](COMPLETED.md) weekly.
-- **Ownership**: Work items are assigned to the responsible agent/owner (name in parentheses).
-- **Blockers**: Any blocking issues are listed here with context.
+- (ninguno por ahora)
 
 ---
 
-## Last Updated
+## Pruebas / validación
+
+(Funcionalidades en fase de prueba o esperando validación final antes de fusionar)
+
+- (ninguna por ahora)
+
+---
+
+## Notas
+
+- **Frecuencia de actualización**: Este archivo se actualiza en la planificación de sprint y en los standups de fin de jornada.
+- **Estrategia de archivo**: Los elementos completados pasan semanalmente a [`COMPLETED.md`](COMPLETED.md).
+- **Responsabilidad**: Los elementos se asignan al agente o responsable correspondiente (nombre entre paréntesis).
+- **Bloqueos**: Cualquier incidencia bloqueante se lista aquí con contexto.
+
+---
+
+## Última actualización
 
 2026-06-06
