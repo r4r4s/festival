@@ -247,7 +247,7 @@
   gap: var(--fv-space-1);
   padding: var(--fv-space-2);
   border-radius: var(--fv-radius-lg);
-  background: rgba(255, 255, 255, 0.97);
+  background: color-mix(in srgb, var(--fv-bg-card-light) 97%, transparent);
   border: 1px solid color-mix(in srgb, var(--fv-border-nav) 60%, transparent);
   box-shadow: 0 12px 28px color-mix(in srgb, var(--fv-text-nav) 8%, transparent);
 }
@@ -282,7 +282,7 @@
   grid-column: 2;
   height: 3.25rem;
   border-radius: 10px;
-  background: #14151d;
+  background: var(--fv-bg-tile-dark);
   overflow: hidden;
 }
 
