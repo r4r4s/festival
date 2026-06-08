@@ -20,26 +20,9 @@
   gap: var(--fv-space-5);
   padding: var(--fv-space-5);
   border-radius: var(--fv-radius-2xl);
-  background:
-    radial-gradient(
-      circle at 16% 14%,
-      color-mix(in srgb, var(--fv-accent-orange) 12%, transparent) 0%,
-      transparent 26%
-    ),
-    radial-gradient(
-      circle at 82% 12%,
-      color-mix(in srgb, var(--fv-accent-blue) 10%, transparent) 0%,
-      transparent 30%
-    ),
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--fv-bg-card-light) 88%, var(--fv-bg-page)) 0%,
-      color-mix(in srgb, var(--fv-bg-card-light) 95%, var(--fv-bg-page)) 100%
-    );
-  border: 1px solid color-mix(in srgb, var(--fv-border-nav) 64%, transparent);
-  box-shadow:
-    0 24px 60px color-mix(in srgb, var(--fv-text-nav) 8%, transparent),
-    inset 0 1px 0 color-mix(in srgb, var(--fv-bg-card-light) 76%, transparent);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
   overflow: hidden;
 
   @include from(md) {
@@ -49,31 +32,6 @@
 
 .festival-calendar__header {
   display: grid;
-}
-
-.festival-calendar__intro {
-  display: flex;
-  gap: var(--fv-space-4);
-  align-items: start;
-}
-
-.festival-calendar__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: 3.25rem;
-  block-size: 3.25rem;
-  flex: 0 0 auto;
-  border-radius: var(--fv-radius-lg);
-  color: var(--fv-bg-card-light);
-  background: linear-gradient(
-    135deg,
-    var(--fv-accent-med-blue) 0%,
-    var(--fv-accent-orange) 100%
-  );
-  box-shadow:
-    0 12px 30px color-mix(in srgb, var(--fv-accent-orange) 22%, transparent),
-    inset 0 1px 0 color-mix(in srgb, var(--fv-bg-card-light) 38%, transparent);
 }
 
 .festival-calendar__copy {
@@ -92,8 +50,8 @@
 .festival-calendar__title {
   color: var(--fv-text-nav);
   font-family: var(--fv-font-heading);
-  font-size: clamp(2.5rem, 4.6vw, 4.25rem);
-  line-height: 0.95;
+  font-size: clamp(var(--fv-text-3xl), 5vw, var(--fv-text-4xl));
+  line-height: var(--fv-leading-tight);
   letter-spacing: var(--fv-tracking-snug);
   text-wrap: balance;
 }
@@ -183,9 +141,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
   min-width: 0;
   height: 1.5rem;
-  margin-inline: auto;
   color: color-mix(in srgb, var(--fv-text-nav) 55%, var(--fv-bg-card-light));
   font-family: var(--fv-font-ui);
   font-size: var(--fv-text-xs);
@@ -198,6 +156,7 @@
   z-index: 1;
   color: var(--fv-bg-card-light);
   font-size: var(--fv-text-sm);
+  cursor: pointer;
 }
 
 .festival-calendar__day--featured::before {
@@ -239,24 +198,26 @@
   margin-top: var(--fv-space-2);
 }
 
+// Sólo el festival con la clase `--active` es visible (carrusel).
 .festival-calendar__festival {
   position: absolute;
   top: 0;
   left: var(--festival-position, 50%);
   width: 10rem;
   padding-top: var(--fv-space-5);
-  transform: translateX(-50%);
-  transition: transform 200ms ease;
+  transform: translateX(-50%) translateY(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 320ms ease,
+    transform 320ms ease;
 }
 
-.festival-calendar__festival:hover {
-  transform: translateX(-50%) translateY(-4px);
-  z-index: 5;
-}
-
-// z-index para evitar que Zevra quede tapada por Latin Fest cuando se solapan
-.festival-calendar__festival:nth-child(3) {
-  z-index: 2;
+.festival-calendar__festival--active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+  z-index: 3;
 }
 
 // Conector dashed: sube desde el borde superior de la tarjeta hacia el círculo de la fecha
@@ -414,15 +375,16 @@
     gap: var(--fv-space-3);
   }
 
-  .festival-calendar__festival {
+  // En tablet/mobile no hay carrusel: todas las cards se ven simultáneamente
+  .festival-calendar__festival,
+  .festival-calendar__festival--active {
     position: static;
     width: 100%;
     transform: none;
+    opacity: 1;
+    pointer-events: auto;
     padding-top: var(--fv-space-3);
-  }
-
-  .festival-calendar__festival:hover {
-    transform: translateY(-4px);
+    transition: none;
   }
 
   .festival-calendar__connector {
@@ -438,7 +400,7 @@
   }
 
   .festival-calendar__title {
-    font-size: clamp(2rem, 10vw, 3rem);
+    font-size: clamp(var(--fv-text-3xl), 5vw, var(--fv-text-4xl));
   }
 
   .festival-calendar__months-row,

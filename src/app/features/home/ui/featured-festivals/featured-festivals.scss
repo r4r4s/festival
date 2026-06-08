@@ -33,12 +33,8 @@
   margin: 0;
   color: var(--fv-text-nav);
   font-family: var(--fv-font-hero-emphasis);
-  font-size: var(--fv-text-2xl);
+  font-size: clamp(var(--fv-text-3xl), 5vw, var(--fv-text-4xl));
   line-height: var(--fv-leading-tight);
-
-  @include from(md) {
-    font-size: var(--fv-text-3xl);
-  }
 }
 
 .featured-festivals__viewport {

@@ -5,20 +5,14 @@
 >
   <div class="festival-calendar__shell">
     <header class="festival-calendar__header">
-      <div class="festival-calendar__intro">
-        <div class="festival-calendar__icon" aria-hidden="true">
-          <svg lucideCalendar focusable="false" size="24" strokeWidth="2"></svg>
-        </div>
+      <div class="festival-calendar__copy">
+        <h2 class="festival-calendar__title" data-testid="festival-calendar-title">
+          {{ 'home.calendar.title' | t }}
+        </h2>
 
-        <div class="festival-calendar__copy">
-          <h2 class="festival-calendar__title" data-testid="festival-calendar-title">
-            {{ 'home.calendar.title' | t }}
-          </h2>
-
-          <p class="festival-calendar__subtitle">
-            {{ 'home.calendar.subtitle' | t }}
-          </p>
-        </div>
+        <p class="festival-calendar__subtitle">
+          {{ 'home.calendar.subtitle' | t }}
+        </p>
       </div>
     </header>
 
@@ -44,13 +38,15 @@
           @for (month of monthSegments; track month.key) {
             <div class="festival-calendar__day-scale">
               @for (day of month.days; track day) {
+                @let festivalOfDay = festivalForDay(month.key, day);
                 <span
                   class="festival-calendar__day"
-                  [class.festival-calendar__day--featured]="festivalForDay(month.key, day)"
-                  [class.festival-calendar__day--med-blue]="festivalForDay(month.key, day)?.tone === 'med-blue'"
-                  [class.festival-calendar__day--coral]="festivalForDay(month.key, day)?.tone === 'coral'"
-                  [class.festival-calendar__day--orange]="festivalForDay(month.key, day)?.tone === 'orange'"
-                  [class.festival-calendar__day--blue]="festivalForDay(month.key, day)?.tone === 'blue'"
+                  [class.festival-calendar__day--featured]="festivalOfDay"
+                  [class.festival-calendar__day--med-blue]="festivalOfDay?.tone === 'med-blue'"
+                  [class.festival-calendar__day--coral]="festivalOfDay?.tone === 'coral'"
+                  [class.festival-calendar__day--orange]="festivalOfDay?.tone === 'orange'"
+                  [class.festival-calendar__day--blue]="festivalOfDay?.tone === 'blue'"
+                  (mouseenter)="festivalOfDay && focusFestival(festivalOfDay)"
                 >
                   {{ day }}
                 </span>
@@ -61,9 +57,10 @@
 
         <!-- ── 4. Tarjetas de festival (fila independiente) ────── -->
         <div class="festival-calendar__cards">
-          @for (festival of festivals; track trackBySlug($index, festival)) {
+          @for (festival of festivals; track trackBySlug($index, festival); let i = $index) {
             <article
               class="festival-calendar__festival festival-calendar__festival--{{ festival.tone }}"
+              [class.festival-calendar__festival--active]="isActive(i)"
               [style.--festival-position]="festival.position + '%'"
               data-testid="festival-calendar-card"
             >
