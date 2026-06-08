@@ -394,22 +394,30 @@ src/app/features/
 ├── home/                → Página de inicio. Muestra festivales destacados, hero con glow
 │                          atmosférico, acceso rápido a búsqueda y filtros.
 │   ├── feature/
-│   │   ├── home.page.ts    → Página de inicio standalone. Orquesta el hero editorial y el carrusel
-│   │   │                     local `featured-festivals`.
-│   │   ├── home.page.html  → Hero con CTAs + inserción del componente de festivales destacados.
+│   │   ├── home.page.ts    → Página de inicio standalone. Orquesta el hero editorial, el carrusel
+│   │   │                     `featured-festivals` y el mapa interactivo `home-festival-map`.
+│   │   ├── home.page.html  → Hero con CTAs + carrusel de festivales + mapa de pines (ambos en @defer).
 │   │   ├── home.page.scss  → Layout de la home: espaciado vertical, hero card y responsive.
-│   │   └── home.page.spec.ts → Test de render del hero y de la sección animada de tarjetas.
+│   │   └── home.page.spec.ts → Tests del hero, botones, sección de festivales y sección de mapa interactivo.
 │   ├── ui/
 │   │   ├── .gitkeep
-│   │   └── featured-festivals/
-│   │       ├── featured-festivals.ts      → Componente local standalone con datos de festivales
-│   │       │                                destacados.
-│   │       ├── featured-festivals.html    → Header "Festivales destacados" y tarjetas con imagen,
-│   │       │                                fecha, nombre y ubicación.
-│   │       ├── featured-festivals.scss    → Carrusel horizontal sin fondo propio: movimiento continuo
-│   │       │                                en desktop, avance cada 3 s en móvil y sin lift en hover.
-│   │       └── featured-festivals.spec.ts → Tests de render, ausencia del CTA "Ver todos", pista duplicada
-│   │                                        y pausa/reanudación del carrusel.
+│   │   ├── featured-festivals/
+│   │   │   ├── featured-festivals.ts      → Componente local standalone con datos de festivales
+│   │   │   │                                destacados.
+│   │   │   ├── featured-festivals.html    → Header "Festivales destacados" y tarjetas con imagen,
+│   │   │   │                                fecha, nombre y ubicación.
+│   │   │   ├── featured-festivals.scss    → Carrusel horizontal sin fondo propio: movimiento continuo
+│   │   │   │                                en desktop, avance cada 3 s en móvil y sin lift en hover.
+│   │   │   └── featured-festivals.spec.ts → Tests de render y pista duplicada.
+│   │   └── home-festival-map/
+│   │       ├── home-festival-map.ts      → Componente interactivo de pines sobre imagen del mapa
+│   │       │                               valenciano. Signals para festival activo, panel visible y
+│   │       │                               festival bloqueado (click vs. hover). Paleta sin violeta.
+│   │       ├── home-festival-map.html    → Figura con imagen + lista de pines accesibles (aria-pressed)
+│   │       │                               + panel lateral con tarjeta del festival activo.
+│   │       ├── home-festival-map.scss    → Layout grid pane/panel; pines con tono por festival;
+│   │       │                               transiciones de tarjeta con blur. Sin tokens violeta.
+│   │       └── home-festival-map.spec.ts → Tests de render, pins, festival por defecto y activación.
 │   ├── data-access/
 │   │   └── .gitkeep
 │   └── home.routes.ts   → Superficie pública de la feature. Expone HOME_ROUTES con loadComponent
@@ -609,4 +617,5 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-07 | Auditoría `.claude` — alineación contrato↔código | **Skill `i18n-commit-policy`** (`.claude` + `.codex`): reescrita la matriz de locales fantasma (44 países europeos) a la real `es`/`ca`/`en` (+ roadmap `ca-ES-valencia`/`en-GB`); corregida la referencia al script inexistente `validate-i18n-parity.mjs` → `scripts/i18n-sync.mjs` (`npm run i18n:sync` / `i18n:check`). **Catálogo real** propagado a `CLAUDE.md`, `AGENTS.md`, agentes `contenido`/`sistemas`/`prueba` y skill `state-management`: festivales ficticios (FIB, Arenal Sound, Low, SanSan) → reales (Bigsound, Latin Fest, Medusa, RBF, Reve, Zevra); `README.md` § Descripción actualizado. **Phasing Transloco** aclarado en ambos contratos (infraestructura ya en MVP). **Dead code/assets**: eliminado `TranslationService.setLang()` (sin consumidores tras revert del lang switcher), clave i18n huérfana `nav.langSwitcher` en `es/ca/en.json`, y los dos logos no usados de `src/assets/images/sponsors/` (carpeta eliminada). Limpieza de ficheros `.DS_Store`. |
 | 2026-06-07 | Image loader para la hero (`ngSrcset` real) | `app.config.ts`: añadido `IMAGE_LOADER` (`festivalImageLoader`) con reescritura de ancho **opt-in** vía `loaderParams.variants`; solo la hero (que tiene las variantes `home-hero-sunset-beach-{800,1200,1600}.webp`) lo solicita, de modo que `ngSrcset` resuelve a los ficheros reales. Los logos de festival (fuente única, p. ej. `logo-medusa-2026.webp`) se devuelven intactos → sin 404. `home.page.html`: la hero añade `[loaderParams]="{ variants: true }"`. Resuelve el aviso de NgOptimizedImage por `ngSrcset` sin loader y activa el servido responsive del elemento LCP. |
 | 2026-06-07 | Reorganización `skills/` al estilo Agent Skill (Google) | Las 18 skills de `.claude/skills/` (y su espejo `.codex/skills/`) pasan de `README.md` a **`SKILL.md`** con **frontmatter** `name` + `description` (ahora son Agent Skills descubribles), spine consistente y footer `## Related skills`. Disclosure progresivo: contenido pesado extraído a `references/` en las 4 grandes — `project-structure/references/eslint-boundaries.md`, `theming-styling/references/tokens.md`, `testing-patterns/references/examples.md`, `performance-optimization/references/image-converter.md`. Nueva skill **`sanity-cms`** (hueco real: el CMS Sanity está en el stack). Corregida la contradicción residual "44 locales europeos" en `CLAUDE.md`/`AGENTS.md` → `ca`/`en`. Referencias `skills/*/README.md` → `SKILL.md` en ambos contratos; `sanity-cms` añadida a las listas de skills y al comando `audit-structure`. Paridad `.claude`↔`.codex` verificada (`diff -rq`). |
+| 2026-06-08 | Componente `home-festival-map` + limpieza de paleta | Añadida `src/app/features/home/ui/home-festival-map/` con `home-festival-map.{ts,html,scss,spec.ts}`: mapa interactivo de pines sobre imagen de la Comunitat Valenciana, signals para festival activo/bloqueado y panel lateral con tarjeta del festival. `home.page.*` integra el componente en segundo `@defer (on viewport)`. Assets del mapa: `src/assets/images/maps/` (valencia-map.webp, valencia-community-map-gradient*.webp) y `src/assets/images-src/maps/`. **Paleta mediterránea consolidada**: eliminados `$fv-violet-*` de `_tokens.scss` y `--fv-accent-violet`/`--fv-accent-violet-soft` de `_semantic.scss`; expuestos `--fv-accent-med-blue`, `--fv-accent-coral`, `--fv-accent-orange`; `--fv-shadow-focus` apunta a `--fv-accent-blue`; `--fv-shadow-glow-violet` renombrado a `--fv-shadow-glow-blue`. Eliminadas referencias a `--fv-accent-violet` en `festivales-map.page.scss`, `festivales-map.scss` (×5) y `featured-festivals.scss`. Eliminados `.gitkeep` redundantes de `core/handlers/`, `core/interceptors/` y `assets/maps/`. Skill `theming-styling` actualizada: identidad mediterránea, par por defecto blue+coral. |
 | 2026-06-07 | Correcciones auditoría (health 66 → 90) | **Dominio**: creados `shared/domain/festival.model.ts` (FestivalSchema Zod + tipos Festival/Artist) y `festival-error.model.ts` (FestivalError, FestivalErrorCode, fromHttpStatus). **Error handling**: añadidos `core/handlers/festival-error.handler.ts` (FestivalErrorHandler, provisto en app.config) y `core/interceptors/error.interceptor.ts` (errorInterceptor funcional). `app.config.ts`: ErrorHandler → FestivalErrorHandler, `withInterceptors([errorInterceptor])`. **Feature mapa**: creada `features/festivales-map/` completa: `festivales-map.page.{ts,html,scss}`, `festivales-map.routes.ts` (FESTIVALES_MAP_ROUTES), ruta `/mapa` añadida a `app.routes.ts`. **Shared map**: creados `shared/ui/festivales-map/festivales-map.{ts,html,scss}` (FestivalesMapComponent, MapLibre GL JS lazy-loaded, sidebar ordenable, SSR-safe). **Data**: `shared/data-access/festival-locations.ts` (FESTIVAL_LOCATIONS readonly) y `map-loader.service.ts` (MapLoaderService). **Entornos**: bloque `maps` (styleUrl, center, zoom) añadido a ambos `environment*.ts`. `maplibre-gl` instalado. **Assets**: `src/assets/maps/festival-dark.json` placeholder para Protomaps. **Nits**: comentario "5s → 3s" en `featured-festivals.scss`; excepción arquitectónica documentada en `transloco.loader.ts`. |
