@@ -74,6 +74,10 @@
         "artists": "Artists",
         "duration": "Duration",
         "days": "days"
+      },
+      "fav": {
+        "label": "Add to favourites",
+        "add": "Favourites"
       }
     }
   },

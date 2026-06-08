@@ -74,6 +74,10 @@
         "artists": "Artistes",
         "duration": "Duració",
         "days": "dies"
+      },
+      "fav": {
+        "label": "Afegir a favorits",
+        "add": "Favorits"
       }
     }
   },

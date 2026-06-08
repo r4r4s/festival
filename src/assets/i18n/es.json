@@ -57,7 +57,7 @@
     "map": {
       "eyebrow": "Exploración editorial",
       "title": "Festivales sobre el mapa valenciano.",
-      "description": "Recorre la Comunitat desde una cartografía atmosférica: cada pin revela el carácter, las fechas y la energía de su festival.",
+      "description": "Recorre la Comunitat: cada pin revela el carácter, las fechas y la energía de su festival.",
       "figureLabel": "Mapa estático de la Comunitat Valenciana con festivales destacados",
       "panel": {
         "eyebrow": "Festival en foco",
@@ -74,6 +74,10 @@
         "artists": "Artistas",
         "duration": "Duración",
         "days": "días"
+      },
+      "fav": {
+        "label": "Añadir a favoritos",
+        "add": "Favoritos"
       }
     }
   },
