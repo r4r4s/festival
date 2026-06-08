@@ -53,6 +53,28 @@
           "location": "Cullera, Valencia"
         }
       }
+    },
+    "map": {
+      "eyebrow": "Editorial exploration",
+      "title": "Festivals across the Valencian map.",
+      "description": "Travel the region through an atmospheric cartographic surface where each pin reveals the festival's dates, character and energy.",
+      "figureLabel": "Static map of the Valencian Community with highlighted festivals",
+      "panel": {
+        "eyebrow": "Festival in focus",
+        "cta": "View festival"
+      },
+      "categories": {
+        "electronic": "Electronic",
+        "latin": "Latin",
+        "pop": "Pop & live",
+        "urban": "Urban"
+      },
+      "stats": {
+        "attendance": "Attendance",
+        "artists": "Artists",
+        "duration": "Duration",
+        "days": "days"
+      }
     }
   },
   "festivales": {
