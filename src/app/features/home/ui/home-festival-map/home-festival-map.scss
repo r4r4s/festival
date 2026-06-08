@@ -145,85 +145,47 @@
 .pin {
   position: relative;
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
   padding: 0;
   border: 0;
-  border-radius: 50%;
   background: transparent;
   cursor: pointer;
   transition: transform var(--fv-duration-base) var(--fv-ease-emphasized);
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    transition:
-      transform var(--fv-duration-base) var(--fv-ease-emphasized),
-      opacity var(--fv-duration-base) var(--fv-ease-standard);
-  }
-
-  // Soft halo ring around pin
-  &::before {
-    opacity: 0.3;
-    transform: scale(0.74);
-    background: color-mix(in srgb, var(--fv-bg-nav) 60%, transparent);
-  }
-
-  // Glow bloom
-  &::after {
-    opacity: 0.18;
-    background: color-mix(in srgb, var(--festival-tone) 50%, transparent);
-    filter: blur(8px);
-  }
-
   &:focus-visible {
     @include focus-ring;
+    border-radius: var(--fv-radius-sm);
   }
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
-      transform: scale(1.1);
+      transform: scale(1.15) translateY(-2px);
     }
   }
 }
 
-.pin-core {
-  position: relative;
-  z-index: 1;
-  width: 1rem;
-  height: 1rem;
-  margin: auto;
-  // White-ish sand ring so the pin pops on the coloured map
-  border: 2.5px solid var(--fv-bg-nav);
-  border-radius: 50%;
-  background: var(--festival-tone);
-  box-shadow:
-    0 0 0 2px color-mix(in srgb, var(--festival-tone) 35%, transparent),
-    0 2px 8px color-mix(in srgb, var(--fv-text-nav) 22%, transparent);
-  transition: box-shadow var(--fv-duration-base) var(--fv-ease-standard);
+.pin-icon {
+  color: var(--festival-tone);
+  // Drop shadow so el icono destaca sobre el mapa de colores
+  filter:
+    drop-shadow(0 1px 0 var(--fv-bg-nav))
+    drop-shadow(0 2px 6px color-mix(in srgb, var(--fv-text-nav) 30%, transparent));
+  transition:
+    filter var(--fv-duration-base) var(--fv-ease-standard),
+    transform var(--fv-duration-base) var(--fv-ease-emphasized);
 }
 
 .pin--active {
-  transform: scale(1.2);
+  transform: scale(1.25) translateY(-3px);
 
-  .pin-core {
-    box-shadow:
-      0 0 0 3px color-mix(in srgb, var(--festival-tone) 55%, transparent),
-      0 0 14px color-mix(in srgb, var(--festival-tone) 60%, transparent),
-      0 2px 8px color-mix(in srgb, var(--fv-text-nav) 25%, transparent);
-  }
-
-  &::before {
-    opacity: 0.55;
-    transform: scale(1.0);
-  }
-
-  &::after {
-    opacity: 0.42;
-    transform: scale(1.5);
+  .pin-icon {
+    filter:
+      drop-shadow(0 1px 0 var(--fv-bg-nav))
+      drop-shadow(0 4px 10px color-mix(in srgb, var(--festival-tone) 55%, transparent))
+      drop-shadow(0 2px 4px color-mix(in srgb, var(--fv-text-nav) 25%, transparent));
   }
 }
 

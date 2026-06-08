@@ -13,6 +13,24 @@ import { TranslationService } from '@shared/data-access/i18n/translation.service
 import type { TranslationKey } from '@shared/data-access/i18n/translations';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
+// ── City anchors — single source of truth for geographic positions ──────────
+// All percentages are relative to the map image dimensions (left % / top %).
+const CITY_ANCHORS = {
+  valencia: { x: 58.5, y: 43.5 },
+  cullera:  { x: 60.5, y: 48.7 },
+  benidorm: { x: 67.5, y: 61.5 },
+} as const;
+
+type CityKey = keyof typeof CITY_ANCHORS;
+
+/** Computes the final pin position from a city anchor plus a small visual offset. */
+function pin(city: CityKey, offsetX: number, offsetY: number): { pinLeft: number; pinTop: number } {
+  return {
+    pinLeft: CITY_ANCHORS[city].x + offsetX,
+    pinTop:  CITY_ANCHORS[city].y + offsetY,
+  };
+}
+
 interface HomeMapFestival extends FestivalLocation {
   readonly slug: string;
   readonly categoryKey: TranslationKey;
@@ -58,8 +76,7 @@ export class HomeFestivalMapComponent {
       attendance: '120K+',
       artists: '48',
       duration: '2',
-      pinLeft: 42,
-      pinTop: 35,
+      ...pin('valencia', -0.8, -0.6),
       toneColor: 'var(--fv-accent-blue)',
       glowColor: 'var(--fv-accent-green)',
     },
@@ -74,8 +91,7 @@ export class HomeFestivalMapComponent {
       attendance: '18K',
       artists: '12',
       duration: '1',
-      pinLeft: 46,
-      pinTop: 36,
+      ...pin('valencia', +0.8, +0.6),
       toneColor: 'var(--fv-accent-blue)',
       glowColor: 'var(--fv-accent-blue)',
     },
@@ -90,8 +106,7 @@ export class HomeFestivalMapComponent {
       attendance: '300K+',
       artists: '150',
       duration: '5',
-      pinLeft: 52,
-      pinTop: 49,
+      ...pin('cullera', -0.8, +0.4),
       toneColor: 'var(--fv-accent-blue)',
       glowColor: 'var(--fv-accent-green)',
     },
@@ -106,8 +121,7 @@ export class HomeFestivalMapComponent {
       attendance: '130K+',
       artists: '70',
       duration: '4',
-      pinLeft: 50,
-      pinTop: 50,
+      ...pin('cullera', +0.8, -0.4),
       toneColor: 'var(--fv-accent-green)',
       glowColor: 'var(--fv-accent-blue)',
     },
@@ -122,8 +136,7 @@ export class HomeFestivalMapComponent {
       attendance: '90K+',
       artists: '28',
       duration: '1',
-      pinLeft: 61,
-      pinTop: 60,
+      ...pin('benidorm', -0.8, +0.5),
       toneColor: 'var(--fv-accent-warning)',
       glowColor: 'var(--fv-accent-warning)',
     },
@@ -138,8 +151,7 @@ export class HomeFestivalMapComponent {
       attendance: '35K',
       artists: '20',
       duration: '1',
-      pinLeft: 46,
-      pinTop: 70,
+      ...pin('benidorm', +0.8, -0.5),
       toneColor: 'var(--fv-accent-warning)',
       glowColor: 'var(--fv-accent-warning)',
     },
