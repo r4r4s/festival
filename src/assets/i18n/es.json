@@ -54,6 +54,61 @@
         }
       }
     },
+    "calendar": {
+      "title": "Calendario de festivales 2026",
+      "subtitle": "Explora cuándo y dónde se celebran los mejores festivales de la Comunitat Valenciana.",
+      "empty": "Todavía no hay festivales seleccionados para este mes. Cambia el filtro para seguir explorando el verano.",
+      "filters": {
+        "ariaLabel": "Filtrar festivales por mes",
+        "all": "Todos",
+        "june": "Junio",
+        "july": "Julio",
+        "august": "Agosto",
+        "september": "Septiembre"
+      },
+      "months": {
+        "june": "Junio",
+        "july": "Julio",
+        "august": "Agosto"
+      },
+      "shortMonths": {
+        "june": "JUN",
+        "july": "JUL",
+        "august": "AGO"
+      },
+      "cards": {
+        "bigsound": {
+          "date": "20–21 Jun",
+          "name": "Bigsound Festival",
+          "location": "Valencia",
+          "genre": "Pop & directo"
+        },
+        "latinFest": {
+          "date": "17–18 Jul",
+          "name": "Latin Fest",
+          "location": "Benidorm",
+          "genre": "Latino"
+        },
+        "zevra": {
+          "date": "24–27 Jul",
+          "name": "Zevra Festival",
+          "location": "Cullera",
+          "genre": "Urbano"
+        },
+        "medusa": {
+          "date": "13–17 Ago",
+          "name": "Medusa Festival",
+          "location": "Cullera",
+          "genre": "Electrónica"
+        }
+      },
+      "stats": {
+        "festivals": "Festivales seleccionados",
+        "attendees": "Asistentes cada año",
+        "artists": "Artistas en escena",
+        "provinces": "Provincias por descubrir"
+      }
+    },
     "map": {
       "eyebrow": "Exploración editorial",
       "title": "Festivales sobre el mapa valenciano.",

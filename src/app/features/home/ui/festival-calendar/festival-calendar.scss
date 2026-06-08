@@ -1,0 +1,467 @@
+@use 'styles/breakpoints' as *;
+
+:host {
+  display: block;
+}
+
+.festival-calendar {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-inline: var(--fv-space-2);
+
+  @include from(md) {
+    padding-inline: 0;
+  }
+}
+
+.festival-calendar__shell {
+  position: relative;
+  display: grid;
+  gap: var(--fv-space-5);
+  padding: var(--fv-space-5);
+  border-radius: var(--fv-radius-2xl);
+  background:
+    radial-gradient(
+      circle at 16% 14%,
+      color-mix(in srgb, var(--fv-accent-orange) 12%, transparent) 0%,
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 82% 12%,
+      color-mix(in srgb, var(--fv-accent-blue) 10%, transparent) 0%,
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--fv-bg-card-light) 88%, var(--fv-bg-page)) 0%,
+      color-mix(in srgb, var(--fv-bg-card-light) 95%, var(--fv-bg-page)) 100%
+    );
+  border: 1px solid color-mix(in srgb, var(--fv-border-nav) 64%, transparent);
+  box-shadow:
+    0 24px 60px color-mix(in srgb, var(--fv-text-nav) 8%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--fv-bg-card-light) 76%, transparent);
+  overflow: hidden;
+
+  @include from(md) {
+    padding: var(--fv-space-6);
+  }
+}
+
+.festival-calendar__header {
+  display: grid;
+}
+
+.festival-calendar__intro {
+  display: flex;
+  gap: var(--fv-space-4);
+  align-items: start;
+}
+
+.festival-calendar__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 3.25rem;
+  block-size: 3.25rem;
+  flex: 0 0 auto;
+  border-radius: var(--fv-radius-lg);
+  color: var(--fv-bg-card-light);
+  background: linear-gradient(
+    135deg,
+    var(--fv-accent-med-blue) 0%,
+    var(--fv-accent-orange) 100%
+  );
+  box-shadow:
+    0 12px 30px color-mix(in srgb, var(--fv-accent-orange) 22%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--fv-bg-card-light) 38%, transparent);
+}
+
+.festival-calendar__copy {
+  display: grid;
+  gap: var(--fv-space-2);
+  max-width: 42rem;
+}
+
+.festival-calendar__title,
+.festival-calendar__subtitle,
+.festival-calendar__card-title,
+.festival-calendar__card-location {
+  margin: 0;
+}
+
+.festival-calendar__title {
+  color: var(--fv-text-nav);
+  font-family: var(--fv-font-heading);
+  font-size: clamp(2.5rem, 4.6vw, 4.25rem);
+  line-height: 0.95;
+  letter-spacing: var(--fv-tracking-snug);
+  text-wrap: balance;
+}
+
+.festival-calendar__subtitle {
+  max-width: 45rem;
+  color: color-mix(in srgb, var(--fv-text-nav) 68%, var(--fv-bg-card-light));
+  font-size: clamp(var(--fv-text-base), 1.4vw, var(--fv-text-lg));
+  line-height: var(--fv-leading-relaxed);
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// TIMELINE
+// ──────────────────────────────────────────────────────────────────────────
+.festival-calendar__timeline-shell {
+  overflow: visible;
+}
+
+.festival-calendar__timeline {
+  position: relative;
+  display: grid;
+  gap: var(--fv-space-2);
+}
+
+// ── 1. Etiquetas de mes (proporcionales 15/31/18 días) ────────────────────
+.festival-calendar__months-row {
+  display: grid;
+  grid-template-columns: 15fr 31fr 18fr;
+  align-items: end;
+  padding-bottom: var(--fv-space-1);
+}
+
+.festival-calendar__month {
+  color: color-mix(in srgb, var(--fv-text-nav) 80%, var(--fv-bg-card-light));
+  font-family: var(--fv-font-heading);
+  font-size: var(--fv-text-lg);
+  font-weight: 800;
+  letter-spacing: var(--fv-tracking-wide);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.festival-calendar__month--june,
+.festival-calendar__month--july {
+  color: var(--fv-accent-med-blue);
+}
+
+.festival-calendar__month--august {
+  color: var(--fv-accent-orange);
+}
+
+// ── 2. Línea horizontal (gradiente) ───────────────────────────────────────
+.festival-calendar__rail {
+  height: 2px;
+  border-radius: var(--fv-radius-pill);
+  background: linear-gradient(
+    90deg,
+    var(--fv-accent-med-blue) 0%,
+    var(--fv-accent-coral) 55%,
+    var(--fv-accent-orange) 82%,
+    color-mix(in srgb, var(--fv-accent-orange) 70%, var(--fv-bg-card-light)) 100%
+  );
+  opacity: 0.85;
+}
+
+// ── 3. Fila de números de día ─────────────────────────────────────────────
+.festival-calendar__days-row {
+  display: grid;
+  grid-template-columns: 15fr 31fr 18fr;
+  gap: var(--fv-space-2);
+  padding-top: var(--fv-space-1);
+}
+
+.festival-calendar__day-scale {
+  display: grid;
+  grid-auto-flow: column;
+  // minmax(0, 1fr) permite que cada columna encoja por debajo del tamaño de contenido
+  // → evita que un día destacado expanda el grid y desborde el contenedor
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 0;
+  align-items: center;
+  min-width: 0;
+}
+
+.festival-calendar__day {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  height: 1.5rem;
+  margin-inline: auto;
+  color: color-mix(in srgb, var(--fv-text-nav) 55%, var(--fv-bg-card-light));
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-xs);
+  font-weight: 700;
+  text-align: center;
+}
+
+// Círculo destacado: pseudo-elemento absoluto → no afecta al tamaño de la celda
+.festival-calendar__day--featured {
+  z-index: 1;
+  color: var(--fv-bg-card-light);
+  font-size: var(--fv-text-sm);
+}
+
+.festival-calendar__day--featured::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: var(--fv-radius-pill);
+  background: color-mix(in srgb, var(--festival-day-color) 92%, var(--fv-bg-card-light));
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--festival-day-color) 14%, transparent),
+    0 6px 14px color-mix(in srgb, var(--festival-day-color) 22%, transparent);
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.festival-calendar__day--med-blue {
+  --festival-day-color: var(--fv-accent-med-blue);
+}
+
+.festival-calendar__day--coral {
+  --festival-day-color: var(--fv-accent-coral);
+}
+
+.festival-calendar__day--orange {
+  --festival-day-color: var(--fv-accent-orange);
+}
+
+.festival-calendar__day--blue {
+  --festival-day-color: var(--fv-accent-blue);
+}
+
+// ── 4. Tarjetas de festival (posicionadas bajo cada fecha) ────────────────
+.festival-calendar__cards {
+  position: relative;
+  min-height: 13rem;
+  margin-top: var(--fv-space-2);
+}
+
+.festival-calendar__festival {
+  position: absolute;
+  top: 0;
+  left: var(--festival-position, 50%);
+  width: 10rem;
+  padding-top: var(--fv-space-5);
+  transform: translateX(-50%);
+  transition: transform 200ms ease;
+}
+
+.festival-calendar__festival:hover {
+  transform: translateX(-50%) translateY(-4px);
+  z-index: 5;
+}
+
+// z-index para evitar que Zevra quede tapada por Latin Fest cuando se solapan
+.festival-calendar__festival:nth-child(3) {
+  z-index: 2;
+}
+
+// Conector dashed: sube desde el borde superior de la tarjeta hacia el círculo de la fecha
+.festival-calendar__connector {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: var(--fv-space-5);
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--festival-color) 75%, transparent) 0%,
+    color-mix(in srgb, var(--festival-color) 75%, transparent) 50%,
+    transparent 50%,
+    transparent 100%
+  );
+  background-size: 2px 6px;
+  background-repeat: repeat-y;
+  transform: translateX(-50%);
+}
+
+// ── Card ─────────────────────────────────────────────────────────────────
+.festival-calendar__card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.85rem 1fr;
+  gap: var(--fv-space-1);
+  padding: var(--fv-space-2);
+  border-radius: var(--fv-radius-lg);
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid color-mix(in srgb, var(--fv-border-nav) 60%, transparent);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--fv-text-nav) 8%, transparent);
+}
+
+.festival-calendar__card-date {
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  padding: var(--fv-space-1);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--festival-color) 14%, var(--fv-bg-card-light));
+  color: var(--festival-color);
+  text-align: center;
+}
+
+.festival-calendar__card-date-value {
+  font-family: var(--fv-font-heading);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.festival-calendar__card-date-month {
+  font-size: 0.6rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: var(--fv-tracking-wide);
+  text-transform: uppercase;
+}
+
+.festival-calendar__card-media {
+  grid-column: 2;
+  height: 3.25rem;
+  border-radius: 10px;
+  background: #14151d;
+  overflow: hidden;
+}
+
+.festival-calendar__card-image {
+  display: block;
+  width: 100%;
+  height: 3.25rem;
+  object-fit: contain;
+  padding: var(--fv-space-1);
+}
+
+.festival-calendar__card-body {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 2px;
+  padding-top: var(--fv-space-1);
+}
+
+.festival-calendar__card-title {
+  color: var(--fv-text-nav);
+  font-family: var(--fv-font-heading);
+  font-size: 0.92rem;
+  line-height: 1.1;
+  letter-spacing: var(--fv-tracking-snug);
+}
+
+.festival-calendar__card-location {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: color-mix(in srgb, var(--fv-text-nav) 64%, var(--fv-bg-card-light));
+  font-size: 0.74rem;
+}
+
+.festival-calendar__card-location svg {
+  width: 12px;
+  height: 12px;
+  flex: 0 0 12px;
+}
+
+.festival-calendar__card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.festival-calendar__badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.4rem;
+  padding-inline: var(--fv-space-2);
+  border-radius: var(--fv-radius-pill);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.festival-calendar__badge--genre {
+  background: color-mix(in srgb, var(--festival-color) 14%, var(--fv-bg-card-light));
+  color: var(--festival-color);
+}
+
+// ── Festival tone tokens ──────────────────────────────────────────────────
+.festival-calendar__festival--med-blue {
+  --festival-color: var(--fv-accent-med-blue);
+}
+
+.festival-calendar__festival--coral {
+  --festival-color: var(--fv-accent-coral);
+}
+
+.festival-calendar__festival--orange {
+  --festival-color: var(--fv-accent-orange);
+}
+
+.festival-calendar__festival--blue {
+  --festival-color: var(--fv-accent-blue);
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// RESPONSIVE
+// ──────────────────────────────────────────────────────────────────────────
+@media (max-width: 1023px) {
+  // En pantallas medianas, distribuir uniformemente en 2 columnas
+  .festival-calendar__cards {
+    position: static;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--fv-space-3);
+  }
+
+  .festival-calendar__festival {
+    position: static;
+    width: 100%;
+    transform: none;
+    padding-top: var(--fv-space-3);
+  }
+
+  .festival-calendar__festival:hover {
+    transform: translateY(-4px);
+  }
+
+  .festival-calendar__connector {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .festival-calendar__shell {
+    gap: var(--fv-space-5);
+    padding: var(--fv-space-5) var(--fv-space-4);
+    border-radius: var(--fv-radius-xl);
+  }
+
+  .festival-calendar__title {
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  .festival-calendar__months-row,
+  .festival-calendar__rail,
+  .festival-calendar__days-row {
+    display: none;
+  }
+
+  .festival-calendar__cards {
+    grid-template-columns: 1fr;
+    gap: var(--fv-space-3);
+  }
+
+  .festival-calendar__festival {
+    padding-top: 0;
+  }
+
+  .festival-calendar__card {
+    grid-template-columns: 4rem 1fr;
+  }
+
+  .festival-calendar__card-media,
+  .festival-calendar__card-image {
+    height: 5rem;
+  }
+}

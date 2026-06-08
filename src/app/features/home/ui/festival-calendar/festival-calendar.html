@@ -1,0 +1,116 @@
+<section
+  class="festival-calendar"
+  [attr.aria-label]="'home.calendar.title' | t"
+  data-testid="festival-calendar"
+>
+  <div class="festival-calendar__shell">
+    <header class="festival-calendar__header">
+      <div class="festival-calendar__intro">
+        <div class="festival-calendar__icon" aria-hidden="true">
+          <svg lucideCalendar focusable="false" size="24" strokeWidth="2"></svg>
+        </div>
+
+        <div class="festival-calendar__copy">
+          <h2 class="festival-calendar__title" data-testid="festival-calendar-title">
+            {{ 'home.calendar.title' | t }}
+          </h2>
+
+          <p class="festival-calendar__subtitle">
+            {{ 'home.calendar.subtitle' | t }}
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <div class="festival-calendar__timeline-shell">
+      <div class="festival-calendar__timeline" data-testid="festival-calendar-timeline">
+
+        <!-- ── 1. Etiquetas de mes ─────────────────────────────── -->
+        <div class="festival-calendar__months-row" aria-hidden="true">
+          @for (month of monthSegments; track month.key) {
+            <span
+              class="festival-calendar__month festival-calendar__month--{{ month.key }}"
+            >
+              {{ month.labelKey | t }}
+            </span>
+          }
+        </div>
+
+        <!-- ── 2. Línea horizontal (gradiente) ─────────────────── -->
+        <div class="festival-calendar__rail" aria-hidden="true"></div>
+
+        <!-- ── 3. Fila de números de día con marcadores ───────── -->
+        <div class="festival-calendar__days-row" aria-hidden="true">
+          @for (month of monthSegments; track month.key) {
+            <div class="festival-calendar__day-scale">
+              @for (day of month.days; track day) {
+                <span
+                  class="festival-calendar__day"
+                  [class.festival-calendar__day--featured]="festivalForDay(month.key, day)"
+                  [class.festival-calendar__day--med-blue]="festivalForDay(month.key, day)?.tone === 'med-blue'"
+                  [class.festival-calendar__day--coral]="festivalForDay(month.key, day)?.tone === 'coral'"
+                  [class.festival-calendar__day--orange]="festivalForDay(month.key, day)?.tone === 'orange'"
+                  [class.festival-calendar__day--blue]="festivalForDay(month.key, day)?.tone === 'blue'"
+                >
+                  {{ day }}
+                </span>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- ── 4. Tarjetas de festival (fila independiente) ────── -->
+        <div class="festival-calendar__cards">
+          @for (festival of festivals; track trackBySlug($index, festival)) {
+            <article
+              class="festival-calendar__festival festival-calendar__festival--{{ festival.tone }}"
+              [style.--festival-position]="festival.position + '%'"
+              data-testid="festival-calendar-card"
+            >
+              <div class="festival-calendar__connector" aria-hidden="true"></div>
+
+              <div class="festival-calendar__card">
+                <div class="festival-calendar__card-date">
+                  <span class="festival-calendar__card-date-value">{{ festival.dateKey | t }}</span>
+                  <span class="festival-calendar__card-date-month">{{
+                    festival.shortMonthLabelKey | t
+                  }}</span>
+                </div>
+
+                <div class="festival-calendar__card-media">
+                  <img
+                    class="festival-calendar__card-image"
+                    [ngSrc]="festival.imageSrc"
+                    alt=""
+                    aria-hidden="true"
+                    width="280"
+                    height="112"
+                    sizes="(min-width: 1280px) 17vw, (min-width: 1024px) 20vw, (min-width: 768px) 24vw, 72vw"
+                  />
+                </div>
+
+                <div class="festival-calendar__card-body">
+                  <h3 class="festival-calendar__card-title">
+                    {{ festival.nameKey | t }}
+                  </h3>
+
+                  <p class="festival-calendar__card-location">
+                    <svg lucideMapPin focusable="false" size="14" strokeWidth="2"></svg>
+                    <span>{{ festival.locationKey | t }}</span>
+                  </p>
+
+                  <div class="festival-calendar__card-meta">
+                    <span class="festival-calendar__badge festival-calendar__badge--genre">
+                      {{ festival.genreKey | t }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

@@ -50,6 +50,12 @@
   </article>
 
   @defer (on viewport) {
+    <fv-festival-calendar />
+  } @placeholder {
+    <div class="home-page__festivals-placeholder" aria-hidden="true"></div>
+  }
+
+  @defer (on viewport) {
     <fv-featured-festivals />
   } @placeholder {
     <div class="home-page__festivals-placeholder" aria-hidden="true"></div>
