@@ -29,18 +29,12 @@
   }
 }
 
-.featured-festivals__header {
-  display: block;
-}
-
 .featured-festivals__title {
   margin: 0;
   color: var(--fv-text-nav);
   font-family: var(--fv-font-hero-emphasis);
   font-size: var(--fv-text-2xl);
   line-height: var(--fv-leading-tight);
-  letter-spacing: 0;
-  text-wrap: balance;
 
   @include from(md) {
     font-size: var(--fv-text-3xl);
@@ -49,8 +43,7 @@
 
 .featured-festivals__viewport {
   background: var(--fv-bg-page);
-  overflow-x: hidden;
-  overflow-y: hidden;
+  overflow: hidden;
   outline: none;
 
   &:focus-visible {
@@ -63,7 +56,6 @@
   display: flex;
   gap: var(--featured-card-gap);
   width: max-content;
-  // 6 festivals × 3s each
   animation: fv-featured-mobile calc(var(--featured-mobile-step) * 6) ease-in-out infinite;
   will-change: transform;
 
@@ -85,19 +77,16 @@
 }
 
 .featured-festivals__item {
-  display: block;
   flex: 0 0 var(--featured-card-width);
 }
 
 .featured-festivals__card {
   position: relative;
-  display: block;
   width: 100%;
   aspect-ratio: 16 / 10;
   border-radius: var(--fv-radius-xl);
   overflow: hidden;
   isolation: isolate;
-  // Dark surface so transparent-bg logos (Bigsound, Medusa, Zevra) are legible
   background: var(--fv-bg-surface);
 
   @include from(md) {
@@ -110,7 +99,6 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  // contain keeps the logo fully visible; padding adds breathing room
   object-fit: contain;
   object-position: center;
   padding: var(--fv-space-5);
@@ -154,12 +142,11 @@
   font-weight: 700;
   letter-spacing: var(--fv-tracking-wide);
   text-transform: uppercase;
-  box-shadow: 0 6px 16px color-mix(in srgb, var(--fv-bg-canvas) 32%, transparent);
 }
 
 .featured-festivals__body {
   position: absolute;
-  inset: auto 0 0 0;
+  inset: auto 0 0;
   z-index: 2;
   display: grid;
   gap: var(--fv-space-1);
@@ -171,8 +158,7 @@
   margin: 0;
   font-family: var(--fv-font-hero-emphasis);
   font-size: var(--fv-text-lg);
-  line-height: var(--fv-leading-display);
-  text-wrap: balance;
+  line-height: var(--fv-leading-tight);
 
   @include from(md) {
     font-size: var(--fv-text-xl);
@@ -200,19 +186,16 @@
   }
 }
 
-// Infinite marquee — translate by -50% (one full group width) for seamless loop
 @keyframes fv-featured-marquee {
   from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  to { transform: translateX(-50%); }
 }
 
-// Mobile step-by-step — 6 festivals, each card = 1/12 of total track (2 groups × 6)
-// Each step = 8.333% = 100% / 12 items
 @keyframes fv-featured-mobile {
-  0%,   13% { transform: translateX(0); }
-  16%,  30% { transform: translateX(-8.333%); }
-  33%,  47% { transform: translateX(-16.667%); }
-  50%,  64% { transform: translateX(-25%); }
-  66%,  80% { transform: translateX(-33.333%); }
+  0%, 13% { transform: translateX(0); }
+  16%, 30% { transform: translateX(-8.333%); }
+  33%, 47% { transform: translateX(-16.667%); }
+  50%, 64% { transform: translateX(-25%); }
+  66%, 80% { transform: translateX(-33.333%); }
   83%, 100% { transform: translateX(-41.667%); }
 }
