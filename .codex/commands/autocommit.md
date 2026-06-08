@@ -94,18 +94,67 @@ For each semantic group:
    Both must exit `0`. If either fails: **stop**, fix the cause (or revert the change), re-run the gate. Never bypass with `--no-verify`. Never commit a failing test.
    Pure doc / `.codex/` changes skip the gate.
 4. **Run the architecture audit gate (MANDATORY, no exceptions):**
-   Before staging the first commit of the session, invoke the `/audit-structure` command and read the **Health Score** in section A of its report.
 
-   - If **Health Score is `100/100`** and **Status is `OK`** → continue with the commit flow.
-   - If **Health Score is `< 100/100`** for any reason (any critical, warning or nit) → **DO NOT COMMIT**. Stop the entire autocommit flow.
+   The Health Score MUST be `100/100` before any commit. This applies to **every** IA / agent / human, including ones that cannot invoke the `/audit-structure` slash command (which is a Claude Code prompt, not a shell script). "El script no está disponible" / "the command is not available" is **never** a valid reason to skip this step — the gate is then run with the bash fallback below.
 
-   When the gate fails:
-   - Report every finding from sections B (Issues) and C (Recommendations) of the audit verbatim to the user.
-   - Apply the recommended fixes (or ask the user to decide on ambiguous ones).
-   - Re-run `/audit-structure` after each fix until the score is `100/100`.
+   **Method A — preferred (Claude Code with slash commands):**
+   Invoke `/audit-structure`. Read **Health Score** in section A. If `100/100` and Status `OK` → continue. Otherwise → STOP, report sections B and C verbatim, fix, re-run.
+
+   **Method B — universal fallback (Codex, any IA, shell environment):**
+   Run **every** check below. Any non-empty output, non-zero exit, or failed assertion = `< 100/100` = **DO NOT COMMIT**.
+
+   ```bash
+   # B.1 — lint + tests (pre-commit gate, must already be green)
+   npm run lint && npm test -- --run
+
+   # B.2 — i18n parity (es/ca/en keys aligned)
+   npm run i18n:check
+
+   # B.3 — no hardcoded colors in component SCSS (only var(--fv-*) or color-mix allowed)
+   ! grep -rn -E "rgb\(|rgba\(|hsl\(|#[0-9a-fA-F]{3,6}" src/app --include="*.scss" \
+     | grep -v "var(--\|color-mix\|^\s*//"
+
+   # B.4 — no hardcoded font-family in component SCSS
+   ! grep -rn "font-family\s*:" src/app --include="*.scss" | grep -v "var(--fv-font"
+
+   # B.5 — HttpClient only in core/ or data-access/
+   ! grep -rln "from '@angular/common/http'" src/app --include="*.ts" \
+     | grep -v "\.spec\.ts" \
+     | grep -vE "(src/app/core/|src/app/.*/data-access/|src/app/app\.config\.ts)"
+
+   # B.6 — no feature-to-feature imports
+   ! grep -rn "from '@features/" src/app/features --include="*.ts" \
+     | grep -v "\.spec\.ts" \
+     | awk -F: '{ split($1, p, "/"); for (i in p) if (p[i]=="features") { src=p[i+1]; break }
+                  match($0, /@features\/([^/'"'"']+)/, m); tgt=m[1];
+                  if (src && tgt && src != tgt) print }' \
+     | grep .
+
+   # B.7 — no empty feature scaffolds (folders with only .gitkeep / no real code)
+   for f in src/app/features/*/; do
+     real=$(find "$f" -type f ! -name ".gitkeep" 2>/dev/null | wc -l)
+     [ "$real" -eq 0 ] && echo "EMPTY FEATURE: $f"
+   done | grep . && exit 1 || true
+
+   # B.8 — no stale .gitkeep in folders that already have real files
+   for d in $(find src/app -name ".gitkeep" -exec dirname {} \;); do
+     others=$(ls -A "$d" | grep -v "^.gitkeep$" | wc -l)
+     [ "$others" -gt 0 ] && echo "STALE .gitkeep: $d"
+   done | grep . && exit 1 || true
+
+   # B.9 — docs/documentacion.md exists and was updated in this batch if structure changed
+   git diff --cached --name-only | grep -qE "^src/.*\.(ts|html|scss)$" \
+     && ! git diff --cached --name-only | grep -q "^docs/documentacion.md$" \
+     && echo "STRUCTURAL CHANGE WITHOUT DOC UPDATE" && exit 1 || true
+   ```
+
+   Treat any failing check as the Score being `< 100/100`. When the gate fails:
+   - Report every failing check verbatim to the user (which command, which output).
+   - Apply the fixes (or ask the user on ambiguous ones).
+   - Re-run **Method B in full** after each fix until every check passes.
    - Only then resume the commit flow.
 
-   This rule applies to **every** semantic group, including pure documentation or `.codex/` changes. The audit gate is never skipped, never bypassed with `--no-verify`, and never overridden by user pressure to "just commit it". A failing audit is a blocking error.
+   This rule applies to **every** semantic group, including pure documentation or `.codex/` changes. The audit gate is never skipped, never bypassed with `--no-verify`, and never overridden by user pressure to "just commit it" or by the IA reporting "el comando no existe / no está disponible". Use Method B in that case. A failing audit is a blocking error.
 5. Create a Conventional Commit message.
 6. Commit.
 7. Repeat until no meaningful changes remain.
