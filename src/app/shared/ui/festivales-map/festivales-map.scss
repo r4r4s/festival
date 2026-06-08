@@ -97,7 +97,7 @@
   border-top: 1px solid var(--fv-border-subtle);
   overflow: hidden;
   max-height: var(--map-mobile-sheet-h);
-  transition: max-height var(--fv-duration-300) var(--fv-ease-out);
+  transition: max-height var(--fv-duration-base) var(--fv-ease-standard);
 
   .festivales-map--sheet-open & {
     max-height: var(--map-mobile-sheet-h);
@@ -130,7 +130,6 @@
   font-family: var(--fv-font-hero-emphasis);
   font-size: var(--fv-text-base);
   font-weight: 600;
-  white-space: nowrap;
 }
 
 // ── Sort control ─────────────────────────────────────────────
@@ -146,7 +145,6 @@
 .festivales-map__sort-prefix {
   color: var(--fv-text-secondary);
   font-size: var(--fv-text-xs);
-  white-space: nowrap;
 }
 
 .festivales-map__sort-select {
@@ -221,7 +219,7 @@
   color: var(--fv-text-primary);
   cursor: pointer;
   text-align: left;
-  transition: background var(--fv-duration-150) var(--fv-ease-out);
+  transition: background var(--fv-duration-fast) var(--fv-ease-standard);
 
   &:hover {
     background: color-mix(in srgb, var(--fv-accent-violet) 5%, transparent);
@@ -245,8 +243,8 @@
 
   &--violet { background: color-mix(in srgb, var(--fv-accent-violet) 15%, transparent); color: var(--fv-accent-violet); }
   &--rose   { background: color-mix(in srgb, var(--fv-accent-warning) 15%, transparent); color: var(--fv-accent-warning); }
-  &--amber  { background: color-mix(in srgb, var(--fv-accent-teal) 15%, transparent); color: var(--fv-accent-teal); }
-  &--teal   { background: color-mix(in srgb, var(--fv-accent-teal) 15%, transparent); color: var(--fv-accent-teal); }
+  &--amber  { background: color-mix(in srgb, var(--fv-accent-blue) 15%, transparent); color: var(--fv-accent-blue); }
+  &--teal   { background: color-mix(in srgb, var(--fv-accent-green) 15%, transparent); color: var(--fv-accent-green); }
 }
 
 .festivales-map__sidebar-body {
@@ -289,8 +287,8 @@
 
   &--violet { background: var(--fv-accent-violet); }
   &--rose   { background: var(--fv-accent-warning); }
-  &--amber  { background: var(--fv-accent-teal); }
-  &--teal   { background: var(--fv-accent-teal); }
+  &--amber  { background: var(--fv-accent-blue); }
+  &--teal   { background: var(--fv-accent-green); }
 }
 
 // ── Sidebar footer hint ───────────────────────────────────────
@@ -320,7 +318,7 @@
   border-radius: 50%;
   border: 2px solid var(--fv-bg-canvas);
   cursor: pointer;
-  transition: transform var(--fv-duration-150) var(--fv-ease-out);
+  transition: transform var(--fv-duration-fast) var(--fv-ease-standard);
 
   &:hover,
   &:focus-visible {
@@ -330,8 +328,8 @@
 
   &--violet { background: var(--fv-accent-violet); }
   &--rose   { background: var(--fv-accent-warning); }
-  &--amber  { background: var(--fv-accent-teal); }
-  &--teal   { background: var(--fv-accent-teal); }
+  &--amber  { background: var(--fv-accent-blue); }
+  &--teal   { background: var(--fv-accent-green); }
 }
 
 // ── Mobile toggle ─────────────────────────────────────────────
@@ -363,7 +361,7 @@
 }
 
 .festivales-map__mobile-toggle-icon {
-  transition: transform var(--fv-duration-200) var(--fv-ease-out);
+  transition: transform var(--fv-duration-fast) var(--fv-ease-standard);
 
   &--up {
     transform: rotate(180deg);
