@@ -1,0 +1,123 @@
+<section
+  class="map-section"
+  [attr.aria-label]="'home.map.title' | t"
+  data-testid="home-festival-map"
+>
+  <div class="map-header">
+    <h2 class="title">{{ 'home.map.title' | t }}</h2>
+  </div>
+
+  <div class="shell">
+    <div class="pane" (mouseleave)="handlePointerLeave()">
+      <figure class="figure" [attr.aria-label]="'home.map.figureLabel' | t">
+        <div class="festival-map">
+          <div class="festival-map__canvas">
+            <div class="festival-map__scene">
+              <img
+                ngSrc="/assets/images/maps/valencia-community-map-gradient-cropped.webp"
+                alt=""
+                aria-hidden="true"
+                class="festival-map__image"
+                width="1087"
+                height="1420"
+                sizes="(min-width: 1024px) 48vw, 100vw"
+              />
+
+              <ol class="pins" role="list">
+                @for (festival of festivals; track festival.key) {
+                  <li
+                    class="pin-item"
+                    [style.left.%]="festival.pinLeft"
+                    [style.top.%]="festival.pinTop"
+                    [style.--festival-tone]="festival.toneColor"
+                  >
+                    <button
+                      class="pin"
+                      [class.pin--active]="isActive(festival.key)"
+                      type="button"
+                      [attr.aria-label]="pinAriaLabel(festival)"
+                      [attr.aria-pressed]="isPanelVisible() && isActive(festival.key)"
+                      (mouseenter)="previewFestival(festival.key)"
+                      (focus)="previewFestival(festival.key)"
+                      (click)="selectFestival(festival.key)"
+                      (blur)="handlePinBlur()"
+                      data-testid="home-festival-map-pin"
+                    >
+                      <span class="pin-core" aria-hidden="true"></span>
+                    </button>
+                  </li>
+                }
+              </ol>
+            </div>
+          </div>
+        </div>
+      </figure>
+    </div>
+
+    <aside class="panel" [class.panel--visible]="isPanelVisible()">
+      <div class="stage">
+        @for (festival of festivals; track festival.key) {
+          <article
+            class="card"
+            [class.card--active]="isActive(festival.key)"
+            [style.--festival-tone]="festival.toneColor"
+            [style.--festival-glow]="festival.glowColor"
+          >
+            <div class="media">
+              <img
+                class="media-image"
+                [ngSrc]="festival.image.src"
+                [alt]="festival.image.alt"
+                width="640"
+                height="360"
+                sizes="(min-width: 1024px) 26vw, 100vw"
+              />
+            </div>
+
+            <div class="content">
+              <div class="meta">
+                <span class="category">
+                  <svg lucideMusic focusable="false" aria-hidden="true" size="14" strokeWidth="2"></svg>
+                  {{ festival.categoryKey | t }}
+                </span>
+                <h3 class="name" data-testid="home-festival-map-name">
+                  {{ festival.nameKey | t }}
+                </h3>
+                <p class="detail">
+                  <svg lucideMapPin focusable="false" aria-hidden="true" size="15" strokeWidth="2"></svg>
+                  {{ festival.cityKey | t }}, {{ festival.provinceKey | t }}
+                </p>
+                <p class="detail">
+                  <svg lucideCalendar focusable="false" aria-hidden="true" size="15" strokeWidth="2"></svg>
+                  {{ festival.datesKey | t }}
+                </p>
+              </div>
+
+              <p class="summary">{{ festival.descriptionKey | t }}</p>
+
+              <dl class="stats">
+                <div class="stat">
+                  <dt>{{ 'home.map.stats.attendance' | t }}</dt>
+                  <dd>{{ festival.attendance }}</dd>
+                </div>
+                <div class="stat">
+                  <dt>{{ 'home.map.stats.artists' | t }}</dt>
+                  <dd>{{ festival.artists }}</dd>
+                </div>
+                <div class="stat">
+                  <dt>{{ 'home.map.stats.duration' | t }}</dt>
+                  <dd>{{ festival.duration }} {{ 'home.map.stats.days' | t }}</dd>
+                </div>
+              </dl>
+
+              <a class="cta" [routerLink]="['/festivales', festival.slug]">
+                <span>{{ 'home.map.panel.cta' | t }}</span>
+                <svg lucideArrowRight focusable="false" aria-hidden="true" size="18" strokeWidth="2"></svg>
+              </a>
+            </div>
+          </article>
+        }
+      </div>
+    </aside>
+  </div>
+</section>

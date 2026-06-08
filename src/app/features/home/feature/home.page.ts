@@ -3,6 +3,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { LucideArrowRight, LucideCalendar } from '@lucide/angular';
 
 import { FeaturedFestivalsComponent } from '../ui/featured-festivals/featured-festivals';
+import { HomeFestivalMapComponent } from '../ui/home-festival-map/home-festival-map';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
@@ -12,6 +13,7 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
     LucideArrowRight,
     LucideCalendar,
     FeaturedFestivalsComponent,
+    HomeFestivalMapComponent,
     TranslatePipe,
   ],
   templateUrl: './home.page.html',

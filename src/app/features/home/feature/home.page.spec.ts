@@ -1,4 +1,5 @@
 import { ComponentFixture, DeferBlockBehavior, DeferBlockState, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { HomePageComponent } from './home.page';
 
@@ -7,9 +8,24 @@ describe('HomePageComponent', () => {
   let fixture: ComponentFixture<HomePageComponent>;
 
   beforeEach(async () => {
+    globalThis.IntersectionObserver ??=
+      class {
+        readonly root = null;
+        readonly rootMargin = '';
+        readonly thresholds: number[] = [];
+
+        disconnect(): void { return; }
+        observe(): void { return; }
+        takeRecords(): IntersectionObserverEntry[] {
+          return [];
+        }
+        unobserve(): void { return; }
+      } as unknown as typeof IntersectionObserver;
+
     await TestBed.configureTestingModule({
       imports: [HomePageComponent],
       deferBlockBehavior: DeferBlockBehavior.Manual,
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomePageComponent);
@@ -44,15 +60,19 @@ describe('HomePageComponent', () => {
     expect(buttons[1]?.getAttribute('type')).toBe('button');
   });
 
-  it('renders the featured festivals section', async () => {
+  it('renders the featured festivals section and the interactive map section', async () => {
     const deferBlocks = await fixture.getDeferBlocks();
     await deferBlocks[0].render(DeferBlockState.Complete);
+    await deferBlocks[1].render(DeferBlockState.Complete);
     fixture.detectChanges();
 
     const root = fixture.nativeElement as HTMLElement;
-    const section = root.querySelector('[data-testid="featured-festivals"]');
+    const featured = root.querySelector('[data-testid="featured-festivals"]');
+    const section = root.querySelector('[data-testid="home-festival-map"]');
 
+    expect(featured).not.toBeNull();
+    expect(featured?.querySelectorAll('[data-testid="featured-festivals-card-name"]')).toHaveLength(12);
     expect(section).not.toBeNull();
-    expect(section?.querySelectorAll('[data-testid="featured-festivals-card-name"]')).toHaveLength(12);
+    expect(section?.querySelectorAll('[data-testid="home-festival-map-pin"]')).toHaveLength(6);
   });
 });
