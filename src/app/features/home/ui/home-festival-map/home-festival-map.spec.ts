@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { HomeFestivalMapComponent } from './home-festival-map';
 
@@ -8,6 +9,7 @@ describe('HomeFestivalMapComponent', () => {
   let fixture: ComponentFixture<HomeFestivalMapComponent>;
 
   beforeEach(async () => {
+    vi.useFakeTimers();
     await TestBed.configureTestingModule({
       imports: [HomeFestivalMapComponent],
       providers: [provideRouter([])],
@@ -16,6 +18,10 @@ describe('HomeFestivalMapComponent', () => {
     fixture = TestBed.createComponent(HomeFestivalMapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it('creates', () => {
@@ -65,5 +71,31 @@ describe('HomeFestivalMapComponent', () => {
 
     expect(component.isPanelVisible()).toBe(true);
     expect(component.activeFestival().key).toBe('rbf');
+  });
+
+  it('cycles the active pin every 3 seconds in array order', () => {
+    expect(component.activeFestival().key).toBe('medusa');
+    const medusaIdx = component.festivals.findIndex((f) => f.key === 'medusa');
+
+    vi.advanceTimersByTime(3000);
+    expect(component.activeIndex()).toBe((medusaIdx + 1) % component.festivals.length);
+
+    vi.advanceTimersByTime(3000);
+    expect(component.activeIndex()).toBe((medusaIdx + 2) % component.festivals.length);
+  });
+
+  it('restarts the autoplay timer when the user hovers a pin', () => {
+    vi.advanceTimersByTime(2000);
+    expect(component.activeFestival().key).toBe('medusa');
+
+    component.previewFestival('bigsound');
+    expect(component.activeFestival().key).toBe('bigsound');
+
+    // Los 2000 ms acumulados se descartan; el siguiente tick necesita 3000 ms más.
+    vi.advanceTimersByTime(2000);
+    expect(component.activeFestival().key).toBe('bigsound');
+
+    vi.advanceTimersByTime(1000);
+    expect(component.activeFestival().key).toBe('reve');
   });
 });

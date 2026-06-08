@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  DestroyRef,
+  inject,
+  signal,
+} from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import {
@@ -12,6 +20,9 @@ import { FESTIVAL_LOCATIONS, type FestivalLocation } from '@shared/data-access/f
 import { TranslationService } from '@shared/data-access/i18n/translation.service';
 import type { TranslationKey } from '@shared/data-access/i18n/translations';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
+
+/** Intervalo (ms) entre cambio automático del pin/festival activo. */
+const AUTOPLAY_INTERVAL_MS = 3000;
 
 // ── City anchors — single source of truth for geographic positions ──────────
 // All percentages are relative to the map image dimensions (left % / top %).
@@ -158,7 +169,6 @@ export class HomeFestivalMapComponent {
   ] as const satisfies readonly HomeMapFestival[];
 
   readonly activeFestivalKey = signal(this.#defaultFestivalKey);
-  readonly lockedFestivalKey = signal<string | null>(null);
   // Panel is always visible in the 3-column layout — starts open.
   readonly isPanelVisible = signal(true);
   readonly activeFestival = computed(
@@ -170,30 +180,63 @@ export class HomeFestivalMapComponent {
     this.festivals.findIndex((festival) => festival.key === this.activeFestivalKey()),
   );
 
+  // ── Carrusel automático ───────────────────────────────────────────────────
+  readonly #destroyRef = inject(DestroyRef);
+  #intervalId: ReturnType<typeof setInterval> | null = null;
+
+  constructor() {
+    // setInterval sólo en el navegador — afterNextRender no se ejecuta en SSR.
+    afterNextRender(() => {
+      this.#startAutoplay();
+    });
+    this.#destroyRef.onDestroy(() => this.#stopAutoplay());
+  }
+
   previewFestival(key: string): void {
     this.activeFestivalKey.set(key);
+    this.#restartAutoplay();
   }
 
   selectFestival(key: string): void {
-    this.lockedFestivalKey.set(key);
     this.activeFestivalKey.set(key);
     this.isPanelVisible.set(true);
+    this.#restartAutoplay();
   }
 
-  /** Resets the active card to the locked festival (or the default). Panel stays visible. */
+  /** El autoplay sigue ciclando desde donde esté — ya no se resetea al salir. */
   handlePointerLeave(): void {
-    const lockedKey = this.lockedFestivalKey();
-    this.activeFestivalKey.set(lockedKey ?? this.#defaultFestivalKey);
+    // no-op intencionado: el carrusel automático sustituye al lock-on-click.
   }
 
-  /** Keyboard blur — same reset behaviour as pointer leave. */
+  /** Mismo motivo que handlePointerLeave: el ciclo continúa solo. */
   handlePinBlur(): void {
-    const lockedKey = this.lockedFestivalKey();
-    this.activeFestivalKey.set(lockedKey ?? this.#defaultFestivalKey);
+    // no-op intencionado.
   }
 
   isActive(key: string): boolean {
     return this.activeFestivalKey() === key;
+  }
+
+  #startAutoplay(): void {
+    this.#intervalId = setInterval(() => {
+      const currentIdx = this.festivals.findIndex(
+        (festival) => festival.key === this.activeFestivalKey(),
+      );
+      const nextIdx = (currentIdx + 1) % this.festivals.length;
+      this.activeFestivalKey.set(this.festivals[nextIdx].key);
+    }, AUTOPLAY_INTERVAL_MS);
+  }
+
+  #stopAutoplay(): void {
+    if (this.#intervalId !== null) {
+      clearInterval(this.#intervalId);
+      this.#intervalId = null;
+    }
+  }
+
+  #restartAutoplay(): void {
+    this.#stopAutoplay();
+    this.#startAutoplay();
   }
 
   pinAriaLabel(festival: HomeMapFestival): string {
