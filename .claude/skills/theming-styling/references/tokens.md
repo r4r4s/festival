@@ -19,14 +19,16 @@ $fv-gray-200: #C9CCDB;
 $fv-gray-100: #E7E9F2;
 $fv-gray-50:  #F4F4FA;
 
-// Brand — violet primary, blue secondary
-$fv-violet-600: #6D4DF2;
-$fv-violet-500: #7C5CFF;   // primary brand
-$fv-violet-400: #9D7BFF;
-$fv-violet-300: #B9A0FF;
-
+// Brand — Mediterranean blue primary
 $fv-blue-500:   #4E8CFF;
 $fv-blue-400:   #6BA1FF;
+
+// Mediterranean canvas (nav / light surfaces)
+$fv-sand-50:      #F8F5F0; // light page canvas, nav background
+$fv-navy-950:     #0F172A; // deep navy text on sand
+$fv-coral-500:    #FF4D4D; // Mediterranean accent
+$fv-orange-400:   #FF8A3D; // Mediterranean accent
+$fv-med-blue-500: #2D9CDB; // Mediterranean accent
 
 // Accent — green is reserved for live/success
 $fv-green-500:  #4ADE9D;
@@ -64,20 +66,21 @@ Exposed as CSS custom properties at `:root`:
   --fv-text-inverse:     #{$fv-gray-950};
 
   // Accents
-  --fv-accent-violet:      #{$fv-violet-500};
-  --fv-accent-violet-soft: rgba(124, 92, 255, 0.16);
   --fv-accent-blue:        #{$fv-blue-500};
+  --fv-accent-med-blue:    #{$fv-med-blue-500};  // Mediterranean accent
+  --fv-accent-coral:       #{$fv-coral-500};     // Mediterranean accent
+  --fv-accent-orange:      #{$fv-orange-400};    // Mediterranean accent
   --fv-accent-green:       #{$fv-green-500};   // ONLY for live/success indicators
   --fv-accent-danger:      #{$fv-red-500};
 
   // Gradients
   --fv-gradient-brand:
-    linear-gradient(135deg, #{$fv-violet-500} 0%, #{$fv-blue-500} 100%);
+    linear-gradient(135deg, #{$fv-med-blue-500} 0%, #{$fv-blue-500} 100%);
   --fv-gradient-text:
-    linear-gradient(135deg, #{$fv-gray-50} 0%, #{$fv-violet-300} 100%);
+    linear-gradient(135deg, #{$fv-gray-50} 0%, #{$fv-blue-400} 100%);
   --fv-gradient-hero-glow:
     radial-gradient(60% 50% at 50% 0%,
-      rgba(124, 92, 255, 0.28) 0%,
+      rgba(45, 156, 219, 0.22) 0%,
       rgba(78, 140, 255, 0.10) 35%,
       transparent 70%);
   --fv-gradient-card-sheen:
@@ -94,9 +97,9 @@ Exposed as CSS custom properties at `:root`:
     0 20px 48px rgba(0, 0, 0, 0.45);
   --fv-shadow-focus:
     0 0 0 2px var(--fv-bg-canvas),
-    0 0 0 4px var(--fv-accent-violet);
-  --fv-shadow-glow-violet:
-    0 0 40px rgba(124, 92, 255, 0.25);
+    0 0 0 4px var(--fv-accent-blue);
+  --fv-shadow-glow-blue:
+    0 0 40px rgba(78, 140, 255, 0.25);
 }
 ```
 
