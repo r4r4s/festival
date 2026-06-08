@@ -147,7 +147,8 @@ export class HomeFestivalMapComponent {
 
   readonly activeFestivalKey = signal(this.#defaultFestivalKey);
   readonly lockedFestivalKey = signal<string | null>(null);
-  readonly isPanelVisible = signal(false);
+  // Panel is always visible in the 3-column layout — starts open.
+  readonly isPanelVisible = signal(true);
   readonly activeFestival = computed(
     () =>
       this.festivals.find((festival) => festival.key === this.activeFestivalKey()) ??
@@ -159,7 +160,6 @@ export class HomeFestivalMapComponent {
 
   previewFestival(key: string): void {
     this.activeFestivalKey.set(key);
-    this.isPanelVisible.set(true);
   }
 
   selectFestival(key: string): void {
@@ -168,26 +168,16 @@ export class HomeFestivalMapComponent {
     this.isPanelVisible.set(true);
   }
 
+  /** Resets the active card to the locked festival (or the default). Panel stays visible. */
   handlePointerLeave(): void {
     const lockedKey = this.lockedFestivalKey();
-    if (lockedKey) {
-      this.activeFestivalKey.set(lockedKey);
-      this.isPanelVisible.set(true);
-      return;
-    }
-
-    this.isPanelVisible.set(false);
+    this.activeFestivalKey.set(lockedKey ?? this.#defaultFestivalKey);
   }
 
+  /** Keyboard blur — same reset behaviour as pointer leave. */
   handlePinBlur(): void {
     const lockedKey = this.lockedFestivalKey();
-    if (lockedKey) {
-      this.activeFestivalKey.set(lockedKey);
-      this.isPanelVisible.set(true);
-      return;
-    }
-
-    this.isPanelVisible.set(false);
+    this.activeFestivalKey.set(lockedKey ?? this.#defaultFestivalKey);
   }
 
   isActive(key: string): boolean {

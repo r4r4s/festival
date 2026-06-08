@@ -1,95 +1,97 @@
 @use 'styles/breakpoints' as *;
 @use 'styles/mixins' as *;
 
+// ── Host ──────────────────────────────────────────────────────
+
 :host {
   display: block;
 }
 
+// ── Section wrapper (light sand surface) ─────────────────────
+
 .map-section {
-  max-width: 1320px;
-  margin: 0 auto;
+  background: var(--fv-bg-nav);
+  padding: var(--fv-space-8) 0;
 }
 
-.map-header {
-  margin-bottom: var(--fv-space-4);
-}
-
-.map-header .title {
-  color: var(--fv-text-nav);
-}
+// ── Shell: 3-column grid at lg+ ──────────────────────────────
 
 .shell {
+  @include container;
   display: grid;
-  gap: var(--fv-space-4);
+  gap: var(--fv-space-5);
 
   @include from(lg) {
-    grid-template-columns: minmax(0, 72fr) minmax(18rem, 28fr);
-    gap: var(--fv-space-4);
-    min-height: 34rem;
+    grid-template-columns:
+      minmax(0, 3fr)   // col-text  ~25%
+      minmax(0, 5fr)   // pane/map  ~41%
+      minmax(0, 4fr);  // panel/card ~33%
+    align-items: stretch;
+    min-height: 36rem;
+    gap: var(--fv-space-6);
   }
 }
+
+// ── Column 1: Editorial text ──────────────────────────────────
+
+.col-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fv-space-4);
+  justify-content: center;
+
+  @include from(lg) {
+    padding-right: var(--fv-space-4);
+  }
+}
+
+.title {
+  margin: 0;
+  color: var(--fv-text-nav);
+  font-family: var(--fv-font-heading);
+  font-size: clamp(var(--fv-text-3xl), 5vw, var(--fv-text-4xl));
+  font-weight: 600;
+  line-height: var(--fv-leading-tight);
+  letter-spacing: var(--fv-tracking-snug);
+  text-wrap: balance;
+}
+
+.title-rule {
+  width: 3.5rem;
+  height: 3px;
+  border-radius: var(--fv-radius-pill);
+  // Coral → Mediterranean blue accent gradient
+  background: linear-gradient(90deg, var(--fv-accent-coral) 0%, var(--fv-accent-blue) 100%);
+}
+
+.desc {
+  margin: 0;
+  color: color-mix(in srgb, var(--fv-text-nav) 65%, transparent);
+  font-size: var(--fv-text-base);
+  line-height: var(--fv-leading-relaxed);
+}
+
+// ── Column 2: Map (.pane kept for spec selector compatibility) ─
 
 .pane {
   position: relative;
   min-height: 20rem;
-  padding: 0;
   overflow: hidden;
-  background: var(--fv-bg-nav);
+  border-radius: var(--fv-radius-xl);
 
   @include from(md) {
     min-height: 26rem;
   }
 
   @include from(lg) {
-    min-height: 100%;
-  }
-}
-
-.panel-label,
-.count,
-.stats dt {
-  margin: 0;
-  color: color-mix(in srgb, var(--fv-text-primary) 72%, transparent);
-  font-family: var(--fv-font-brand);
-  font-size: var(--fv-text-xs);
-  font-weight: 700;
-  letter-spacing: var(--fv-tracking-wider);
-  text-transform: uppercase;
-}
-
-.title,
-.name {
-  margin: 0;
-  color: var(--fv-text-primary);
-  font-family: var(--fv-font-hero-emphasis);
-}
-
-.title {
-  font-size: var(--fv-text-3xl);
-  line-height: var(--fv-leading-tight);
-  text-wrap: balance;
-
-  @include from(md) {
-    font-size: var(--fv-text-4xl);
-  }
-}
-
-.desc,
-.summary,
-.detail {
-  margin: 0;
-  color: color-mix(in srgb, var(--fv-text-secondary) 92%, transparent);
-  font-size: var(--fv-text-sm);
-  line-height: var(--fv-leading-relaxed);
-
-  @include from(md) {
-    font-size: var(--fv-text-base);
+    min-height: unset;
   }
 }
 
 .figure {
   position: absolute;
   inset: 0;
+  margin: 0;
 }
 
 .festival-map {
@@ -106,10 +108,10 @@
 
 .festival-map__scene {
   position: absolute;
-  inset: var(--fv-space-4);
+  inset: var(--fv-space-3);
 
   @include from(md) {
-    inset: var(--fv-space-5);
+    inset: var(--fv-space-4);
   }
 }
 
@@ -120,7 +122,11 @@
   height: 100%;
   object-fit: contain;
   object-position: center;
+  // Slight drop-shadow so the map silhouette pops on the sand background
+  filter: drop-shadow(0 4px 24px color-mix(in srgb, var(--fv-text-nav) 14%, transparent));
 }
+
+// ── Pins ──────────────────────────────────────────────────────
 
 .pins {
   position: absolute;
@@ -139,8 +145,8 @@
 .pin {
   position: relative;
   display: inline-flex;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2.5rem;
+  height: 2.5rem;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -154,19 +160,23 @@
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    transition: transform var(--fv-duration-base) var(--fv-ease-emphasized), opacity var(--fv-duration-base) var(--fv-ease-standard);
+    transition:
+      transform var(--fv-duration-base) var(--fv-ease-emphasized),
+      opacity var(--fv-duration-base) var(--fv-ease-standard);
   }
 
+  // Soft halo ring around pin
   &::before {
-    opacity: 0.44;
+    opacity: 0.3;
     transform: scale(0.74);
-    background: color-mix(in srgb, var(--fv-text-primary) 20%, transparent);
+    background: color-mix(in srgb, var(--fv-bg-nav) 60%, transparent);
   }
 
+  // Glow bloom
   &::after {
-    opacity: 0.25;
-    background: color-mix(in srgb, var(--festival-tone) 24%, transparent);
-    filter: blur(10px);
+    opacity: 0.18;
+    background: color-mix(in srgb, var(--festival-tone) 50%, transparent);
+    filter: blur(8px);
   }
 
   &:focus-visible {
@@ -175,7 +185,7 @@
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
-      transform: scale(1.06);
+      transform: scale(1.1);
     }
   }
 }
@@ -183,53 +193,50 @@
 .pin-core {
   position: relative;
   z-index: 1;
-  width: 0.95rem;
-  height: 0.95rem;
+  width: 1rem;
+  height: 1rem;
   margin: auto;
-  border: 2px solid color-mix(in srgb, var(--fv-text-primary) 84%, transparent);
+  // White-ish sand ring so the pin pops on the coloured map
+  border: 2.5px solid var(--fv-bg-nav);
   border-radius: 50%;
   background: var(--festival-tone);
   box-shadow:
-    0 0 0 0.2rem color-mix(in srgb, var(--fv-bg-nav) 90%, transparent),
-    0 0 1.5rem color-mix(in srgb, var(--festival-tone) 42%, transparent);
+    0 0 0 2px color-mix(in srgb, var(--festival-tone) 35%, transparent),
+    0 2px 8px color-mix(in srgb, var(--fv-text-nav) 22%, transparent);
+  transition: box-shadow var(--fv-duration-base) var(--fv-ease-standard);
 }
 
 .pin--active {
-  transform: scale(1.14);
+  transform: scale(1.2);
+
+  .pin-core {
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--festival-tone) 55%, transparent),
+      0 0 14px color-mix(in srgb, var(--festival-tone) 60%, transparent),
+      0 2px 8px color-mix(in srgb, var(--fv-text-nav) 25%, transparent);
+  }
 
   &::before {
-    opacity: 0.74;
-    transform: scale(0.94);
+    opacity: 0.55;
+    transform: scale(1.0);
   }
 
   &::after {
-    opacity: 0.58;
-    transform: scale(1.34);
+    opacity: 0.42;
+    transform: scale(1.5);
   }
 }
 
+// ── Column 3: Festival card (always visible) ──────────────────
+
 .panel {
-  @include glass(0.62);
-  position: relative;
-  z-index: 2;
   display: grid;
-  gap: var(--fv-space-4);
-  padding: var(--fv-space-5);
-  border-radius: calc(var(--fv-radius-xl) - var(--fv-space-2));
   opacity: 0;
   pointer-events: none;
   transform: translateX(var(--fv-space-3));
   transition:
     opacity var(--fv-duration-base) var(--fv-ease-standard),
     transform var(--fv-duration-base) var(--fv-ease-standard);
-
-  @include from(md) {
-    padding: var(--fv-space-6);
-  }
-
-  @include from(lg) {
-    padding: var(--fv-space-5);
-  }
 }
 
 .panel--visible {
@@ -244,13 +251,25 @@
 
 .card {
   grid-area: 1 / 1;
-  display: grid;
-  gap: var(--fv-space-4);
+  display: flex;
+  flex-direction: column;
+  background: var(--fv-bg-card-light);
+  border: 1px solid color-mix(in srgb, var(--fv-text-nav) 10%, transparent);
+  border-radius: var(--fv-radius-xl);
+  overflow: hidden;
+  // Subtle lift shadow (navy-based, not black-based)
+  box-shadow:
+    0 1px 3px color-mix(in srgb, var(--fv-text-nav) 8%, transparent),
+    0 8px 28px color-mix(in srgb, var(--fv-text-nav) 12%, transparent);
+  // Stacked cards transition
   opacity: 0;
-  filter: blur(8px);
-  transform: translateY(var(--fv-space-3));
+  filter: blur(6px);
+  transform: translateY(var(--fv-space-2));
   pointer-events: none;
-  transition: opacity 320ms var(--fv-ease-standard), transform 320ms var(--fv-ease-standard), filter 320ms var(--fv-ease-standard);
+  transition:
+    opacity 280ms var(--fv-ease-standard),
+    transform 280ms var(--fv-ease-standard),
+    filter 280ms var(--fv-ease-standard);
 }
 
 .card--active {
@@ -260,102 +279,164 @@
   pointer-events: auto;
 }
 
+// ── Card: logo / media area ───────────────────────────────────
+
 .media {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 9rem;
+  min-height: 10rem;
   padding: var(--fv-space-5);
-  border: 1px solid color-mix(in srgb, var(--fv-text-primary) 9%, transparent);
-  border-radius: calc(var(--fv-radius-xl) - var(--fv-space-1));
   overflow: hidden;
+  // Gradient using festival-tone so each festival has its own atmosphere
   background:
-    radial-gradient(circle at 22% 26%, color-mix(in srgb, var(--festival-tone) 30%, transparent) 0%, transparent 34%),
-    radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--festival-glow) 30%, transparent) 0%, transparent 24%),
-    linear-gradient(135deg, color-mix(in srgb, var(--fv-bg-elevated) 92%, transparent) 0%, color-mix(in srgb, var(--fv-bg-surface) 80%, transparent) 100%);
+    radial-gradient(circle at 22% 28%, color-mix(in srgb, var(--festival-tone) 30%, transparent) 0%, transparent 42%),
+    radial-gradient(circle at 80% 18%, color-mix(in srgb, var(--festival-glow) 22%, transparent) 0%, transparent 32%),
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--fv-text-nav) 7%, var(--fv-bg-nav)) 0%,
+      var(--fv-bg-nav) 100%
+    );
 }
 
 .media-image {
   width: 100%;
   height: auto;
-  max-width: 12rem;
+  max-width: 10rem;
   object-fit: contain;
+  position: relative;
+  z-index: 1;
 }
 
-.content,
-.meta {
-  display: grid;
-  gap: var(--fv-space-3);
-}
+// ── Card: body ────────────────────────────────────────────────
 
 .content {
-  align-content: start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fv-space-3);
+  padding: var(--fv-space-4) var(--fv-space-4) var(--fv-space-5);
+  flex: 1;
 }
 
 .meta {
+  display: flex;
+  flex-direction: column;
   gap: var(--fv-space-2);
 }
 
 .category {
   display: inline-flex;
   align-items: center;
-  justify-self: start;
   gap: var(--fv-space-2);
-  min-height: 2rem;
+  align-self: start;
+  min-height: 1.75rem;
   padding: 0 var(--fv-space-3);
   border-radius: var(--fv-radius-pill);
-  background: color-mix(in srgb, var(--fv-text-primary) 8%, transparent);
-  color: var(--fv-text-primary);
+  background: color-mix(in srgb, var(--fv-accent-blue) 11%, transparent);
+  color: var(--fv-accent-blue);
   font-size: var(--fv-text-xs);
   font-weight: 600;
+  letter-spacing: var(--fv-tracking-wide);
 }
 
 .name {
-  font-size: clamp(var(--fv-text-2xl), 4vw, var(--fv-text-3xl));
+  margin: 0;
+  color: var(--fv-text-nav);
+  font-family: var(--fv-font-heading);
+  font-size: clamp(var(--fv-text-xl), 2.2vw, var(--fv-text-2xl));
+  font-weight: 600;
   line-height: var(--fv-leading-tight);
+  letter-spacing: var(--fv-tracking-snug);
 }
 
 .detail {
   display: inline-flex;
   align-items: center;
   gap: var(--fv-space-2);
+  margin: 0;
+  color: color-mix(in srgb, var(--fv-text-nav) 60%, transparent);
+  font-size: var(--fv-text-sm);
+  line-height: var(--fv-leading-snug);
+
+  svg {
+    flex-shrink: 0;
+    color: var(--fv-accent-med-blue);
+  }
 }
+
+.summary {
+  margin: 0;
+  color: color-mix(in srgb, var(--fv-text-nav) 65%, transparent);
+  font-size: var(--fv-text-sm);
+  line-height: var(--fv-leading-relaxed);
+  // Clamp to 3 lines max so the card height stays stable
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// ── Stats row ─────────────────────────────────────────────────
 
 .stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--fv-space-3);
   margin: 0;
-  padding-top: var(--fv-space-4);
-  border-top: 1px solid color-mix(in srgb, var(--fv-text-primary) 8%, transparent);
+  padding-top: var(--fv-space-3);
+  border-top: 1px solid color-mix(in srgb, var(--fv-text-nav) 8%, transparent);
 }
 
 .stat {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: var(--fv-space-1);
+}
+
+.stats dt {
+  margin: 0;
+  color: color-mix(in srgb, var(--fv-text-nav) 48%, transparent);
+  font-family: var(--fv-font-ui);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: var(--fv-tracking-wider);
+  text-transform: uppercase;
 }
 
 .stats dd {
   margin: 0;
-  color: var(--fv-text-primary);
+  color: var(--fv-text-nav);
   font-family: var(--fv-font-heading);
   font-size: var(--fv-text-lg);
+  font-weight: 600;
+  line-height: 1;
 }
 
+// ── CTA buttons ───────────────────────────────────────────────
+
+.actions {
+  display: grid;
+  margin-top: auto;
+}
+
+// Primary: solid navy
 .cta {
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--fv-space-3);
-  min-height: 3rem;
+  justify-content: center;
+  gap: var(--fv-space-2);
+  min-height: 2.75rem;
   padding: 0 var(--fv-space-4);
   border-radius: var(--fv-radius-pill);
-  background: color-mix(in srgb, var(--fv-text-primary) 96%, transparent);
-  color: var(--fv-text-inverse);
+  background: var(--fv-text-nav);
+  color: var(--fv-bg-nav);
   font-size: var(--fv-text-sm);
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: none;
-  transition: transform var(--fv-duration-base) var(--fv-ease-standard);
+  white-space: nowrap;
+  transition:
+    background var(--fv-duration-fast) var(--fv-ease-standard),
+    transform var(--fv-duration-fast) var(--fv-ease-standard);
 
   &:focus-visible {
     @include focus-ring;
@@ -363,49 +444,45 @@
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
-      transform: translateY(-2px);
+      background: color-mix(in srgb, var(--fv-text-nav) 82%, transparent);
+      transform: translateY(-1px);
     }
   }
 }
 
+// ── Responsive ────────────────────────────────────────────────
+
+// Below lg: figure needs explicit height (no longer stretched by grid)
 @media (max-width: 1023px) {
   .figure {
     position: relative;
-    min-height: 16rem;
-  }
-}
-
-@media (max-width: 767px) {
-  .pane {
     min-height: 18rem;
   }
 
-  .title {
-    font-size: var(--fv-text-2xl);
-  }
-
-  .figure,
-  .festival-map {
-    min-height: 14rem;
-  }
-
-  .pin {
-    width: 2.9rem;
-    height: 2.9rem;
-  }
-
   .panel {
-    padding: var(--fv-space-4);
+    // Always show the card on tablet / mobile — no hover dependency
     opacity: 1;
     pointer-events: auto;
     transform: none;
   }
+}
 
-  .content {
-    min-height: 0;
+// Mobile
+@media (max-width: 767px) {
+  .map-section {
+    padding: var(--fv-space-7) 0;
+  }
+
+  .pane {
+    min-height: 18rem;
+  }
+
+  .figure,
+  .festival-map {
+    min-height: 16rem;
   }
 
   .stats {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

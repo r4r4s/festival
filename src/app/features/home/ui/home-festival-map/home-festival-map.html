@@ -3,11 +3,16 @@
   [attr.aria-label]="'home.map.title' | t"
   data-testid="home-festival-map"
 >
-  <div class="map-header">
-    <h2 class="title">{{ 'home.map.title' | t }}</h2>
-  </div>
-
   <div class="shell">
+
+    <!-- ── Col 1: editorial text ─────────────────────────────── -->
+    <div class="col-text">
+      <h2 class="title">{{ 'home.map.title' | t }}</h2>
+      <div class="title-rule" aria-hidden="true"></div>
+      <p class="desc">{{ 'home.map.description' | t }}</p>
+    </div>
+
+    <!-- ── Col 2: mapa interactivo ───────────────────────────── -->
     <div class="pane" (mouseleave)="handlePointerLeave()">
       <figure class="figure" [attr.aria-label]="'home.map.figureLabel' | t">
         <div class="festival-map">
@@ -20,7 +25,7 @@
                 class="festival-map__image"
                 width="1087"
                 height="1420"
-                sizes="(min-width: 1024px) 48vw, 100vw"
+                sizes="(min-width: 1024px) 40vw, 100vw"
               />
 
               <ol class="pins" role="list">
@@ -54,6 +59,7 @@
       </figure>
     </div>
 
+    <!-- ── Col 3: tarjeta del festival activo ────────────────── -->
     <aside class="panel" [class.panel--visible]="isPanelVisible()">
       <div class="stage">
         @for (festival of festivals; track festival.key) {
@@ -63,6 +69,7 @@
             [style.--festival-tone]="festival.toneColor"
             [style.--festival-glow]="festival.glowColor"
           >
+            <!-- Logo / media -->
             <div class="media">
               <img
                 class="media-image"
@@ -74,21 +81,22 @@
               />
             </div>
 
+            <!-- Metadatos + CTA -->
             <div class="content">
               <div class="meta">
                 <span class="category">
-                  <svg lucideMusic focusable="false" aria-hidden="true" size="14" strokeWidth="2"></svg>
+                  <svg lucideMusic focusable="false" aria-hidden="true" size="12" strokeWidth="2"></svg>
                   {{ festival.categoryKey | t }}
                 </span>
                 <h3 class="name" data-testid="home-festival-map-name">
                   {{ festival.nameKey | t }}
                 </h3>
                 <p class="detail">
-                  <svg lucideMapPin focusable="false" aria-hidden="true" size="15" strokeWidth="2"></svg>
+                  <svg lucideMapPin focusable="false" aria-hidden="true" size="14" strokeWidth="2"></svg>
                   {{ festival.cityKey | t }}, {{ festival.provinceKey | t }}
                 </p>
                 <p class="detail">
-                  <svg lucideCalendar focusable="false" aria-hidden="true" size="15" strokeWidth="2"></svg>
+                  <svg lucideCalendar focusable="false" aria-hidden="true" size="14" strokeWidth="2"></svg>
                   {{ festival.datesKey | t }}
                 </p>
               </div>
@@ -110,14 +118,17 @@
                 </div>
               </dl>
 
-              <a class="cta" [routerLink]="['/festivales', festival.slug]">
-                <span>{{ 'home.map.panel.cta' | t }}</span>
-                <svg lucideArrowRight focusable="false" aria-hidden="true" size="18" strokeWidth="2"></svg>
-              </a>
+              <div class="actions">
+                <a class="cta" [routerLink]="['/festivales', festival.slug]">
+                  <span>{{ 'home.map.panel.cta' | t }}</span>
+                  <svg lucideArrowRight focusable="false" aria-hidden="true" size="16" strokeWidth="2.5"></svg>
+                </a>
+              </div>
             </div>
           </article>
         }
       </div>
     </aside>
+
   </div>
 </section>
