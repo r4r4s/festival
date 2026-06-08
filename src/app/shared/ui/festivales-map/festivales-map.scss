@@ -203,7 +203,7 @@
   }
 
   &--active .festivales-map__sidebar-btn {
-    background: color-mix(in srgb, var(--fv-accent-violet) 8%, transparent);
+    background: color-mix(in srgb, var(--fv-accent-blue) 8%, transparent);
   }
 }
 
@@ -222,7 +222,7 @@
   transition: background var(--fv-duration-fast) var(--fv-ease-standard);
 
   &:hover {
-    background: color-mix(in srgb, var(--fv-accent-violet) 5%, transparent);
+    background: color-mix(in srgb, var(--fv-accent-blue) 5%, transparent);
   }
 
   &:focus-visible {
@@ -241,7 +241,7 @@
   border-radius: var(--fv-radius-md);
   flex-shrink: 0;
 
-  &--violet { background: color-mix(in srgb, var(--fv-accent-violet) 15%, transparent); color: var(--fv-accent-violet); }
+  &--violet { background: color-mix(in srgb, var(--fv-accent-blue) 15%, transparent); color: var(--fv-accent-blue); }
   &--rose   { background: color-mix(in srgb, var(--fv-accent-warning) 15%, transparent); color: var(--fv-accent-warning); }
   &--amber  { background: color-mix(in srgb, var(--fv-accent-blue) 15%, transparent); color: var(--fv-accent-blue); }
   &--teal   { background: color-mix(in srgb, var(--fv-accent-green) 15%, transparent); color: var(--fv-accent-green); }
@@ -285,7 +285,7 @@
   border-radius: 50%;
   flex-shrink: 0;
 
-  &--violet { background: var(--fv-accent-violet); }
+  &--violet { background: var(--fv-accent-blue); }
   &--rose   { background: var(--fv-accent-warning); }
   &--amber  { background: var(--fv-accent-blue); }
   &--teal   { background: var(--fv-accent-green); }
@@ -326,7 +326,7 @@
     @include focus-ring;
   }
 
-  &--violet { background: var(--fv-accent-violet); }
+  &--violet { background: var(--fv-accent-blue); }
   &--rose   { background: var(--fv-accent-warning); }
   &--amber  { background: var(--fv-accent-blue); }
   &--teal   { background: var(--fv-accent-green); }

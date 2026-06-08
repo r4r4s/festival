@@ -18,7 +18,7 @@
   --fv-border-subtle:  rgba(255, 255, 255, 0.06);
   --fv-border-default: rgba(255, 255, 255, 0.10);
   --fv-border-strong:  rgba(255, 255, 255, 0.16);
-  --fv-border-accent:  rgba(124, 92, 255, 0.40);
+  --fv-border-accent:  rgba(78, 140, 255, 0.40);
 
   // --- Text ---
   --fv-text-primary:   #{$fv-gray-50};
@@ -27,9 +27,10 @@
   --fv-text-inverse:   #{$fv-gray-950};
 
   // --- Accents ---
-  --fv-accent-violet:      #{$fv-violet-500};
-  --fv-accent-violet-soft: rgba(124, 92, 255, 0.16);
   --fv-accent-blue:        #{$fv-blue-500};
+  --fv-accent-med-blue:    #{$fv-med-blue-500};  // Mediterranean accent
+  --fv-accent-coral:       #{$fv-coral-500};     // Mediterranean accent
+  --fv-accent-orange:      #{$fv-orange-400};    // Mediterranean accent
   --fv-accent-green:       #{$fv-green-500}; // ONLY for live/success indicators
   --fv-accent-danger:      #{$fv-red-500};
   --fv-accent-warning:     #{$fv-amber-500};
@@ -46,13 +47,13 @@
 
   // --- Gradients ---
   --fv-gradient-brand:
-    linear-gradient(135deg, #{$fv-violet-500} 0%, #{$fv-blue-500} 100%);
+    linear-gradient(135deg, #{$fv-med-blue-500} 0%, #{$fv-blue-500} 100%);
   --fv-gradient-text:
-    linear-gradient(135deg, #{$fv-gray-50} 0%, #{$fv-violet-300} 100%);
+    linear-gradient(135deg, #{$fv-gray-50} 0%, #{$fv-blue-400} 100%);
   --fv-gradient-hero-glow:
     radial-gradient(
       60% 50% at 50% 0%,
-      rgba(124, 92, 255, 0.28) 0%,
+      rgba(45, 156, 219, 0.22) 0%,
       rgba(78, 140, 255, 0.10) 35%,
       transparent 70%
     );
