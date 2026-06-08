@@ -92,10 +92,23 @@ For each semantic group:
    npm run lint && npm test -- --run
    ```
    Both must exit `0`. If either fails: **stop**, fix the cause (or revert the change), re-run the gate. Never bypass with `--no-verify`. Never commit a failing test.
-   Pure doc / `.claude/` changes skip the gate.
-4. Create a Conventional Commit message.
-5. Commit.
-6. Repeat until no meaningful changes remain.
+   Pure doc / `.codex/` changes skip the gate.
+4. **Run the architecture audit gate (MANDATORY, no exceptions):**
+   Before staging the first commit of the session, invoke the `/audit-structure` command and read the **Health Score** in section A of its report.
+
+   - If **Health Score is `100/100`** and **Status is `OK`** → continue with the commit flow.
+   - If **Health Score is `< 100/100`** for any reason (any critical, warning or nit) → **DO NOT COMMIT**. Stop the entire autocommit flow.
+
+   When the gate fails:
+   - Report every finding from sections B (Issues) and C (Recommendations) of the audit verbatim to the user.
+   - Apply the recommended fixes (or ask the user to decide on ambiguous ones).
+   - Re-run `/audit-structure` after each fix until the score is `100/100`.
+   - Only then resume the commit flow.
+
+   This rule applies to **every** semantic group, including pure documentation or `.codex/` changes. The audit gate is never skipped, never bypassed with `--no-verify`, and never overridden by user pressure to "just commit it". A failing audit is a blocking error.
+5. Create a Conventional Commit message.
+6. Commit.
+7. Repeat until no meaningful changes remain.
 
 Verify staged diff:
 bash
