@@ -57,8 +57,11 @@ interface HomeMapFestival extends FestivalLocation {
   readonly attendance: string;
   readonly artists: string;
   readonly duration: string;
+  readonly mapLabel: string;
   readonly pinLeft: number;
   readonly pinTop: number;
+  readonly labelOffsetX: number;
+  readonly labelOffsetY: number;
   readonly toneColor: string;
   readonly glowColor: string;
 }
@@ -95,6 +98,9 @@ export class HomeFestivalMapComponent {
       attendance: '120K+',
       artists: '48',
       duration: '2',
+      mapLabel: 'Bigsound',
+      labelOffsetX: 4.2,
+      labelOffsetY: -0.9,
       toneColor: 'var(--fv-accent-blue)',
       glowColor: 'var(--fv-accent-green)',
     },
@@ -109,6 +115,9 @@ export class HomeFestivalMapComponent {
       attendance: '18K',
       artists: '12',
       duration: '1',
+      mapLabel: 'Reve',
+      labelOffsetX: -3.8,
+      labelOffsetY: -1.2,
       toneColor: 'var(--fv-accent-blue)',
       glowColor: 'var(--fv-accent-blue)',
     },
@@ -123,6 +132,9 @@ export class HomeFestivalMapComponent {
       attendance: '35K',
       artists: '20',
       duration: '1',
+      mapLabel: 'L. Val.',
+      labelOffsetX: -1.7,
+      labelOffsetY: -3.3,
       toneColor: 'var(--fv-accent-warning)',
       glowColor: 'var(--fv-accent-warning)',
     },
@@ -137,6 +149,9 @@ export class HomeFestivalMapComponent {
       attendance: '300K+',
       artists: '150',
       duration: '5',
+      mapLabel: 'Medusa',
+      labelOffsetX: 4.0,
+      labelOffsetY: 0.4,
       toneColor: 'var(--fv-accent-blue)',
       glowColor: 'var(--fv-accent-green)',
     },
@@ -151,6 +166,9 @@ export class HomeFestivalMapComponent {
       attendance: '130K+',
       artists: '70',
       duration: '4',
+      mapLabel: 'Zevra',
+      labelOffsetX: -4.4,
+      labelOffsetY: -0.2,
       toneColor: 'var(--fv-accent-green)',
       glowColor: 'var(--fv-accent-blue)',
     },
@@ -165,6 +183,9 @@ export class HomeFestivalMapComponent {
       attendance: '90K+',
       artists: '28',
       duration: '1',
+      mapLabel: 'RBF',
+      labelOffsetX: 3.2,
+      labelOffsetY: 0.8,
       toneColor: 'var(--fv-accent-warning)',
       glowColor: 'var(--fv-accent-warning)',
     },
@@ -179,6 +200,9 @@ export class HomeFestivalMapComponent {
       attendance: '35K',
       artists: '20',
       duration: '1',
+      mapLabel: 'L. Ben.',
+      labelOffsetX: -3.2,
+      labelOffsetY: -1.2,
       toneColor: 'var(--fv-accent-warning)',
       glowColor: 'var(--fv-accent-warning)',
     },

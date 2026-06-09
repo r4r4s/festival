@@ -153,7 +153,7 @@
   border: 0;
   background: transparent;
   cursor: pointer;
-  transition: transform var(--fv-duration-base) var(--fv-ease-emphasized);
+  overflow: visible;
 
   &:focus-visible {
     @include focus-ring;
@@ -161,10 +161,28 @@
   }
 
   @media (hover: hover) and (pointer: fine) {
-    &:hover {
+    &:hover .pin-icon {
       transform: scale(1.15) translateY(-2px);
     }
   }
+}
+
+.pin-callout {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: inline-block;
+  padding: 0 0.55rem;
+  border-radius: var(--fv-radius-pill);
+  background: color-mix(in srgb, var(--fv-bg-nav) 84%, var(--festival-tone) 16%);
+  color: var(--fv-text-nav);
+  font-size: 0.68rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transform: translate(
+    calc(-50% + var(--festival-callout-x, 0rem)),
+    calc(-50% + var(--festival-callout-y, 0rem))
+  );
 }
 
 .pin-icon {
@@ -178,15 +196,12 @@
     transform var(--fv-duration-base) var(--fv-ease-emphasized);
 }
 
-.pin--active {
-  transform: scale(1.25) translateY(-3px);
-
-  .pin-icon {
-    filter:
-      drop-shadow(0 1px 0 var(--fv-bg-nav))
-      drop-shadow(0 4px 10px color-mix(in srgb, var(--festival-tone) 55%, transparent))
-      drop-shadow(0 2px 4px color-mix(in srgb, var(--fv-text-nav) 25%, transparent));
-  }
+.pin--active .pin-icon {
+  transform: scale(1.18) translateY(-2px);
+  filter:
+    drop-shadow(0 1px 0 var(--fv-bg-nav))
+    drop-shadow(0 4px 10px color-mix(in srgb, var(--festival-tone) 55%, transparent))
+    drop-shadow(0 2px 4px color-mix(in srgb, var(--fv-text-nav) 25%, transparent));
 }
 
 // ── Column 3: Festival card (always visible) ──────────────────
@@ -444,7 +459,17 @@
     min-height: 16rem;
   }
 
+  .pin-callout {
+    font-size: 0.62rem;
+    padding: 0 0.45rem;
+  }
+
   .stats {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--fv-space-2);
+  }
+
+  .stats dt {
+    font-size: 9px;
+    letter-spacing: 0;
   }
 }

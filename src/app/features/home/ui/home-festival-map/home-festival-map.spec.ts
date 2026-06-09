@@ -31,8 +31,19 @@ describe('HomeFestivalMapComponent', () => {
   it('renders one pin per home-map festival', () => {
     const root = fixture.nativeElement as HTMLElement;
     const pins = root.querySelectorAll('[data-testid="home-festival-map-pin"]');
+    const labels = root.querySelectorAll('[data-testid="home-festival-map-pin-label"]');
 
     expect(pins).toHaveLength(component.festivals.length);
+    expect(labels).toHaveLength(component.festivals.length);
+  });
+
+  it('keeps each callout inside its interactive pin button', () => {
+    const root = fixture.nativeElement as HTMLElement;
+    const labels = root.querySelectorAll('[data-testid="home-festival-map-pin-label"]');
+
+    for (const label of labels) {
+      expect(label.closest('[data-testid="home-festival-map-pin"]')).toBeTruthy();
+    }
   });
 
   it('shows Medusa as the default active festival', () => {
@@ -49,6 +60,14 @@ describe('HomeFestivalMapComponent', () => {
       'rbf',
       'latinBenidorm',
     ]);
+  });
+
+  it('assigns distinct callout offsets to nearby festivals', () => {
+    const byKey = new Map(component.festivals.map((festival) => [festival.key, festival]));
+
+    expect(byKey.get('medusa')?.labelOffsetX).not.toBe(byKey.get('zevra')?.labelOffsetX);
+    expect(byKey.get('bigsound')?.labelOffsetX).not.toBe(byKey.get('reve')?.labelOffsetX);
+    expect(byKey.get('latinValencia')?.labelOffsetY).not.toBe(byKey.get('reve')?.labelOffsetY);
   });
 
   it('updates the active panel on pin hover', () => {
