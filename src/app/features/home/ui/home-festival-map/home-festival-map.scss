@@ -66,6 +66,7 @@
 
 .desc {
   margin: 0;
+  color: rgba(15, 23, 42, 0.65); // Safari < 16.2 fallback — text-nav #0F172A
   color: color-mix(in srgb, var(--fv-text-nav) 65%, transparent);
   font-size: var(--fv-text-base);
   line-height: var(--fv-leading-relaxed);
@@ -123,6 +124,8 @@
   object-fit: contain;
   object-position: center;
   // Slight drop-shadow so the map silhouette pops on the sand background
+  // Safari < 16.2 fallback: color-mix inside drop-shadow is also invalid → must repeat full filter value.
+  filter: drop-shadow(0 4px 24px rgba(15, 23, 42, 0.14)); // @compat
   filter: drop-shadow(0 4px 24px color-mix(in srgb, var(--fv-text-nav) 14%, transparent));
 }
 
@@ -169,7 +172,11 @@
 
 .pin-icon {
   color: var(--festival-tone);
-  // Drop shadow so el icono destaca sobre el mapa de colores
+  // Drop shadow so el icono destaca sobre el mapa de colores.
+  // Safari < 16.2 fallback: repeat full filter value with rgba().
+  filter:
+    drop-shadow(0 1px 0 var(--fv-bg-nav))
+    drop-shadow(0 2px 6px rgba(15, 23, 42, 0.30)); // @compat
   filter:
     drop-shadow(0 1px 0 var(--fv-bg-nav))
     drop-shadow(0 2px 6px color-mix(in srgb, var(--fv-text-nav) 30%, transparent));
@@ -182,6 +189,11 @@
   transform: scale(1.25) translateY(-3px);
 
   .pin-icon {
+    // Safari < 16.2 fallback: --festival-tone is a CSS var → approximate with brand blue.
+    filter:
+      drop-shadow(0 1px 0 var(--fv-bg-nav))
+      drop-shadow(0 4px 10px rgba(78, 140, 255, 0.55)) // @compat
+      drop-shadow(0 2px 4px rgba(15, 23, 42, 0.25)); // @compat
     filter:
       drop-shadow(0 1px 0 var(--fv-bg-nav))
       drop-shadow(0 4px 10px color-mix(in srgb, var(--festival-tone) 55%, transparent))
@@ -216,10 +228,15 @@
   display: flex;
   flex-direction: column;
   background: var(--fv-bg-card-light);
+  // Safari < 16.2 fallbacks — text-nav #0F172A = rgba(15,23,42).
+  border: 1px solid rgba(15, 23, 42, 0.10); // @compat
   border: 1px solid color-mix(in srgb, var(--fv-text-nav) 10%, transparent);
   border-radius: var(--fv-radius-xl);
   overflow: hidden;
   // Subtle lift shadow (navy-based, not black-based)
+  box-shadow:
+    0 1px 3px rgba(15, 23, 42, 0.08), // @compat
+    0 8px 28px rgba(15, 23, 42, 0.12); // @compat
   box-shadow:
     0 1px 3px color-mix(in srgb, var(--fv-text-nav) 8%, transparent),
     0 8px 28px color-mix(in srgb, var(--fv-text-nav) 12%, transparent);
@@ -236,7 +253,7 @@
 
 .card--active {
   opacity: 1;
-  filter: blur(0);
+  filter: blur(0px); // explicit 0px for smoother Safari filter transition
   transform: none;
   pointer-events: auto;
 }
@@ -250,15 +267,21 @@
   min-height: 10rem;
   padding: var(--fv-space-5);
   overflow: hidden;
-  // Gradient using festival-tone so each festival has its own atmosphere
-  background:
-    radial-gradient(circle at 22% 28%, color-mix(in srgb, var(--festival-tone) 30%, transparent) 0%, transparent 42%),
-    radial-gradient(circle at 80% 18%, color-mix(in srgb, var(--festival-glow) 22%, transparent) 0%, transparent 32%),
-    linear-gradient(
-      160deg,
-      color-mix(in srgb, var(--fv-text-nav) 7%, var(--fv-bg-nav)) 0%,
-      var(--fv-bg-nav) 100%
-    );
+  // Gradient using festival-tone so each festival has its own atmosphere.
+  // Safari < 16.2: color-mix with dynamic CSS vars (--festival-tone) can't have a
+  // meaningful static fallback → use @supports to conditionally apply the gradient.
+  background: var(--fv-bg-nav);
+
+  @supports (color: color-mix(in srgb, red 50%, blue)) {
+    background:
+      radial-gradient(circle at 22% 28%, color-mix(in srgb, var(--festival-tone) 30%, transparent) 0%, transparent 42%),
+      radial-gradient(circle at 80% 18%, color-mix(in srgb, var(--festival-glow) 22%, transparent) 0%, transparent 32%),
+      linear-gradient(
+        160deg,
+        color-mix(in srgb, var(--fv-text-nav) 7%, var(--fv-bg-nav)) 0%,
+        var(--fv-bg-nav) 100%
+      );
+  }
 }
 
 .media-image {
@@ -294,6 +317,7 @@
   min-height: 1.75rem;
   padding: 0 var(--fv-space-3);
   border-radius: var(--fv-radius-pill);
+  background: rgba(78, 140, 255, 0.11); // Safari < 16.2 fallback — accent-blue #4E8CFF
   background: color-mix(in srgb, var(--fv-accent-blue) 11%, transparent);
   color: var(--fv-accent-blue);
   font-size: var(--fv-text-xs);
@@ -316,6 +340,7 @@
   align-items: center;
   gap: var(--fv-space-2);
   margin: 0;
+  color: rgba(15, 23, 42, 0.60); // Safari < 16.2 fallback
   color: color-mix(in srgb, var(--fv-text-nav) 60%, transparent);
   font-size: var(--fv-text-sm);
   line-height: var(--fv-leading-snug);
@@ -328,6 +353,7 @@
 
 .summary {
   margin: 0;
+  color: rgba(15, 23, 42, 0.65); // Safari < 16.2 fallback
   color: color-mix(in srgb, var(--fv-text-nav) 65%, transparent);
   font-size: var(--fv-text-sm);
   line-height: var(--fv-leading-relaxed);
@@ -346,6 +372,7 @@
   gap: var(--fv-space-3);
   margin: 0;
   padding-top: var(--fv-space-3);
+  border-top: 1px solid rgba(15, 23, 42, 0.08); // Safari < 16.2 fallback
   border-top: 1px solid color-mix(in srgb, var(--fv-text-nav) 8%, transparent);
 }
 
@@ -357,6 +384,7 @@
 
 .stats dt {
   margin: 0;
+  color: rgba(15, 23, 42, 0.48); // Safari < 16.2 fallback
   color: color-mix(in srgb, var(--fv-text-nav) 48%, transparent);
   font-family: var(--fv-font-ui);
   font-size: 10px;

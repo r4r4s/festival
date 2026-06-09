@@ -67,6 +67,25 @@
 }
 
 .home-page__overlay {
+  // Safari < 16.2 fallback — static rgba() values (no color-mix support).
+  // Canvas #07070C = rgb(7,7,12); surface #0B0B14 = rgb(11,11,20).
+  background:
+    linear-gradient(
+      90deg,
+      rgba(7, 7, 12, 0.96) 0%,
+      rgba(7, 7, 12, 0.92) 14%,
+      rgba(7, 7, 12, 0.78) 30%,
+      rgba(11, 11, 20, 0.52) 46%,
+      rgba(11, 11, 20, 0.22) 64%,
+      rgba(11, 11, 20, 0.08) 78%,
+      transparent 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(7, 7, 12, 0.16) 0%,
+      rgba(7, 7, 12, 0.24) 100%
+    );
+  // Modern browsers override with color-mix (invalid in Safari < 16.2 → ignored).
   background:
     linear-gradient(
       90deg,
@@ -231,9 +250,13 @@
 }
 
 .home-page__button--secondary {
+  // Safari < 16.2 fallbacks — text-primary #F4F4FA = rgba(244,244,250).
+  background: rgba(244, 244, 250, 0.06); // @compat
   background: color-mix(in srgb, var(--fv-text-primary) 6%, transparent);
+  border-color: rgba(244, 244, 250, 0.54); // @compat
   border-color: color-mix(in srgb, var(--fv-text-primary) 54%, transparent);
   color: var(--fv-text-primary);
+  -webkit-backdrop-filter: blur(var(--fv-blur-glass)); // Safari requires vendor prefix
   backdrop-filter: blur(var(--fv-blur-glass));
   box-shadow: var(--fv-shadow-hero-btn-secondary);
 }

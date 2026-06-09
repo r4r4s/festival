@@ -58,6 +58,7 @@
 
 .festival-calendar__subtitle {
   max-width: 45rem;
+  color: rgba(15, 23, 42, 0.68); // Safari < 16.2 fallback
   color: color-mix(in srgb, var(--fv-text-nav) 68%, var(--fv-bg-card-light));
   font-size: clamp(var(--fv-text-base), 1.4vw, var(--fv-text-lg));
   line-height: var(--fv-leading-relaxed);
@@ -85,6 +86,7 @@
 }
 
 .festival-calendar__month {
+  color: rgba(15, 23, 42, 0.80); // Safari < 16.2 fallback
   color: color-mix(in srgb, var(--fv-text-nav) 80%, var(--fv-bg-card-light));
   font-family: var(--fv-font-heading);
   font-size: var(--fv-text-lg);
@@ -107,6 +109,14 @@
 .festival-calendar__rail {
   height: 2px;
   border-radius: var(--fv-radius-pill);
+  // Safari < 16.2 fallback — accent-orange #FF8A3D fades to transparent.
+  background: linear-gradient(
+    90deg,
+    var(--fv-accent-med-blue) 0%,
+    var(--fv-accent-coral) 55%,
+    var(--fv-accent-orange) 82%,
+    rgba(255, 138, 61, 0.70) 100%
+  );
   background: linear-gradient(
     90deg,
     var(--fv-accent-med-blue) 0%,
@@ -144,6 +154,7 @@
   width: 100%;
   min-width: 0;
   height: 1.5rem;
+  color: rgba(15, 23, 42, 0.55); // Safari < 16.2 fallback
   color: color-mix(in srgb, var(--fv-text-nav) 55%, var(--fv-bg-card-light));
   font-family: var(--fv-font-ui);
   font-size: var(--fv-text-xs);
@@ -167,12 +178,18 @@
   width: 1.7rem;
   height: 1.7rem;
   border-radius: var(--fv-radius-pill);
-  background: color-mix(in srgb, var(--festival-day-color) 92%, var(--fv-bg-card-light));
-  box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--festival-day-color) 14%, transparent),
-    0 6px 14px color-mix(in srgb, var(--festival-day-color) 22%, transparent);
+  // Safari < 16.2: --festival-day-color is a CSS var inside color-mix → @supports guard.
+  background: var(--festival-day-color); // flat fallback
+  box-shadow: none; // flat fallback
   transform: translate(-50%, -50%);
   z-index: -1;
+
+  @supports (color: color-mix(in srgb, red 50%, blue)) {
+    background: color-mix(in srgb, var(--festival-day-color) 92%, var(--fv-bg-card-light));
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--festival-day-color) 14%, transparent),
+      0 6px 14px color-mix(in srgb, var(--festival-day-color) 22%, transparent);
+  }
 }
 
 .festival-calendar__day--med-blue {
@@ -227,13 +244,25 @@
   left: 50%;
   width: 2px;
   height: var(--fv-space-5);
+  // Safari < 16.2: --festival-color is dynamic → @supports guard.
   background-image: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--festival-color) 75%, transparent) 0%,
-    color-mix(in srgb, var(--festival-color) 75%, transparent) 50%,
+    var(--festival-color) 0%,
+    var(--festival-color) 50%,
     transparent 50%,
     transparent 100%
-  );
+  ); // flat fallback
+
+  @supports (color: color-mix(in srgb, red 50%, blue)) {
+    background-image: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--festival-color) 75%, transparent) 0%,
+      color-mix(in srgb, var(--festival-color) 75%, transparent) 50%,
+      transparent 50%,
+      transparent 100%
+    );
+  }
+
   background-size: 2px 6px;
   background-repeat: repeat-y;
   transform: translateX(-50%);
@@ -247,8 +276,12 @@
   gap: var(--fv-space-1);
   padding: var(--fv-space-2);
   border-radius: var(--fv-radius-lg);
+  // Safari < 16.2 fallbacks — card-light #fff, border-nav #0F172A, text-nav #0F172A.
+  background: rgba(255, 255, 255, 0.97); // @compat
   background: color-mix(in srgb, var(--fv-bg-card-light) 97%, transparent);
+  border: 1px solid rgba(15, 23, 42, 0.07); // @compat
   border: 1px solid color-mix(in srgb, var(--fv-border-nav) 60%, transparent);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08); // @compat
   box-shadow: 0 12px 28px color-mix(in srgb, var(--fv-text-nav) 8%, transparent);
 }
 
@@ -258,9 +291,14 @@
   gap: 2px;
   padding: var(--fv-space-1);
   border-radius: 12px;
-  background: color-mix(in srgb, var(--festival-color) 14%, var(--fv-bg-card-light));
+  // Safari < 16.2: --festival-color is dynamic → @supports guard for the tint.
+  background: rgba(255, 255, 255, 0.8); // @compat
   color: var(--festival-color);
   text-align: center;
+
+  @supports (color: color-mix(in srgb, red 50%, blue)) {
+    background: color-mix(in srgb, var(--festival-color) 14%, var(--fv-bg-card-light));
+  }
 }
 
 .festival-calendar__card-date-value {
@@ -313,6 +351,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  color: rgba(15, 23, 42, 0.64); // Safari < 16.2 fallback
   color: color-mix(in srgb, var(--fv-text-nav) 64%, var(--fv-bg-card-light));
   font-size: 0.74rem;
 }
@@ -341,8 +380,13 @@
 }
 
 .festival-calendar__badge--genre {
-  background: color-mix(in srgb, var(--festival-color) 14%, var(--fv-bg-card-light));
+  // Safari < 16.2: dynamic --festival-color inside color-mix → @supports guard.
+  background: rgba(255, 255, 255, 0.8); // @compat
   color: var(--festival-color);
+
+  @supports (color: color-mix(in srgb, red 50%, blue)) {
+    background: color-mix(in srgb, var(--festival-color) 14%, var(--fv-bg-card-light));
+  }
 }
 
 // ── Festival tone tokens ──────────────────────────────────────────────────

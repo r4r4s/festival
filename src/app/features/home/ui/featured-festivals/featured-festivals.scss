@@ -110,6 +110,16 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
+  // Safari < 16.2 fallback — surface #0B0B14 = rgb(11,11,20).
+  background:
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 55%,
+      rgba(11, 11, 20, 0.55) 75%,
+      rgba(11, 11, 20, 0.88) 100%
+    );
+  // Modern override.
   background:
     linear-gradient(
       180deg,
