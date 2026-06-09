@@ -40,6 +40,10 @@
 .featured-festivals__viewport {
   background: var(--fv-bg-page);
   overflow: hidden;
+  // Safari: when a child has will-change: transform, the parent's overflow: hidden
+  // can fail to clip it. Promoting the viewport to its own compositing layer
+  // (via translateZ) forces correct clipping in all Safari versions.
+  transform: translateZ(0); // @compat
   outline: none;
 
   &:focus-visible {
@@ -52,8 +56,14 @@
   display: flex;
   gap: var(--featured-card-gap);
   width: max-content;
-  animation: fv-featured-mobile calc(var(--featured-mobile-step) * 6) ease-in-out infinite;
-  will-change: transform;
+  // Safari: will-change: transform on a CSS-animated element causes it to be
+  // composited before the animation starts, preventing transform animations from
+  // applying correctly. The animation itself already promotes the layer — no need
+  // for will-change here.
+  //
+  // Also: calc(CSS-custom-prop * number) in animation-duration is unreliable in
+  // some Safari versions → use hardcoded value (3s × 6 steps = 18s).
+  animation: fv-featured-mobile 18s ease-in-out infinite;
 
   @include from(md) {
     animation: fv-featured-marquee 42s linear infinite;
@@ -70,10 +80,18 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  // Safari/WebKit: prevent the group (a flex item of the track) from shrinking
+  // when the track computes its max-content width.
+  flex-shrink: 0;
 }
 
 .featured-festivals__item {
-  flex: 0 0 var(--featured-card-width);
+  // Safari/WebKit fails to resolve a CSS custom property used as flex-basis
+  // (flex: 0 0 var(--x)) during the track's max-content sizing pass, collapsing
+  // every card to min-content and squashing the whole marquee. Setting the width
+  // explicitly (not via flex-basis) makes WebKit size each card correctly.
+  flex: 0 0 auto;
+  width: var(--featured-card-width);
 }
 
 .featured-festivals__card {
@@ -176,6 +194,7 @@
   align-items: center;
   gap: var(--fv-space-2);
   margin: 0;
+  color: rgba(244, 244, 250, 0.88); // @compat — text-primary #F4F4FA
   color: color-mix(in srgb, var(--fv-text-primary) 88%, transparent);
   font-size: var(--fv-text-sm);
   line-height: var(--fv-leading-snug);
