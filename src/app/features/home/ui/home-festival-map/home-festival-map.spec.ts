@@ -39,6 +39,18 @@ describe('HomeFestivalMapComponent', () => {
     expect(component.activeFestival().key).toBe('medusa');
   });
 
+  it('includes separate pins for Latin Fest Valencia and Latin Fest Benidorm', () => {
+    expect(component.festivals.map((festival) => festival.key)).toEqual([
+      'bigsound',
+      'reve',
+      'latinValencia',
+      'medusa',
+      'zevra',
+      'rbf',
+      'latinBenidorm',
+    ]);
+  });
+
   it('updates the active panel on pin hover', () => {
     const root = fixture.nativeElement as HTMLElement;
     const pins = root.querySelectorAll('[data-testid="home-festival-map-pin"]');
@@ -52,11 +64,12 @@ describe('HomeFestivalMapComponent', () => {
   it('marks the clicked pin as pressed', () => {
     const root = fixture.nativeElement as HTMLElement;
     const pins = root.querySelectorAll('[data-testid="home-festival-map-pin"]');
+    const rbfIndex = component.festivals.findIndex((festival) => festival.key === 'rbf');
 
-    pins[4]?.dispatchEvent(new Event('click'));
+    pins[rbfIndex]?.dispatchEvent(new Event('click'));
     fixture.detectChanges();
 
-    expect(pins[4]?.getAttribute('aria-pressed')).toBe('true');
+    expect(pins[rbfIndex]?.getAttribute('aria-pressed')).toBe('true');
     expect(component.activeFestival().key).toBe('rbf');
   });
 
@@ -64,8 +77,9 @@ describe('HomeFestivalMapComponent', () => {
     const root = fixture.nativeElement as HTMLElement;
     const pins = root.querySelectorAll('[data-testid="home-festival-map-pin"]');
     const pane = root.querySelector('.pane') as HTMLElement | null;
+    const rbfIndex = component.festivals.findIndex((festival) => festival.key === 'rbf');
 
-    pins[4]?.dispatchEvent(new Event('click'));
+    pins[rbfIndex]?.dispatchEvent(new Event('click'));
     pane?.dispatchEvent(new Event('mouseleave'));
     fixture.detectChanges();
 

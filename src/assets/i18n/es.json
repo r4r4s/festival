@@ -141,7 +141,7 @@
       "page": {
         "eyebrow": "Mapa interactivo",
         "title": "Descubre festivales sobre el mapa.",
-        "description": "Explora los seis festivales semilla desde una experiencia cartográfica con búsqueda, filtros y fichas flotantes."
+        "description": "Explora los siete festivales semilla desde una experiencia cartográfica con búsqueda, filtros y fichas flotantes."
       },
       "figure": {
         "label": "Mapa interactivo de ubicación de festivales"
@@ -205,13 +205,21 @@
           "description": "Dos jornadas de urbano, pop y grandes directos en el área metropolitana de Valencia.",
           "howToGetThere": "Cómo llegar a Bigsound"
         },
-        "latinFest": {
-          "name": "Latin Fest",
+        "latinValencia": {
+          "name": "Latin Fest Valencia",
+          "dates": "17 jul 2026",
+          "city": "Valencia",
+          "province": "Valencia",
+          "description": "Edición valenciana de Latin Fest con ritmos latinos y reggaetón en formato intensivo.",
+          "howToGetThere": "Cómo llegar a Latin Fest Valencia"
+        },
+        "latinBenidorm": {
+          "name": "Latin Fest Benidorm",
           "dates": "18 jul 2026",
-          "city": "Alicante",
+          "city": "Benidorm",
           "province": "Alicante",
-          "description": "Una cita centrada en ritmos latinos y reggaetón con formato intensivo de un día.",
-          "howToGetThere": "Cómo llegar a Latin Fest"
+          "description": "Edición de Benidorm de Latin Fest con enfoque mediterráneo y cartel latino concentrado.",
+          "howToGetThere": "Cómo llegar a Latin Fest Benidorm"
         },
         "medusa": {
           "name": "Medusa Festival",

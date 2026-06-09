@@ -24,21 +24,29 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
 /** Intervalo (ms) entre cambio automático del pin/festival activo. */
 const AUTOPLAY_INTERVAL_MS = 3000;
 
-// ── City anchors — single source of truth for geographic positions ──────────
-// All percentages are relative to the map image dimensions (left % / top %).
-const CITY_ANCHORS = {
-  valencia: { x: 58.5, y: 43.5 },
-  cullera:  { x: 60.5, y: 48.7 },
-  benidorm: { x: 67.5, y: 61.5 },
+const HOME_MAP_PIN_POSITIONS: Record<string, { pinLeft: number; pinTop: number }> = {
+  bigsound: { pinLeft: 52.2, pinTop: 46.2 },
+  reve: { pinLeft: 53.8, pinTop: 45.4 },
+  latinValencia: { pinLeft: 54.2, pinTop: 44.3 },
+  medusa: { pinLeft: 57.55, pinTop: 55.0 },
+  zevra: { pinLeft: 57.0, pinTop: 54.3 },
+  rbf: { pinLeft: 44.36, pinTop: 82.58 },
+  latinBenidorm: { pinLeft: 61.7, pinTop: 74.5 },
 } as const;
 
-type CityKey = keyof typeof CITY_ANCHORS;
+function locateFestival(
+  key: string,
+): FestivalLocation & { pinLeft: number; pinTop: number } {
+  const festival = FESTIVAL_LOCATIONS.find((item) => item.key === key);
+  const position = HOME_MAP_PIN_POSITIONS[key];
 
-/** Computes the final pin position from a city anchor plus a small visual offset. */
-function pin(city: CityKey, offsetX: number, offsetY: number): { pinLeft: number; pinTop: number } {
+  if (!festival || !position) {
+    throw new Error(`Festival location not found: ${key}`);
+  }
+
   return {
-    pinLeft: CITY_ANCHORS[city].x + offsetX,
-    pinTop:  CITY_ANCHORS[city].y + offsetY,
+    ...festival,
+    ...position,
   };
 }
 
@@ -77,7 +85,7 @@ export class HomeFestivalMapComponent {
 
   readonly festivals = [
     {
-      ...FESTIVAL_LOCATIONS.find((festival) => festival.key === 'bigsound')!,
+      ...locateFestival('bigsound'),
       slug: 'bigsound',
       categoryKey: 'home.map.categories.pop',
       image: {
@@ -87,12 +95,11 @@ export class HomeFestivalMapComponent {
       attendance: '120K+',
       artists: '48',
       duration: '2',
-      ...pin('valencia', -0.8, -0.6),
       toneColor: 'var(--fv-accent-blue)',
       glowColor: 'var(--fv-accent-green)',
     },
     {
-      ...FESTIVAL_LOCATIONS.find((festival) => festival.key === 'reve')!,
+      ...locateFestival('reve'),
       slug: 'reve',
       categoryKey: 'home.map.categories.pop',
       image: {
@@ -102,12 +109,25 @@ export class HomeFestivalMapComponent {
       attendance: '18K',
       artists: '12',
       duration: '1',
-      ...pin('valencia', +0.8, +0.6),
       toneColor: 'var(--fv-accent-blue)',
       glowColor: 'var(--fv-accent-blue)',
     },
     {
-      ...FESTIVAL_LOCATIONS.find((festival) => festival.key === 'medusa')!,
+      ...locateFestival('latinValencia'),
+      slug: 'latin-fest',
+      categoryKey: 'home.map.categories.latin',
+      image: {
+        src: '/assets/images/festivals/latin-fest/logo-latin-fest.webp',
+        alt: 'Identidad visual de Latin Fest Valencia',
+      },
+      attendance: '35K',
+      artists: '20',
+      duration: '1',
+      toneColor: 'var(--fv-accent-warning)',
+      glowColor: 'var(--fv-accent-warning)',
+    },
+    {
+      ...locateFestival('medusa'),
       slug: 'medusa',
       categoryKey: 'home.map.categories.electronic',
       image: {
@@ -117,12 +137,11 @@ export class HomeFestivalMapComponent {
       attendance: '300K+',
       artists: '150',
       duration: '5',
-      ...pin('cullera', -0.8, +0.4),
       toneColor: 'var(--fv-accent-blue)',
       glowColor: 'var(--fv-accent-green)',
     },
     {
-      ...FESTIVAL_LOCATIONS.find((festival) => festival.key === 'zevra')!,
+      ...locateFestival('zevra'),
       slug: 'zevra',
       categoryKey: 'home.map.categories.urban',
       image: {
@@ -132,12 +151,11 @@ export class HomeFestivalMapComponent {
       attendance: '130K+',
       artists: '70',
       duration: '4',
-      ...pin('cullera', +0.8, -0.4),
       toneColor: 'var(--fv-accent-green)',
       glowColor: 'var(--fv-accent-blue)',
     },
     {
-      ...FESTIVAL_LOCATIONS.find((festival) => festival.key === 'rbf')!,
+      ...locateFestival('rbf'),
       slug: 'rbf',
       categoryKey: 'home.map.categories.latin',
       image: {
@@ -147,22 +165,20 @@ export class HomeFestivalMapComponent {
       attendance: '90K+',
       artists: '28',
       duration: '1',
-      ...pin('benidorm', -0.8, +0.5),
       toneColor: 'var(--fv-accent-warning)',
       glowColor: 'var(--fv-accent-warning)',
     },
     {
-      ...FESTIVAL_LOCATIONS.find((festival) => festival.key === 'latinFest')!,
+      ...locateFestival('latinBenidorm'),
       slug: 'latin-fest',
       categoryKey: 'home.map.categories.latin',
       image: {
         src: '/assets/images/festivals/latin-fest/logo-latin-fest.webp',
-        alt: 'Identidad visual de Latin Fest',
+        alt: 'Identidad visual de Latin Fest Benidorm',
       },
       attendance: '35K',
       artists: '20',
       duration: '1',
-      ...pin('benidorm', +0.8, -0.5),
       toneColor: 'var(--fv-accent-warning)',
       glowColor: 'var(--fv-accent-warning)',
     },

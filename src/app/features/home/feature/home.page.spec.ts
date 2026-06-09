@@ -89,6 +89,6 @@ describe('HomePageComponent', () => {
       12,
     );
     expect(section).not.toBeNull();
-    expect(section?.querySelectorAll('[data-testid="home-festival-map-pin"]')).toHaveLength(6);
+    expect(section?.querySelectorAll('[data-testid="home-festival-map-pin"]')).toHaveLength(7);
   });
 });

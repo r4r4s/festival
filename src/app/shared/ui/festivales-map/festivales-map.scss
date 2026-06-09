@@ -241,9 +241,9 @@
   border-radius: var(--fv-radius-md);
   flex-shrink: 0;
 
-  &--violet { background: color-mix(in srgb, var(--fv-accent-blue) 15%, transparent); color: var(--fv-accent-blue); }
-  &--rose   { background: color-mix(in srgb, var(--fv-accent-warning) 15%, transparent); color: var(--fv-accent-warning); }
+  &--violet,
   &--amber  { background: color-mix(in srgb, var(--fv-accent-blue) 15%, transparent); color: var(--fv-accent-blue); }
+  &--rose   { background: color-mix(in srgb, var(--fv-accent-warning) 15%, transparent); color: var(--fv-accent-warning); }
   &--teal   { background: color-mix(in srgb, var(--fv-accent-green) 15%, transparent); color: var(--fv-accent-green); }
 }
 
@@ -285,9 +285,9 @@
   border-radius: 50%;
   flex-shrink: 0;
 
-  &--violet { background: var(--fv-accent-blue); }
-  &--rose   { background: var(--fv-accent-warning); }
+  &--violet,
   &--amber  { background: var(--fv-accent-blue); }
+  &--rose   { background: var(--fv-accent-warning); }
   &--teal   { background: var(--fv-accent-green); }
 }
 
@@ -326,9 +326,9 @@
     @include focus-ring;
   }
 
-  &--violet { background: var(--fv-accent-blue); }
-  &--rose   { background: var(--fv-accent-warning); }
+  &--violet,
   &--amber  { background: var(--fv-accent-blue); }
+  &--rose   { background: var(--fv-accent-warning); }
   &--teal   { background: var(--fv-accent-green); }
 }
 
