@@ -363,6 +363,58 @@ If a glass surface reduces text contrast:
 
 ---
 
+## Safari Compatibility
+
+Liquid Glass uses `backdrop-filter` and sometimes `color-mix()` — both require explicit Safari handling.
+
+### backdrop-filter (MANDATORY)
+
+**Always** declare `-webkit-backdrop-filter` before `backdrop-filter`:
+
+```scss
+// ✓ Correct
+-webkit-backdrop-filter: blur(var(--fv-glass-blur)) saturate(var(--fv-glass-saturate));
+backdrop-filter: blur(var(--fv-glass-blur)) saturate(var(--fv-glass-saturate));
+
+// ✗ Wrong — glass effect invisible in Safari
+backdrop-filter: blur(16px);
+```
+
+The `glass()` mixin in `_mixins.scss` already handles this. Use it whenever possible instead of writing `backdrop-filter` directly.
+
+### color-mix() fallbacks
+
+`color-mix(in srgb, …)` requires Safari 16.2+. When using it inside Liquid Glass components, always declare a static `rgba()` fallback on the same property **before** the `color-mix()` line:
+
+```scss
+// ✓ Correct cascade pattern — last valid rule wins
+background: rgba(17, 17, 29, 0.6);   // Safari < 16.2 fallback
+background: color-mix(in srgb, var(--fv-bg-elevated) 60%, transparent); // modern
+
+// ✓ For dynamic CSS variables (--var inside color-mix) use @supports
+background: var(--fv-bg-elevated);   // flat fallback
+
+@supports (color: color-mix(in srgb, red 50%, blue)) {
+  background: color-mix(in srgb, var(--fv-bg-elevated) 60%, transparent);
+}
+```
+
+Use the hex reference table in `src/styles/_safari-compat.scss` to find the static rgba values for each semantic token.
+
+### filter: blur() transition
+
+When transitioning `blur()` off, use `blur(0px)` not `blur(0)` for smoother Safari rendering:
+
+```scss
+// ✓ Correct
+.card--active { filter: blur(0px); }
+
+// ✗ May stutter in Safari
+.card--active { filter: blur(0); }
+```
+
+---
+
 ## Performance Rules
 
 Avoid expensive rendering. Liquid Glass effects rely on `backdrop-filter`, which is hardware-accelerated but can be costly if overused.

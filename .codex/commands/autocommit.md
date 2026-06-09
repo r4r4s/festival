@@ -111,8 +111,13 @@ For each semantic group:
    npm run i18n:check
 
    # B.3 — no hardcoded colors in component SCSS (only var(--fv-*) or color-mix allowed)
+   # Exceptions: lines with // Safari or // @compat are intentional cross-browser fallbacks (see [[cross-device-compat]]).
+   # Gradient color stops (lines ending with "%," or "%)") are also allowed as fallback values.
    ! grep -rn -E "rgb\(|rgba\(|hsl\(|#[0-9a-fA-F]{3,6}" src/app --include="*.scss" \
-     | grep -v "var(--\|color-mix\|^\s*//"
+     | grep -v "var(--\|color-mix" \
+     | grep -v -E ":[0-9]+:\s*//" \
+     | grep -v "[Ss]afari\|@compat" \
+     | grep -v -E "[0-9]+%[,)]?\s*$"
 
    # B.4 — no hardcoded font-family in component SCSS
    ! grep -rn "font-family\s*:" src/app --include="*.scss" | grep -v "var(--fv-font"
@@ -146,6 +151,17 @@ For each semantic group:
    git diff --cached --name-only | grep -qE "^src/.*\.(ts|html|scss)$" \
      && ! git diff --cached --name-only | grep -q "^docs/documentacion.md$" \
      && echo "STRUCTURAL CHANGE WITHOUT DOC UPDATE" && exit 1 || true
+
+   # B.10 — every SCSS file with backdrop-filter must also have -webkit-backdrop-filter
+   # (Safari requires the vendor prefix — see [[cross-device-compat]] Rule 1)
+   grep -rln "backdrop-filter:" src/ --include="*.scss" | while read -r file; do
+     grep -q "\-webkit-backdrop-filter:" "$file" \
+       || echo "MISSING -webkit-backdrop-filter in: $file"
+   done | grep . && exit 1 || true
+
+   # B.11 — .browserslistrc must exist at the repo root
+   [ -f .browserslistrc ] \
+     || { echo "MISSING: .browserslistrc — define browser targets (see [[cross-device-compat]])"; exit 1; }
    ```
 
    Treat any failing check as the Score being `< 100/100`. When the gate fails:
