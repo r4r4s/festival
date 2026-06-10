@@ -132,8 +132,8 @@ Detalle completo del ciclo de vida y convenciones en [`tasks/README.md`](tasks/R
 
 ### Comandos de tarea (Claude Code)
 
-- **`/new-task`** — pregunta el número de GitHub Issue, lo lee (rechaza si no existe) y puebla `tasks/current-task.md` desde la plantilla con `Status: In Progress`.
-- **`/autocommit`** — workflow de commits semánticos. Antes de commitear pregunta los números de issue de forma repetida (**introduce `0` para terminar**), añade las referencias `(#n)` o `(#n, #m)` al mensaje (p. ej. `feat(map): Add interactive festival markers (#23)`), y pasa los gates obligatorios (lint+test, auditoría 100/100, paridad i18n, doc-sync) antes de cada commit.
+- **`/new-task`** — pregunta el **número de GitHub Issue** y el **nombre de la tarea** (slug), lee el issue (rechaza si no existe) y puebla `tasks/current-task.md` desde la plantilla con `Status: In Progress`. El nombre es la clave que usa `/autocommit` para separar el trabajo.
+- **`/autocommit`** — workflow de commits semánticos. Antes de commitear pregunta de forma repetida **el nombre de la tarea y su número de issue** (**introduce `0` para terminar**); con esos pares **separa los cambios por tarea y crea un commit por tarea** (permitiendo commitear varias tareas a la vez), añade la referencia `(#n)` al mensaje (p. ej. `feat(search-minisearch): Add fuzzy search (#23)`) y pasa los gates obligatorios (lint+test, auditoría 100/100, paridad i18n, doc-sync) antes de cada commit.
 
 Las reglas de commit viven en [`.claude/commands/autocommit.md`](.claude/commands/autocommit.md) y no se duplican en otros sitios.
 

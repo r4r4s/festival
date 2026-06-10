@@ -33,30 +33,37 @@ git ls-files --others --exclude-standard
 
 Understand every available change before committing.
 
-### 2. Ask for the related GitHub issue number(s)
+### 2. Ask for the task name(s) and issue number(s)
 
-Before composing any commit, prompt the user for the issue number(s) and keep
-asking until they enter `0`:
+Before composing any commit, ask which task(s) the current changes belong to.
+Prompt repeatedly until the user enters `0`:
 
 ```
-What is the GitHub Issue number? (enter 0 to finish)
+Task name and GitHub Issue number? (enter 0 to finish)
 ```
 
+- Accept e.g. `search-minisearch #23` (or `search-minisearch 23`). Normalize the
+  issue to `#23`.
 - Repeat the prompt after each answer. Stop only when the user enters `0`.
-- Normalize each answer (`23`, `#23`, or a full issue URL) to `#23`.
-- Collect every number entered before `0`, in order, de-duplicated.
-- If the user enters `0` immediately (no numbers), commit **without** an issue
-  reference — do not invent one.
+- Collect every `(name, issue)` pair entered before `0`, in order.
+- If the user enters `0` immediately (no pairs), fall back to grouping by purpose
+  only (step 3) and commit **without** an issue reference — do not invent one.
 
-Append the collected reference(s) to the summary of **every** commit created in
-this run:
+Each `(name, issue)` pair is one **task**. The task name is what lets this run
+**separate the working-tree changes per task so several tasks can be committed at
+once**:
 
-- One issue → ` (#23)`
-- Multiple issues → ` (#23, #31)`
+- Attribute each changed file to a task using that task's _Files Expected To
+  Change_ (from `tasks/current-task.md`, and `tasks/backlog/<name>.md` if present),
+  then apply the semantic grouping rules in step 3.
+- Create at least one separate commit **per task**. Never mix two tasks in one
+  commit.
+- Append the task's issue reference to its commit summary: ` (#23)`.
+- Use the task name as the default commit scope when no more specific scope fits,
+  e.g. `feat(search-minisearch): Add fuzzy search (#23)`.
 
-As a convenience, you may detect a candidate from the branch name
-(`git branch --show-current`, e.g. `feat/...-23`) and offer it as the default,
-but the user's entered numbers are authoritative.
+If some changes match no named task, group them by purpose (step 3) and ask the
+user which task/issue they belong to (or commit them without a reference).
 
 ### 3. Group changes semantically
 

@@ -50,10 +50,13 @@ and acceptance criteria). The issue number is recorded in the task file under
 
 ### 3. tasks/current-task.md
 
-Create the active task by copying [`templates/task-template.md`](templates/task-template.md)
-into `current-task.md` (or by promoting a file from [`backlog/`](backlog/)). Fill
-in the title, issue link, requirements, acceptance criteria and the
-**Files Expected To Change**. This file defines the **scope**: work stays inside it.
+Run **`/new-task`**: it asks for the **issue number** and a **task name** (a short
+slug), reads the issue, and populates `current-task.md` from the template with
+`Status: In Progress`. (You can also copy [`templates/task-template.md`](templates/task-template.md)
+manually, or promote a file from [`backlog/`](backlog/).) Fill in the title, issue
+link, requirements, acceptance criteria and the **Files Expected To Change** — that
+list is the **scope** (work stays inside it) and is what `/autocommit` uses to
+attribute files to this task.
 
 ### 4. Development
 
@@ -66,7 +69,10 @@ updating the task (or opening a new one).
 
 Commit through the autocommit workflow — `commands/autocommit.md` (run with
 `/autocommit`; Claude uses `.claude/commands/`, Codex uses `.codex/commands/`).
-That workflow already owns and enforces, per semantic group:
+On start it asks for **task name + issue number** pairs, repeated until you enter
+`0`, then **separates the working-tree changes per task and creates one commit per
+task** (appending `(#n)`). See [Using the commands](#using-the-commands-issues--commits)
+below. That workflow already owns and enforces, per semantic group:
 
 - the **pre-commit gate** — `npm run lint && npm test -- --run` (for `src/` changes);
 - the **architecture audit gate** — must be `100/100` (Method A or the Method B fallback);
@@ -97,6 +103,70 @@ When every **Acceptance Criteria** box is checked:
 3. Move the file to [`completed/`](completed/) (e.g. `completed/<task-id>.md`).
 4. Reset `current-task.md` from the template so the repo is ready for the next task.
 
+## Using the commands (issues → commits)
+
+The day-to-day loop uses two commands: **`/new-task`** to turn an issue into the
+active task, and **`/autocommit`** to commit by task. The **task name** links the
+two: you set it when creating the task, and you reuse it when committing so commits
+are separated per task.
+
+### A. Start a task from an issue
+
+Run `/new-task` and answer the two prompts:
+
+```
+What is the GitHub Issue number?      → 23
+What is the task name? (short slug)    → search-minisearch
+```
+
+It reads issue #23 (refusing if it does not exist), writes `tasks/current-task.md`
+from the template with `Status: In Progress`, and records the task name. Implement
+the work, keeping the **Progress Checklist**, **Status** and **Files Expected To
+Change** up to date.
+
+### B. Commit one task
+
+Run `/autocommit`. At the first prompt, enter the task name and its issue, then `0`:
+
+```
+Task name and GitHub Issue number? (enter 0 to finish)   → search-minisearch 23
+Task name and GitHub Issue number? (enter 0 to finish)   → 0
+```
+
+It runs the gates and commits the changes for that task, e.g.:
+
+```
+feat(search-minisearch): Add fuzzy search (#23)
+```
+
+### C. Commit several tasks at once
+
+If your working tree mixes changes from more than one task, list each one before
+`0`. `/autocommit` attributes files to each task (via their **Files Expected To
+Change**) and produces **one commit per task** — never mixing two:
+
+```
+Task name and GitHub Issue number? (enter 0 to finish)   → search-minisearch 23
+Task name and GitHub Issue number? (enter 0 to finish)   → calendar-fix 31
+Task name and GitHub Issue number? (enter 0 to finish)   → 0
+```
+
+Result:
+
+```
+feat(search-minisearch): Add fuzzy search (#23)
+fix(calendar-fix): Resolve date filtering bug (#31)
+```
+
+### D. No issue
+
+Enter `0` immediately. `/autocommit` groups changes by purpose and commits without
+an issue reference (it never invents one).
+
+> The gates (lint+test, audit `100/100`, i18n parity, doc-sync) and all commit
+> message rules live in `commands/autocommit.md` and run on every commit — they are
+> not bypassed by this flow.
+
 ## Task lifecycle & status
 
 A task file moves `backlog/` → `current-task.md` → `completed/`. Its **Status**
@@ -121,12 +191,15 @@ field tracks execution:
 
 ## Quick start
 
-```bash
-# Start a new task
-cp tasks/templates/task-template.md tasks/current-task.md
-# ...edit current-task.md (title, issue, scope), implement, then:
-/autocommit
-# When Status = Done, archive it:
-mv tasks/current-task.md tasks/completed/<task-id>.md
-cp tasks/templates/task-template.md tasks/current-task.md
+```text
+/new-task                 # asks: issue number + task name → writes current-task.md
+# ...implement, keeping Progress Checklist / Status / Files Expected To Change current
+/autocommit               # asks: "task-name #issue" pairs until 0 → one commit per task
+
+# When Status = Done, archive it and reset for the next task:
+#   mv tasks/current-task.md tasks/completed/<task-id>.md
+#   cp tasks/templates/task-template.md tasks/current-task.md
 ```
+
+Manual fallback (no commands): `cp tasks/templates/task-template.md tasks/current-task.md`,
+edit it, then run `/autocommit`.

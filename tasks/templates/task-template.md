@@ -6,11 +6,15 @@
     tasks/backlog/<task-id>.md to queue it.
   - One task = one purpose = one branch = one PR. See tasks/README.md.
   - Keep every section. Replace the <angle-bracket> placeholders.
+  - Task name is the short slug /autocommit uses to separate commits per task,
+    so several tasks can be committed in one run. Keep "Files Expected To Change"
+    accurate — that is how /autocommit attributes files to this task.
   - The gates and commit rules are NOT redefined here: follow commands/autocommit.md.
 -->
 
 | Field        | Value                          |
 | ------------ | ------------------------------ |
+| Task name    | <short-slug>                   |
 | Task ID      | <YYYYMMDD-short-slug>          |
 | Owner        | <agent or person>              |
 | Branch       | <feat/...>                     |
