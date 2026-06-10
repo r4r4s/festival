@@ -25,7 +25,6 @@ festiVAL/
 ├── public/             → Ficheros estáticos servidos tal cual (favicon, fuentes runtime)
 ├── src/                → Código fuente de la aplicación
 ├── scripts/            → Scripts de utilidad Node.js no relacionados con el build de Angular
-├── tasks/              → Workflow por tarea (current-task, backlog, completed) + planificación (roadmap, progreso)
 ├── .editorconfig       → Reglas de formato del editor (indentación, charset, trailing whitespace)
 ├── angular.json        → Configuración de Angular CLI (build, serve, test, lint, budgets, SSR)
 ├── eslint.config.js    → Configuración de ESLint (Angular ESLint + template accessibility)
@@ -79,9 +78,8 @@ Contiene la configuración de agentes especializados, skills reutilizables y wor
 │   └── vistas.md            → Agente de UI: componentes, design system, theming, responsive, accesibilidad
 ├── commands/                → Comandos de workflow y automatización
 │   ├── audit-structure.md    → Auditoría automatizada de arquitectura: valida estructura, tokens, skills
-│   ├── autocommit.md        → Workflow de commits semánticos (Conventional Commits + pre-commit gate). Pregunta nombre de tarea + nº de issue (0 para terminar), separa los cambios por tarea (un commit por tarea) y añade (#n)
-│   ├── new-branch.md        → Crea una rama git desde la base actual: pregunta el nombre, lo normaliza, actualiza main y hace checkout de la nueva rama
-│   └── new-task.md          → Inicia tarea activa: pregunta nº de issue + nombre de tarea, lee el issue y puebla tasks/current-task.md (Status: In Progress)
+│   ├── autocommit.md        → Workflow de commits semánticos (Conventional Commits + pre-commit gate). Pregunta nº de issue (0 para terminar o omitir) y añade (#n) al resumen
+│   └── new-branch.md        → Crea una rama git desde la base actual: pregunta el nombre, lo normaliza, actualiza main y hace checkout de la nueva rama
 └── skills/                  → Skills reutilizables (formato Agent Skill: SKILL.md con frontmatter name/description)
     ├── <skill>/SKILL.md                 → Cada skill tiene su SKILL.md con frontmatter (name, description) y cuerpo
     ├── <skill>/references/              → (opcional) Material de referencia pesado extraído del SKILL.md
@@ -163,23 +161,6 @@ scripts/
 ```
 docs/
 └── documentacion.md     → Este fichero. Propósito de cada carpeta y función de cada fichero del proyecto.
-```
-
----
-
-## `tasks/` — Planificación y seguimiento
-
-Fuente única de verdad para la planificación y la ejecución del trabajo, mediante un **workflow por tarea** (en inglés): cada tarea parte de la plantilla, se ejecuta desde `current-task.md`, se encola en `backlog/` y se archiva en `completed/` (GitHub Issue → `current-task.md` → autocommit → PR → done). Reemplaza el roadmap inline en `README.md`. Documentado en `tasks/README.md` y cableado en `CLAUDE.md` / `AGENTS.md`.
-
-```
-tasks/
-├── README.md            → Workflow de tareas (Issue → current-task → autocommit → PR → done) y guía de carpetas.
-├── current-task.md      → Tarea activa única, en formato plantilla. Fuente de verdad del alcance en curso.
-├── test-workflow.md     → Marcador no funcional de validación del workflow (Issue #1). Temporal.
-├── templates/
-│   └── task-template.md → Plantilla canónica de tarea: título, issue, descripción, requisitos, criterios de aceptación, ficheros afectados, checklist, estado, notas y resumen.
-├── backlog/             → Tareas en cola, una por fichero (basadas en la plantilla). `.gitkeep` mientras está vacía.
-└── completed/           → Tareas finalizadas, archivadas con su Completion Summary. `.gitkeep` mientras está vacía.
 ```
 
 ---
@@ -694,5 +675,7 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-10 | Validación del workflow de tareas (Issue #1)            | Prueba end-to-end del sistema de tareas: `tasks/current-task.md` poblado desde el Issue #1 ("Prueba") y añadido `tasks/test-workflow.md` (marcador no funcional, temporal). Sin cambios de desarrollo ni en `src/`. |
 | 2026-06-10 | Comando `new-task`                                      | Añadido `.claude/commands/new-task.md` (pregunta el nº de issue, lo lee, rechaza si no existe y puebla `tasks/current-task.md` desde la plantilla con `Status: In Progress`). Integrado con el sistema de tareas; no duplica ni elude las reglas de `autocommit.md`. |
 | 2026-06-10 | Referencia de issue integrada en `autocommit`           | Eliminado `.claude/commands/commit-task.md`; su comportamiento se integra en `autocommit.md` (`.claude` y `.codex`): el paso 2 pasa de "detectar issue key" a **preguntar los números de issue de forma repetida hasta que el usuario introduce `0`** y añadir las referencias `(#n)` / `(#n, #m)` al resumen de cada commit. Formato y ejemplos de commit actualizados al estilo sufijo `(#n)` (antes prefijo `<issue-key>:`). README actualizado. |
+| 2026-06-10 | Eliminación del sistema `tasks/` y `/new-task`          | Eliminada la carpeta `tasks/` (README, current-task, backlog, completed, templates, test-workflow) y el comando `.claude/commands/new-task.md`. Retirada la sección "Active task workflow" de `CLAUDE.md` y `AGENTS.md`. `README.md` simplificado a flujo Issue → desarrollo → `/autocommit` → PR. Actualizado el árbol raíz y la sección de commands en esta documentación. |
+| 2026-06-10 | Simplificación de `/autocommit`                         | `autocommit.md` (`.claude` y `.codex`): eliminada la pregunta por nombre de tarea y la separación de cambios por tarea; ahora solo pregunta el nº de issue de GitHub (repetido hasta `0`) y agrupa commits por propósito semántico. Actualizados `docs/documentacion.md` y `tasks/README.md`. |
 | 2026-06-10 | Separación de commits por tarea (nombre de tarea)       | `/new-task` pasa a preguntar también el **nombre de la tarea** (slug) además del nº de issue, y lo guarda en `tasks/current-task.md` (fila "Task name" añadida a `tasks/templates/task-template.md`, usada como `Task ID` y scope por defecto). `autocommit.md` (`.claude` y `.codex`) paso 2 actualizado: pregunta **pares nombre-de-tarea + nº de issue** hasta `0` y usa el nombre para **separar los cambios por tarea y crear un commit por tarea** (permite commitear varias tareas a la vez), atribuyendo ficheros vía _Files Expected To Change_. Corregidas las referencias obsoletas a `/commit-task` en `new-task.md`. README actualizado. |
 | 2026-06-10 | Comando `new-branch` (Issue #6)                          | Añadidos `.claude/commands/new-branch.md` y `.codex/commands/new-branch.md`: comando que pregunta el nombre de rama, lo normaliza (tipo/slug), actualiza la base desde `main` con `--ff-only` y hace checkout de la nueva rama. Sin cambios en `src/`. |

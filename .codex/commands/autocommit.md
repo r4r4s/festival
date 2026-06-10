@@ -33,37 +33,24 @@ git ls-files --others --exclude-standard
 
 Understand every available change before committing.
 
-### 2. Ask for the task name(s) and issue number(s)
+### 2. Ask for the GitHub issue number(s)
 
-Before composing any commit, ask which task(s) the current changes belong to.
+Before composing any commit, ask which issue(s) the changes relate to.
 Prompt repeatedly until the user enters `0`:
 
 ```
-Task name and GitHub Issue number? (enter 0 to finish)
+GitHub Issue number? (enter 0 to finish)
 ```
 
-- Accept e.g. `search-minisearch #23` (or `search-minisearch 23`). Normalize the
-  issue to `#23`.
+- Accept `#23` or `23`. Normalize to `#23`.
 - Repeat the prompt after each answer. Stop only when the user enters `0`.
-- Collect every `(name, issue)` pair entered before `0`, in order.
-- If the user enters `0` immediately (no pairs), fall back to grouping by purpose
-  only (step 3) and commit **without** an issue reference — do not invent one.
-
-Each `(name, issue)` pair is one **task**. The task name is what lets this run
-**separate the working-tree changes per task so several tasks can be committed at
-once**:
-
-- Attribute each changed file to a task using that task's _Files Expected To
-  Change_ (from `tasks/current-task.md`, and `tasks/backlog/<name>.md` if present),
-  then apply the semantic grouping rules in step 3.
-- Create at least one separate commit **per task**. Never mix two tasks in one
-  commit.
-- Append the task's issue reference to its commit summary: ` (#23)`.
-- Use the task name as the default commit scope when no more specific scope fits,
-  e.g. `feat(search-minisearch): Add fuzzy search (#23)`.
-
-If some changes match no named task, group them by purpose (step 3) and ask the
-user which task/issue they belong to (or commit them without a reference).
+- Collect every issue number entered before `0`, in order.
+- If the user enters `0` immediately (no issues), group by purpose only (step 3)
+  and commit **without** an issue reference — do not invent one.
+- Append the collected issue reference(s) to each commit summary:
+  one issue → ` (#23)`; multiple → ` (#23, #31)`.
+- If several semantic groups belong to different issues, ask the user which
+  issue applies to each group before committing it.
 
 ### 3. Group changes semantically
 
