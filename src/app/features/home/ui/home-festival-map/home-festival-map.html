@@ -29,7 +29,7 @@
               />
 
               <ol class="pins" role="list">
-                @for (festival of festivals; track festival.key) {
+                @for (festival of festivals(); track festival.key) {
                   <li
                     class="pin-item"
                     [style.left.%]="festival.pinLeft"
@@ -62,7 +62,7 @@
     <!-- ── Col 3: tarjeta del festival activo ────────────────── -->
     <aside class="panel" [class.panel--visible]="isPanelVisible()">
       <div class="stage">
-        @for (festival of festivals; track festival.key) {
+        @for (festival of festivals(); track festival.key) {
           <article
             class="card"
             [class.card--active]="isActive(festival.key)"

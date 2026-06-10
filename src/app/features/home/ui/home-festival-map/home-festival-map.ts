@@ -5,6 +5,7 @@ import {
   computed,
   DestroyRef,
   inject,
+  input,
   signal,
 } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
@@ -16,7 +17,7 @@ import {
   LucideMusic,
 } from '@lucide/angular';
 
-import { FESTIVAL_LOCATIONS, type FestivalLocation } from '@shared/data-access/festival-locations';
+import type { FestivalLocation } from '@shared/data-access/festival-locations';
 import { TranslationService } from '@shared/data-access/i18n/translation.service';
 import type { TranslationKey } from '@shared/data-access/i18n/translations';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
@@ -35,9 +36,10 @@ const HOME_MAP_PIN_POSITIONS: Record<string, { pinLeft: number; pinTop: number }
 } as const;
 
 function locateFestival(
+  locations: readonly FestivalLocation[],
   key: string,
 ): FestivalLocation & { pinLeft: number; pinTop: number } {
-  const festival = FESTIVAL_LOCATIONS.find((item) => item.key === key);
+  const festival = locations.find((item) => item.key === key);
   const position = HOME_MAP_PIN_POSITIONS[key];
 
   if (!festival || !position) {
@@ -50,7 +52,7 @@ function locateFestival(
   };
 }
 
-interface HomeMapFestival extends FestivalLocation {
+export interface HomeMapFestival extends FestivalLocation {
   readonly slug: string;
   readonly categoryKey: TranslationKey;
   readonly image: { readonly src: string; readonly alt: string };
@@ -61,6 +63,111 @@ interface HomeMapFestival extends FestivalLocation {
   readonly pinTop: number;
   readonly toneColor: string;
   readonly glowColor: string;
+}
+
+function buildHomeMapFestivals(
+  locations: readonly FestivalLocation[],
+): readonly HomeMapFestival[] {
+  return [
+    {
+      ...locateFestival(locations, 'bigsound'),
+      slug: 'bigsound',
+      categoryKey: 'home.map.categories.pop',
+      image: {
+        src: '/assets/images/festivals/bigsound/logo-bigsound.webp',
+        alt: 'Identidad visual de Bigsound Festival',
+      },
+      attendance: '120K+',
+      artists: '48',
+      duration: '2',
+      toneColor: 'var(--fv-accent-blue)',
+      glowColor: 'var(--fv-accent-green)',
+    },
+    {
+      ...locateFestival(locations, 'reve'),
+      slug: 'reve',
+      categoryKey: 'home.map.categories.pop',
+      image: {
+        src: '/assets/images/festivals/reve/logo-reve.webp',
+        alt: 'Identidad visual de Reve Festival',
+      },
+      attendance: '18K',
+      artists: '12',
+      duration: '1',
+      toneColor: 'var(--fv-accent-blue)',
+      glowColor: 'var(--fv-accent-blue)',
+    },
+    {
+      ...locateFestival(locations, 'latinValencia'),
+      slug: 'latin-fest',
+      categoryKey: 'home.map.categories.latin',
+      image: {
+        src: '/assets/images/festivals/latin-fest/logo-latin-fest.webp',
+        alt: 'Identidad visual de Latin Fest Valencia',
+      },
+      attendance: '35K',
+      artists: '20',
+      duration: '1',
+      toneColor: 'var(--fv-accent-warning)',
+      glowColor: 'var(--fv-accent-warning)',
+    },
+    {
+      ...locateFestival(locations, 'medusa'),
+      slug: 'medusa',
+      categoryKey: 'home.map.categories.electronic',
+      image: {
+        src: '/assets/images/festivals/medusa/logo-medusa-2026.webp',
+        alt: 'Identidad visual de Medusa Festival',
+      },
+      attendance: '300K+',
+      artists: '150',
+      duration: '5',
+      toneColor: 'var(--fv-accent-blue)',
+      glowColor: 'var(--fv-accent-green)',
+    },
+    {
+      ...locateFestival(locations, 'zevra'),
+      slug: 'zevra',
+      categoryKey: 'home.map.categories.urban',
+      image: {
+        src: '/assets/images/festivals/zevra/logo-zevra.webp',
+        alt: 'Identidad visual de Zevra Festival',
+      },
+      attendance: '130K+',
+      artists: '70',
+      duration: '4',
+      toneColor: 'var(--fv-accent-green)',
+      glowColor: 'var(--fv-accent-blue)',
+    },
+    {
+      ...locateFestival(locations, 'rbf'),
+      slug: 'rbf',
+      categoryKey: 'home.map.categories.latin',
+      image: {
+        src: '/assets/images/festivals/rbf/logo-rbf.webp',
+        alt: 'Identidad visual de Reggaeton Beach Festival',
+      },
+      attendance: '90K+',
+      artists: '28',
+      duration: '1',
+      toneColor: 'var(--fv-accent-warning)',
+      glowColor: 'var(--fv-accent-warning)',
+    },
+    {
+      ...locateFestival(locations, 'latinBenidorm'),
+      slug: 'latin-fest',
+      categoryKey: 'home.map.categories.latin',
+      image: {
+        src: '/assets/images/festivals/latin-fest/logo-latin-fest.webp',
+        alt: 'Identidad visual de Latin Fest Benidorm',
+      },
+      attendance: '35K',
+      artists: '20',
+      duration: '1',
+      toneColor: 'var(--fv-accent-warning)',
+      glowColor: 'var(--fv-accent-warning)',
+    },
+  ] as const satisfies readonly HomeMapFestival[];
 }
 
 @Component({
@@ -83,117 +190,21 @@ export class HomeFestivalMapComponent {
   readonly #i18n = inject(TranslationService);
   readonly #defaultFestivalKey = 'medusa';
 
-  readonly festivals = [
-    {
-      ...locateFestival('bigsound'),
-      slug: 'bigsound',
-      categoryKey: 'home.map.categories.pop',
-      image: {
-        src: '/assets/images/festivals/bigsound/logo-bigsound.webp',
-        alt: 'Identidad visual de Bigsound Festival',
-      },
-      attendance: '120K+',
-      artists: '48',
-      duration: '2',
-      toneColor: 'var(--fv-accent-blue)',
-      glowColor: 'var(--fv-accent-green)',
-    },
-    {
-      ...locateFestival('reve'),
-      slug: 'reve',
-      categoryKey: 'home.map.categories.pop',
-      image: {
-        src: '/assets/images/festivals/reve/logo-reve.webp',
-        alt: 'Identidad visual de Reve Festival',
-      },
-      attendance: '18K',
-      artists: '12',
-      duration: '1',
-      toneColor: 'var(--fv-accent-blue)',
-      glowColor: 'var(--fv-accent-blue)',
-    },
-    {
-      ...locateFestival('latinValencia'),
-      slug: 'latin-fest',
-      categoryKey: 'home.map.categories.latin',
-      image: {
-        src: '/assets/images/festivals/latin-fest/logo-latin-fest.webp',
-        alt: 'Identidad visual de Latin Fest Valencia',
-      },
-      attendance: '35K',
-      artists: '20',
-      duration: '1',
-      toneColor: 'var(--fv-accent-warning)',
-      glowColor: 'var(--fv-accent-warning)',
-    },
-    {
-      ...locateFestival('medusa'),
-      slug: 'medusa',
-      categoryKey: 'home.map.categories.electronic',
-      image: {
-        src: '/assets/images/festivals/medusa/logo-medusa-2026.webp',
-        alt: 'Identidad visual de Medusa Festival',
-      },
-      attendance: '300K+',
-      artists: '150',
-      duration: '5',
-      toneColor: 'var(--fv-accent-blue)',
-      glowColor: 'var(--fv-accent-green)',
-    },
-    {
-      ...locateFestival('zevra'),
-      slug: 'zevra',
-      categoryKey: 'home.map.categories.urban',
-      image: {
-        src: '/assets/images/festivals/zevra/logo-zevra.webp',
-        alt: 'Identidad visual de Zevra Festival',
-      },
-      attendance: '130K+',
-      artists: '70',
-      duration: '4',
-      toneColor: 'var(--fv-accent-green)',
-      glowColor: 'var(--fv-accent-blue)',
-    },
-    {
-      ...locateFestival('rbf'),
-      slug: 'rbf',
-      categoryKey: 'home.map.categories.latin',
-      image: {
-        src: '/assets/images/festivals/rbf/logo-rbf.webp',
-        alt: 'Identidad visual de Reggaeton Beach Festival',
-      },
-      attendance: '90K+',
-      artists: '28',
-      duration: '1',
-      toneColor: 'var(--fv-accent-warning)',
-      glowColor: 'var(--fv-accent-warning)',
-    },
-    {
-      ...locateFestival('latinBenidorm'),
-      slug: 'latin-fest',
-      categoryKey: 'home.map.categories.latin',
-      image: {
-        src: '/assets/images/festivals/latin-fest/logo-latin-fest.webp',
-        alt: 'Identidad visual de Latin Fest Benidorm',
-      },
-      attendance: '35K',
-      artists: '20',
-      duration: '1',
-      toneColor: 'var(--fv-accent-warning)',
-      glowColor: 'var(--fv-accent-warning)',
-    },
-  ] as const satisfies readonly HomeMapFestival[];
+  /** Localizaciones del catálogo, suministradas por la página (ui/ recibe datos por input). */
+  readonly locations = input.required<readonly FestivalLocation[]>();
+
+  readonly festivals = computed(() => buildHomeMapFestivals(this.locations()));
 
   readonly activeFestivalKey = signal(this.#defaultFestivalKey);
   // Panel is always visible in the 3-column layout — starts open.
   readonly isPanelVisible = signal(true);
   readonly activeFestival = computed(
     () =>
-      this.festivals.find((festival) => festival.key === this.activeFestivalKey()) ??
-      this.festivals[0],
+      this.festivals().find((festival) => festival.key === this.activeFestivalKey()) ??
+      this.festivals()[0],
   );
   readonly activeIndex = computed(() =>
-    this.festivals.findIndex((festival) => festival.key === this.activeFestivalKey()),
+    this.festivals().findIndex((festival) => festival.key === this.activeFestivalKey()),
   );
 
   // ── Carrusel automático ───────────────────────────────────────────────────
@@ -235,11 +246,12 @@ export class HomeFestivalMapComponent {
 
   #startAutoplay(): void {
     this.#intervalId = setInterval(() => {
-      const currentIdx = this.festivals.findIndex(
+      const festivals = this.festivals();
+      const currentIdx = festivals.findIndex(
         (festival) => festival.key === this.activeFestivalKey(),
       );
-      const nextIdx = (currentIdx + 1) % this.festivals.length;
-      this.activeFestivalKey.set(this.festivals[nextIdx].key);
+      const nextIdx = (currentIdx + 1) % festivals.length;
+      this.activeFestivalKey.set(festivals[nextIdx].key);
     }, AUTOPLAY_INTERVAL_MS);
   }
 

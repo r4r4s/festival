@@ -13,6 +13,7 @@
     }
   },
   "home": {
+    "ariaLabel": "Home",
     "hero": {
       "title": "Festival guide for Valencia, Alicante and Castellon.",
       "description": "Find dates, locations and key information about the main festivals in the Valencian Community.",

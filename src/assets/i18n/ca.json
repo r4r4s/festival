@@ -13,6 +13,7 @@
     }
   },
   "home": {
+    "ariaLabel": "Inici",
     "hero": {
       "title": "Guia de festivals a València, Alacant i Castelló.",
       "description": "Troba dates, ubicacions i informació sobre els principals festivals de la Comunitat Valenciana.",

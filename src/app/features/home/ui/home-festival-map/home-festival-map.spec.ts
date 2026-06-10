@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { FESTIVAL_LOCATIONS } from '@shared/data-access/festival-locations';
+
 import { HomeFestivalMapComponent } from './home-festival-map';
 
 describe('HomeFestivalMapComponent', () => {
@@ -17,6 +19,7 @@ describe('HomeFestivalMapComponent', () => {
 
     fixture = TestBed.createComponent(HomeFestivalMapComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('locations', FESTIVAL_LOCATIONS);
     fixture.detectChanges();
   });
 
@@ -32,7 +35,7 @@ describe('HomeFestivalMapComponent', () => {
     const root = fixture.nativeElement as HTMLElement;
     const pins = root.querySelectorAll('[data-testid="home-festival-map-pin"]');
 
-    expect(pins).toHaveLength(component.festivals.length);
+    expect(pins).toHaveLength(component.festivals().length);
   });
 
   it('shows Medusa as the default active festival', () => {
@@ -40,7 +43,7 @@ describe('HomeFestivalMapComponent', () => {
   });
 
   it('includes separate pins for Latin Fest Valencia and Latin Fest Benidorm', () => {
-    expect(component.festivals.map((festival) => festival.key)).toEqual([
+    expect(component.festivals().map((festival) => festival.key)).toEqual([
       'bigsound',
       'reve',
       'latinValencia',
@@ -64,7 +67,7 @@ describe('HomeFestivalMapComponent', () => {
   it('marks the clicked pin as pressed', () => {
     const root = fixture.nativeElement as HTMLElement;
     const pins = root.querySelectorAll('[data-testid="home-festival-map-pin"]');
-    const rbfIndex = component.festivals.findIndex((festival) => festival.key === 'rbf');
+    const rbfIndex = component.festivals().findIndex((festival) => festival.key === 'rbf');
 
     pins[rbfIndex]?.dispatchEvent(new Event('click'));
     fixture.detectChanges();
@@ -77,7 +80,7 @@ describe('HomeFestivalMapComponent', () => {
     const root = fixture.nativeElement as HTMLElement;
     const pins = root.querySelectorAll('[data-testid="home-festival-map-pin"]');
     const pane = root.querySelector('.pane') as HTMLElement | null;
-    const rbfIndex = component.festivals.findIndex((festival) => festival.key === 'rbf');
+    const rbfIndex = component.festivals().findIndex((festival) => festival.key === 'rbf');
 
     pins[rbfIndex]?.dispatchEvent(new Event('click'));
     pane?.dispatchEvent(new Event('mouseleave'));
@@ -89,13 +92,13 @@ describe('HomeFestivalMapComponent', () => {
 
   it('cycles the active pin every 3 seconds in array order', () => {
     expect(component.activeFestival().key).toBe('medusa');
-    const medusaIdx = component.festivals.findIndex((f) => f.key === 'medusa');
+    const medusaIdx = component.festivals().findIndex((f) => f.key === 'medusa');
 
     vi.advanceTimersByTime(3000);
-    expect(component.activeIndex()).toBe((medusaIdx + 1) % component.festivals.length);
+    expect(component.activeIndex()).toBe((medusaIdx + 1) % component.festivals().length);
 
     vi.advanceTimersByTime(3000);
-    expect(component.activeIndex()).toBe((medusaIdx + 2) % component.festivals.length);
+    expect(component.activeIndex()).toBe((medusaIdx + 2) % component.festivals().length);
   });
 
   it('restarts the autoplay timer when the user hovers a pin', () => {

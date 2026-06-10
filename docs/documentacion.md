@@ -264,8 +264,8 @@ src/assets/
 │   ├── festi-val-logo.webp → Logo principal (versión rasterizada usada por la cabecera)
 │   └── favicon.svg         → Favicon vectorial
 ├── i18n/                → Ficheros de traducción JSON. `es.json` es la fuente de verdad; el resto
-│   │                      mantiene paridad de claves. La propagación a los 44 locales europeos
-│   │                      soportados ocurre durante un commit (skill `i18n-commit-policy`).
+│   │                      mantiene paridad de claves. La propagación a los locales soportados
+│   │                      (`ca`, `en`) ocurre durante un commit (skill `i18n-commit-policy`).
 │   ├── es.json          → Fuente de verdad es-ES. Claves con puntos (nav.home, home.hero.title…).
 │   ├── ca.json          → Locale roadmap ca-ES-valencia.
 │   └── en.json          → Locale roadmap en-GB.
@@ -350,7 +350,7 @@ src/app/core/
 │                                    FestivalError en dev con código y mensaje; en producción
 │                                    delega a Sentry (TODO). Registrado en app.config.ts.
 ├── initializers/        → Factorías APP_INITIALIZER: carga del catálogo desde Sanity, registro de
-│   ├── .gitkeep           locale, hidratación de preferencias de tema desde localStorage.
+│   │                      locale, hidratación de preferencias de tema desde localStorage.
 │   └── transloco.loader.ts → TranslocoHttpLoader: carga los ficheros JSON de traducción desde
 │                            `/assets/i18n/<lang>.json`. Inyectado en provideTransloco (app.config.ts).
 ├── tokens/              → InjectionTokens tipados para configuración inyectable.
@@ -367,17 +367,18 @@ Cargado eagerly. Compone la estructura visual que envuelve todas las rutas.
 
 ```
 src/app/layout/
-├── shell/               → Componente host del <router-outlet>. Organiza nav-bar + contenido + footer.
-│   └── .gitkeep
+├── shell/               → (roadmap) Componente host del <router-outlet> que organizará nav-bar +
+│   └── .gitkeep           contenido + footer. Hoy ese papel lo cumple `app.html`; la carpeta es un
+│                          placeholder hasta que se implemente.
 ├── nav-bar/             → Cabecera estática del sitio (sticky). Logo `assets/branding/festi-val-logo.webp`
 │   ├── nav-bar.ts         vía `NgOptimizedImage` (`priority`), navegación principal (Home,
 │   ├── nav-bar.html       Festivals, Calendar, Explore, About), icono de búsqueda y toggle de
 │   ├── nav-bar.scss       tema. Mobile-first: en <1024 px sólo aparecen logo, búsqueda y
-│   └── nav-bar.spec.ts    hamburguesa. Incluye selector de idioma ES/CA/EN (visible en desktop)
-│                          que llama a TranslationService.setLang(). aria-current="page" en el
-│                          enlace activo vía routerLinkActive.
-└── footer/              → Pie de página: navegación secundaria, enlaces legales, atribución.
-    └── .gitkeep
+│   └── nav-bar.spec.ts    hamburguesa. aria-current="page" en el enlace activo vía
+│                          routerLinkActive. (El selector de idioma ES/CA/EN está en el roadmap
+│                          de la fase multilingüe; aún no existe.)
+└── footer/              → (roadmap) Pie de página: navegación secundaria, enlaces legales, atribución.
+    └── .gitkeep           Placeholder hasta que se implemente.
 ```
 
 ### `src/app/features/` — Slices verticales (lazy)
@@ -407,13 +408,13 @@ src/app/features/
 │   ├── feature/
 │   │   ├── home.page.ts    → Página de inicio standalone. Orquesta el hero editorial, el calendario
 │   │   │                     `festival-calendar`, el carrusel `featured-festivals` y el mapa
-│   │   │                     interactivo `home-festival-map`.
+│   │   │                     interactivo `home-festival-map`, al que pasa `FESTIVAL_LOCATIONS`
+│   │   │                     (de `@shared/data-access`) vía el input `locations`.
 │   │   ├── home.page.html  → Hero con CTAs + calendario premium + carrusel de festivales + mapa
 │   │   │                     de pines (las secciones secundarias van en @defer).
 │   │   ├── home.page.scss  → Layout de la home: espaciado vertical, hero card y responsive.
 │   │   └── home.page.spec.ts → Tests del hero, calendario, sección de festivales y sección de mapa.
 │   ├── ui/
-│   │   ├── .gitkeep
 │   │   ├── festival-calendar/
 │   │   │   ├── festival-calendar.ts      → Componente local standalone del calendario editorial:
 │   │   │   │                               carrusel auto-rotativo (3 s) con `activeIndex: signal`,
@@ -439,9 +440,12 @@ src/app/features/
 │   │   │   └── featured-festivals.spec.ts → Tests de render y pista duplicada.
 │   │   └── home-festival-map/
 │   │       ├── home-festival-map.ts      → Componente interactivo de pines sobre imagen del mapa
-│   │       │                               valenciano. Signals para festival activo, panel visible y
-│   │       │                               festival bloqueado (click vs. hover). Carrusel automático
-│   │       │                               (setInterval 3 s) con afterNextRender + DestroyRef.
+│   │       │                               valenciano. Recibe las localizaciones por
+│   │       │                               `input.required('locations')` (ui/ presentacional) y las
+│   │       │                               combina con su config local de pines/imágenes en un
+│   │       │                               `computed`. Signals para festival activo y panel visible.
+│   │       │                               Carrusel automático (setInterval 3 s) con
+│   │       │                               afterNextRender + DestroyRef.
 │   │       ├── home-festival-map.html    → Figura con imagen + lista de pines accesibles (aria-pressed)
 │   │       │                               + panel lateral con tarjeta del festival activo.
 │   │       ├── home-festival-map.scss    → Layout grid pane/panel; pines con tono por festival;
@@ -458,7 +462,15 @@ src/app/features/
     │   ├── festivales-map.page.html → Header con eyebrow/título/descripción + fv-festivales-map.
     │   └── festivales-map.page.scss → Layout de la página: contenedor max-w 1320, wrap del mapa 70vh.
     ├── ui/
-    │   └── .gitkeep
+    │   └── festivales-map/          → Componente del mapa interactivo (movido desde shared/ui/ al
+    │       ├── festivales-map.ts      tener un único consumidor). Renderiza MapLibre GL JS + sidebar
+    │       ├── festivales-map.html    con lista ordenable de festivales: cabecera con contador y
+    │       ├── festivales-map.scss    dropdown de orden, icono de categoría y dot de color por ítem,
+    │       │                          hint footer y toggle móvil. SSR-safe (ngAfterViewInit +
+    │       │                          isPlatformBrowser).
+    │       └── festivales-map.spec.ts → Tests del sidebar: lista los 7 festivales, ambas ediciones
+    │                                    de Latin Fest, orden por fecha/nombre y toggle de selección
+    │                                    (MapLoaderService mockeado para evitar WebGL en jsdom).
     ├── data-access/
     │   └── .gitkeep
     └── festivales-map.routes.ts → FESTIVALES_MAP_ROUTES. Carga FestivalesMapPageComponent lazy.
@@ -472,16 +484,8 @@ Código reutilizado por **2 o más features**. Nunca importa de `features/` ni d
 
 ```
 src/app/shared/
-├── ui/
-│   └── festivales-map/              → Componente reutilizable del mapa interactivo. Renderiza
-│       ├── festivales-map.ts          MapLibre GL JS + sidebar con lista ordenable de festivales.
-│       ├── festivales-map.html        Sidebar: cabecera con contador y dropdown de orden, lista
-│       ├── festivales-map.scss        de festivals con icono de categoría y dot de color, hint
-│       │                              footer. Toggle móvil para abrir/cerrar la lista. SSR-safe
-│       │                              (ngAfterViewInit + isPlatformBrowser).
-│       └── festivales-map.spec.ts     → Tests del sidebar: lista los 7 festivales, ambas ediciones
-│                                        de Latin Fest, orden por fecha/nombre y toggle de selección
-│                                        (MapLoaderService mockeado para evitar WebGL en jsdom).
+├── ui/                  → Componentes presentacionales compartidos por ≥ 2 features. Vacío hoy:
+│   └── .gitkeep           `festivales-map` volvió a su feature al quedarse con un único consumidor.
 ├── data-access/         → Servicios, datos y stores compartidos por ≥ 2 features. Hoy contiene los
 │   │                      datos de localización del mapa, el cargador diferido de MapLibre y la capa
 │   │                      i18n. Los servicios de catálogo (FestivalService, SearchService, stores…)
@@ -490,9 +494,9 @@ src/app/shared/
 │   │                           key (p. ej. `bigsound`, `reve`, `latinValencia`, `medusa`,
 │   │                           `zevra`, `rbf`, `latinBenidorm`), claves i18n, startDate ISO,
 │   │                           lat/lng, category, markerTone.
-│   └── map-loader.service.ts → MapLoaderService: carga maplibre-gl de forma diferida (dynamic
-│                                import) para excluirlo del bundle inicial. Expone createMap() y
-│                                createMarker() tipados.
+│   ├── map-loader.service.ts → MapLoaderService: carga maplibre-gl de forma diferida (dynamic
+│   │                            import) para excluirlo del bundle inicial. Expone createMap() y
+│   │                            createMarker() tipados.
 │   └── i18n/            → Capa i18n con Transloco.
 │       ├── translations.ts            → Importa `es.json` vía `@assets/i18n/es.json`. Exporta
 │       │                                `ES_TRANSLATIONS`, el tipo `Translations` y el tipo
@@ -501,7 +505,7 @@ src/app/shared/
 │       │                                `TranslocoService` de forma opcional: en producción delega
 │       │                                en Transloco; en tests (sin Transloco provisto) usa el
 │       │                                bundle estático ES_TRANSLATIONS. Expone `t(key)`,
-│       │                                `setLang()` y la signal `activeLang`.
+│       │                                `setTranslations()` y la signal `activeLang`.
 │       └── translation.service.spec.ts → Specs del servicio.
 ├── domain/              → Modelos de dominio: interfaces TypeScript + schemas Zod.
 │   ├── festival.model.ts          → FestivalSchema (Zod) + tipos inferidos Festival y Artist.
@@ -534,7 +538,7 @@ Configuración de Angular CLI para el proyecto `festiVAL`:
 - **Build**: builder `@angular/build:application`, entry browser `src/main.ts`, server `src/main.server.ts`, SSR con Express (`src/server.ts`).
 - **Assets**: además de `public/` (servido en raíz), `src/assets/` se sirve bajo `/assets/` para imágenes, fuentes adicionales, iconos, etc.
 - **Estilos**: SCSS como preprocesador, `stylePreprocessorOptions.includePaths: ["src"]` para permitir `@use 'styles/...'` desde componentes.
-- **Budgets**: inicial ≤ 250 KB warning / 350 KB error; lazy chunks ≤ 80 KB warning / 120 KB error; component styles ≤ 4 KB warning / 8 KB error.
+- **Budgets**: inicial ≤ 360 KB warning / 400 KB error; lazy chunks ≤ 80 KB warning / 120 KB error; component styles ≤ 8 KB warning / 12 KB error. (Cifras raw, sin gzip; `angular.json` es la fuente de verdad.)
 - **Prefix**: `fv` (todos los componentes generados usan selector `fv-*`).
 - **Lint**: builder `@angular-eslint/builder:lint`, patrones `src/**/*.ts` y `src/**/*.html`.
 - **Schematics**: `angular-eslint` como colección de schematics, componentes SCSS por defecto.
@@ -595,6 +599,7 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 
 | Fecha      | Cambio                                                  | Descripción                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ---------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-06-10 | Auditoría `/audit-structure`: realineación estructura ↔ docs | `shared/ui/festivales-map/` movido a `features/festivales-map/ui/festivales-map/` (un único consumidor; la promoción a shared exige ≥ 2). Creados `features/festivales-map/data-access/.gitkeep` y `shared/ui/.gitkeep`. `home-festival-map` ahora recibe las localizaciones por `input.required('locations')` desde `home.page` (ui/ presentacional). `aria-label` de la home pasa por i18n (`home.ariaLabel` en es/ca/en). Eliminado el directorio vacío `output/`. Documentación sincronizada: budgets reales de `angular.json` (360/400, 80/120, 8/12 KB) aquí y en `CLAUDE.md`, ruta `/mapa` añadida al esquema de URLs de `CLAUDE.md`, tabla de aliases y entry SCSS corregidos en la skill `project-structure` (.claude y .codex), retiradas las menciones a `setLang()`/selector de idioma y los `.gitkeep` fantasma, y backlog actualizado con MiniSearch y Sentry pendientes. |
 | 2026-06-08 | Refactor `festival-calendar` y limpieza de scaffolds    | `src/app/features/home/ui/festival-calendar/` rediseñado: retirada del icono del header, fila de meses proporcional (15/31/18 días), rail gradiente con tokens `--fv-accent-*`, círculos de día destacados como pseudo-elementos absolutos (no expanden el grid), y carrusel auto-rotativo (3 s) con `(mouseenter)` sobre los días destacados para enfocar uno concreto y reanudar. Nuevo token semántico `--fv-bg-tile-dark` en `src/styles/_semantic.scss`. Tests del carrusel añadidos con `vi.useFakeTimers`. Eliminados los scaffolds vacíos `features/{about,artist-detail,festival-detail,festival-list,search}/` y el `.gitkeep` redundante en `shared/domain/` para alinear el árbol con el código realmente implementado.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | 2026-06-08 | Sección `festival-calendar` en home                     | Añadida `src/app/features/home/ui/festival-calendar/` con `festival-calendar.{ts,html,scss,spec.ts}` para insertar entre el hero y `featured-festivals` una sección editorial de calendario premium: filtros por mes, timeline interactivo, mini-cards glass y barra de estadísticas. `home.page.*` actualizado para montarla en un nuevo bloque `@defer`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | 2026-06-04 | Skill `asset-organization`                              | Añadidas `.codex/skills/asset-organization/README.md` y `.claude/skills/asset-organization/README.md` como fuente de verdad para las reglas de gestión de assets visuales. Actualizadas las listas de skills en ambos contratos y esta documentación.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |

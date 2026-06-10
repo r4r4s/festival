@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { FestivalesMapComponent } from '@shared/ui/festivales-map/festivales-map';
+import { FestivalesMapComponent } from '../ui/festivales-map/festivales-map';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
