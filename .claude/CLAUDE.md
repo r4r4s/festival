@@ -99,7 +99,7 @@ If no specific agent or skill applies, still review `CLAUDE.md` and any nearby `
 - Environment configuration lives in `src/environments/` (`environment.ts`, `environment.prod.ts`). **That** is where base URLs, feature flags, and endpoints belong — never hardcode them in services.
 - The default locale is registered in `src/app/app.config.ts` with `registerLocaleData(localeEs)` and `LOCALE_ID: 'es-ES'`.
 - Translations live in `src/assets/i18n/*.json`. `es.json` is the source of truth and every additional locale file must stay in key parity with it (see the **contenido** agent).
-- Bundle budgets are defined in `angular.json` under `budgets`. Initial < 250 KB gzipped, lazy chunks < 80 KB.
+- Bundle budgets are defined in `angular.json` under `budgets` (raw, not gzipped): initial ≤ 360 KB warning / 400 KB error, lazy chunks ≤ 80 KB warning / 120 KB error, component styles ≤ 8 KB warning / 12 KB error. `angular.json` is the source of truth for these figures.
 
 ## Agents
 
@@ -205,6 +205,7 @@ Slugs are **immutable once published** — breaking them breaks SEO. Any renamin
 | `/festivales/:slug/cartel`  | Full line-up                                    |
 | `/artistas/:slug`           | Artist profile                                  |
 | `/provincia/:provincia`     | Listing filtered by province                    |
+| `/mapa`                     | Interactive festival map (MapLibre)             |
 | `/sobre-nosotros`           | Static page                                     |
 
 URL paths remain in Spanish on purpose — they are user-facing, shareable, and SEO-relevant for Spanish queries.

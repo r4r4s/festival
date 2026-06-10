@@ -65,12 +65,11 @@ festiVAL/
 │   │   ├── i18n/              # translation files: es.json (source) + additional locale JSON files
 │   │   └── maps/              # MapLibre style JSON (see [[maps]])
 │   ├── environments/          # environment.ts, environment.prod.ts
-│   ├── styles/                # global SCSS (see "Global styles" below)
+│   ├── styles/                # global SCSS, including the styles.scss entry point (see "Global styles" below)
 │   ├── index.html
 │   ├── main.ts
 │   ├── main.server.ts
-│   ├── server.ts
-│   └── styles.scss            # entry point importing src/styles/*
+│   └── server.ts
 ├── public/                    # static files served as-is (favicon, robots.txt, sitemap.xml)
 ├── angular.json
 ├── package.json
@@ -187,9 +186,12 @@ Route-bound pages use the `.page` suffix on the class file: `home.page.ts`. No `
 
 ```
 src/styles/
+├── styles.scss                # entry point (the only file angular.json's "styles" references)
 ├── _tokens.scss               # primitive tokens (raw palette)
 ├── _semantic.scss             # semantic tokens (--bg-canvas, --text-primary, --accent-violet)
+├── _safari-compat.scss        # Safari-specific compatibility layer (see [[cross-device-compat]])
 ├── _typography.scss           # font families, type ramp, line-heights, tracking
+├── _fonts.scss                # @font-face for the self-hosted variable fonts
 ├── _spacing.scss              # 4 px base scale
 ├── _radii.scss                # border radii
 ├── _shadows.scss              # elevation system (optional partial)
@@ -197,10 +199,12 @@ src/styles/
 ├── _breakpoints.scss          # sm 640, md 768, lg 1024, xl 1280
 ├── _mixins.scss               # glass, focus-ring, container, truncate, line-clamp
 ├── _animations.scss           # keyframes (fade-up, pulse-soft, live-dot)
-└── _reset.scss                # opinionated reset
+├── _reset.scss                # opinionated reset
+└── utilities/
+    └── _liquid-glass.scss     # liquid-glass mixin + .glass-* classes (see [[liquid-glass]])
 ```
 
-The root `src/styles.scss` is the only file that `@use`s these partials. Component SCSS imports tokens via `@use 'styles/mixins' as *;` (resolved through `stylePreprocessorOptions.includePaths: ["src"]` in `angular.json`). See [[theming-styling]].
+`src/styles/styles.scss` is the only file that `@use`s these partials. Component SCSS imports tokens via `@use 'styles/mixins' as *;` (resolved through `stylePreprocessorOptions.includePaths: ["src"]` in `angular.json`). See [[theming-styling]].
 
 ---
 
@@ -224,11 +228,13 @@ Configured in `tsconfig.json`. **Imports must always use an alias** — never a 
       "@shared/directives/*":  ["src/app/shared/directives/*"],
       "@shared/testing/*":     ["src/app/shared/testing/*"],
       "@env/*":                ["src/environments/*"],
-      "@styles/*":             ["src/styles/*"]
+      "@assets/*":             ["src/assets/*"]
     }
   }
 }
 ```
+
+There is **no TS alias for styles**: component SCSS resolves `@use 'styles/...'` through `stylePreprocessorOptions.includePaths: ["src"]` in `angular.json`. `@assets/*` is registered in `eslint-plugin-boundaries` as the `asset` element; only `shared` may import it.
 
 Inside a single feature, relative imports (`./ui/festival-hero/...`) are fine — they never climb above the feature root. Crossing any layer boundary requires an alias.
 
