@@ -46,8 +46,9 @@
   transform: translateZ(0); // @compat
   outline: none;
 
+  @include focus-ring;
+
   &:focus-visible {
-    @include focus-ring;
     border-radius: var(--fv-radius-xl);
   }
 }

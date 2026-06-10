@@ -160,8 +160,9 @@
   cursor: pointer;
   overflow: visible;
 
+  @include focus-ring;
+
   &:focus-visible {
-    @include focus-ring;
     border-radius: var(--fv-radius-sm);
   }
 
@@ -448,9 +449,7 @@
     background var(--fv-duration-fast) var(--fv-ease-standard),
     transform var(--fv-duration-fast) var(--fv-ease-standard);
 
-  &:focus-visible {
-    @include focus-ring;
-  }
+  @include focus-ring;
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {

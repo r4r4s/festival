@@ -208,9 +208,7 @@
     box-shadow var(--fv-duration-base) var(--fv-ease-standard),
     color var(--fv-duration-base) var(--fv-ease-standard);
 
-  &:focus-visible {
-    @include focus-ring;
-  }
+  @include focus-ring;
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {

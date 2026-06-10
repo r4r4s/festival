@@ -196,7 +196,6 @@ function buildHomeMapFestivals(
 
 @Component({
   selector: 'fv-home-festival-map',
-  standalone: true,
   imports: [
     NgOptimizedImage,
     RouterLink,

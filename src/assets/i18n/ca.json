@@ -85,21 +85,21 @@
       }
     },
     "calendar": {
-      "title": "Calendario de festivales 2026",
-      "subtitle": "Explora cuándo y dónde se celebran los mejores festivales de la Comunitat Valenciana.",
-      "empty": "Todavía no hay festivales seleccionados para este mes. Cambia el filtro para seguir explorando el verano.",
+      "title": "Calendari de festivals 2026",
+      "subtitle": "Explora quan i on se celebren els millors festivals de la Comunitat Valenciana.",
+      "empty": "Encara no hi ha festivals seleccionats per a aquest mes. Canvia el filtre per a continuar explorant l'estiu.",
       "filters": {
-        "ariaLabel": "Filtrar festivales por mes",
-        "all": "Todos",
-        "june": "Junio",
-        "july": "Julio",
-        "august": "Agosto",
-        "september": "Septiembre"
+        "ariaLabel": "Filtrar festivals per mes",
+        "all": "Tots",
+        "june": "Juny",
+        "july": "Juliol",
+        "august": "Agost",
+        "september": "Setembre"
       },
       "months": {
-        "june": "Junio",
-        "july": "Julio",
-        "august": "Agosto"
+        "june": "Juny",
+        "july": "Juliol",
+        "august": "Agost"
       },
       "shortMonths": {
         "june": "JUN",
@@ -110,33 +110,33 @@
         "bigsound": {
           "date": "20–21 Jun",
           "name": "Bigsound Festival",
-          "location": "Valencia",
-          "genre": "Pop & directo"
+          "location": "València",
+          "genre": "Pop & directe"
         },
         "latinFest": {
           "date": "17–18 Jul",
           "name": "Latin Fest",
           "location": "Benidorm",
-          "genre": "Latino"
+          "genre": "Llatí"
         },
         "zevra": {
           "date": "24–27 Jul",
           "name": "Zevra Festival",
           "location": "Cullera",
-          "genre": "Urbano"
+          "genre": "Urbà"
         },
         "medusa": {
           "date": "13–17 Ago",
           "name": "Medusa Festival",
           "location": "Cullera",
-          "genre": "Electrónica"
+          "genre": "Electrònica"
         }
       },
       "stats": {
-        "festivals": "Festivales seleccionados",
-        "attendees": "Asistentes cada año",
-        "artists": "Artistas en escena",
-        "provinces": "Provincias por descubrir"
+        "festivals": "Festivals seleccionats",
+        "attendees": "Assistents cada any",
+        "artists": "Artistes en escena",
+        "provinces": "Províncies per descobrir"
       }
     }
   },
@@ -261,40 +261,40 @@
     }
   },
   "footer": {
-    "ariaLabel": "Pie de página",
+    "ariaLabel": "Peu de pàgina",
     "brand": {
       "logoAlt": "festiVAL",
-      "description": "Tu guía de festivales en la Comunitat Valenciana. Música, cultura y verano."
+      "description": "La teua guia de festivals a la Comunitat Valenciana. Música, cultura i estiu."
     },
     "social": {
-      "ariaLabel": "Redes sociales de festiVAL",
-      "instagram": "Síguenos en Instagram",
-      "x": "Síguenos en X",
-      "youtube": "Síguenos en YouTube",
-      "spotify": "Escúchanos en Spotify"
+      "ariaLabel": "Xarxes socials de festiVAL",
+      "instagram": "Segueix-nos a Instagram",
+      "x": "Segueix-nos a X",
+      "youtube": "Segueix-nos a YouTube",
+      "spotify": "Escolta'ns a Spotify"
     },
     "explore": {
       "title": "Explora",
-      "map": "Mapa de festivales",
-      "upcoming": "Próximos festivales",
-      "byGenre": "Por género",
-      "byProvince": "Por provincia"
+      "map": "Mapa de festivals",
+      "upcoming": "Pròxims festivals",
+      "byGenre": "Per gènere",
+      "byProvince": "Per província"
     },
     "info": {
-      "title": "Información",
+      "title": "Informació",
       "about": "Sobre festiVAL",
-      "contact": "Contacto",
+      "contact": "Contacte",
       "faq": "FAQ"
     },
     "legal": {
       "title": "Legal",
-      "notice": "Aviso legal",
-      "privacy": "Política de privacidad",
+      "notice": "Avís legal",
+      "privacy": "Política de privacitat",
       "cookies": "Política de cookies",
-      "terms": "Términos de uso"
+      "terms": "Condicions d'ús"
     },
     "bottom": {
-      "copyright": "© 2026 festiVAL. Todos los derechos reservados."
+      "copyright": "© 2026 festiVAL. Tots els drets reservats."
     }
   },
   "error": {

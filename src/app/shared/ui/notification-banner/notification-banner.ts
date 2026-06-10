@@ -5,7 +5,6 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
   selector: 'fv-notification-banner',
-  standalone: true,
   imports: [TranslatePipe],
   templateUrl: './notification-banner.html',
   styleUrl: './notification-banner.scss',

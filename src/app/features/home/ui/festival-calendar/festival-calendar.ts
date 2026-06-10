@@ -24,7 +24,6 @@ type FestivalDayLookup = Record<string, CalendarFestivalEntry>;
 
 @Component({
   selector: 'fv-festival-calendar',
-  standalone: true,
   imports: [NgOptimizedImage, LucideMapPin, TranslatePipe],
   templateUrl: './festival-calendar.html',
   styleUrl: './festival-calendar.scss',

@@ -37,7 +37,5 @@
   border-radius: var(--fv-radius-sm);
   flex-shrink: 0;
 
-  &:focus-visible {
-    @include focus-ring;
-  }
+  @include focus-ring;
 }

@@ -7,7 +7,6 @@ import { FEATURED_FESTIVALS } from '../../data-access/home-catalogue';
 
 @Component({
   selector: 'fv-featured-festivals',
-  standalone: true,
   imports: [NgOptimizedImage, LucideCalendar, LucideMapPin, TranslatePipe],
   templateUrl: './featured-festivals.html',
   styleUrl: './featured-festivals.scss',
