@@ -5,13 +5,23 @@
       <!-- ── Brand ─────────────────────────────────────────────── -->
       <div class="footer__brand">
         <a class="footer__logo-link" routerLink="/" [attr.aria-label]="'nav.home' | t">
-          <img
-            class="footer__logo"
-            ngSrc="assets/branding/festi-val-logo.webp"
-            width="746"
-            height="334"
-            [alt]="'footer.brand.logoAlt' | t"
-          />
+          @if (isDark()) {
+            <img
+              class="footer__logo"
+              ngSrc="assets/branding/festi-val-logo-dark.webp"
+              width="746"
+              height="334"
+              [alt]="'footer.brand.logoAlt' | t"
+            />
+          } @else {
+            <img
+              class="footer__logo"
+              ngSrc="assets/branding/festi-val-logo.webp"
+              width="746"
+              height="334"
+              [alt]="'footer.brand.logoAlt' | t"
+            />
+          }
         </a>
 
         <p class="footer__tagline">{{ 'footer.brand.description' | t }}</p>

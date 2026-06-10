@@ -6,7 +6,10 @@
     "explore": "Explora",
     "about": "Sobre nosaltres",
     "search": "Buscar",
-    "theme": "Canviar tema",
+    "theme": {
+      "toDark": "Activar el mode fosc",
+      "toLight": "Activar el mode clar"
+    },
     "menu": "Obrir menú",
     "aria": {
       "primary": "Navegació principal"

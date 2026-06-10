@@ -6,7 +6,10 @@
     "explore": "Explorar",
     "about": "Sobre nosotros",
     "search": "Buscar",
-    "theme": "Cambiar tema",
+    "theme": {
+      "toDark": "Activar modo oscuro",
+      "toLight": "Activar modo claro"
+    },
     "menu": "Abrir menú",
     "aria": {
       "primary": "Navegación principal"

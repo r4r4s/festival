@@ -136,10 +136,6 @@
   }
 }
 
-.nav-bar__theme-toggle {
-  display: none; // desktop-only per spec
-}
-
 .nav-bar__menu {
   // Hamburger — shown only on mobile per spec.
   display: inline-grid;
@@ -165,10 +161,6 @@
 
   .nav-bar__actions {
     justify-self: end;
-  }
-
-  .nav-bar__theme-toggle {
-    display: inline-grid;
   }
 
   .nav-bar__menu {

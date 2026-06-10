@@ -6,7 +6,10 @@
     "explore": "Explore",
     "about": "About us",
     "search": "Search",
-    "theme": "Change theme",
+    "theme": {
+      "toDark": "Switch to dark mode",
+      "toLight": "Switch to light mode"
+    },
     "menu": "Open menu",
     "aria": {
       "primary": "Primary navigation"

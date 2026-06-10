@@ -1,14 +1,25 @@
 <header class="nav-bar">
   <div class="nav-bar__inner">
     <a class="nav-bar__brand" routerLink="/" [attr.aria-label]="'nav.home' | t">
-      <img
-        class="nav-bar__brand-img"
-        ngSrc="assets/branding/festi-val-logo.webp"
-        width="746"
-        height="334"
-        priority
-        alt="festiVAL"
-      />
+      @if (isDark()) {
+        <img
+          class="nav-bar__brand-img"
+          ngSrc="assets/branding/festi-val-logo-dark.webp"
+          width="746"
+          height="334"
+          priority
+          alt="festiVAL"
+        />
+      } @else {
+        <img
+          class="nav-bar__brand-img"
+          ngSrc="assets/branding/festi-val-logo.webp"
+          width="746"
+          height="334"
+          priority
+          alt="festiVAL"
+        />
+      }
     </a>
 
     <nav class="nav-bar__nav" [attr.aria-label]="'nav.aria.primary' | t">
@@ -91,9 +102,15 @@
         class="nav-bar__icon-btn nav-bar__theme-toggle"
         data-testid="nav-btn-tema"
         type="button"
-        [attr.aria-label]="'nav.theme' | t"
+        [attr.aria-label]="themeLabelKey() | t"
+        [attr.aria-pressed]="isDark()"
+        (click)="toggleTheme()"
       >
-        <svg lucideMoon aria-hidden="true" focusable="false" size="20" strokeWidth="2"></svg>
+        @if (isDark()) {
+          <svg lucideMoon aria-hidden="true" focusable="false" size="20" strokeWidth="2"></svg>
+        } @else {
+          <svg lucideSun aria-hidden="true" focusable="false" size="20" strokeWidth="2"></svg>
+        }
       </button>
 
       <button
