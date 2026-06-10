@@ -75,15 +75,22 @@ print_report() {
 abort_on_conflict() {
   local branch="$1"
   CONFLICT_BRANCH="$branch"
-  RESULT="❌ Failed"
+  RESULT="⚠️ Awaiting agent resolution"
   log ""
   log "❌ Conflict detected in branch: $branch"
   log ""
-  log "Resolve conflicts manually and run the command again."
-  git merge --abort >/dev/null 2>&1 || true
-  restore_original_branch
-  print_report
-  exit 1
+  log "Conflicted files:"
+  git diff --name-only --diff-filter=U | while read -r f; do
+    log "  - $f"
+  done
+  log ""
+  log "Agent: resolve conflicts per .claude/commands/update-branches-from-develop.md"
+  log "  git add <resolved-files>"
+  log "  git commit --no-edit"
+  log "  git push origin $branch"
+  log "  bash scripts/update-branches-from-develop.sh"
+  # Leave merge in progress on $branch — do not abort or restore.
+  exit 2
 }
 
 is_excluded() {

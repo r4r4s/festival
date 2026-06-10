@@ -3,70 +3,125 @@
 Merge the latest `develop` into every remote feature branch while keeping
 `main` completely untouched.
 
-This command **only** manipulates git refs (fetch, checkout, merge, push). It
-does not modify files under `src/` directly. Run it from the repository root
-with network access.
+Run from the repository root with `git_write` and `full_network` permissions.
 
 ## Goal
 
 Keep all feature branches current with `develop` in one safe, repeatable pass.
-Abort immediately on merge conflicts; never touch `main`.
+When merge conflicts occur, **the agent resolves them** and continues until every
+branch is updated. Never touch `main`.
 
-## Execution
+## Execution loop
 
-Run the helper script (canonical implementation):
+Repeat until the script exits `0`:
 
 ```bash
 bash scripts/update-branches-from-develop.sh
 ```
 
-Or via npm:
+Or: `npm run branches:update-from-develop`
+
+| Exit code | Meaning | Agent action |
+| --------- | ------- | ------------ |
+| `0` | All branches updated (or none to process) | Done — print final report |
+| `1` | Validation failed (dirty tree, missing develop, …) | Fix precondition, do not merge |
+| `2` | Merge conflict on a branch | **Resolve conflicts** (see below), then re-run script |
+
+The script **leaves the conflicted branch checked out** with the merge in progress
+(exit `2`). Do not run `git merge --abort` unless resolution is impossible.
+
+---
+
+## Conflict resolution (mandatory agent work)
+
+When the script prints `❌ Conflict detected in branch: <branch>`:
+
+### 1. Inspect
 
 ```bash
-npm run branches:update-from-develop
+git branch --show-current          # must be the conflicted branch
+git diff --name-only --diff-filter=U
+git status --short
 ```
 
-Requires `git_write` and `full_network` permissions when invoked by an agent.
+Read every conflicted file in full before editing.
 
-## What the script does
+### 2. Resolve using these rules
 
-### Validation (abort if dirty)
+Apply in order when unsure:
+
+| Area | Rule |
+| ---- | ---- |
+| **Feature code** (`src/app/features/<feature>/`, feature-local `ui/`) | Keep the **branch's feature work**. Bring in `develop` only for shared fixes the feature needs (imports, tokens, services). |
+| **Shared / shell** (`layout/`, `@shared/`, `core/`, `src/styles/`) | Prefer **`develop`** (newer contracts: theme, tokens, error handling). Re-wire the feature to match. |
+| **`app.ts` / `app.html`** | **Combine both**: keep feature components from the branch + infrastructure from `develop` (e.g. `ThemeService`, `<fv-footer />`). |
+| **i18n** (`src/assets/i18n/*.json`) | **Union of keys** from both sides. Preserve branch-specific keys (e.g. `footer.*`) and all keys added in `develop`. Run `npm run i18n:check` after resolving. |
+| **Docs / commands** (`docs/`, `.claude/`, `.codex/`, `README.md`) | Prefer **`develop`**, then re-add any doc lines that describe the branch-only feature if removed. |
+| **Conflict markers** | Remove all `<<<<<<<`, `=======`, `>>>>>>>` — never leave markers in committed files. |
+
+Consult [[project-structure]], [[theming-styling]], [[internationalization]] and
+[[light-dark-mode]] when resolving UI, token or copy conflicts.
+
+### 3. Validate (if `src/` or i18n touched)
+
+```bash
+npm run lint && npm test -- --run
+npm run i18n:check
+```
+
+Fix failures before committing the merge.
+
+### 4. Complete the merge and push
+
+```bash
+git add <resolved-files>
+git commit --no-edit          # completes the merge commit
+git push origin <branch>
+```
+
+Use a merge commit message only — **do not** rewrite history, rebase or force-push.
+
+### 5. Continue
+
+Re-run the script from a **clean** working tree:
+
+```bash
+bash scripts/update-branches-from-develop.sh
+```
+
+The script skips branches already merged and processes the rest. Repeat steps 1–5
+for each new conflict until exit `0`.
+
+---
+
+## What the script automates
+
+### Validation (exit `1` if dirty)
 
 ```bash
 git status --porcelain
 ```
-
-If non-empty, print:
 
 ```text
 ❌ Working tree is not clean.
 Commit or stash your changes before running this command.
 ```
 
-Exit code `1`. Do not continue.
-
-### Workflow
+### Automated steps (no conflict)
 
 1. Save `git branch --show-current` (restore at the end).
 2. `git fetch --all --prune`
-3. Verify local `develop` (`git show-ref refs/heads/develop`) and remote
-   `origin/develop` (`git ls-remote --heads origin develop`). Abort if missing.
+3. Verify local and remote `develop`.
 4. `git checkout develop && git pull origin develop`
-5. List remote branches (`git for-each-ref refs/remotes/origin`), excluding
-   `main`, `develop`, and `HEAD`.
-6. For each remaining branch:
-   - Create local tracking branch if missing:
-     `git checkout -b <branch> origin/<branch>`
-   - Otherwise: `git checkout <branch> && git pull origin <branch>`
-   - `git merge develop --no-edit`
-   - `git push origin <branch>`
-7. On merge conflict: abort merge, restore original branch, print report, exit `1`.
-   **Do not** process further branches.
-8. Restore the original branch.
+5. List remote branches, excluding `main`, `develop`, `HEAD`.
+6. For each branch: checkout/create → pull → `git merge develop --no-edit` → push.
+7. Restore original branch.
+
+---
 
 ## Final report
 
-The script prints:
+On full success the script prints:
 
 ```text
 =========================================
@@ -85,30 +140,38 @@ Conflicts:
 - none
 
 Original branch restored:
-- feature/example
+- develop
 
 Result:
 ✅ Success
 ```
 
-On conflict, `Result: ❌ Failed` and the conflicting branch name under
-`Conflicts:`.
+If conflicts were resolved by the agent across multiple runs, summarize in your
+reply: branches updated, conflicts resolved (with file list), and final result.
+
+---
 
 ## Hard rules
 
 - **Never** checkout `main` for modification.
 - **Never** merge into `main` or push to `main`.
-- **Never** delete branches.
-- **Never** force-push, reset, or rebase.
-- Safe to run multiple times (idempotent merges when already up to date).
-- Do not invent branch names; process only what exists on `origin`.
+- **Never** delete branches or force-push.
+- **Never** leave conflict markers in files.
+- Safe to run multiple times.
+- Process only branches that exist on `origin`.
 
-## Agent instructions
+## Agent checklist
 
-1. Confirm working tree is clean before running (the script checks again).
-2. Execute the script; stream its output to the user.
-3. If exit code is non-zero, report the script output verbatim and stop.
-4. Do not commit application code as part of this command.
+```
+Conflict Resolution Progress:
+- [ ] Script run; exit code noted
+- [ ] Conflicted files listed and read
+- [ ] Conflicts resolved per rules above
+- [ ] lint + test + i18n:check green (if src/ or i18n changed)
+- [ ] Merge committed and pushed
+- [ ] Script re-run until exit 0
+- [ ] Final report shown to user
+```
 
 ## Usage example
 
@@ -116,19 +179,20 @@ On conflict, `Result: ❌ Failed` and the conflicting branch name under
 /update-branches-from-develop
 ```
 
-Expected console output (illustrative):
+Illustrative successful end state:
 
 ```text
 Updating all branches from develop...
-✓ feature/map
-✓ feature/footer
-✓ feature/dark-mode
+✓ feat/footer
+✓ feature/mapa-inicio
 
 Done.
+Result: ✅ Success
 ```
 
 ## Related
 
 - [[project-structure]] — branch naming (`feature/`, `fix/`, …)
+- [[internationalization]] — i18n key parity after conflict resolution
 - `/new-branch` — create a new branch from `main`
-- `/autocommit` — commit workflow after feature work
+- `/autocommit` — semantic commits for feature work (not for merge commits here)
