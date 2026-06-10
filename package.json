@@ -10,7 +10,8 @@
     "serve:ssr:festiVAL": "node dist/festiVAL/server/server.mjs",
     "lint": "ng lint",
     "i18n:sync": "node scripts/i18n-sync.mjs",
-    "i18n:check": "node scripts/i18n-sync.mjs --check"
+    "i18n:check": "node scripts/i18n-sync.mjs --check",
+    "branches:update-from-develop": "bash scripts/update-branches-from-develop.sh"
   },
   "prettier": {
     "printWidth": 100,

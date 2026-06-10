@@ -58,7 +58,8 @@ When working as Claude Code, use the `.claude/` folder as the source of truth fo
 ## Slash commands
 
 When the user writes `/autocommit`, load and follow `/Users/rares/Desktop/festiVAL/.codex/commands/autocommit.md`.
-Treat it as a workflow instruction for the current turn, not as plain text to acknowledge.
+When the user writes `/update-branches-from-develop`, load and follow `/Users/rares/Desktop/festiVAL/.codex/commands/update-branches-from-develop.md`.
+Treat slash commands as workflow instructions for the current turn, not as plain text to acknowledge.
 
 ## Pre-commit gate (MANDATORY)
 

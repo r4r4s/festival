@@ -139,7 +139,7 @@ Configuración de Claude Code:
 - `.claude/CLAUDE.md` — contrato del proyecto.
 - `.claude/agents/` — agentes especializados (sistemas, vistas, contenido, prueba, rendimiento).
 - `.claude/skills/` — patrones reutilizables (project-structure, theming-styling, api-integration, …).
-- `.claude/commands/` — workflows automatizados (`/audit-structure`, `/autocommit`, `/new-branch`).
+- `.claude/commands/` — workflows automatizados (`/audit-structure`, `/autocommit`, `/new-branch`, `/update-branches-from-develop`).
 
 Configuración de Codex:
 

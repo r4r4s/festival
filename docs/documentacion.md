@@ -53,7 +53,9 @@ Contiene la configuración específica de Codex para agentes, skills y comandos 
 │   └── vistas.toml         → Agente de UI: componentes, theming y responsive
 ├── commands/               → Comandos de workflow y automatización
 │   ├── audit-structure.md  → Auditoría automatizada de arquitectura y estructura
-│   └── autocommit.md       → Workflow de commits semánticos con pre-commit gate
+│   ├── autocommit.md       → Workflow de commits semánticos con pre-commit gate
+│   ├── new-branch.md       → Crea rama git desde main (tipo/slug normalizado)
+│   └── update-branches-from-develop.md → Fusiona develop en ramas remotas (excepto main/develop)
 └── skills/                 → Skills reutilizables (mismo conjunto y formato SKILL.md que `.claude/skills/`, en paridad)
     ├── <skill>/SKILL.md                       → Frontmatter (name, description) + cuerpo; espejo 1:1 de `.claude/skills/`
     └── <skill>/references/                    → (opcional) Material de referencia pesado extraído del SKILL.md
@@ -79,7 +81,8 @@ Contiene la configuración de agentes especializados, skills reutilizables y wor
 ├── commands/                → Comandos de workflow y automatización
 │   ├── audit-structure.md    → Auditoría automatizada de arquitectura: valida estructura, tokens, skills
 │   ├── autocommit.md        → Workflow de commits semánticos (Conventional Commits + pre-commit gate). Pregunta nº de issue (0 para terminar o omitir) y añade (#n) al resumen
-│   └── new-branch.md        → Crea una rama git desde la base actual: pregunta el nombre, lo normaliza, actualiza main y hace checkout de la nueva rama
+│   ├── new-branch.md        → Crea una rama git desde la base actual: pregunta el nombre, lo normaliza, actualiza main y hace checkout de la nueva rama
+│   └── update-branches-from-develop.md → Fusiona develop en todas las ramas remotas (excepto main/develop); script en scripts/update-branches-from-develop.sh
 └── skills/                  → Skills reutilizables (formato Agent Skill: SKILL.md con frontmatter name/description)
     ├── <skill>/SKILL.md                 → Cada skill tiene su SKILL.md con frontmatter (name, description) y cuerpo
     ├── <skill>/references/              → (opcional) Material de referencia pesado extraído del SKILL.md
@@ -148,10 +151,13 @@ Scripts Node.js ESM que complementan los comandos de Angular CLI. No forman part
 
 ```
 scripts/
-└── i18n-sync.mjs   → Sincronizador de locales: lee es.json y propaga claves ausentes a ca.json
-                       y en.json usando el valor español como placeholder. Acepta --check para
-                       modo de sólo lectura (exit 1 si hay divergencias, útil en CI).
-                       Uso: npm run i18n:sync | npm run i18n:check
+├── i18n-sync.mjs                      → Sincronizador de locales: lee es.json y propaga claves ausentes a ca.json
+│                                        y en.json usando el valor español como placeholder. Acepta --check para
+│                                        modo de sólo lectura (exit 1 si hay divergencias, útil en CI).
+│                                        Uso: npm run i18n:sync | npm run i18n:check
+└── update-branches-from-develop.sh    → Fusiona develop en cada rama remota (excepto main/develop/HEAD),
+                                         empuja a origin y restaura la rama original. Requiere working tree limpio.
+                                         Uso: npm run branches:update-from-develop
 ```
 
 ---
@@ -691,5 +697,6 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-10 | Eliminación del sistema `tasks/` y `/new-task`          | Eliminada la carpeta `tasks/` (README, current-task, backlog, completed, templates, test-workflow) y el comando `.claude/commands/new-task.md`. Retirada la sección "Active task workflow" de `CLAUDE.md` y `AGENTS.md`. `README.md` simplificado a flujo Issue → desarrollo → `/autocommit` → PR. Actualizado el árbol raíz y la sección de commands en esta documentación. |
 | 2026-06-10 | Simplificación de `/autocommit`                         | `autocommit.md` (`.claude` y `.codex`): eliminada la pregunta por nombre de tarea y la separación de cambios por tarea; ahora solo pregunta el nº de issue de GitHub (repetido hasta `0`) y agrupa commits por propósito semántico. Actualizados `docs/documentacion.md` y `tasks/README.md`. |
 | 2026-06-10 | Separación de commits por tarea (nombre de tarea)       | `/new-task` pasa a preguntar también el **nombre de la tarea** (slug) además del nº de issue, y lo guarda en `tasks/current-task.md` (fila "Task name" añadida a `tasks/templates/task-template.md`, usada como `Task ID` y scope por defecto). `autocommit.md` (`.claude` y `.codex`) paso 2 actualizado: pregunta **pares nombre-de-tarea + nº de issue** hasta `0` y usa el nombre para **separar los cambios por tarea y crear un commit por tarea** (permite commitear varias tareas a la vez), atribuyendo ficheros vía _Files Expected To Change_. Corregidas las referencias obsoletas a `/commit-task` en `new-task.md`. README actualizado. |
+| 2026-06-10 | Comando `/update-branches-from-develop`                 | Añadidos `scripts/update-branches-from-develop.sh`, `.claude/commands/update-branches-from-develop.md` y espejo en `.codex/commands/`. Fusiona `develop` en cada rama remota (excluye main/develop/HEAD), empuja a origin, aborta en conflictos y restaura la rama original. Script npm `branches:update-from-develop`. Documentado en `docs/documentacion.md` y `AGENTS.md`. |
 | 2026-06-10 | Comando `new-branch` (Issue #6)                          | Añadidos `.claude/commands/new-branch.md` y `.codex/commands/new-branch.md`: comando que pregunta el nombre de rama, lo normaliza (tipo/slug), actualiza la base desde `main` con `--ff-only` y hace checkout de la nueva rama. Sin cambios en `src/`. |
 | 2026-06-10 | Auditoría `/audit-structure`: health score 75 → 100 | **Error handling completo**: creado `core/notifications/notification.service.ts` (signal `AppNotification|null`, `show()`/`dismiss()`); `festival-error.handler.ts` actualizado (inyecta `NotificationService`, llama `Sentry.captureException` en producción, mapea `FestivalErrorCode` a claves i18n `error.*`); `app.config.ts` inicializa Sentry con `environment.sentry.dsn`; bloque `sentry: { dsn }` añadido a ambos `environment*.ts`. **Shell**: creado `shared/ui/notification-banner/` (`NotificationBannerComponent`), cableado en `app.ts`/`app.html`. **i18n**: claves `error.network/notFound/unknown/dismiss` añadidas a `es.json`, `ca.json` y `en.json`. **Datos en data-access**: creado `features/home/data-access/home-catalogue.ts` (extrae `FEATURED_FESTIVALS`, `CALENDAR_MONTH_SEGMENTS`, `CALENDAR_FESTIVALS` y sus tipos de los componentes `ui/`); `featured-festivals.ts` y `festival-calendar.ts` actualizados para importar desde `data-access/`. **SCSS (hover guards)**: `nav-bar.scss` y `festivales-map.scss` envuelven sus `:hover` en `@media (hover: hover) and (pointer: fine)`. **SCSS (font-size tokens)**: `festival-calendar.scss` extrae 5 tamaños literales a custom properties en `:host`; `home-festival-map.scss` extrae `10px`/`9px` a `:host`. **Limpieza**: eliminados los `.gitkeep` redundantes de `features/home/data-access/` y `shared/ui/` (ambos reemplazados por ficheros reales). |
