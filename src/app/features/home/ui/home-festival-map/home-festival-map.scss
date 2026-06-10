@@ -7,10 +7,10 @@
   display: block;
 }
 
-// ── Section wrapper (light sand surface) ─────────────────────
+// ── Section wrapper ───────────────────────────────────────────
+// No own surface — sits directly on the page canvas (--fv-bg-page).
 
 .map-section {
-  background: var(--fv-bg-nav);
   padding: var(--fv-space-8) 0;
 }
 
