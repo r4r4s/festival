@@ -60,6 +60,18 @@ When working as Claude Code, use the `.claude/` folder as the source of truth fo
 When the user writes `/autocommit`, load and follow `/Users/rares/Desktop/festiVAL/.codex/commands/autocommit.md`.
 Treat it as a workflow instruction for the current turn, not as plain text to acknowledge.
 
+## Active task workflow (MANDATORY)
+
+Day-to-day work is driven by a single active task file. **Before** doing any requested work:
+
+1. **Read `tasks/current-task.md` first** and treat it as the active task — the single source of truth for the current scope.
+2. **Stay in scope.** Only touch what the task's _Requirements_ and _Files Expected To Change_ allow. Anything else requires updating the task first (or opening a new one); never work outside the defined task scope.
+3. **Follow `commands/autocommit.md`** for every commit. The pre-commit gate, the architecture audit gate (`100/100`), the i18n commit policy, and the documentation rule below all still apply — do not duplicate or weaken them here.
+4. **Keep the task live.** Tick the _Progress Checklist_ as you implement and keep the _Status_ field current as it moves `Backlog → In Progress → In Review → Done` (or `Blocked`).
+5. **On completion:** check every _Acceptance Criteria_ box, write the _Completion Summary_, move the file to `tasks/completed/`, then reset `tasks/current-task.md` from `tasks/templates/task-template.md` so the repository is ready for the next task.
+
+If `tasks/current-task.md` is in the `Example` state, there is no active task: ask the user to define one or promote a file from `tasks/backlog/`. The full lifecycle is documented in `tasks/README.md`.
+
 ## Pre-commit gate (MANDATORY)
 
 Any commit that touches `src/` **must** pass the following two commands in order, both exiting `0`, **before** `git commit` is invoked:

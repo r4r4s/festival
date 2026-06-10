@@ -25,7 +25,7 @@ festiVAL/
 ├── public/             → Ficheros estáticos servidos tal cual (favicon, fuentes runtime)
 ├── src/                → Código fuente de la aplicación
 ├── scripts/            → Scripts de utilidad Node.js no relacionados con el build de Angular
-├── tasks/              → Planificación de proyectos, backlog, progreso y roadmap
+├── tasks/              → Workflow por tarea (current-task, backlog, completed) + planificación (roadmap, progreso)
 ├── .editorconfig       → Reglas de formato del editor (indentación, charset, trailing whitespace)
 ├── angular.json        → Configuración de Angular CLI (build, serve, test, lint, budgets, SSR)
 ├── eslint.config.js    → Configuración de ESLint (Angular ESLint + template accessibility)
@@ -166,16 +166,17 @@ docs/
 
 ## `tasks/` — Planificación y seguimiento
 
-Fuente única de verdad para la planificación del proyecto, roadmap, backlog y progreso. Reemplaza el roadmap inline en `README.md`.
+Fuente única de verdad para la planificación y la ejecución del trabajo, mediante un **workflow por tarea** (en inglés): cada tarea parte de la plantilla, se ejecuta desde `current-task.md`, se encola en `backlog/` y se archiva en `completed/` (GitHub Issue → `current-task.md` → autocommit → PR → done). Reemplaza el roadmap inline en `README.md`. Documentado en `tasks/README.md` y cableado en `CLAUDE.md` / `AGENTS.md`.
 
 ```
 tasks/
-├── ROADMAP.md           → Roadmap del proyecto por fases (MVP, Personalización, Cuentas, Integraciones, i18n).
-│                          Detalles de aceptación, dependencias y decisiones arquitectónicas.
-├── BACKLOG.md           → Backlog priorizado de mejoras, refactorings y deuda técnica.
-│                          Categorizado por prioridad: Alta, Media, Baja, Bloqueado.
-├── IN_PROGRESS.md       → Trabajo activo en desarrollo o revisión. Actualizado al sprint planning.
-└── COMPLETED.md         → Archivo de items completados, features entregadas, hitos cerrados.
+├── README.md            → Workflow de tareas (Issue → current-task → autocommit → PR → done) y guía de carpetas.
+├── current-task.md      → Tarea activa única, en formato plantilla. Fuente de verdad del alcance en curso.
+├── test-workflow.md     → Marcador no funcional de validación del workflow (Issue #1). Temporal.
+├── templates/
+│   └── task-template.md → Plantilla canónica de tarea: título, issue, descripción, requisitos, criterios de aceptación, ficheros afectados, checklist, estado, notas y resumen.
+├── backlog/             → Tareas en cola, una por fichero (basadas en la plantilla). `.gitkeep` mientras está vacía.
+└── completed/           → Tareas finalizadas, archivadas con su Completion Summary. `.gitkeep` mientras está vacía.
 ```
 
 ---
@@ -476,7 +477,7 @@ src/app/features/
     └── festivales-map.routes.ts → FESTIVALES_MAP_ROUTES. Carga FestivalesMapPageComponent lazy.
 ```
 
-> `festival-list/`, `festival-detail/`, `artist-detail/`, `search/` y `about/` están en el roadmap (`tasks/ROADMAP.md`) y todavía no existen en el árbol: se documentarán aquí cuando se creen sus scaffolds.
+> `festival-list/`, `festival-detail/`, `artist-detail/`, `search/` y `about/` están en el roadmap del proyecto y todavía no existen en el árbol: se documentarán aquí cuando se creen sus scaffolds.
 
 ### `src/app/shared/` — Toolbox horizontal
 
@@ -659,3 +660,5 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-08 | Componente `home-festival-map` + limpieza de paleta     | Añadida `src/app/features/home/ui/home-festival-map/` con `home-festival-map.{ts,html,scss,spec.ts}`: mapa interactivo de pines sobre imagen de la Comunitat Valenciana, signals para festival activo/bloqueado y panel lateral con tarjeta del festival. `home.page.*` integra el componente en segundo `@defer (on viewport)`. Assets del mapa: `src/assets/images/maps/` (valencia-map.webp, valencia-community-map-gradient*.webp) y `src/assets/images-src/maps/`. **Paleta mediterránea consolidada**: eliminados `$fv-violet-*`de`\_tokens.scss`y`--fv-accent-violet`/`--fv-accent-violet-soft`de`\_semantic.scss`; expuestos `--fv-accent-med-blue`, `--fv-accent-coral`, `--fv-accent-orange`; `--fv-shadow-focus`apunta a`--fv-accent-blue`; `--fv-shadow-glow-violet`renombrado a`--fv-shadow-glow-blue`. Eliminadas referencias a `--fv-accent-violet`en`festivales-map.page.scss`, `festivales-map.scss`(×5) y`featured-festivals.scss`. Eliminados `.gitkeep`redundantes de`core/handlers/`, `core/interceptors/`y`assets/maps/`. Skill `theming-styling` actualizada: identidad mediterránea, par por defecto blue+coral.                                                                                                                                                                        |
 | 2026-06-07 | Correcciones auditoría (health 66 → 90)                 | **Dominio**: creados `shared/domain/festival.model.ts` (FestivalSchema Zod + tipos Festival/Artist) y `festival-error.model.ts` (FestivalError, FestivalErrorCode, fromHttpStatus). **Error handling**: añadidos `core/handlers/festival-error.handler.ts` (FestivalErrorHandler, provisto en app.config) y `core/interceptors/error.interceptor.ts` (errorInterceptor funcional). `app.config.ts`: ErrorHandler → FestivalErrorHandler, `withInterceptors([errorInterceptor])`. **Feature mapa**: creada `features/festivales-map/` completa: `festivales-map.page.{ts,html,scss}`, `festivales-map.routes.ts` (FESTIVALES_MAP_ROUTES), ruta `/mapa` añadida a `app.routes.ts`. **Shared map**: creados `shared/ui/festivales-map/festivales-map.{ts,html,scss}` (FestivalesMapComponent, MapLibre GL JS lazy-loaded, sidebar ordenable, SSR-safe). **Data**: `shared/data-access/festival-locations.ts` (FESTIVAL_LOCATIONS readonly) y `map-loader.service.ts` (MapLoaderService). **Entornos**: bloque `maps` (styleUrl, center, zoom) añadido a ambos `environment*.ts`. `maplibre-gl` instalado. **Assets**: `src/assets/maps/festival-dark.json` placeholder para Protomaps. **Nits**: comentario "5s → 3s" en `featured-festivals.scss`; excepción arquitectónica documentada en `transloco.loader.ts`. |
 | 2026-06-09 | Etiquetas callout en pines del mapa                     | Añadidas etiquetas de nombre (`pin-callout`) a los pines del mapa interactivo `home-festival-map` para identificar festivales sin interacción. Nuevas propiedades `mapLabel`, `labelOffsetX`, `labelOffsetY` en `HomeMapFestival`. Estilos de posicionamiento con offsets por festival para evitar colisiones. Tests de etiquetas y asignación de offsets. Actualizados `home-festival-map.{ts,html,scss,spec.ts}`. |
+| 2026-06-10 | Sistema de gestión de tareas en `tasks/` (workflow por tarea) | Reemplazada la planificación previa por un workflow por tarea. **Añadidos**: `tasks/README.md` (workflow GitHub Project → Issue → `current-task.md` → desarrollo → autocommit → PR → review → done, ciclo de vida y convenciones), `tasks/templates/task-template.md` (plantilla canónica: título, issue, descripción, requisitos, criterios de aceptación, ficheros afectados, checklist de progreso, estado, notas y completion summary), `tasks/current-task.md` (tarea activa única, con un ejemplo seed de integración de MiniSearch) y las carpetas `tasks/backlog/` y `tasks/completed/` (cada una con `.gitkeep`). Añadida la sección "Active task workflow (MANDATORY)" a `.claude/CLAUDE.md` y `.codex/AGENTS.md` (leer `tasks/current-task.md` primero, no salir del alcance, mantener checklist/estado, commits vía `commands/autocommit.md`, cierre y reset del fichero). No duplica los gates ni la política i18n: los referencia desde `autocommit.md`. **Eliminados**: los docs de planificación antiguos `tasks/ROADMAP.md`, `tasks/BACKLOG.md`, `tasks/IN_PROGRESS.md` y `tasks/COMPLETED.md` (superados por el nuevo sistema); actualizada la referencia del roadmap en `README.md` a `tasks/README.md`. |
+| 2026-06-10 | Validación del workflow de tareas (Issue #1)            | Prueba end-to-end del sistema de tareas: `tasks/current-task.md` poblado desde el Issue #1 ("Prueba") y añadido `tasks/test-workflow.md` (marcador no funcional, temporal). Sin cambios de desarrollo ni en `src/`. |

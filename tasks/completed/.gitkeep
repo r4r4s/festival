@@ -1,0 +1,2 @@
+# Keeps tasks/completed/ under version control until it holds finished task files.
+# Tasks land here (with their Completion Summary) once Status = Done. See ../README.md.

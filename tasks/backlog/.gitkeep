@@ -1,0 +1,2 @@
+# Keeps tasks/backlog/ under version control until it holds queued task files.
+# One task per file, based on tasks/templates/task-template.md. See ../README.md.

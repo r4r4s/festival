@@ -111,9 +111,9 @@ El catálogo completo de carpetas y ficheros se mantiene en [`docs/documentacion
 
 ---
 
-## 🗺️ Roadmap
+## 🗺️ Planificación y tareas
 
-See [`tasks/ROADMAP.md`](tasks/ROADMAP.md) for the complete project roadmap, organized by phase with acceptance criteria and architectural decisions.
+El trabajo se organiza con un workflow por tarea en [`tasks/`](tasks/): cada tarea parte de `tasks/templates/task-template.md`, se ejecuta desde `tasks/current-task.md` y se archiva en `tasks/completed/`. Ver [`tasks/README.md`](tasks/README.md) para el flujo completo (GitHub Issue → current-task → autocommit → PR → done).
 
 ---
 
