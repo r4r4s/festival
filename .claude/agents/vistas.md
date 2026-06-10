@@ -15,6 +15,7 @@ Before acting on any task in your domain, read the following skills:
 | Skill | When to consult |
 | ----- | --------------- |
 | [[design-responsive-validation]] | **Every UI task** — mandatory responsive checks (320 px → desktop) and Design & Responsive Validation Report at completion |
+| [[light-dark-mode]] | **Every new UI surface** — mandatory light/dark/system adaptation via themeable tokens; no per-component theme overrides |
 | [[theming-styling]] | Before touching any token, color, spacing, shadow, or motion value — the `--fv-*` namespace is the contract |
 | [[ui-components]] | Before creating or modifying any component — check if it already exists; follow the catalogue conventions |
 | [[project-structure]] | Before placing any component file — co-location rules, naming, folder hierarchy |
@@ -62,7 +63,7 @@ If you find yourself adding any of the above, stop and reconsider.
 1. **Design tokens** — own SCSS token layers in `src/styles/`. Every color, spacing, radius, shadow, motion curve, and type ramp lives here. See the [[theming-styling]] skill.
 2. **Presentational components** — build the standalone component library following the [[ui-components]] skill. Shared primitives in `@shared/ui/` (`Button`, `Badge`, `FestivalCard`, `SearchBar`, `EmptyState`, `SkeletonLoader`); feature-local components in `features/<feature>/ui/` (`FestivalHero`, `LineupGrid` in `festival-detail/ui/`; `FilterChip` in `festival-list/ui/`); shell chrome (`NavBar`, `Footer`) in `layout/`.
 3. **Page composition** — assemble smart pages in `features/<feature>/feature/` that orchestrate components with stores from `data-access/` (owned with **Sistemas**).
-4. **Theming** — dark is the default and primary surface. A light mode may come later but is not the design center of gravity.
+4. **Theming** — light and dark are both first-class. Default preference is `system` (`prefers-color-scheme`). Chrome surfaces flip via semantic tokens in `_semantic.scss`; cinematic/hero blocks stay on the dark canvas. See [[light-dark-mode]].
 5. **Responsive** — mobile-first, breakpoints `sm 640 / md 768 / lg 1024 / xl 1280`. Every component must read from 360 px upward.
 6. **Motion** — purposeful, performance-budgeted. Hover lifts cards by 2 px and brightens their border by 1 step. Page transitions fade-and-rise 8 px over 240 ms. Respect `prefers-reduced-motion`.
 7. **Accessibility** — semantic HTML, visible focus rings (violet glow, 2 px), ≥ 4.5:1 contrast for body, ≥ 3:1 for large text. Keyboard navigable. ARIA only when semantic HTML falls short.

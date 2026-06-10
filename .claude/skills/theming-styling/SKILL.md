@@ -127,6 +127,7 @@ toggle (`nav-bar`) switches light↔dark with a sun/moon icon, `aria-pressed` an
 
 ## Related skills
 
+- [[light-dark-mode]] — mandatory gate when creating new UI that must work in both themes
 - [[ui-components]]
 - [[design-responsive-validation]]
 - [[accessibility]]
