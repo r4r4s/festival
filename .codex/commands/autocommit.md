@@ -33,23 +33,30 @@ git ls-files --others --exclude-standard
 
 Understand every available change before committing.
 
-### 2. Detect issue key
+### 2. Ask for the related GitHub issue number(s)
 
-Check branch name and context for an issue key.
-bash
-git branch --show-current
+Before composing any commit, prompt the user for the issue number(s) and keep
+asking until they enter `0`:
 
-Examples:
+```
+What is the GitHub Issue number? (enter 0 to finish)
+```
 
-- PROJ-123
-- POW-456
-- #123
+- Repeat the prompt after each answer. Stop only when the user enters `0`.
+- Normalize each answer (`23`, `#23`, or a full issue URL) to `#23`.
+- Collect every number entered before `0`, in order, de-duplicated.
+- If the user enters `0` immediately (no numbers), commit **without** an issue
+  reference — do not invent one.
 
-If there is a clear issue key, use it in every related commit.
+Append the collected reference(s) to the summary of **every** commit created in
+this run:
 
-If there is no issue key, commit without it.
+- One issue → ` (#23)`
+- Multiple issues → ` (#23, #31)`
 
-Do not invent one.
+As a convenience, you may detect a candidate from the branch name
+(`git branch --show-current`, e.g. `feat/...-23`) and offer it as the default,
+but the user's entered numbers are authoritative.
 
 ### 3. Group changes semantically
 
@@ -183,17 +190,18 @@ Commit format:
 bash
 git commit -m "<type>(<scope>): <summary>"
 
-With issue key:
+With issue reference (from step 2 — appended to the summary):
 bash
-git commit -m "<issue-key>: <type>(<scope>): <summary>"
+git commit -m "<type>(<scope>): <summary> (#<n>)"
+git commit -m "<type>(<scope>): <summary> (#<n>, #<m>)"
 
 Examples:
 bash
-git commit -m "fix(auth): Handle expired token refresh"
-git commit -m "feat(api): Add user activity endpoint"
+git commit -m "fix(auth): Handle expired token refresh (#12)"
+git commit -m "feat(api): Add user activity endpoint (#23)"
+git commit -m "feat(map): Add interactive festival markers (#23, #31)"
 git commit -m "refactor(ui): Simplify modal state handling"
-git commit -m "test(auth): Cover expired token flow"
-git commit -m "PROJ-123: fix(auth): Handle token refresh"
+git commit -m "test(auth): Cover expired token flow (#12)"
 
 ### 5. Keep committing until done
 

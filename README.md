@@ -113,7 +113,29 @@ El catálogo completo de carpetas y ficheros se mantiene en [`docs/documentacion
 
 ## 🗺️ Planificación y tareas
 
-El trabajo se organiza con un workflow por tarea en [`tasks/`](tasks/): cada tarea parte de `tasks/templates/task-template.md`, se ejecuta desde `tasks/current-task.md` y se archiva en `tasks/completed/`. Ver [`tasks/README.md`](tasks/README.md) para el flujo completo (GitHub Issue → current-task → autocommit → PR → done).
+El trabajo se organiza con un **workflow por tarea** en [`tasks/`](tasks/): hay una sola tarea activa a la vez en `tasks/current-task.md`, las pendientes se encolan en `tasks/backlog/` y las terminadas se archivan en `tasks/completed/`. Toda tarea parte de la plantilla `tasks/templates/task-template.md`.
+
+### Flujo
+
+```
+GitHub Project → GitHub Issue → tasks/current-task.md → Desarrollo
+      → Auto Commit → Pull Request → Review → Done
+```
+
+1. **Issue** — cada tarea se ancla a un GitHub Issue (descripción y criterios de aceptación).
+2. **current-task.md** — se crea la tarea activa desde la plantilla; define el **alcance** (el trabajo no se sale de ahí).
+3. **Desarrollo** — se implementa actualizando el _Progress Checklist_ y el _Status_ (`In Progress` → `In Review` → `Done`).
+4. **Commit** — siempre vía el workflow de autocommit, que aplica los gates obligatorios (lint+test, auditoría 100/100, paridad i18n, regla de documentación).
+5. **PR → Review → Done** — al cumplir todos los criterios se escribe el _Completion Summary_, se mueve el fichero a `tasks/completed/` y se reinicia `current-task.md`.
+
+Detalle completo del ciclo de vida y convenciones en [`tasks/README.md`](tasks/README.md).
+
+### Comandos de tarea (Claude Code)
+
+- **`/new-task`** — pregunta el número de GitHub Issue, lo lee (rechaza si no existe) y puebla `tasks/current-task.md` desde la plantilla con `Status: In Progress`.
+- **`/autocommit`** — workflow de commits semánticos. Antes de commitear pregunta los números de issue de forma repetida (**introduce `0` para terminar**), añade las referencias `(#n)` o `(#n, #m)` al mensaje (p. ej. `feat(map): Add interactive festival markers (#23)`), y pasa los gates obligatorios (lint+test, auditoría 100/100, paridad i18n, doc-sync) antes de cada commit.
+
+Las reglas de commit viven en [`.claude/commands/autocommit.md`](.claude/commands/autocommit.md) y no se duplican en otros sitios.
 
 ---
 
@@ -131,7 +153,7 @@ Configuración de Claude Code:
 - `.claude/CLAUDE.md` — contrato del proyecto.
 - `.claude/agents/` — agentes especializados (sistemas, vistas, contenido, prueba, rendimiento).
 - `.claude/skills/` — patrones reutilizables (project-structure, theming-styling, api-integration, …).
-- `.claude/commands/` — workflows automatizados (`/audit-structure`, `/autocommit`).
+- `.claude/commands/` — workflows automatizados (`/audit-structure`, `/autocommit`, `/new-task`).
 
 Configuración de Codex:
 
