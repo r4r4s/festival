@@ -3,15 +3,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { LucideCalendar, LucideMapPin } from '@lucide/angular';
 
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
-import type { TranslationKey } from '@shared/data-access/i18n/translations';
-
-interface FeaturedFestival {
-  readonly slug: string;
-  readonly dateKey: TranslationKey;
-  readonly nameKey: TranslationKey;
-  readonly locationKey: TranslationKey;
-  readonly image: { readonly src: string; readonly alt: string };
-}
+import { FEATURED_FESTIVALS } from '../../data-access/home-catalogue';
 
 @Component({
   selector: 'fv-featured-festivals',
@@ -23,51 +15,7 @@ interface FeaturedFestival {
 })
 export class FeaturedFestivalsComponent {
   readonly isPaused = signal(false);
-
-  readonly festivals = [
-    {
-      slug: 'bigsound',
-      dateKey: 'home.featured.cards.bigsound.date',
-      nameKey: 'home.featured.cards.bigsound.name',
-      locationKey: 'home.featured.cards.bigsound.location',
-      image: { src: '/assets/images/festivals/bigsound/logo-bigsound.webp', alt: 'Bigsound Festival' },
-    },
-    {
-      slug: 'latin-fest',
-      dateKey: 'home.featured.cards.latinFest.date',
-      nameKey: 'home.featured.cards.latinFest.name',
-      locationKey: 'home.featured.cards.latinFest.location',
-      image: { src: '/assets/images/festivals/latin-fest/logo-latin-fest.webp', alt: 'Latin Fest' },
-    },
-    {
-      slug: 'medusa',
-      dateKey: 'home.featured.cards.medusa.date',
-      nameKey: 'home.featured.cards.medusa.name',
-      locationKey: 'home.featured.cards.medusa.location',
-      image: { src: '/assets/images/festivals/medusa/logo-medusa-2026.webp', alt: 'Medusa Festival' },
-    },
-    {
-      slug: 'rbf',
-      dateKey: 'home.featured.cards.rbf.date',
-      nameKey: 'home.featured.cards.rbf.name',
-      locationKey: 'home.featured.cards.rbf.location',
-      image: { src: '/assets/images/festivals/rbf/logo-rbf.webp', alt: 'Reggaeton Beach Festival' },
-    },
-    {
-      slug: 'reve',
-      dateKey: 'home.featured.cards.reve.date',
-      nameKey: 'home.featured.cards.reve.name',
-      locationKey: 'home.featured.cards.reve.location',
-      image: { src: '/assets/images/festivals/reve/logo-reve.webp', alt: 'Reve Festival' },
-    },
-    {
-      slug: 'zevra',
-      dateKey: 'home.featured.cards.zevra.date',
-      nameKey: 'home.featured.cards.zevra.name',
-      locationKey: 'home.featured.cards.zevra.location',
-      image: { src: '/assets/images/festivals/zevra/logo-zevra.webp', alt: 'Zevra Festival' },
-    },
-  ] as const satisfies readonly FeaturedFestival[];
+  readonly festivals = FEATURED_FESTIVALS;
 
   pause(): void {
     this.isPaused.set(true);

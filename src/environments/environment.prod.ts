@@ -19,4 +19,7 @@ export const environment: Environment = {
     center: [-0.40, 39.25],
     zoom: 7.2,
   },
+  sentry: {
+    dsn: '',
+  },
 } as const;

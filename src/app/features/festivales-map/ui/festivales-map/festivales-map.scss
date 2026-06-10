@@ -221,8 +221,10 @@
   text-align: left;
   transition: background var(--fv-duration-fast) var(--fv-ease-standard);
 
-  &:hover {
-    background: color-mix(in srgb, var(--fv-accent-blue) 5%, transparent);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: color-mix(in srgb, var(--fv-accent-blue) 5%, transparent);
+    }
   }
 
   &:focus-visible {

@@ -76,7 +76,25 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "360kB",
+                  "maximumError": "400kB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "8kB",
+                  "maximumError": "12kB"
+                },
+                {
+                  "type": "bundle",
+                  "name": "lazy",
+                  "maximumWarning": "80kB",
+                  "maximumError": "120kB"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"

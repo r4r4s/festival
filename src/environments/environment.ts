@@ -23,6 +23,10 @@ export interface Environment {
     center: [number, number];
     zoom: number;
   };
+  sentry: {
+    /** Sentry DSN. Leave empty to disable reporting (development). */
+    dsn: string;
+  };
 }
 
 export const environment = {
@@ -39,5 +43,8 @@ export const environment = {
     styleUrl: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
     center: [-0.40, 39.25],
     zoom: 7.2,
+  },
+  sentry: {
+    dsn: '',
   },
 } satisfies Environment;

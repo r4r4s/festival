@@ -296,5 +296,11 @@
     "bottom": {
       "copyright": "© 2026 festiVAL. Todos los derechos reservados."
     }
+  },
+  "error": {
+    "network": "Error de red. Comprueba tu conexión e inténtalo de nuevo.",
+    "notFound": "El contenido solicitado no se encontró.",
+    "unknown": "Ha ocurrido un error inesperado. Por favor, inténtalo de nuevo.",
+    "dismiss": "Cerrar"
   }
 }

@@ -11,6 +11,7 @@ import localeEs from '@angular/common/locales/es';
 import { provideRouter } from '@angular/router';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideTransloco, TranslocoService } from '@jsverse/transloco';
+import * as Sentry from '@sentry/angular';
 import { lastValueFrom } from 'rxjs';
 
 import { TranslocoHttpLoader } from '@core/initializers/transloco.loader';
@@ -18,6 +19,13 @@ import { FestivalErrorHandler } from '@core/handlers/festival-error.handler';
 import { errorInterceptor } from '@core/interceptors/error.interceptor';
 import { environment } from '@env/environment';
 import { routes } from './app.routes';
+
+if (environment.sentry.dsn) {
+  Sentry.init({
+    dsn: environment.sentry.dsn,
+    environment: environment.production ? 'production' : 'development',
+  });
+}
 
 registerLocaleData(localeEs);
 

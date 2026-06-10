@@ -240,11 +240,12 @@ src/styles/
 src/environments/
 ├── environment.ts       → Entorno por defecto (development). `production: false`, `defaultLocale: 'es-ES'`,
 │                          `baseUrl: 'http://localhost:4200'`, bloque `sanity`, bloque `maps`
-│                          (styleUrl CARTO dark, center/zoom sobre la Comunidad Valenciana).
-│                          Exporta el tipo `Environment`.
+│                          (styleUrl CARTO dark, center/zoom sobre la Comunidad Valenciana),
+│                          bloque `sentry: { dsn: '' }` (vacío en dev). Exporta el tipo `Environment`.
 └── environment.prod.ts  → Entorno de producción. `production: true`, `baseUrl: 'https://festival.example.com'`,
                            `useCdn: true`, `dataset: 'production'`. Bloque `maps`: styleUrl apunta
                            a `/assets/maps/festival-dark.json` (self-hosted Protomaps).
+                           Bloque `sentry: { dsn: '' }` (rellenar con el DSN real antes del deploy).
 ```
 
 ### `src/assets/` — Recursos estáticos
@@ -308,19 +309,18 @@ src/assets/
 ```
 src/app/
 ├── app.ts               → Componente raíz (selector: fv-root, OnPush). Importa RouterOutlet,
-│                          NavBar y Footer. En el constructor inyecta HreflangService.apply() para
-│                          registrar las etiquetas hreflang en <head> e instancia ThemeService para
-│                          arrancar la sincronización de tema (light/dark/system) al iniciar.
-├── app.html             → Template del componente raíz: <fv-nav-bar /> + <main> con
-│                          <router-outlet /> + <fv-footer /> (pie global del shell).
+│                          NavBar, Footer y NotificationBannerComponent. En el constructor inyecta
+│                          HreflangService.apply() y ThemeService.
+├── app.html             → Template del componente raíz: <fv-notification-banner /> (banner de
+│                          errores) + <fv-nav-bar /> + <main> con <router-outlet /> + <fv-footer />.
 ├── app.scss             → Estilos del componente raíz. Define el fondo de página
 │                          (--app-page-bg) sand sobre el que se asienta el mockup del header.
 ├── app.spec.ts          → Tests del componente raíz. Verifica creación y presencia de router-outlet.
 ├── app.config.ts        → Configuración de la aplicación cliente: registra es-ES (LOCALE_ID +
 │                          registerLocaleData), provideRouter, provideClientHydration, provideHttpClient
 │                          (withFetch), provideTransloco (availableLangs: es/ca/en, defaultLang: es,
-│                          loader: TranslocoHttpLoader) y APP_INITIALIZER que precarga 'es' antes del
-│                          primer render para evitar parpadeo de claves sin traducir.
+│                          loader: TranslocoHttpLoader) y APP_INITIALIZER que precarga 'es'. Inicializa
+│                          Sentry con el DSN de environment.sentry.dsn si está presente.
 ├── app.config.server.ts → Configuración de la aplicación servidor. Extiende app.config.ts con
 │                          provideServerRendering y las rutas de SSR.
 ├── app.routes.ts        → Definición de rutas top-level. Cada feature se carga con loadChildren
@@ -341,8 +341,13 @@ src/app/core/
 │                               provideHttpClient(withInterceptors([errorInterceptor])).
 ├── handlers/
 │   └── festival-error.handler.ts → FestivalErrorHandler (implements ErrorHandler): loguea
-│                                    FestivalError en dev con código y mensaje; en producción
-│                                    delega a Sentry (TODO). Registrado en app.config.ts.
+│                                    FestivalError en dev; en producción llama a
+│                                    Sentry.captureException y muestra un mensaje i18n al usuario
+│                                    vía NotificationService. Registrado en app.config.ts.
+├── notifications/
+│   └── notification.service.ts   → NotificationService (providedIn: 'root'): signal<AppNotification|null>
+│                                    que expone show() y dismiss(). Desacoplado de ErrorHandler para
+│                                    permitir notificaciones desde cualquier punto de la app.
 ├── initializers/        → Factorías APP_INITIALIZER: carga del catálogo desde Sanity, registro de
 │   │                      locale, hidratación de preferencias de tema desde localStorage.
 │   └── transloco.loader.ts → TranslocoHttpLoader: carga los ficheros JSON de traducción desde
@@ -462,7 +467,10 @@ src/app/features/
 │   │       └── home-festival-map.spec.ts → Tests de render, pins, festival por defecto, activación
 │   │                                      y ciclo automático (vi.useFakeTimers).
 │   ├── data-access/
-│   │   └── .gitkeep
+│   │   └── home-catalogue.ts → Catálogo estático de la home: FEATURED_FESTIVALS, CALENDAR_MONTH_SEGMENTS
+│   │                           y CALENDAR_FESTIVALS. Exporta también los tipos FeaturedFestivalEntry,
+│   │                           CalendarMonthData, CalendarFestivalEntry, CalendarTone, CalendarCardAlign.
+│   │                           Extraído de los componentes ui/ para separar datos de presentación.
 │   └── home.routes.ts   → Superficie pública de la feature. Expone HOME_ROUTES con loadComponent
 └── festivales-map/      → Mapa interactivo de festivales. MapLibre GL JS + sidebar ordenable con
                            los 7 festivales semilla. Ruta: /mapa.
@@ -493,8 +501,12 @@ Código reutilizado por **2 o más features**. Nunca importa de `features/` ni d
 
 ```
 src/app/shared/
-├── ui/                  → Componentes presentacionales compartidos por ≥ 2 features. Vacío hoy:
-│   └── .gitkeep           `festivales-map` volvió a su feature al quedarse con un único consumidor.
+├── ui/                  → Componentes presentacionales compartidos por ≥ 2 features.
+│   └── notification-banner/  → Banner de notificación accesible para mostrar errores al usuario.
+│       ├── notification-banner.ts   → NotificationBannerComponent: lee NotificationService (signal),
+│       │                              renderiza el banner con role="alert" y aria-live="polite".
+│       ├── notification-banner.html → Renderiza el mensaje (i18n key | t) y botón de cierre.
+│       └── notification-banner.scss → Tokens semánticos: --fv-accent-danger, focus-ring mixin.
 ├── data-access/         → Servicios, datos y stores compartidos por ≥ 2 features. Hoy contiene los
 │   │                      datos de localización del mapa, el cargador diferido de MapLibre y la capa
 │   │                      i18n. Los servicios de catálogo (FestivalService, SearchService, stores…)
@@ -679,3 +691,4 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-10 | Simplificación de `/autocommit`                         | `autocommit.md` (`.claude` y `.codex`): eliminada la pregunta por nombre de tarea y la separación de cambios por tarea; ahora solo pregunta el nº de issue de GitHub (repetido hasta `0`) y agrupa commits por propósito semántico. Actualizados `docs/documentacion.md` y `tasks/README.md`. |
 | 2026-06-10 | Separación de commits por tarea (nombre de tarea)       | `/new-task` pasa a preguntar también el **nombre de la tarea** (slug) además del nº de issue, y lo guarda en `tasks/current-task.md` (fila "Task name" añadida a `tasks/templates/task-template.md`, usada como `Task ID` y scope por defecto). `autocommit.md` (`.claude` y `.codex`) paso 2 actualizado: pregunta **pares nombre-de-tarea + nº de issue** hasta `0` y usa el nombre para **separar los cambios por tarea y crear un commit por tarea** (permite commitear varias tareas a la vez), atribuyendo ficheros vía _Files Expected To Change_. Corregidas las referencias obsoletas a `/commit-task` en `new-task.md`. README actualizado. |
 | 2026-06-10 | Comando `new-branch` (Issue #6)                          | Añadidos `.claude/commands/new-branch.md` y `.codex/commands/new-branch.md`: comando que pregunta el nombre de rama, lo normaliza (tipo/slug), actualiza la base desde `main` con `--ff-only` y hace checkout de la nueva rama. Sin cambios en `src/`. |
+| 2026-06-10 | Auditoría `/audit-structure`: health score 75 → 100 | **Error handling completo**: creado `core/notifications/notification.service.ts` (signal `AppNotification|null`, `show()`/`dismiss()`); `festival-error.handler.ts` actualizado (inyecta `NotificationService`, llama `Sentry.captureException` en producción, mapea `FestivalErrorCode` a claves i18n `error.*`); `app.config.ts` inicializa Sentry con `environment.sentry.dsn`; bloque `sentry: { dsn }` añadido a ambos `environment*.ts`. **Shell**: creado `shared/ui/notification-banner/` (`NotificationBannerComponent`), cableado en `app.ts`/`app.html`. **i18n**: claves `error.network/notFound/unknown/dismiss` añadidas a `es.json`, `ca.json` y `en.json`. **Datos en data-access**: creado `features/home/data-access/home-catalogue.ts` (extrae `FEATURED_FESTIVALS`, `CALENDAR_MONTH_SEGMENTS`, `CALENDAR_FESTIVALS` y sus tipos de los componentes `ui/`); `featured-festivals.ts` y `festival-calendar.ts` actualizados para importar desde `data-access/`. **SCSS (hover guards)**: `nav-bar.scss` y `festivales-map.scss` envuelven sus `:hover` en `@media (hover: hover) and (pointer: fine)`. **SCSS (font-size tokens)**: `festival-calendar.scss` extrae 5 tamaños literales a custom properties en `:host`; `home-festival-map.scss` extrae `10px`/`9px` a `:host`. **Limpieza**: eliminados los `.gitkeep` redundantes de `features/home/data-access/` y `shared/ui/` (ambos reemplazados por ficheros reales). |

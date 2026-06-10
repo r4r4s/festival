@@ -5,6 +5,8 @@
 
 :host {
   display: block;
+  --map-stats-label-size: 10px;
+  --map-stats-label-size-mobile: 9px;
 }
 
 // ── Section wrapper ───────────────────────────────────────────
@@ -405,7 +407,7 @@
   color: rgba(15, 23, 42, 0.48); // Safari < 16.2 fallback
   color: color-mix(in srgb, var(--fv-text-nav) 48%, transparent);
   font-family: var(--fv-font-ui);
-  font-size: 10px;
+  font-size: var(--map-stats-label-size);
   font-weight: 600;
   letter-spacing: var(--fv-tracking-wider);
   text-transform: uppercase;
@@ -500,7 +502,7 @@
   }
 
   .stats dt {
-    font-size: 9px;
+    font-size: var(--map-stats-label-size-mobile);
     letter-spacing: 0;
   }
 }

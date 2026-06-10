@@ -126,8 +126,10 @@
   cursor: pointer;
   padding: 0;
 
-  &:hover {
-    background: var(--fv-bg-nav-icon-hover);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: var(--fv-bg-nav-icon-hover);
+    }
   }
 
   @include from(md) {

@@ -1,0 +1,43 @@
+@use 'styles/mixins' as *;
+
+:host {
+  display: block;
+}
+
+.notification-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fv-space-3);
+  padding: var(--fv-space-3) var(--fv-space-5);
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-sm);
+
+  &--error {
+    background: var(--fv-accent-danger);
+    color: var(--fv-text-primary);
+  }
+}
+
+.notification-banner__message {
+  flex: 1;
+}
+
+.notification-banner__close {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: var(--fv-text-lg);
+  line-height: 1;
+  cursor: pointer;
+  border-radius: var(--fv-radius-sm);
+  flex-shrink: 0;
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}

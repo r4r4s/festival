@@ -2,6 +2,11 @@
 
 :host {
   display: block;
+  --calendar-date-num-size: 0.78rem;
+  --calendar-date-month-size: 0.6rem;
+  --calendar-card-title-size: 0.92rem;
+  --calendar-card-location-size: 0.74rem;
+  --calendar-badge-size: 0.7rem;
 }
 
 .festival-calendar {
@@ -303,13 +308,13 @@
 
 .festival-calendar__card-date-value {
   font-family: var(--fv-font-heading);
-  font-size: 0.78rem;
+  font-size: var(--calendar-date-num-size);
   font-weight: 800;
   line-height: 1.05;
 }
 
 .festival-calendar__card-date-month {
-  font-size: 0.6rem;
+  font-size: var(--calendar-date-month-size);
   font-weight: 800;
   line-height: 1;
   letter-spacing: var(--fv-tracking-wide);
@@ -342,7 +347,7 @@
 .festival-calendar__card-title {
   color: var(--fv-text-nav);
   font-family: var(--fv-font-heading);
-  font-size: 0.92rem;
+  font-size: var(--calendar-card-title-size);
   line-height: 1.1;
   letter-spacing: var(--fv-tracking-snug);
 }
@@ -353,7 +358,7 @@
   gap: 4px;
   color: rgba(15, 23, 42, 0.64); // Safari < 16.2 fallback
   color: color-mix(in srgb, var(--fv-text-nav) 64%, var(--fv-bg-card-light));
-  font-size: 0.74rem;
+  font-size: var(--calendar-card-location-size);
 }
 
 .festival-calendar__card-location svg {
@@ -375,7 +380,7 @@
   min-height: 1.4rem;
   padding-inline: var(--fv-space-2);
   border-radius: var(--fv-radius-pill);
-  font-size: 0.7rem;
+  font-size: var(--calendar-badge-size);
   font-weight: 700;
 }
 

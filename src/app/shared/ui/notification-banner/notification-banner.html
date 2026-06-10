@@ -1,0 +1,18 @@
+@if (notifications.notification(); as notif) {
+  <div
+    class="notification-banner notification-banner--{{ notif.type }}"
+    role="alert"
+    aria-live="polite"
+    data-testid="notification-banner"
+  >
+    <span class="notification-banner__message">{{ notif.messageKey | t }}</span>
+    <button
+      class="notification-banner__close"
+      type="button"
+      [attr.aria-label]="'error.dismiss' | t"
+      (click)="notifications.dismiss()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+}
