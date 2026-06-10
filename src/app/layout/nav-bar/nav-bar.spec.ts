@@ -44,21 +44,25 @@ describe('NavBar', () => {
     );
   });
 
-  it('renders five primary navigation links with Spanish labels', () => {
+  it('renders three primary navigation links with Spanish labels', () => {
     const fixture = TestBed.createComponent(NavBar);
     fixture.detectChanges();
     const links = (fixture.nativeElement as HTMLElement).querySelectorAll(
       '.nav-bar__nav-link',
     );
-    expect(links.length).toBe(5);
+    expect(links.length).toBe(3);
     const labels = Array.from(links).map((link) => link.textContent?.trim());
-    expect(labels).toEqual([
-      'Inicio',
-      'Festivales',
-      'Calendario',
-      'Explorar',
-      'Sobre nosotros',
-    ]);
+    expect(labels).toEqual(['Inicio', 'Festivales', 'Calendario']);
+  });
+
+  it('renders the inicio link with routerLink and test id', () => {
+    const fixture = TestBed.createComponent(NavBar);
+    fixture.detectChanges();
+    const inicioLink = (fixture.nativeElement as HTMLElement).querySelector(
+      '[data-testid="nav-link-inicio"]',
+    ) as HTMLAnchorElement | null;
+    expect(inicioLink).not.toBeNull();
+    expect(inicioLink?.getAttribute('href')).toBe('/');
   });
 
   it('exposes the search, theme toggle and hamburger controls', () => {
