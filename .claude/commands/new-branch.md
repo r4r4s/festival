@@ -19,15 +19,17 @@ uncommitted work.
 Ask, then wait for the answer:
 
 ```
-What is the branch name? (e.g. feat/search-minisearch or fix/expired-token)
+What is the branch name? (e.g. feature/search-minisearch or fix/expired-token)
 ```
 
 - Accept either a bare slug (`search-minisearch`) or a `type/slug` form
-  (`feat/search-minisearch`).
+  (`feature/search-minisearch`).
 - If the user gives no `type/` prefix, ask which type fits (or default to
-  `feat/`). Allowed types mirror the commit types in `/autocommit`:
-  `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`,
+  `feature/`). Allowed branch prefixes:
+  `feature`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`,
   `chore`, `revert`.
+  (`feature/` is the branch convention; commits on that branch still use the
+  `feat` type in `/autocommit` when the work is a new feature.)
 
 ### 2. Normalize the name
 
