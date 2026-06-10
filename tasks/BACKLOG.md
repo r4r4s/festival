@@ -6,6 +6,10 @@ Lista priorizada de mejoras no críticas, refactorizaciones y mejoras de usabili
 
 ## Prioridad alta
 
+### Stack MVP pendiente (gap con la tabla canónica de CLAUDE.md)
+- [ ] Integrar **MiniSearch** — búsqueda fuzzy client-side con boosts en `nombre` y `cabezasDeCartel` (skill `search`). Declarado en la tabla MVP pero aún sin dependencia ni código.
+- [ ] Integrar **Sentry** — completar el `TODO` de `src/app/core/handlers/festival-error.handler.ts`: añadir `@sentry/angular` y reportar errores en producción (skill `error-handling`). Declarado en la tabla MVP.
+
 ### Rendimiento
 - [ ] Auditoría de optimización de imágenes — Perfilar el bundle, medir el LCP por ruta e identificar oportunidades de carga diferida.
 - [ ] Revisión de CSS-in-JS — Asegurar que no haya inyección de estilos en tiempo de ejecución; todos los estilos deben ser SCSS estático.
