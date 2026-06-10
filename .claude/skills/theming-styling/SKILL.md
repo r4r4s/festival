@@ -101,13 +101,29 @@ The complete primitive palette, semantic `--fv-*` tokens, spacing / radii / typo
 4. Glass surfaces require depth behind them. Never apply `glass()` to a full-screen background.
 5. No more than **two accent hues** per view (blue + warning/coral is the default pair).
 6. No heavy drop shadows (`rgba(0,0,0,0.5)` with 30 px blur). Shadows are atmospheric.
-7. Light mode is **out of scope** for now. Do not author light-mode overrides until it lands on the roadmap.
+7. **Theming is active (light + dark + system).** The base `:root` is the LIGHT theme
+   (the current Mediterranean light surfaces — keep it pixel-identical). Dark mode flips
+   only the themeable "chrome" semantic tokens (`--fv-bg-page`, `--fv-bg-nav`,
+   `--fv-text-nav`, `--fv-border-nav`, `--fv-bg-nav-icon-hover`, `--fv-bg-card-light`,
+   `--fv-bg-tile-dark`, and the `--fv-*-footer*` set) inside `:root[data-theme="dark"]`
+   **and** `@media (prefers-color-scheme: dark) { :root:not([data-theme]) { … } }`.
+   Primitives never change. The "dark canvas" tokens (`--fv-bg-canvas/surface/elevated`,
+   `--fv-text-primary/secondary/inverse`) are theme-independent — they stay dark for
+   elements that are always dark (hero overlay text, poster tiles). Never hardcode a
+   per-theme color in a component; add the override to `_semantic.scss`.
 
 ---
 
-## Future light mode
+## Theme switching
 
-When light mode is introduced, override semantic tokens inside `[data-theme="light"]`. Primitives stay constant; only semantics flip. Do not duplicate the palette.
+States: `light | dark | system` (default `system`). The `ThemeService`
+(`@core/platform/theme.service.ts`, Signals, SSR-safe) is the single source of truth: it
+sets `data-theme` on `<html>` for explicit choices, removes it for `system` (so the
+`prefers-color-scheme` media query governs), persists the choice in `localStorage`
+(`fv-theme`) and keeps `<meta name="theme-color">` in sync. A tiny blocking script in
+`src/index.html` applies the stored choice before first paint to avoid FOUC. The header
+toggle (`nav-bar`) switches light↔dark with a sun/moon icon, `aria-pressed` and an i18n
+`aria-label` (`nav.theme.toDark` / `nav.theme.toLight`).
 
 ## Related skills
 
