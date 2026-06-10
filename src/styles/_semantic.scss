@@ -47,6 +47,14 @@
   --fv-bg-card-light:       #ffffff;             // elevated card on sand sections
   --fv-bg-tile-dark:        #{$fv-gray-850};     // dark tile/poster background inside light cards
 
+  // --- Footer (light surface, warm off-white #F4F4FA) ---
+  --fv-bg-footer:           #{$fv-gray-50};       // #F4F4FA footer canvas
+  --fv-bg-footer-hover:     rgba(15, 23, 42, 0.05); // social icon / badge hover wash
+  --fv-text-footer:         #{$fv-navy-950};      // headings + primary footer text (navy)
+  --fv-text-footer-muted:   rgba(15, 23, 42, 0.64); // links + tagline (navy @ 64%)
+  --fv-text-footer-faint:   rgba(15, 23, 42, 0.45); // copyright + version meta (navy @ 45%)
+  --fv-border-footer:       rgba(15, 23, 42, 0.08); // hairline dividers (navy @ 8%)
+
   // --- Gradients ---
   --fv-gradient-brand:
     linear-gradient(135deg, #{$fv-med-blue-500} 0%, #{$fv-blue-500} 100%);

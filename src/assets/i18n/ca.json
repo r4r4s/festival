@@ -256,5 +256,42 @@
         }
       }
     }
+  },
+  "footer": {
+    "ariaLabel": "Pie de página",
+    "brand": {
+      "logoAlt": "festiVAL",
+      "description": "Tu guía de festivales en la Comunitat Valenciana. Música, cultura y verano."
+    },
+    "social": {
+      "ariaLabel": "Redes sociales de festiVAL",
+      "instagram": "Síguenos en Instagram",
+      "x": "Síguenos en X",
+      "youtube": "Síguenos en YouTube",
+      "spotify": "Escúchanos en Spotify"
+    },
+    "explore": {
+      "title": "Explora",
+      "map": "Mapa de festivales",
+      "upcoming": "Próximos festivales",
+      "byGenre": "Por género",
+      "byProvince": "Por provincia"
+    },
+    "info": {
+      "title": "Información",
+      "about": "Sobre festiVAL",
+      "contact": "Contacto",
+      "faq": "FAQ"
+    },
+    "legal": {
+      "title": "Legal",
+      "notice": "Aviso legal",
+      "privacy": "Política de privacidad",
+      "cookies": "Política de cookies",
+      "terms": "Términos de uso"
+    },
+    "bottom": {
+      "copyright": "© 2026 festiVAL. Todos los derechos reservados."
+    }
   }
 }
