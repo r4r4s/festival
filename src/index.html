@@ -5,9 +5,22 @@
   <title>festiVAL</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#07070C">
+  <meta name="theme-color" content="#F8F5F0">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/svg+xml" href="/assets/branding/favicon.svg">
+  <script>
+    // Anti-flicker: apply the stored theme before first paint. A manual choice
+    // sets data-theme; `system` (or no choice) is left to the CSS
+    // prefers-color-scheme media query. Kept tiny and dependency-free on purpose.
+    (function () {
+      try {
+        var m = localStorage.getItem('fv-theme');
+        if (m === 'dark' || m === 'light') {
+          document.documentElement.setAttribute('data-theme', m);
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
   <fv-root></fv-root>

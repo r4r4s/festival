@@ -86,3 +86,48 @@
   --fv-glass-glow-blue:    0 0 20px rgba(78, 140, 255, 0.2);
   --fv-glass-glow-med:     0 0 20px rgba(45, 156, 219, 0.2);
 }
+
+// ============================================================================
+// Dark theme — flips ONLY the themeable "chrome" surface tokens.
+// ============================================================================
+// The base `:root` above is the LIGHT theme (Mediterranean light surfaces) and
+// must stay pixel-identical. Dark mode redefines the light-surface tokens with
+// dark equivalents built from the same primitives in `_tokens.scss`. The
+// "dark canvas" tokens (`--fv-bg-canvas/surface/elevated`, `--fv-text-primary…`)
+// are theme-independent — they remain dark for always-dark elements (hero
+// overlay text, poster tiles). See `theming-styling` SKILL, hard rule #7.
+// ============================================================================
+
+@mixin fv-theme-dark {
+  // --- Surfaces ---
+  --fv-bg-page:           #{$fv-gray-950};        // deep navy/near-black canvas
+  --fv-bg-nav:            #{$fv-gray-900};         // sticky header surface
+  --fv-bg-footer:         #{$fv-gray-900};         // footer surface
+  --fv-bg-card-light:     #{$fv-gray-850};         // elevated dark cards/panels
+  --fv-bg-tile-dark:      #{$fv-gray-800};         // tiles inside elevated cards
+
+  // --- Text (high contrast, not pure white) ---
+  --fv-text-nav:          #{$fv-gray-50};
+  --fv-text-footer:       #{$fv-gray-50};
+  --fv-text-footer-muted: rgba(244, 244, 250, 0.66);
+  --fv-text-footer-faint: rgba(244, 244, 250, 0.45);
+
+  // --- Borders + hover washes (subtle light lines on dark) ---
+  --fv-border-nav:        rgba(255, 255, 255, 0.10);
+  --fv-border-footer:     rgba(255, 255, 255, 0.10);
+  --fv-bg-nav-icon-hover: rgba(255, 255, 255, 0.06);
+  --fv-bg-footer-hover:   rgba(255, 255, 255, 0.06);
+}
+
+// Explicit manual choice.
+:root[data-theme='dark'] {
+  @include fv-theme-dark;
+}
+
+// System preference: applies only when the user has NOT made a manual choice
+// (no `data-theme` attribute). `ThemeService` removes the attribute for `system`.
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    @include fv-theme-dark;
+  }
+}

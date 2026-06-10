@@ -209,7 +209,9 @@ public/
 ```
 src/
 ├── index.html           → Documento HTML principal. `lang="es-ES"`, título `festiVAL`,
-│                          meta theme-color (#07070C), favicon SVG + .ico, monta <fv-root>.
+│                          meta theme-color, favicon SVG + .ico, monta <fv-root>. Incluye un
+│                          script inline bloqueante anti-parpadeo que aplica `data-theme` desde
+│                          localStorage('fv-theme') antes del primer pintado (ver ThemeService).
 ├── main.ts              → Punto de entrada del cliente. Llama a bootstrapApplication con la
 │                          configuración de app.config.ts.
 ├── main.server.ts       → Punto de entrada del servidor SSR. Bootstrap de la app con la
@@ -230,6 +232,10 @@ src/styles/
 ├── _tokens.scss         → Tokens primitivos SCSS (paleta cruda $fv-gray-*, $fv-violet-*, …). No expone CSS vars.
 ├── _semantic.scss       → Tokens semánticos como CSS custom properties --fv-bg-*, --fv-text-*, --fv-accent-*,
 │                          --fv-border-*, --fv-gradient-*. Son los que consumen los componentes.
+│                          `:root` es el tema CLARO; el mixin `fv-theme-dark` redefine los tokens
+│                          de "chrome" (page/nav/footer/card-light/tile-dark…) y se aplica en
+│                          `:root[data-theme="dark"]` y en `@media (prefers-color-scheme: dark)`
+│                          cuando no hay `data-theme` (modo system).
 ├── _typography.scss     → Escala tipográfica: --fv-text-*, --fv-leading-*, --fv-tracking-*.
 ├── _fonts.scss          → @font-face de Inter, Sora y JetBrains Mono (variable fonts self-hosted).
 │                          Tokens de rol --fv-font-ui/heading/hero/hero-emphasis/festival-name/mono/brand,
@@ -264,7 +270,9 @@ src/environments/
 ```
 src/assets/
 ├── branding/            → Assets de marca servidos en runtime
-│   ├── festi-val-logo.webp → Logo principal (versión rasterizada usada por la cabecera)
+│   ├── festi-val-logo.webp → Logo principal (letras navy) usado por la cabecera en tema claro
+│   ├── festi-val-logo-dark.webp → Variante del logo con letras blancas para el tema oscuro
+│   │                              (mismo icono en color; conmutado por ThemeService en nav-bar/footer)
 │   └── favicon.svg         → Favicon vectorial
 ├── i18n/                → Ficheros de traducción JSON. `es.json` es la fuente de verdad; el resto
 │   │                      mantiene paridad de claves. La propagación a los locales soportados
@@ -319,7 +327,8 @@ src/assets/
 src/app/
 ├── app.ts               → Componente raíz (selector: fv-root, OnPush). Importa RouterOutlet,
 │                          NavBar y Footer. En el constructor inyecta HreflangService.apply() para
-│                          registrar las etiquetas hreflang en <head> al arrancar.
+│                          registrar las etiquetas hreflang en <head> e instancia ThemeService para
+│                          arrancar la sincronización de tema (light/dark/system) al iniciar.
 ├── app.html             → Template del componente raíz: <fv-nav-bar /> + <main> con
 │                          <router-outlet /> + <fv-footer /> (pie global del shell).
 ├── app.scss             → Estilos del componente raíz. Define el fondo de página
@@ -359,9 +368,18 @@ src/app/core/
 ├── tokens/              → InjectionTokens tipados para configuración inyectable.
 │   └── .gitkeep
 └── platform/            → Helpers de SSR: wrappers de isPlatformBrowser, guardas para APIs
-    └── hreflang.service.ts → HreflangService: inyecta <link rel="alternate" hreflang="…"> para
-                              es/ca/en y x-default en <head>. Usa environment.baseUrl. Llamado una
-                              vez en el constructor de App.
+    ├── hreflang.service.ts → HreflangService: inyecta <link rel="alternate" hreflang="…"> para
+    │                         es/ca/en y x-default en <head>. Usa environment.baseUrl. Llamado una
+    │                         vez en el constructor de App.
+    ├── theme.service.ts   → ThemeService: fuente de verdad del tema (signals, SSR-safe). Estados
+    │                         light/dark/system (por defecto system → prefers-color-scheme). Aplica
+    │                         `data-theme` en <html> para elecciones manuales, lo elimina en system,
+    │                         persiste en localStorage('fv-theme'), reacciona a cambios de
+    │                         matchMedia y sincroniza <meta name="theme-color">. Expone mode,
+    │                         resolvedTheme, setMode() y toggle().
+    └── theme.service.spec.ts → Tests del ThemeService: default system (device light/dark),
+                              cambio de dispositivo en runtime, toggle + persistencia, restauración
+                              tras recarga y elección explícita por encima del dispositivo.
 ```
 
 ### `src/app/layout/` — Shell de la aplicación
@@ -376,8 +394,10 @@ src/app/layout/
 ├── nav-bar/             → Cabecera estática del sitio (sticky). Logo `assets/branding/festi-val-logo.webp`
 │   ├── nav-bar.ts         vía `NgOptimizedImage` (`priority`), navegación principal (Home,
 │   ├── nav-bar.html       Festivals, Calendar, Explore, About), icono de búsqueda y toggle de
-│   ├── nav-bar.scss       tema. Mobile-first: en <1024 px sólo aparecen logo, búsqueda y
-│   └── nav-bar.spec.ts    hamburguesa. aria-current="page" en el enlace activo vía
+│   ├── nav-bar.scss       tema (cableado a ThemeService: icono sol/luna, aria-pressed y
+│   └── nav-bar.spec.ts    aria-label i18n nav.theme.toDark/toLight; visible también en móvil).
+│                          Mobile-first: en <1024 px aparecen logo, búsqueda, toggle de tema y
+│                          hamburguesa. aria-current="page" en el enlace activo vía
 │                          routerLinkActive. (El selector de idioma ES/CA/EN está en el roadmap
 │                          de la fase multilingüe; aún no existe.)
 └── footer/              → Pie de página premium (superficie clara #F4F4FA). Divisoria superior sutil
@@ -606,6 +626,7 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 
 | Fecha      | Cambio                                                  | Descripción                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ---------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-06-10 | Sistema de temas (light / dark / system)                | Creado `src/app/core/platform/theme.service.ts` (+ `theme.service.spec.ts`): servicio Signals SSR-safe que gestiona `light/dark/system` (por defecto system → `prefers-color-scheme`), aplica `data-theme` en `<html>`, persiste en `localStorage('fv-theme')`, reacciona a `matchMedia` y sincroniza `<meta name="theme-color">`. Nuevo bloque de tema oscuro en `_semantic.scss` (mixin `fv-theme-dark` aplicado en `:root[data-theme="dark"]` y en `@media (prefers-color-scheme: dark)` sin `data-theme`) que redefine solo los tokens de chrome (page/nav/footer/card-light/tile-dark, textos y bordes) reutilizando primitivos; el tema claro queda intacto. Script inline anti-parpadeo en `index.html`. Botón existente de la nav-bar cableado a `ThemeService` (icono sol/luna, `aria-pressed`, `aria-label` i18n `nav.theme.toDark`/`toLight`, visible también en móvil); `app.ts` instancia el servicio. Restructurada la clave i18n `nav.theme` a objeto `{ toDark, toLight }` en es/ca/en. Nuevo asset `src/assets/branding/festi-val-logo-dark.webp` (logo con letras blancas) conmutado por CSS según `data-theme` para que la marca sea legible en oscuro. Contrato actualizado: skill `theming-styling` (regla #7 + sección "Theme switching") y descripción en `AGENTS.md`/`CLAUDE.md`. |
 | 2026-06-10 | Footer premium del shell                                | Implementado `src/app/layout/footer/` (`footer.{ts,html,scss,spec.ts}`), sustituyendo el placeholder `.gitkeep`. Pie editorial sobre superficie clara `#F4F4FA` con divisoria superior sutil y grid de 4 columnas: marca (logo `NgOptimizedImage` + claim + iconos sociales monocromos Instagram/X/YouTube/Spotify) y columnas Explora / Información / Legal con `routerLink`; barra inferior con copyright. Nuevos tokens semánticos `--fv-bg-footer`, `--fv-bg-footer-hover`, `--fv-text-footer`, `--fv-text-footer-muted`, `--fv-text-footer-faint` y `--fv-border-footer` en `_semantic.scss`. Claves i18n `footer.*` en `es.json`. Cableado `<fv-footer />` en `app.html`/`app.ts`. Mobile-first (1 → 2 → 4 columnas). |
 | 2026-06-10 | Auditoría `/audit-structure`: realineación estructura ↔ docs | `shared/ui/festivales-map/` movido a `features/festivales-map/ui/festivales-map/` (un único consumidor; la promoción a shared exige ≥ 2). Creados `features/festivales-map/data-access/.gitkeep` y `shared/ui/.gitkeep`. `home-festival-map` ahora recibe las localizaciones por `input.required('locations')` desde `home.page` (ui/ presentacional). `aria-label` de la home pasa por i18n (`home.ariaLabel` en es/ca/en). Eliminado el directorio vacío `output/`. Documentación sincronizada: budgets reales de `angular.json` (360/400, 80/120, 8/12 KB) aquí y en `CLAUDE.md`, ruta `/mapa` añadida al esquema de URLs de `CLAUDE.md`, tabla de aliases y entry SCSS corregidos en la skill `project-structure` (.claude y .codex), retiradas las menciones a `setLang()`/selector de idioma y los `.gitkeep` fantasma, y backlog actualizado con MiniSearch y Sentry pendientes. |
 | 2026-06-08 | Refactor `festival-calendar` y limpieza de scaffolds    | `src/app/features/home/ui/festival-calendar/` rediseñado: retirada del icono del header, fila de meses proporcional (15/31/18 días), rail gradiente con tokens `--fv-accent-*`, círculos de día destacados como pseudo-elementos absolutos (no expanden el grid), y carrusel auto-rotativo (3 s) con `(mouseenter)` sobre los días destacados para enfocar uno concreto y reanudar. Nuevo token semántico `--fv-bg-tile-dark` en `src/styles/_semantic.scss`. Tests del carrusel añadidos con `vi.useFakeTimers`. Eliminados los scaffolds vacíos `features/{about,artist-detail,festival-detail,festival-list,search}/` y el `.gitkeep` redundante en `shared/domain/` para alinear el árbol con el código realmente implementado.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
