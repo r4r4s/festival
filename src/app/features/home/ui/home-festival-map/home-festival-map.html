@@ -34,6 +34,8 @@
                     class="pin-item"
                     [style.left.%]="festival.pinLeft"
                     [style.top.%]="festival.pinTop"
+                    [style.--festival-callout-x]="festival.labelOffsetX + 'rem'"
+                    [style.--festival-callout-y]="festival.labelOffsetY + 'rem'"
                     [style.--festival-tone]="festival.toneColor"
                   >
                     <button
@@ -49,6 +51,9 @@
                       data-testid="home-festival-map-pin"
                     >
                       <svg lucideMapPin focusable="false" aria-hidden="true" class="pin-icon" size="24" strokeWidth="2"></svg>
+                      <span class="pin-callout" data-testid="home-festival-map-pin-label" aria-hidden="true">
+                        {{ festival.mapLabel }}
+                      </span>
                     </button>
                   </li>
                 }
