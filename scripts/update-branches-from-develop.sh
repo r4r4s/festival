@@ -96,7 +96,7 @@ abort_on_conflict() {
 is_excluded() {
   local name="$1"
   case "$name" in
-    main|develop|HEAD) return 0 ;;
+    main|develop|HEAD|origin) return 0 ;;
     *) return 1 ;;
   esac
 }
@@ -141,7 +141,7 @@ while IFS= read -r name; do
   is_excluded "$name" && continue
   REMOTE_BRANCHES+=("$name")
 done < <(
-  git for-each-ref refs/remotes/origin --format='%(refname:short)' \
+  git for-each-ref 'refs/remotes/origin/*' --format='%(refname:short)' \
     | sed 's|^origin/||' \
     | sort -u
 )
