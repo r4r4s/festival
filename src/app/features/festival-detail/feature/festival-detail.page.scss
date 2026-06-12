@@ -1,0 +1,27 @@
+@use 'styles/breakpoints' as *;
+
+:host {
+  display: block;
+}
+
+.festival-detail-page {
+  width: 100%;
+  background: var(--fv-bg-page);
+  padding: var(--fv-space-4) var(--fv-space-4) var(--fv-space-7);
+  display: grid;
+  gap: var(--fv-space-6);
+
+  @include from(md) {
+    padding: var(--fv-space-5) calc(var(--fv-space-6) + var(--fv-space-1)) var(--fv-space-7);
+  }
+
+  @include from(lg) {
+    padding: var(--fv-space-5) var(--fv-space-7) var(--fv-space-8);
+  }
+}
+
+.festival-detail-page__placeholder {
+  min-height: 24rem;
+  border-radius: var(--fv-radius-xl);
+  background: var(--fv-bg-surface);
+}

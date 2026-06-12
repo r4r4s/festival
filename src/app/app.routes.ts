@@ -6,4 +6,11 @@ export const routes: Routes = [
     loadChildren: () =>
       import('@features/home/home.routes').then((m) => m.HOME_ROUTES),
   },
+  {
+    path: 'festivales/:slug',
+    loadChildren: () =>
+      import('@features/festival-detail/festival-detail.routes').then(
+        (m) => m.FESTIVAL_DETAIL_ROUTES,
+      ),
+  },
 ];

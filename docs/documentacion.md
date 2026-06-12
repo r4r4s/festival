@@ -430,6 +430,35 @@ features/<nombre>/
 
 ```
 src/app/features/
+├── festival-detail/     → Página de detalle de un festival, cargada vía `/festivales/:slug`.
+│   ├── feature/
+│   │   ├── festival-detail.page.ts   → Página smart standalone. Inyecta ActivatedRoute para
+│   │   │                               leer el slug de la URL. Orquesta FestivalHeroComponent,
+│   │   │                               LineupGridComponent y VenueMapComponent.
+│   │   ├── festival-detail.page.html → Sección principal con el hero y secciones secundarias
+│   │   │                               (lineup-grid y venue-map) envueltas en @defer.
+│   │   ├── festival-detail.page.scss → Layout de la página: espaciado vertical y responsive.
+│   │   └── festival-detail.page.spec.ts → Tests de creación y renderizado de la sección.
+│   ├── ui/
+│   │   ├── festival-hero/            → Hero presentacional del festival (imagen, nombre, fechas…).
+│   │   │   ├── festival-hero.ts
+│   │   │   ├── festival-hero.html
+│   │   │   ├── festival-hero.scss
+│   │   │   └── festival-hero.spec.ts
+│   │   ├── lineup-grid/              → Rejilla de artistas del cartel del festival.
+│   │   │   ├── lineup-grid.ts
+│   │   │   ├── lineup-grid.html
+│   │   │   ├── lineup-grid.scss
+│   │   │   └── lineup-grid.spec.ts
+│   │   └── venue-map/                → Mapa interactivo del recinto del festival.
+│   │       ├── venue-map.ts
+│   │       ├── venue-map.html
+│   │       ├── venue-map.scss
+│   │       └── venue-map.spec.ts
+│   ├── data-access/                  → (pendiente) Store, resolver y schema Zod por slug.
+│   │   └── .gitkeep
+│   └── festival-detail.routes.ts    → Superficie pública. Expone FESTIVAL_DETAIL_ROUTES con
+│                                       loadComponent hacia festival-detail.page.
 ├── home/                → Página de inicio. Muestra festivales destacados, hero con glow
 │                          atmosférico, acceso rápido a búsqueda y filtros.
 │   ├── feature/
@@ -489,7 +518,7 @@ src/app/features/
 │   └── home.routes.ts   → Superficie pública de la feature. Expone HOME_ROUTES con loadComponent
 ```
 
-> `festival-list/`, `festival-detail/`, `artist-detail/`, `search/` y `about/` están en el roadmap del proyecto y todavía no existen en el árbol: se documentarán aquí cuando se creen sus scaffolds.
+> `festival-list/`, `artist-detail/`, `search/` y `about/` están en el roadmap del proyecto y todavía no existen en el árbol: se documentarán aquí cuando se creen sus scaffolds.
 
 ### `src/app/shared/` — Toolbox horizontal
 
@@ -698,4 +727,5 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-12 | Comando `/new-branch`: base `develop` en lugar de `main` | Actualizados `.claude/commands/new-branch.md` y `.codex/commands/new-branch.md`: la rama por defecto pasa a ser `develop` (`git switch develop && git pull --ff-only origin develop`). Referencias cruzadas en `merge-to-develop`, `update-branches-from-develop` y `merge-develop-into-branches` alineadas. |
 | 2026-06-12 | Skill `angular-developer` (Google Angular Team) integrada | Movida la skill oficial `angular-developer` de `.agents/skills/` a `.claude/skills/` y `.codex/skills/`. Eliminada `.agents/` por completo (no es leída por Claude Code ni Codex). Adaptaciones al contrato del proyecto: `tailwind-css.md` eliminado (Tailwind fuera de scope), `e2e-testing.md` reescrito para Playwright (en vez de Cypress/DevTools), gate de build actualizado a `npm run lint && npm test -- --run`, referencia a Tailwind CSS eliminada del `SKILL.md` en ambas carpetas. `angular-new-app` descartada (irrelevante para proyecto existente). |
 | 2026-06-10 | Auditoría `/audit-structure`: health score 75 → 100 | **Error handling completo**: creado `core/notifications/notification.service.ts` (signal `AppNotification|null`, `show()`/`dismiss()`); `festival-error.handler.ts` actualizado (inyecta `NotificationService`, llama `Sentry.captureException` en producción, mapea `FestivalErrorCode` a claves i18n `error.*`); `app.config.ts` inicializa Sentry con `environment.sentry.dsn`; bloque `sentry: { dsn }` añadido a ambos `environment*.ts`. **Shell**: creado `shared/ui/notification-banner/` (`NotificationBannerComponent`), cableado en `app.ts`/`app.html`. **i18n**: claves `error.network/notFound/unknown/dismiss` añadidas a `es.json`, `ca.json` y `en.json`. **Datos en data-access**: creado `features/home/data-access/home-catalogue.ts` (extrae `FEATURED_FESTIVALS`, `CALENDAR_MONTH_SEGMENTS`, `CALENDAR_FESTIVALS` y sus tipos de los componentes `ui/`); `featured-festivals.ts` y `festival-calendar.ts` actualizados para importar desde `data-access/`. **SCSS (hover guards)**: `nav-bar.scss` y `festivales-map.scss` envuelven sus `:hover` en `@media (hover: hover) and (pointer: fine)`. **SCSS (font-size tokens)**: `festival-calendar.scss` extrae 5 tamaños literales a custom properties en `:host`; `home-festival-map.scss` extrae `10px`/`9px` a `:host`. **Limpieza**: eliminados los `.gitkeep` redundantes de `features/home/data-access/` y `shared/ui/` (ambos reemplazados por ficheros reales). |
+| 2026-06-12 | Scaffold `festival-detail` (boilerplate Angular) | Creada la feature `src/app/features/festival-detail/` completa: `festival-detail.routes.ts` (FESTIVAL_DETAIL_ROUTES, loadComponent), `feature/festival-detail.page.{ts,html,scss,spec.ts}` (página smart que lee el slug de ActivatedRoute, orquesta los tres componentes ui/ en @defer), `ui/festival-hero/`, `ui/lineup-grid/` y `ui/venue-map/` (componentes dumb con boilerplate mínimo: TS, HTML, SCSS, spec). La ruta `/festivales/:slug` registrada en `app.routes.ts` con `loadChildren`. `data-access/` reservada con `.gitkeep` para el store y resolver futuros. |
 | 2026-06-12 | Auditoría `/audit-structure`: re-extracción del calendario a data-access | Tras el merge a `develop`, `festival-calendar.ts` había vuelto a tener los datos inline (regresión de la extracción del 2026-06-10) y `home-catalogue.ts` quedaba con `CALENDAR_FESTIVALS`/`CALENDAR_MONTH_SEGMENTS` huérfanos y **datos obsoletos** (un solo `latin-fest` en día 17). Corregido: `CALENDAR_FESTIVALS` actualizado al modelo de 5 entradas (`bigsound`, `latin-fest-valencia` 17–18 jul, `latin-fest`/Benidorm 4–5 jul, `zevra`, `medusa`); `festival-calendar.ts` re-cableado para importar `CALENDAR_FESTIVALS`/`CALENDAR_MONTH_SEGMENTS` y sus tipos desde `data-access/`, eliminando arrays y tipos inline duplicados. Sin cambios en i18n (claves ya presentes). |
