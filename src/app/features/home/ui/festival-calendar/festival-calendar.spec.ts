@@ -28,7 +28,7 @@ describe('FestivalCalendarComponent', () => {
     expect(
       root.querySelector('[data-testid="festival-calendar-title"]')?.textContent?.trim(),
     ).toBeTruthy();
-    expect(root.querySelectorAll('[data-testid="festival-calendar-card"]')).toHaveLength(4);
+    expect(root.querySelectorAll('[data-testid="festival-calendar-card"]')).toHaveLength(5);
   });
 
   it('renders three month labels, the gradient rail and the full day scale', () => {
@@ -64,7 +64,8 @@ describe('FestivalCalendarComponent', () => {
     vi.advanceTimersByTime(3000);
     expect(component.activeIndex()).toBe(2);
 
-    // Tras llegar al último festival, vuelve al primero (wraparound).
+    // Tras llegar al último festival (índice 4), vuelve al primero (wraparound).
+    vi.advanceTimersByTime(3000);
     vi.advanceTimersByTime(3000);
     vi.advanceTimersByTime(3000);
     expect(component.activeIndex()).toBe(0);
