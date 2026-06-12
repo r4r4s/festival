@@ -44,15 +44,15 @@ describe('NavBar', () => {
     );
   });
 
-  it('renders three primary navigation links with Spanish labels', () => {
+  it('renders four primary navigation items with Spanish labels', () => {
     const fixture = TestBed.createComponent(NavBar);
     fixture.detectChanges();
     const links = (fixture.nativeElement as HTMLElement).querySelectorAll(
       '.nav-bar__nav-link',
     );
-    expect(links.length).toBe(3);
+    expect(links.length).toBe(4);
     const labels = Array.from(links).map((link) => link.textContent?.trim());
-    expect(labels).toEqual(['Inicio', 'Festivales', 'Calendario']);
+    expect(labels).toEqual(['Inicio', 'Festivales', 'Calendario', 'Mapa']);
   });
 
   it('renders the inicio link with routerLink and test id', () => {
