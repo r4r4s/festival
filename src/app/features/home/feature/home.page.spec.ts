@@ -83,7 +83,7 @@ describe('HomePageComponent', () => {
     const section = root.querySelector('[data-testid="home-festival-map"]');
 
     expect(calendar).not.toBeNull();
-    expect(calendar?.querySelectorAll('[data-testid="festival-calendar-card"]')).toHaveLength(4);
+    expect(calendar?.querySelectorAll('[data-testid="festival-calendar-card"]')).toHaveLength(5);
     expect(featured).not.toBeNull();
     expect(featured?.querySelectorAll('[data-testid="featured-festivals-card-name"]')).toHaveLength(
       12,

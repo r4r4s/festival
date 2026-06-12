@@ -110,11 +110,17 @@
           "location": "Valencia",
           "genre": "Pop & directo"
         },
-        "latinFest": {
+        "latinFestValencia": {
           "date": "17–18 Jul",
-          "name": "Latin Fest",
+          "name": "Latin Fest València",
+          "location": "València",
+          "genre": "Llatí"
+        },
+        "latinFest": {
+          "date": "4–5 Jul",
+          "name": "Latin Fest Benidorm",
           "location": "Benidorm",
-          "genre": "Latino"
+          "genre": "Llatí"
         },
         "zevra": {
           "date": "24–27 Jul",
@@ -208,7 +214,7 @@
         },
         "latinValencia": {
           "name": "Latin Fest València",
-          "dates": "17 jul 2026",
+          "dates": "17–18 jul 2026",
           "city": "València",
           "province": "València",
           "description": "Edició valenciana de Latin Fest amb ritmes llatins i reggaeton en format intensiu.",
@@ -216,7 +222,7 @@
         },
         "latinBenidorm": {
           "name": "Latin Fest Benidorm",
-          "dates": "18 jul 2026",
+          "dates": "4–5 jul 2026",
           "city": "Benidorm",
           "province": "Alacant",
           "description": "Edició de Benidorm de Latin Fest amb enfocament mediterrani i cartell llatí concentrat.",
