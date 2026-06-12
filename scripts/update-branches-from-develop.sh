@@ -141,7 +141,7 @@ while IFS= read -r name; do
   is_excluded "$name" && continue
   REMOTE_BRANCHES+=("$name")
 done < <(
-  git for-each-ref 'refs/remotes/origin/*' --format='%(refname:short)' \
+  git for-each-ref 'refs/remotes/origin/**' --format='%(refname:short)' \
     | sed 's|^origin/||' \
     | sort -u
 )
