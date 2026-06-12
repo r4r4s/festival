@@ -158,6 +158,9 @@ scripts/
 │                                        y en.json usando el valor español como placeholder. Acepta --check para
 │                                        modo de sólo lectura (exit 1 si hay divergencias, útil en CI).
 │                                        Uso: npm run i18n:sync | npm run i18n:check
+├── convert-images.mjs                 → Conversor Sharp: recorre `src/assets/images-src/` recursivamente y genera
+│                                        WebP en `src/assets/images/` (presets hero/og/default; soporte JXL vía djxl).
+│                                        Uso: npm run images:convert
 ├── merge-develop-into-branches.sh     → Variante simple: fusiona develop en cada rama remota (excepto main/develop/HEAD),
 │                                        empuja a origin y termina en develop. Para en el primer conflicto (`set -e`).
 │                                        Uso: npm run branches:merge-develop-into-all
@@ -283,14 +286,13 @@ src/assets/
 │   │   ├── home-hero-sunset-beach-800.webp
 │   │   ├── home-hero-sunset-beach-1200.webp
 │   │   └── home-hero-sunset-beach-1600.webp
-│   ├── festivals/       → Logos de festivales en WebP listos para runtime, organizados por slug.
-│   │   │                  La generación multiresolución sigue el pipeline Sharp cuando aplique.
-│   │   ├── bigsound/    → logo-bigsound.webp
-│   │   ├── latin-fest/  → logo-latin-fest.webp
-│   │   ├── medusa/      → logo-medusa-2026.webp
+│   ├── festivals/       → Logos y carteles de festivales en WebP listos para runtime, por slug.
+│   │   ├── bigsound/    → logo-bigsound.webp, cartel-bigsound-valencia-2026.webp
+│   │   ├── latin-fest/  → logo-latin-fest.webp, cartel-latin-fest-{benidorm,valencia}-2026.webp
+│   │   ├── medusa/      → logo-medusa-2026.webp, cartel-medusa-2026.webp, cartel-medusa-{jueves,viernes,sabado,domingo}-2026.webp
 │   │   ├── rbf/         → logo-rbf.webp
-│   │   ├── reve/        → logo-reve.webp
-│   │   └── zevra/       → logo-zevra.webp
+│   │   ├── reve/        → logo-reve.webp, cartel-reve-roig-arena-valencia-2026.webp
+│   │   └── zevra/       → logo-zevra.webp, cartel-zevra-2026.webp, cartel-zevra-{viernes,sabado,domingo}-2026.webp
 │   └── maps/            → Imágenes WebP del mapa de la Comunitat Valenciana usadas por home-festival-map.
 │       ├── valencia-map.webp
 │       ├── valencia-community-map-gradient.webp
@@ -727,5 +729,6 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-12 | Comando `/new-branch`: base `develop` en lugar de `main` | Actualizados `.claude/commands/new-branch.md` y `.codex/commands/new-branch.md`: la rama por defecto pasa a ser `develop` (`git switch develop && git pull --ff-only origin develop`). Referencias cruzadas en `merge-to-develop`, `update-branches-from-develop` y `merge-develop-into-branches` alineadas. |
 | 2026-06-12 | Skill `angular-developer` (Google Angular Team) integrada | Movida la skill oficial `angular-developer` de `.agents/skills/` a `.claude/skills/` y `.codex/skills/`. Eliminada `.agents/` por completo (no es leída por Claude Code ni Codex). Adaptaciones al contrato del proyecto: `tailwind-css.md` eliminado (Tailwind fuera de scope), `e2e-testing.md` reescrito para Playwright (en vez de Cypress/DevTools), gate de build actualizado a `npm run lint && npm test -- --run`, referencia a Tailwind CSS eliminada del `SKILL.md` en ambas carpetas. `angular-new-app` descartada (irrelevante para proyecto existente). |
 | 2026-06-10 | Auditoría `/audit-structure`: health score 75 → 100 | **Error handling completo**: creado `core/notifications/notification.service.ts` (signal `AppNotification|null`, `show()`/`dismiss()`); `festival-error.handler.ts` actualizado (inyecta `NotificationService`, llama `Sentry.captureException` en producción, mapea `FestivalErrorCode` a claves i18n `error.*`); `app.config.ts` inicializa Sentry con `environment.sentry.dsn`; bloque `sentry: { dsn }` añadido a ambos `environment*.ts`. **Shell**: creado `shared/ui/notification-banner/` (`NotificationBannerComponent`), cableado en `app.ts`/`app.html`. **i18n**: claves `error.network/notFound/unknown/dismiss` añadidas a `es.json`, `ca.json` y `en.json`. **Datos en data-access**: creado `features/home/data-access/home-catalogue.ts` (extrae `FEATURED_FESTIVALS`, `CALENDAR_MONTH_SEGMENTS`, `CALENDAR_FESTIVALS` y sus tipos de los componentes `ui/`); `featured-festivals.ts` y `festival-calendar.ts` actualizados para importar desde `data-access/`. **SCSS (hover guards)**: `nav-bar.scss` y `festivales-map.scss` envuelven sus `:hover` en `@media (hover: hover) and (pointer: fine)`. **SCSS (font-size tokens)**: `festival-calendar.scss` extrae 5 tamaños literales a custom properties en `:host`; `home-festival-map.scss` extrae `10px`/`9px` a `:host`. **Limpieza**: eliminados los `.gitkeep` redundantes de `features/home/data-access/` y `shared/ui/` (ambos reemplazados por ficheros reales). |
+| 2026-06-12 | Carteles WebP + script `images:convert` | Añadido `scripts/convert-images.mjs` (Sharp + djxl para JXL) y `npm run images:convert`. Generados 12 carteles `.webp` en `src/assets/images/festivals/` desde `images-src/` (bigsound, latin-fest, medusa, reve, zevra). DevDependency `sharp@^0.34`. |
 | 2026-06-12 | Scaffold `festival-detail` (boilerplate Angular) | Creada la feature `src/app/features/festival-detail/` completa: `festival-detail.routes.ts` (FESTIVAL_DETAIL_ROUTES, loadComponent), `feature/festival-detail.page.{ts,html,scss,spec.ts}` (página smart que lee el slug de ActivatedRoute, orquesta los tres componentes ui/ en @defer), `ui/festival-hero/`, `ui/lineup-grid/` y `ui/venue-map/` (componentes dumb con boilerplate mínimo: TS, HTML, SCSS, spec). La ruta `/festivales/:slug` registrada en `app.routes.ts` con `loadChildren`. `data-access/` reservada con `.gitkeep` para el store y resolver futuros. |
 | 2026-06-12 | Auditoría `/audit-structure`: re-extracción del calendario a data-access | Tras el merge a `develop`, `festival-calendar.ts` había vuelto a tener los datos inline (regresión de la extracción del 2026-06-10) y `home-catalogue.ts` quedaba con `CALENDAR_FESTIVALS`/`CALENDAR_MONTH_SEGMENTS` huérfanos y **datos obsoletos** (un solo `latin-fest` en día 17). Corregido: `CALENDAR_FESTIVALS` actualizado al modelo de 5 entradas (`bigsound`, `latin-fest-valencia` 17–18 jul, `latin-fest`/Benidorm 4–5 jul, `zevra`, `medusa`); `festival-calendar.ts` re-cableado para importar `CALENDAR_FESTIVALS`/`CALENDAR_MONTH_SEGMENTS` y sus tipos desde `data-access/`, eliminando arrays y tipos inline duplicados. Sin cambios en i18n (claves ya presentes). |
