@@ -8,7 +8,16 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
   selector: 'fv-nav-bar',
-  imports: [NgOptimizedImage, RouterLink, RouterLinkActive, LucideSearch, LucideMoon, LucideSun, LucideMenu, TranslatePipe],
+  imports: [
+    NgOptimizedImage,
+    RouterLink,
+    RouterLinkActive,
+    LucideSearch,
+    LucideMoon,
+    LucideSun,
+    LucideMenu,
+    TranslatePipe,
+  ],
   templateUrl: './nav-bar.html',
   styleUrl: './nav-bar.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

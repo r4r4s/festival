@@ -61,30 +61,6 @@
             {{ 'nav.calendar' | t }}
           </a>
         </li>
-        <li>
-          <a
-            class="nav-bar__nav-link"
-            data-testid="nav-link-explorar"
-            routerLink="/explorar"
-            routerLinkActive="nav-bar__nav-link--active"
-            #rlaExplorar="routerLinkActive"
-            [attr.aria-current]="rlaExplorar.isActive ? 'page' : null"
-          >
-            {{ 'nav.explore' | t }}
-          </a>
-        </li>
-        <li>
-          <a
-            class="nav-bar__nav-link"
-            data-testid="nav-link-sobre-nosotros"
-            routerLink="/sobre-nosotros"
-            routerLinkActive="nav-bar__nav-link--active"
-            #rlaSobre="routerLinkActive"
-            [attr.aria-current]="rlaSobre.isActive ? 'page' : null"
-          >
-            {{ 'nav.about' | t }}
-          </a>
-        </li>
       </ul>
     </nav>
 
