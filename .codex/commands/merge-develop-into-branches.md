@@ -72,5 +72,5 @@ Or abort: `git merge --abort` and `git checkout develop`.
 ## Related
 
 - `/update-branches-from-develop` — agent-aware variant with reports and conflict exit `2`
-- `/new-branch` — create a new branch from `main`
+- `/new-branch` — create a new branch from `develop`
 - `/autocommit` — semantic commits for feature work

@@ -194,5 +194,5 @@ Result: ✅ Success
 
 - [[project-structure]] — branch naming (`feature/`, `fix/`, …)
 - [[internationalization]] — i18n key parity after conflict resolution
-- `/new-branch` — create a new branch from `main`
+- `/new-branch` — create a new branch from `develop`
 - `/autocommit` — semantic commits for feature work (not for merge commits here)

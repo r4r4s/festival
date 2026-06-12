@@ -252,7 +252,7 @@ Resultado: ✅ Éxito
 
 ## Related
 
-- `/new-branch` — crear una rama desde `main`
+- `/new-branch` — crear una rama desde `develop`
 - `/autocommit` — commitear trabajo en la rama antes de fusionar
 - `/update-branches-from-develop` — propagar develop a todas las ramas (operación inversa)
 - [[project-structure]] — convención de nombres de rama (`feature/`, `fix/`, …)

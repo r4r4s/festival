@@ -54,7 +54,7 @@ git status --short
 - If there are uncommitted changes, warn that they will travel to the new branch
   (git keeps the working tree on checkout). Confirm before continuing, or let the
   user stash first.
-- Determine the base branch: default to `main`. Confirm if the user wants the
+- Determine the base branch: default to `develop`. Confirm if the user wants the
   current branch as base instead.
 
 ### 4. Refuse on conflicts
@@ -69,15 +69,15 @@ git show-ref --verify --quiet "refs/heads/<name>"
 ### 5. Update the base and create the branch
 
 ```bash
-git switch main
-git pull --ff-only
+git switch develop
+git pull --ff-only origin develop
 git switch -c <name>
 ```
 
 - Use `git fetch` + `--ff-only` so the base is current without merge noise.
 - If the network/pull fails, report it and ask whether to branch from the local
   base anyway. Do not force or rebase without consent.
-- If the user chose the current branch as base, skip the `switch main` / `pull`
+- If the user chose the current branch as base, skip the `switch develop` / `pull`
   and just run `git switch -c <name>`.
 
 ### 6. Confirm
