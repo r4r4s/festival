@@ -61,6 +61,18 @@
             {{ 'nav.calendar' | t }}
           </a>
         </li>
+        <li>
+          <a
+            class="nav-bar__nav-link"
+            data-testid="nav-link-mapa"
+            routerLink="/mapa"
+            routerLinkActive="nav-bar__nav-link--active"
+            #rlaMapa="routerLinkActive"
+            [attr.aria-current]="rlaMapa.isActive ? 'page' : null"
+          >
+            {{ 'nav.map' | t }}
+          </a>
+        </li>
       </ul>
     </nav>
 
