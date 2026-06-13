@@ -1,5 +1,5 @@
 // ============================================================================
-// nav-bar.scss — festiVAL · Layout · Static header
+// nav-bar.scss — festiVAL · Layout · Sticky header
 // ============================================================================
 
 @use 'styles/breakpoints' as *;
@@ -13,12 +13,12 @@
   --nav-link-font-size: 15px;
   display: block;
   width: 100%;
-}
-
-.nav-bar {
   position: sticky;
   top: 0;
   z-index: 50;
+}
+
+.nav-bar {
   background: var(--fv-bg-nav);
   border-bottom: 1px solid var(--fv-border-nav);
   color: var(--fv-text-nav);
