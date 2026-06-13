@@ -1,0 +1,40 @@
+// ============================================================================
+// nav-progress-bar.scss — festiVAL · Layout · Slow-navigation indicator
+// ============================================================================
+// Only shown after 200ms of pending navigation (fast routes never trigger it).
+// ============================================================================
+
+:host {
+  display: contents; // no box in the layout
+}
+
+.nav-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200; // above nav-bar (z-index: 50)
+  height: 3px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.nav-progress-bar__track {
+  height: 100%;
+  transform-origin: left center;
+  background: linear-gradient(
+    to right,
+    #4e8cff 0%,
+    #a855f7 35%,
+    #ff5a7a 65%,
+    #f59e0b 100%
+  );
+  box-shadow:
+    0 0 8px color-mix(in srgb, var(--fv-accent-blue) 70%, transparent),
+    0 0 4px color-mix(in srgb, var(--fv-accent-med-blue) 40%, transparent);
+  animation: fv-progress-load 8s cubic-bezier(0.05, 0.6, 0.1, 1) forwards;
+
+  .nav-progress-bar--completing & {
+    animation: fv-progress-complete 480ms ease-out forwards;
+  }
+}
