@@ -1,7 +1,283 @@
+// ============================================================================
+// festival-hero.scss — Festival detail · Hero card (split layout)
+// ============================================================================
+
+@use 'styles/breakpoints' as *;
+
 :host {
   display: block;
 }
 
+// ---- Container --------------------------------------------------------------
+
 .festival-hero {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  @include from(lg) {
+    flex-direction: row;
+    min-height: 380px;
+  }
+}
+
+// ---- Content (left) ---------------------------------------------------------
+
+.festival-hero__content {
+  flex: 0 0 auto;
+  padding: var(--fv-space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--fv-space-3);
+
+  @include from(lg) {
+    flex: 0 0 42%;
+    padding: var(--fv-space-6) var(--fv-space-6) var(--fv-space-6) var(--fv-space-6);
+    justify-content: center;
+    gap: calc(var(--fv-space-2) + var(--fv-space-1));
+  }
+}
+
+// ---- Breadcrumb -------------------------------------------------------------
+
+.festival-hero__breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--fv-space-1);
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-xs);
+  color: var(--fv-text-footer-muted); // switches: navy@64% → gray@66%
+  flex-wrap: wrap;
+
+  svg {
+    flex-shrink: 0;
+    opacity: 0.5;
+  }
+}
+
+.festival-hero__bc-link {
+  color: inherit;
+  text-decoration: none;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: var(--fv-text-nav);
+      text-decoration: underline;
+    }
+  }
+}
+
+.festival-hero__bc-current {
+  color: var(--fv-text-nav);
+  font-weight: 600;
+}
+
+// ---- Title ------------------------------------------------------------------
+
+.festival-hero__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: var(--fv-space-1) 0;
+}
+
+.festival-hero__title-main {
+  font-family: var(--fv-font-heading);
+  font-size: clamp(52px, 5.5vw, 84px);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: var(--fv-tracking-tight);
+  color: var(--fv-text-nav); // navy in light, near-white in dark
+  margin: 0;
+}
+
+.festival-hero__title-sub {
+  font-family: var(--fv-font-heading);
+  font-size: clamp(52px, 5.5vw, 84px);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: 0.38em; // "F E S T I V A L" spread
+  color: var(--fv-text-nav);
+  margin: 0 0 0 2px; // optical align with MEDUSA
+}
+
+// ---- Meta -------------------------------------------------------------------
+
+.festival-hero__meta {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fv-space-2);
+}
+
+.festival-hero__meta-item {
+  display: flex;
+  align-items: center;
+  gap: var(--fv-space-2);
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-sm);
+  color: var(--fv-text-footer-muted);
+
+  svg {
+    flex-shrink: 0;
+    color: var(--fv-text-nav);
+    opacity: 0.7;
+  }
+}
+
+.festival-hero__meta-rating {
+  display: flex;
+  align-items: center;
+  gap: var(--fv-space-2);
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-sm);
+  flex-wrap: wrap;
+}
+
+.festival-hero__rating {
+  display: flex;
+  align-items: center;
+  gap: var(--fv-space-1);
+  color: var(--fv-text-footer-muted);
+
+  strong {
+    color: var(--fv-text-nav);
+    font-weight: 700;
+  }
+}
+
+.festival-hero__star-icon {
+  color: var(--fv-accent-warning);
+  fill: var(--fv-accent-warning);
+}
+
+.festival-hero__rating-count {
+  color: var(--fv-text-footer-muted);
+}
+
+.festival-hero__meta-sep {
+  color: var(--fv-text-footer-faint);
+  user-select: none;
+}
+
+.festival-hero__save {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fv-space-1);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-sm);
+  color: var(--fv-text-footer-muted);
+
+  svg {
+    color: var(--fv-text-nav);
+    opacity: 0.6;
+    transition: color 150ms ease, opacity 150ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: var(--fv-text-nav);
+
+      svg {
+        color: var(--fv-accent-danger);
+        opacity: 1;
+      }
+    }
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--fv-shadow-focus);
+    border-radius: var(--fv-radius-sm);
+  }
+}
+
+// ---- CTAs -------------------------------------------------------------------
+
+.festival-hero__ctas {
+  display: flex;
+  align-items: center;
+  gap: var(--fv-space-3);
+  flex-wrap: wrap;
+  margin-top: var(--fv-space-1);
+}
+
+.festival-hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fv-space-2);
+  border-radius: var(--fv-radius-pill);
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-sm);
+  font-weight: 700;
+  letter-spacing: var(--fv-tracking-wide);
+  text-decoration: none;
+  padding: var(--fv-space-3) var(--fv-space-5);
+  white-space: nowrap;
+  transition: opacity 150ms ease, box-shadow 150ms ease;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--fv-shadow-focus);
+  }
+}
+
+.festival-hero__cta--primary {
+  background: var(--fv-text-nav); // navy in light, near-white in dark
+  color: var(--fv-bg-page);  // inverts: white in light, dark in dark
+  box-shadow: var(--fv-shadow-hero-btn-primary);
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      opacity: 0.88;
+    }
+  }
+}
+
+.festival-hero__cta--secondary {
+  background: transparent;
+  color: var(--fv-text-nav);
+  border: 1.5px solid var(--fv-border-nav);
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: var(--fv-bg-nav-icon-hover);
+    }
+  }
+}
+
+// ---- Image (right) ----------------------------------------------------------
+
+.festival-hero__img-wrap {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 240px;
+  overflow: hidden;
+
+  @include from(lg) {
+    min-height: unset;
+  }
+
+  img {
+    object-fit: cover;
+    object-position: center top;
+  }
+}
+
+// Subtle gradient on left edge so image fades into the content panel
+.festival-hero__img-fade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to right, var(--fv-bg-page) 0%, transparent 22%);
+
+  @include from(lg) {
+    background: linear-gradient(to right, var(--fv-bg-page) 0%, transparent 18%);
+  }
 }

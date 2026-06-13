@@ -1,2 +1,77 @@
-<header class="festival-hero" data-testid="festival-hero">
-</header>
+<article class="festival-hero" data-testid="festival-hero">
+
+  <!-- Left: info -->
+  <div class="festival-hero__content">
+
+    <nav class="festival-hero__breadcrumb" aria-label="Ruta de navegación">
+      <a routerLink="/" class="festival-hero__bc-link">Inicio</a>
+      <svg lucideChevronRight aria-hidden="true" focusable="false" [size]="12" [strokeWidth]="2"></svg>
+      <a routerLink="/festivales" class="festival-hero__bc-link">Festivales</a>
+      <svg lucideChevronRight aria-hidden="true" focusable="false" [size]="12" [strokeWidth]="2"></svg>
+      <span class="festival-hero__bc-current" aria-current="page">Medusa Festival</span>
+    </nav>
+
+    <div class="festival-hero__title-block">
+      <h1 class="festival-hero__title-main">MEDUSA</h1>
+      <p class="festival-hero__title-sub" aria-hidden="true">FESTIVAL</p>
+    </div>
+
+    <ul class="festival-hero__meta" aria-label="Información del festival">
+      <li class="festival-hero__meta-item">
+        <svg lucideMapPin aria-hidden="true" focusable="false" [size]="16" [strokeWidth]="2"></svg>
+        <span>Cullera, Valencia</span>
+      </li>
+      <li class="festival-hero__meta-item">
+        <svg lucideCalendar aria-hidden="true" focusable="false" [size]="16" [strokeWidth]="2"></svg>
+        <time datetime="2026-08-07/2026-08-11">7 – 11 Agosto 2026</time>
+      </li>
+      <li class="festival-hero__meta-rating">
+        <span class="festival-hero__rating">
+          <svg lucideStar aria-hidden="true" focusable="false" [size]="16" [strokeWidth]="0" class="festival-hero__star-icon"></svg>
+          <strong>4,6</strong>
+          <span class="festival-hero__rating-count">(2,3K reseñas)</span>
+        </span>
+        <span class="festival-hero__meta-sep" aria-hidden="true">|</span>
+        <button type="button" class="festival-hero__save" aria-label="Guardar Medusa Festival en favoritos">
+          <svg lucideHeart aria-hidden="true" focusable="false" [size]="16" [strokeWidth]="2"></svg>
+          <span>Guardar festival</span>
+        </button>
+      </li>
+    </ul>
+
+    <div class="festival-hero__ctas">
+      <a
+        href="https://medusafestival.es/entradas"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="festival-hero__cta festival-hero__cta--primary"
+      >
+        <svg lucideTicket aria-hidden="true" focusable="false" [size]="18" [strokeWidth]="2"></svg>
+        COMPRAR ENTRADAS
+      </a>
+      <a
+        href="https://medusafestival.es"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="festival-hero__cta festival-hero__cta--secondary"
+      >
+        VER SITIO OFICIAL
+        <svg lucideExternalLink aria-hidden="true" focusable="false" [size]="16" [strokeWidth]="2"></svg>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Right: image -->
+  <div class="festival-hero__img-wrap" aria-hidden="true">
+    <img
+      ngSrc="/assets/images/festivals/medusa/hero-medusa-festival-2026.webp"
+      alt="Escenario principal del Medusa Festival iluminado de noche"
+      fill
+      priority
+      sizes="(min-width: 1024px) 58vw, 100vw"
+    />
+    <div class="festival-hero__img-fade"></div>
+  </div>
+
+</article>
