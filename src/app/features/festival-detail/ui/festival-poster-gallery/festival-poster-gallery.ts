@@ -53,6 +53,12 @@ export class FestivalPosterGalleryComponent {
   protected readonly posters = computed<readonly FestivalDetailPoster[]>(
     () => this.entry()?.posters ?? [],
   );
+  protected readonly featuredPoster = computed<FestivalDetailPoster | null>(
+    () => this.posters().find((poster) => poster.featured) ?? this.posters()[0] ?? null,
+  );
+  protected readonly carouselPosters = computed<readonly FestivalDetailPoster[]>(
+    () => this.posters().filter((poster) => !poster.featured),
+  );
 
   pause(): void {
     this.isPaused.set(true);

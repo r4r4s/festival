@@ -30,6 +30,16 @@
   gap: var(--fv-space-2);
 }
 
+.festival-poster-gallery__layout {
+  display: grid;
+  gap: var(--fv-space-5);
+
+  @include from(lg) {
+    grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
 .festival-poster-gallery__title,
 .festival-poster-gallery__intro,
 .festival-poster-gallery__label {
@@ -74,6 +84,13 @@
   }
 }
 
+.festival-poster-gallery__featured,
+.festival-poster-gallery__poster {
+  display: grid;
+  gap: var(--fv-space-2);
+  margin: 0;
+}
+
 .festival-poster-gallery__track {
   display: flex;
   gap: var(--poster-card-gap);
@@ -99,12 +116,6 @@
   width: var(--poster-card-width);
 }
 
-.festival-poster-gallery__poster {
-  display: grid;
-  gap: var(--fv-space-2);
-  margin: 0;
-}
-
 .festival-poster-gallery__trigger,
 .festival-poster-gallery__dialog-close {
   appearance: none;
@@ -122,6 +133,10 @@
   outline: none;
 
   @include focus-ring;
+}
+
+.festival-poster-gallery__trigger--featured {
+  width: 100%;
 }
 
 .festival-poster-gallery__image {

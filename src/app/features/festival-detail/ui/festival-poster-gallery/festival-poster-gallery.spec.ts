@@ -19,10 +19,11 @@ describe('FestivalPosterGalleryComponent', () => {
     expect(fixture.nativeElement.querySelector('[data-testid="festival-poster-gallery"]')).not.toBeNull();
   });
 
-  it('renders the looping carousel with both groups of posters', () => {
+  it('renders the featured poster and the looping daily carousel', () => {
+    expect(fixture.nativeElement.querySelectorAll('.festival-poster-gallery__featured')).toHaveLength(1);
     expect(fixture.nativeElement.querySelectorAll('.festival-poster-gallery__group')).toHaveLength(2);
-    expect(fixture.nativeElement.querySelectorAll('.festival-poster-gallery__image')).toHaveLength(10);
-    expect(fixture.nativeElement.querySelectorAll('.festival-poster-gallery__item')).toHaveLength(10);
+    expect(fixture.nativeElement.querySelectorAll('.festival-poster-gallery__image')).toHaveLength(9);
+    expect(fixture.nativeElement.querySelectorAll('.festival-poster-gallery__item')).toHaveLength(8);
   });
 
   it('pauses and resumes the track state', () => {
