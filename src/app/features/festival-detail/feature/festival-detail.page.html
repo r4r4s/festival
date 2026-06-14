@@ -12,4 +12,13 @@
   } @placeholder {
     <div class="festival-detail-page__placeholder" aria-hidden="true"></div>
   }
+
+  @defer (on viewport) {
+    <fv-featured-reviews
+      [reviews]="featuredReviews"
+      [stats]="reviewStats"
+    />
+  } @placeholder {
+    <div class="festival-detail-page__placeholder" aria-hidden="true"></div>
+  }
 </section>

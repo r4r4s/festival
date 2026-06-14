@@ -1,0 +1,174 @@
+// =============================================================================
+// featured-reviews.scss — Festival detail · Daily-rotating review section
+// =============================================================================
+
+@use 'styles/breakpoints' as *;
+
+:host {
+  display: block;
+}
+
+// ── Section container ─────────────────────────────────────────────────────────
+
+.featured-reviews {
+  padding: var(--fv-space-6) 0;
+}
+
+// ── Header ───────────────────────────────────────────────────────────────────
+
+.featured-reviews__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fv-space-3);
+  margin-bottom: var(--fv-space-5);
+
+  @include from(md) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.featured-reviews__title {
+  font-family: var(--fv-font-heading);
+  font-size: var(--fv-text-xl);
+  font-weight: 700;
+  color: var(--fv-text-nav);
+  margin: 0;
+}
+
+// ── Summary bar ──────────────────────────────────────────────────────────────
+
+.featured-reviews__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--fv-space-2);
+  flex-wrap: wrap;
+}
+
+.featured-reviews__average {
+  font-family: var(--fv-font-heading);
+  font-size: var(--fv-text-2xl);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--fv-text-nav);
+}
+
+.featured-reviews__stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.featured-reviews__count {
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-sm);
+  color: var(--fv-text-secondary);
+}
+
+// ── Star fill state ───────────────────────────────────────────────────────────
+
+svg.featured-reviews__star--filled {
+  color: var(--fv-accent-warning);
+  fill: var(--fv-accent-warning);
+}
+
+svg:not(.featured-reviews__star--filled) {
+  color: var(--fv-border-default);
+  fill: var(--fv-border-default);
+}
+
+// ── Review list ───────────────────────────────────────────────────────────────
+
+.featured-reviews__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--fv-space-4);
+
+  @include from(md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+// ── Review card ───────────────────────────────────────────────────────────────
+
+.featured-reviews__card {
+  background: var(--fv-bg-surface);
+  border: 1px solid var(--fv-border-subtle);
+  border-radius: var(--fv-radius-lg);
+  padding: var(--fv-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--fv-space-3);
+}
+
+// ── Card header (author + badge) ──────────────────────────────────────────────
+
+.featured-reviews__card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fv-space-2);
+  flex-wrap: wrap;
+}
+
+.featured-reviews__card-author {
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-sm);
+  font-weight: 600;
+  color: var(--fv-text-nav);
+}
+
+// ── Verified badge ────────────────────────────────────────────────────────────
+
+.featured-reviews__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-xs);
+  font-weight: 600;
+  letter-spacing: var(--fv-tracking-wide);
+  color: var(--fv-accent-blue);
+  background: rgba(78, 140, 255, 0.12); // @compat — color-mix() not supported in Safari < 16.4
+  background: color-mix(in srgb, var(--fv-accent-blue) 12%, transparent);
+  border-radius: var(--fv-radius-pill);
+  padding: 2px var(--fv-space-2);
+  white-space: nowrap;
+}
+
+// ── Card body ─────────────────────────────────────────────────────────────────
+
+.featured-reviews__card-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.featured-reviews__card-comment {
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-sm);
+  line-height: var(--fv-leading-relaxed);
+  color: var(--fv-text-secondary);
+  margin: 0;
+  flex: 1;
+}
+
+.featured-reviews__card-date {
+  font-family: var(--fv-font-mono);
+  font-size: var(--fv-text-xs);
+  color: var(--fv-text-muted);
+  letter-spacing: var(--fv-tracking-wide);
+}
+
+// ── Empty state ───────────────────────────────────────────────────────────────
+
+.featured-reviews__empty {
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-sm);
+  color: var(--fv-text-secondary);
+  margin: 0;
+}

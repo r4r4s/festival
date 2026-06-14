@@ -466,13 +466,36 @@ src/app/features/
 │   │   │   ├── lineup-grid.html
 │   │   │   ├── lineup-grid.scss
 │   │   │   └── lineup-grid.spec.ts
-│   │   └── venue-map/                → Mapa interactivo del recinto del festival.
-│   │       ├── venue-map.ts
-│   │       ├── venue-map.html
-│   │       ├── venue-map.scss
-│   │       └── venue-map.spec.ts
-│   ├── data-access/                  → (pendiente) Store, resolver y schema Zod por slug.
-│   │   └── .gitkeep
+│   │   ├── venue-map/                → Mapa interactivo del recinto del festival.
+│   │   │   ├── venue-map.ts
+│   │   │   ├── venue-map.html
+│   │   │   ├── venue-map.scss
+│   │   │   └── venue-map.spec.ts
+│   │   └── featured-reviews/         → Bloque de opiniones con rotación diaria determinista.
+│   │       ├── featured-reviews.ts   → FeaturedReviewsComponent (OnPush): inputs reviews y
+│   │       │                           stats. Métodos starsFor(n) y formatAverage(n).
+│   │       │                           Importa SlicePipe, LucideStar, LucideShieldCheck y
+│   │       │                           TranslatePipe. Cargado en festival-detail.page con @defer.
+│   │       ├── featured-reviews.html → Sección con resumen (media + estrellas + total) y
+│   │       │                           lista de 3 cards (autor, badge verificado, rating visual,
+│   │       │                           comentario, fecha). Estado vacío condicional.
+│   │       ├── featured-reviews.scss → Grid 1→3 columnas (md). Tokens semánticos --fv-*.
+│   │       │                           Badge verificado con color-mix() y fallback rgba (@compat).
+│   │       └── featured-reviews.spec.ts → 10 tests: render, conteo de cards, resumen, badges
+│   │                                      verificados, estado vacío, starsFor, formatAverage.
+│   ├── data-access/                  → Servicio de rotación, datos de reseñas.
+│   │   ├── reviews.data.ts           → Catálogo estático de 60 reseñas originales en español:
+│   │   │                               10 por festival × 6 slugs (bigsound, latin-fest, medusa,
+│   │   │                               rbf, reve, zevra). Ratings 2–5, texto original. Exporta
+│   │   │                               FESTIVAL_REVIEWS (array plano) y REVIEWS_BY_FESTIVAL
+│   │   │                               (ReadonlyMap<string, readonly FestivalReview[]>).
+│   │   ├── review-rotation.service.ts → ReviewRotationService (providedIn: 'root'): rotación
+│   │   │                               diaria determinista de reseñas. getFeaturedReviews(slug,
+│   │   │                               date?) devuelve 3 reseñas circulares usando semilla
+│   │   │                               (utcDateKey × 1_000_003 + djb2Hash(slug)) >>> 0.
+│   │   │                               getStats(slug) calcula media y total. Sin Math.random().
+│   │   └── review-rotation.service.spec.ts → 12 tests: determinismo, rotación por festival,
+│   │                                          días distintos, estado vacío, stats y wrap circular.
 │   └── festival-detail.routes.ts    → Superficie pública. Expone FESTIVAL_DETAIL_ROUTES con
 │                                       loadComponent hacia festival-detail.page.
 ├── home/                → Página de inicio. Muestra festivales destacados, hero con glow
@@ -504,12 +527,14 @@ src/app/features/
 │   │   │                                   `focusFestival()` y semántica del autoplay con fake timers.
 │   │   ├── featured-festivals/
 │   │   │   ├── featured-festivals.ts      → Componente local standalone con datos de festivales
-│   │   │   │                                destacados.
-│   │   │   ├── featured-festivals.html    → Header "Festivales destacados" y tarjetas con imagen,
-│   │   │   │                                fecha, nombre y ubicación.
+│   │   │   │                                destacados. Importa RouterLink: cada tarjeta enlaza a
+│   │   │   │                                `/festivales/:slug`.
+│   │   │   ├── featured-festivals.html    → Header "Festivales destacados" y tarjetas `<a>` con imagen,
+│   │   │   │                                fecha, nombre y ubicación, con routerLink por festival.
 │   │   │   ├── featured-festivals.scss    → Carrusel horizontal sin fondo propio: movimiento continuo
 │   │   │   │                                en desktop, avance cada 3 s en móvil y sin lift en hover.
-│   │   │   └── featured-festivals.spec.ts → Tests de render y pista duplicada.
+│   │   │   │                                `.featured-festivals__card` como bloque (display: block).
+│   │   │   └── featured-festivals.spec.ts → Tests de render y pista duplicada. Usa provideRouter([]).
 │   │   └── home-festival-map/
 │   │       ├── home-festival-map.ts      → Componente interactivo de pines sobre imagen del mapa
 │   │       │                               valenciano. Recibe las localizaciones por
@@ -574,8 +599,12 @@ src/app/shared/
 │   │                                Forma canónica del catálogo: slug, nombre, provincia, ciudad,
 │   │                                fechaInicio/Fin, generos, cartel, precioDesde, urlOficial,
 │   │                                poster, ubicacion. Usado en la frontera HTTP (safeParse).
-│   └── festival-error.model.ts    → FestivalError (extends Error): code FestivalErrorCode,
-│                                    originalError. Método estático fromHttpStatus().
+│   ├── festival-error.model.ts    → FestivalError (extends Error): code FestivalErrorCode,
+│   │                                originalError. Método estático fromHttpStatus().
+│   └── review.model.ts            → FestivalReviewSchema (Zod) + tipo inferido FestivalReview:
+│                                    id, festivalSlug, author, rating (1–5), comment, date ISO,
+│                                    verified, source?. Exporta también ReviewStats { averageRating,
+│                                    totalCount }.
 ├── pipes/               → Pipes genéricos reutilizables.
 │   ├── translate.pipe.ts      → Pipe impuro `| t` que delega en `TranslationService`.
 │   │                            Lee la signal `activeLang` para que Angular detecte cambios
@@ -661,6 +690,7 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 
 | Fecha      | Cambio                                                  | Descripción                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ---------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-06-14 | Sistema de opiniones con rotación diaria determinista      | Añadidos `shared/domain/review.model.ts` (FestivalReviewSchema Zod + ReviewStats), `festival-detail/data-access/reviews.data.ts` (60 reseñas originales × 6 festivales), `festival-detail/data-access/review-rotation.service.ts` (+ spec, 12 tests: seed djb2 + utcDateKey, 3 reseñas circulares sin Math.random()), y `festival-detail/ui/featured-reviews/` (componente + template + SCSS + spec, 10 tests). Integrado en `festival-detail.page` con `@defer (on viewport)`. Pipe `| t` extendido con `params?: Record<string, unknown>` y helper `interpolate()` en `TranslationService`. Claves `festival.reviews.*` propagadas a es/ca/en. `featured-festivals` ahora enlaza a `/festivales/:slug` vía `RouterLink`. |
 | 2026-06-13 | Nav-bar sticky en `:host`                                 | `nav-bar.scss`: `position: sticky`, `top: 0` y `z-index: 50` movidos de `.nav-bar` a `:host` para que el header permanezca fijo al hacer scroll (el sticky en el hijo interno no anclaba correctamente al viewport). |
 | 2026-06-13 | Progress bar glow con tokens                              | `nav-progress-bar.scss`: `box-shadow` del glow sustituido por `color-mix` con `--fv-accent-blue` y `--fv-accent-med-blue` (cumple gate B.3 sin colores hardcodeados). |
 | 2026-06-13 | Page transition UX (scroll top + fade-in + progress bar) | Añadidos `page-transition.service.ts` (+ spec): estado `hidden/loading/completing`, activación tras 200 ms y auto-limpieza en `NavigationEnd/Cancel/Error`. Cableados `nav-progress-bar` (ts, html, spec). `provideRouter` con `withInMemoryScrolling({ scrollPositionRestoration: 'top' })`. `app.ts` reinicia `fv-page-enter` vía `Renderer2` en cada `NavigationEnd`. Keyframes `fv-page-enter`, `fv-progress-load` y `fv-progress-complete` en `_animations.scss`. `app.html`: `<fv-nav-progress-bar />` y `#mainEl`. |
