@@ -6,7 +6,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideTransloco, TranslocoService } from '@jsverse/transloco';
 import { of } from 'rxjs';
 
-import { App } from './app';
+import { ShellComponent } from './shell';
 
 class TranslocoLoaderStub {
   getTranslation() {
@@ -14,10 +14,10 @@ class TranslocoLoaderStub {
   }
 }
 
-describe('App', () => {
+describe('ShellComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [App],
+      imports: [ShellComponent],
       providers: [
         provideRouter([]),
         provideHttpClient(),
@@ -38,16 +38,13 @@ describe('App', () => {
     TestBed.inject(TranslocoService).setActiveLang('es');
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(App);
-    expect(fixture.componentInstance).toBeTruthy();
-  });
-
-  it('renders the shell which exposes the router outlet', () => {
-    const fixture = TestBed.createComponent(App);
+  it('renders the shell chrome and router outlet', () => {
+    const fixture = TestBed.createComponent(ShellComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('fv-shell')).not.toBeNull();
-    expect(compiled.querySelector('router-outlet')).not.toBeNull();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.querySelector('router-outlet')).not.toBeNull();
+    expect(host.querySelector('fv-nav-bar')).not.toBeNull();
+    expect(host.querySelector('fv-footer')).not.toBeNull();
+    expect(host.querySelector('.shell__main')).not.toBeNull();
   });
 });
