@@ -1,25 +1,22 @@
 <header class="nav-bar">
   <div class="nav-bar__inner">
     <a class="nav-bar__brand" routerLink="/" [attr.aria-label]="'nav.home' | t">
-      @if (isDark()) {
-        <img
-          class="nav-bar__brand-img"
-          ngSrc="assets/branding/festi-val-logo-dark.webp"
-          width="746"
-          height="334"
-          priority
-          alt="festiVAL"
-        />
-      } @else {
-        <img
-          class="nav-bar__brand-img"
-          ngSrc="assets/branding/festi-val-logo.webp"
-          width="746"
-          height="334"
-          priority
-          alt="festiVAL"
-        />
-      }
+      <img
+        class="nav-bar__brand-img nav-bar__brand-img--light"
+        ngSrc="assets/branding/festi-val-logo.webp"
+        width="746"
+        height="334"
+        priority
+        alt="festiVAL"
+      />
+      <img
+        class="nav-bar__brand-img nav-bar__brand-img--dark"
+        ngSrc="assets/branding/festi-val-logo-dark.webp"
+        width="746"
+        height="334"
+        alt=""
+        aria-hidden="true"
+      />
     </a>
 
     <nav class="nav-bar__nav" [attr.aria-label]="'nav.aria.primary' | t">

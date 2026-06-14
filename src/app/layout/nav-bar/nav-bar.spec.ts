@@ -91,19 +91,23 @@ describe('NavBar', () => {
     expect(root.querySelector('.nav-bar__theme-toggle svg[lucidemoon]')).not.toBeNull();
   });
 
-  it('shows the white-letter logo variant in dark mode', () => {
+  it('renders both logo variants so CSS can pick the right one per theme', () => {
     const fixture = TestBed.createComponent(NavBar);
     fixture.detectChanges();
     const root = fixture.nativeElement as HTMLElement;
-    const toggle = root.querySelector('.nav-bar__theme-toggle') as HTMLButtonElement;
 
-    toggle.click();
-    fixture.detectChanges();
+    const lightLogo = root.querySelector('.nav-bar__brand-img--light') as HTMLImageElement;
+    const darkLogo = root.querySelector('.nav-bar__brand-img--dark') as HTMLImageElement;
 
-    const logo = root.querySelector('.nav-bar__brand-img') as HTMLImageElement;
-    expect(logo.getAttribute('ng-img')).toBe('true');
-    expect(logo.getAttribute('ng-reflect-ng-src') ?? logo.src).toContain(
+    expect(lightLogo).not.toBeNull();
+    expect(darkLogo).not.toBeNull();
+    expect(lightLogo.getAttribute('ng-reflect-ng-src') ?? lightLogo.src).toContain(
+      'assets/branding/festi-val-logo.webp',
+    );
+    expect(darkLogo.getAttribute('ng-reflect-ng-src') ?? darkLogo.src).toContain(
       'assets/branding/festi-val-logo-dark.webp',
     );
+    // The dark variant is the duplicate; only the light one stays in the a11y tree.
+    expect(darkLogo.getAttribute('aria-hidden')).toBe('true');
   });
 });

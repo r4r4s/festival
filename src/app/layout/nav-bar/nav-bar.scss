@@ -71,6 +71,27 @@
   }
 }
 
+// CSS-driven logo swap. The Angular `@if (isDark())` approach raced with SSR:
+// the server defaulted to light (no matchMedia available), shipped the navy
+// wordmark, and NgOptimizedImage `priority` had already committed it before
+// hydration could flip the signal. Letting the browser pick via media query +
+// `data-theme` keeps it instant and SSR-safe.
+.nav-bar__brand-img--dark {
+  display: none;
+}
+
+:host-context([data-theme='dark']) {
+  .nav-bar__brand-img--light { display: none; }
+  .nav-bar__brand-img--dark  { display: block; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not([data-theme])) {
+    .nav-bar__brand-img--light { display: none; }
+    .nav-bar__brand-img--dark  { display: block; }
+  }
+}
+
 // ---- Primary navigation -----------------------------------------------------
 
 .nav-bar__nav {
