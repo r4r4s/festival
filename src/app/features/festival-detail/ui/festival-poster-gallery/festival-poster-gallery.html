@@ -1,0 +1,100 @@
+@if (posters().length) {
+@let k = keys();
+<section
+  class="festival-poster-gallery"
+  [attr.aria-label]="k.title | t"
+  data-testid="festival-poster-gallery"
+>
+  <div class="festival-poster-gallery__copy">
+    <h2 class="festival-poster-gallery__title">{{ k.title | t }}</h2>
+    <p class="festival-poster-gallery__intro">{{ k.intro | t }}</p>
+  </div>
+
+  <div
+    class="festival-poster-gallery__viewport"
+    data-testid="festival-poster-gallery-viewport"
+    tabindex="0"
+    (mouseenter)="pause()"
+    (mouseleave)="resume()"
+    (focusin)="pause()"
+    (focusout)="resume()"
+  >
+    <div
+      class="festival-poster-gallery__track"
+      [class.festival-poster-gallery__track--paused]="isPaused()"
+      data-testid="festival-poster-gallery-track"
+    >
+      @for (group of [0, 1]; track group) {
+      <ul
+        class="festival-poster-gallery__group"
+        role="list"
+        [attr.aria-hidden]="group === 1 ? 'true' : null"
+      >
+        @for (poster of posters(); track poster.src) {
+        <li class="festival-poster-gallery__item">
+          <figure class="festival-poster-gallery__poster">
+            <figcaption class="festival-poster-gallery__label">{{ poster.labelKey | t }}</figcaption>
+            <button
+              type="button"
+              class="festival-poster-gallery__trigger"
+              (click)="openPoster(poster)"
+            >
+              <img
+                class="festival-poster-gallery__image"
+                [ngSrc]="poster.src"
+                [width]="poster.width"
+                [height]="poster.height"
+                [alt]="poster.alt"
+                sizes="(min-width: 1024px) 20vw, (min-width: 768px) 34vw, 72vw"
+              />
+            </button>
+          </figure>
+        </li>
+        }
+      </ul>
+      }
+    </div>
+  </div>
+
+  @if (activePoster(); as poster) {
+  <div
+    class="festival-poster-gallery__dialog-backdrop"
+    data-testid="festival-poster-gallery-dialog-backdrop"
+    tabindex="0"
+    (click)="closePosterFromBackdrop($event)"
+    (keydown.enter)="closePoster()"
+    (keydown.space)="closePoster()"
+  >
+    <div
+      class="festival-poster-gallery__dialog"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-label]="k.dialogAriaLabel | t"
+      data-testid="festival-poster-gallery-dialog"
+    >
+      <button
+        type="button"
+        class="festival-poster-gallery__dialog-close"
+        [attr.aria-label]="k.dialogClose | t"
+        data-testid="festival-poster-gallery-dialog-close"
+        (click)="closePoster()"
+      >
+        ×
+      </button>
+      <figure class="festival-poster-gallery__dialog-poster">
+        <figcaption class="festival-poster-gallery__label">{{ poster.labelKey | t }}</figcaption>
+        <img
+          class="festival-poster-gallery__dialog-image"
+          [ngSrc]="poster.src"
+          [width]="poster.width"
+          [height]="poster.height"
+          [alt]="poster.alt"
+          sizes="(min-width: 1024px) 70vw, (min-width: 768px) 82vw, 92vw"
+          priority
+        />
+      </figure>
+    </div>
+  </div>
+  }
+</section>
+}

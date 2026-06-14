@@ -11,6 +11,8 @@
     <p class="festival-overview__body">{{ k.paragraph2 | t }}</p>
   </div>
 
+  <fv-festival-poster-gallery [slug]="slug()" />
+
   <ul class="festival-overview__highlights" [attr.aria-label]="'festival.detail.overview.highlightsAriaLabel' | t">
     <li class="festival-overview__highlight">
       <svg lucideWavesLadder aria-hidden="true" focusable="false" [size]="20" [strokeWidth]="2"></svg>

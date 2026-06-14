@@ -371,10 +371,25 @@
           },
           "overview": {
             "paragraph1": "Medusa Festival is one of the most important electronic music festivals in Europe and a must-watch highlight of the Spanish summer. Held on the spectacular beach of Cullera, Valencia, it brings together some of the best international DJs and artists for five days in a unique setting by the Mediterranean Sea.",
-            "paragraph2": "With more than 300,000 m² of venue space, spectacular themed stages, large-format audiovisual production, and an unmatched immersive experience, Medusa Festival attracts thousands of attendees from all over the world every year in search of music, spectacle, and an unforgettable atmosphere.",
-            "highlights": {
-              "beach": "Beach",
-              "camping": "Camping",
+        "paragraph2": "With more than 300,000 m² of venue space, spectacular themed stages, large-format audiovisual production, and an unmatched immersive experience, Medusa Festival attracts thousands of attendees from all over the world every year in search of music, spectacle, and an unforgettable atmosphere.",
+        "posterGallery": {
+          "title": "Official Posters",
+          "intro": "The main poster and the day-by-day visual line-up so the whole week can be scanned at a glance.",
+          "dialog": {
+            "ariaLabel": "Expanded festival poster",
+            "close": "Close expanded poster"
+          },
+          "labels": {
+            "general": "Main Poster",
+            "thursday": "Thursday",
+            "friday": "Friday",
+            "saturday": "Saturday",
+            "sunday": "Sunday"
+          }
+        },
+        "highlights": {
+          "beach": "Beach",
+          "camping": "Camping",
               "foodTrucks": "Food Trucks",
               "afterparties": "Afterparties",
               "activities": "Activities"

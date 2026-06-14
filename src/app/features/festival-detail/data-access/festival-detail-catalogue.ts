@@ -22,6 +22,7 @@ export interface FestivalDetailEntry {
     readonly ticketUrl: string;
     readonly officialUrl: string;
   };
+  readonly posters?: readonly FestivalDetailPoster[];
   readonly map: {
     readonly lat: number;
     readonly lng: number;
@@ -35,6 +36,15 @@ export interface FestivalDetailEntry {
      */
     readonly embedUrl: string;
   };
+}
+
+export interface FestivalDetailPoster {
+  readonly labelKey: TranslationKey;
+  readonly src: string;
+  readonly alt: string;
+  readonly width: number;
+  readonly height: number;
+  readonly featured?: boolean;
 }
 
 const ENTRIES: readonly FestivalDetailEntry[] = [
@@ -102,6 +112,44 @@ const ENTRIES: readonly FestivalDetailEntry[] = [
       ticketUrl: 'https://www.medusasunbeach.com/entradas',
       officialUrl: 'https://www.medusasunbeach.com/',
     },
+    posters: [
+      {
+        labelKey: 'festival.detail.byFestival.medusa.overview.posterGallery.labels.general',
+        src: '/assets/images/festivals/medusa/cartel-medusa-2026.webp',
+        alt: 'Cartel general del Medusa Festival 2026',
+        width: 1080,
+        height: 1350,
+        featured: true,
+      },
+      {
+        labelKey: 'festival.detail.byFestival.medusa.overview.posterGallery.labels.thursday',
+        src: '/assets/images/festivals/medusa/cartel-medusa-jueves-2026.webp',
+        alt: 'Cartel del jueves del Medusa Festival 2026',
+        width: 1086,
+        height: 1448,
+      },
+      {
+        labelKey: 'festival.detail.byFestival.medusa.overview.posterGallery.labels.friday',
+        src: '/assets/images/festivals/medusa/cartel-medusa-viernes-2026.webp',
+        alt: 'Cartel del viernes del Medusa Festival 2026',
+        width: 1086,
+        height: 1448,
+      },
+      {
+        labelKey: 'festival.detail.byFestival.medusa.overview.posterGallery.labels.saturday',
+        src: '/assets/images/festivals/medusa/cartel-medusa-sabado-2026.webp',
+        alt: 'Cartel del sábado del Medusa Festival 2026',
+        width: 1086,
+        height: 1448,
+      },
+      {
+        labelKey: 'festival.detail.byFestival.medusa.overview.posterGallery.labels.sunday',
+        src: '/assets/images/festivals/medusa/cartel-medusa-domingo-2026.webp',
+        alt: 'Cartel del domingo del Medusa Festival 2026',
+        width: 1086,
+        height: 1448,
+      },
+    ],
     map: {
       lat: 39.15434989735872,
       lng: -0.243329265792136,
