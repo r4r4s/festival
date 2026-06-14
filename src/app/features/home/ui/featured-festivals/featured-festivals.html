@@ -27,9 +27,11 @@
         >
           @for (festival of festivals; track festival.slug) {
             <li class="featured-festivals__item">
-              <article
+              <a
+                [routerLink]="['/festivales', festival.slug]"
                 class="featured-festivals__card"
                 [attr.data-testid]="'featured-festivals-card-' + festival.slug"
+                [attr.aria-label]="festival.nameKey | t"
               >
                 <img
                   class="featured-festivals__image"
@@ -68,7 +70,7 @@
                     <span>{{ festival.locationKey | t }}</span>
                   </p>
                 </div>
-              </article>
+              </a>
             </li>
           }
         </ul>

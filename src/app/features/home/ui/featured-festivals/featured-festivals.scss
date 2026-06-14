@@ -97,12 +97,16 @@
 
 .featured-festivals__card {
   position: relative;
+  display: block;
   width: 100%;
   aspect-ratio: 16 / 10;
   border-radius: var(--fv-radius-xl);
   overflow: hidden;
   isolation: isolate;
   background: var(--fv-bg-surface);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 
   @include from(md) {
     aspect-ratio: 16 / 9;
