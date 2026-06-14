@@ -24,10 +24,10 @@
   transform-origin: left center;
   background: linear-gradient(
     to right,
-    #4e8cff 0%,
-    #a855f7 35%,
-    #ff5a7a 65%,
-    #f59e0b 100%
+    var(--fv-accent-blue) 0%,
+    var(--fv-accent-violet) 35%,
+    var(--fv-accent-pink) 65%,
+    var(--fv-accent-amber) 100%
   );
   box-shadow:
     0 0 8px color-mix(in srgb, var(--fv-accent-blue) 70%, transparent),
