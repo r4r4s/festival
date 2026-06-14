@@ -49,21 +49,9 @@
     </div>
   </article>
 
-  @defer (on viewport) {
-    <fv-festival-calendar />
-  } @placeholder {
-    <div class="home-page__festivals-placeholder" aria-hidden="true"></div>
-  }
+  <fv-festival-calendar />
 
-  @defer (on viewport) {
-    <fv-featured-festivals />
-  } @placeholder {
-    <div class="home-page__festivals-placeholder" aria-hidden="true"></div>
-  }
+  <fv-featured-festivals />
 
-  @defer (on viewport) {
-    <fv-home-festival-map [locations]="festivalLocations" />
-  } @placeholder {
-    <div class="home-page__festivals-placeholder" aria-hidden="true"></div>
-  }
+  <fv-home-festival-map [locations]="festivalLocations" />
 </section>
