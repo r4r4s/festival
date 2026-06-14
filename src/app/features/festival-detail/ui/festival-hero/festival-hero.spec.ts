@@ -13,6 +13,7 @@ describe('FestivalHeroComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(FestivalHeroComponent);
+    fixture.componentRef.setInput('slug', 'medusa');
   });
 
   it('creates', () => {

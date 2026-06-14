@@ -11,6 +11,7 @@ describe('FestivalLocationMapComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(FestivalLocationMapComponent);
+    fixture.componentRef.setInput('slug', 'medusa');
     fixture.detectChanges();
   });
 
@@ -18,7 +19,16 @@ describe('FestivalLocationMapComponent', () => {
     expect(fixture.nativeElement.querySelector('[data-testid="festival-location-map"]')).not.toBeNull();
   });
 
-  it('renders the embedded iframe', () => {
-    expect(fixture.nativeElement.querySelector('iframe')).not.toBeNull();
+  it('renders an iframe with the festival coordinates', () => {
+    const iframe = fixture.nativeElement.querySelector('iframe.festival-location-map__iframe');
+    expect(iframe).not.toBeNull();
+    expect(iframe.getAttribute('src')).toContain('google.com/maps/embed');
+    expect(iframe.getAttribute('src')).toContain('Medusa%20Festival');
+  });
+
+  it('hides the section when the slug is unknown', () => {
+    fixture.componentRef.setInput('slug', 'not-a-slug');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[data-testid="festival-location-map"]')).toBeNull();
   });
 });

@@ -292,22 +292,155 @@
           "daily": "Cada día"
         }
       },
+      "hero": {
+        "breadcrumb": {
+          "ariaLabel": "Ruta de navegación",
+          "home": "Inicio",
+          "festivals": "Festivales"
+        },
+        "meta": {
+          "ariaLabel": "Información del festival"
+        },
+        "cta": {
+          "tickets": "COMPRAR ENTRADAS",
+          "official": "VER SITIO OFICIAL"
+        },
+        "review": {
+          "singular": "reseña",
+          "plural": "reseñas"
+        }
+      },
       "overview": {
         "ariaLabel": "Sobre el festival",
         "title": "Sobre el festival",
-        "paragraph1": "Medusa Festival es uno de los festivales de música electrónica más importantes de Europa y una referencia imprescindible del verano en España. Celebrado en la espectacular playa de Cullera (Valencia), reúne durante cinco días a algunos de los mejores DJs y artistas internacionales en un entorno único junto al mar Mediterráneo.",
-        "paragraph2": "Con más de 300.000 m² de recinto, impresionantes escenarios temáticos, producciones audiovisuales de gran formato y una experiencia inmersiva incomparable, Medusa Festival atrae cada año a miles de asistentes de todo el mundo que buscan música, espectáculo y una atmósfera inolvidable.",
-        "highlights": {
-          "beach": "Playa",
-          "camping": "Camping",
-          "foodTrucks": "Food Trucks",
-          "afterparties": "Afterparties",
-          "activities": "Actividades"
-        }
+        "highlightsAriaLabel": "Highlights del festival"
       },
       "locationMap": {
         "ariaLabel": "Ubicación del festival",
-        "title": "Ubicación"
+        "title": "Ubicación",
+        "iframeTitle": "Mapa de ubicación de {festival}"
+      },
+      "byFestival": {
+        "bigsound": {
+          "name": "Bigsound Festival",
+          "hero": {
+            "title": "BIGSOUND",
+            "subtitle": "FESTIVAL",
+            "location": "Valencia",
+            "dates": "26 – 27 jun 2026"
+          },
+          "overview": {
+            "paragraph1": "Bigsound Festival se ha consolidado como uno de los grandes encuentros pop e indie de la Comunitat Valenciana. Programado en Valencia capital, combina cabezas de cartel internacionales con artistas emergentes de la escena nacional, y apuesta por una producción cuidada y un público intergeneracional.",
+            "paragraph2": "Dos jornadas de música en vivo, food trucks de cocina mediterránea y zonas chill orientadas al verano valenciano. Buena conectividad en transporte público desde el centro y una agenda de actividades paralelas que arranca por la tarde.",
+            "highlights": {
+              "beach": "Ciudad",
+              "camping": "Hoteles cercanos",
+              "foodTrucks": "Food Trucks",
+              "afterparties": "Afterparties",
+              "activities": "Actividades"
+            }
+          }
+        },
+        "latinFest": {
+          "name": "Latin Fest",
+          "hero": {
+            "title": "LATIN",
+            "subtitle": "FEST",
+            "location": "Valencia",
+            "dates": "17 – 18 jul 2026"
+          },
+          "overview": {
+            "paragraph1": "Latin Fest es el festival de referencia para el reggaeton y la música urbana latina en la Comunitat Valenciana. Cartel concentrado en grandes nombres del género y una producción pensada para un público joven que busca espectáculo, baile y energía mediterránea.",
+            "paragraph2": "El recinto principal está en Valencia capital y suele complementarse con una parada en Benidorm. Conexión sencilla en transporte público, zonas de hidratación, food trucks de cocina latina y un ambiente festivo de verano.",
+            "highlights": {
+              "beach": "Ciudad",
+              "camping": "Hoteles cercanos",
+              "foodTrucks": "Food Trucks",
+              "afterparties": "Afterparties",
+              "activities": "Actividades"
+            }
+          }
+        },
+        "medusa": {
+          "name": "Medusa Festival",
+          "hero": {
+            "title": "MEDUSA",
+            "subtitle": "FESTIVAL",
+            "location": "Cullera, Valencia",
+            "dates": "7 – 11 Agosto 2026"
+          },
+          "overview": {
+            "paragraph1": "Medusa Festival es uno de los festivales de música electrónica más importantes de Europa y una referencia imprescindible del verano en España. Celebrado en la espectacular playa de Cullera (Valencia), reúne durante cinco días a algunos de los mejores DJs y artistas internacionales en un entorno único junto al mar Mediterráneo.",
+            "paragraph2": "Con más de 300.000 m² de recinto, impresionantes escenarios temáticos, producciones audiovisuales de gran formato y una experiencia inmersiva incomparable, Medusa Festival atrae cada año a miles de asistentes de todo el mundo que buscan música, espectáculo y una atmósfera inolvidable.",
+            "highlights": {
+              "beach": "Playa",
+              "camping": "Camping",
+              "foodTrucks": "Food Trucks",
+              "afterparties": "Afterparties",
+              "activities": "Actividades"
+            }
+          }
+        },
+        "rbf": {
+          "name": "Reggaeton Beach Festival",
+          "hero": {
+            "title": "RBF",
+            "subtitle": "REGGAETON BEACH",
+            "location": "Benidorm, Alicante",
+            "dates": "4 – 5 jul 2026"
+          },
+          "overview": {
+            "paragraph1": "Reggaeton Beach Festival convierte la costa alicantina en un epicentro de música urbana latina durante un fin de semana. Parada principal en Benidorm con cartel de grandes nombres del reggaeton, formato beach club y un público centrado en la fiesta de día.",
+            "paragraph2": "Recinto junto a la playa, food trucks de cocina latina, bares temáticos y una agenda de afterparties en clubes de la zona. Acceso cómodo desde Alicante y conexión con los principales hoteles de Benidorm.",
+            "highlights": {
+              "beach": "Playa",
+              "camping": "Hoteles cercanos",
+              "foodTrucks": "Food Trucks",
+              "afterparties": "Afterparties",
+              "activities": "Actividades"
+            }
+          }
+        },
+        "reve": {
+          "name": "Reve Festival",
+          "hero": {
+            "title": "REVE",
+            "subtitle": "FESTIVAL",
+            "location": "Valencia",
+            "dates": "16 – 17 jul 2026"
+          },
+          "overview": {
+            "paragraph1": "Reve Festival es la cita pop nocturna del verano valenciano, con un cartel orientado al mainstream y al espectáculo visual de gran formato. Concebido para grandes audiencias, prioriza la puesta en escena y la calidad de sonido sobre la fórmula clásica de festival al aire libre.",
+            "paragraph2": "Ubicado en Valencia capital, ofrece una experiencia cómoda con buena conectividad en transporte público, hoteles cercanos, zonas de restauración y producciones audiovisuales que prolongan la noche hasta tarde.",
+            "highlights": {
+              "beach": "Ciudad",
+              "camping": "Hoteles cercanos",
+              "foodTrucks": "Food Trucks",
+              "afterparties": "Afterparties",
+              "activities": "Actividades"
+            }
+          }
+        },
+        "zevra": {
+          "name": "Zevra Festival",
+          "hero": {
+            "title": "ZEVRA",
+            "subtitle": "FESTIVAL",
+            "location": "Cullera, Valencia",
+            "dates": "24 – 27 jul 2026"
+          },
+          "overview": {
+            "paragraph1": "Zevra Festival es una experiencia urbana y latina celebrada frente al Mediterráneo, en la playa de Cullera (Valencia). Cuatro jornadas con cartel centrado en reggaeton, latin y urban, en un recinto pensado para combinar música, playa y fiesta de verano.",
+            "paragraph2": "Producción a gran escala, varios escenarios, zonas de food trucks de cocina mediterránea y latina, y un calendario de afterparties que se extiende a los clubes cercanos. Conexión sencilla en coche desde Valencia capital.",
+            "highlights": {
+              "beach": "Playa",
+              "camping": "Camping",
+              "foodTrucks": "Food Trucks",
+              "afterparties": "Afterparties",
+              "activities": "Actividades"
+            }
+          }
+        }
       }
     }
   },

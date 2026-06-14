@@ -1,0 +1,30 @@
+{
+  "slug": "zevra",
+  "checkedAt": "2026-06-14",
+  "location": {
+    "city": "Cullera",
+    "province": "Valencia",
+    "country": "España"
+  },
+  "genre": {
+    "primary": "Urban",
+    "tags": ["Reggaeton", "Latin"]
+  },
+  "ticket": {
+    "fromPrice": 69,
+    "feeIncluded": false,
+    "officialUrl": "https://zevrafestival.com/entradas"
+  },
+  "age": {
+    "minimumAccess": 16,
+    "authorizationRequiredFrom": 16,
+    "authorizationRequiredTo": 17,
+    "adultsOnlyAreas": []
+  },
+  "schedule": {
+    "published": false,
+    "opensAt": null,
+    "closesAt": null,
+    "noteUrl": "https://zevrafestival.com/info"
+  }
+}

@@ -1,3 +1,4 @@
+@if (entry()) {
 <section
   class="festival-location-map"
   [attr.aria-label]="'festival.detail.locationMap.ariaLabel' | t"
@@ -5,13 +6,13 @@
 >
   <h2 class="festival-location-map__title">{{ 'festival.detail.locationMap.title' | t }}</h2>
 
-  <figure class="festival-location-map__frame">
-    <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2815.9344114099663!2d-0.24821091725818373!3d39.15420425848115!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd61c974d60e370b%3A0xec9f97427f2d1590!2sMedusa%20Festival!5e1!3m2!1ses!2ses!4v1781447781947!5m2!1ses!2ses"
-      title="Mapa de ubicación de Medusa Festival"
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade"
-      allowfullscreen
-    ></iframe>
-  </figure>
+  <iframe
+    class="festival-location-map__iframe"
+    [src]="mapSrc()"
+    [title]="mapTitle()"
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    allowfullscreen
+  ></iframe>
 </section>
+}

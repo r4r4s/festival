@@ -1,3 +1,5 @@
+@if (entry()) {
+@let k = keys();
 <section
   class="festival-overview"
   [attr.aria-label]="'festival.detail.overview.ariaLabel' | t"
@@ -5,30 +7,31 @@
 >
   <div class="festival-overview__copy">
     <p class="festival-overview__eyebrow">{{ 'festival.detail.overview.title' | t }}</p>
-    <p class="festival-overview__body">{{ 'festival.detail.overview.paragraph1' | t }}</p>
-    <p class="festival-overview__body">{{ 'festival.detail.overview.paragraph2' | t }}</p>
+    <p class="festival-overview__body">{{ k.paragraph1 | t }}</p>
+    <p class="festival-overview__body">{{ k.paragraph2 | t }}</p>
   </div>
 
-  <ul class="festival-overview__highlights" aria-label="Highlights del festival">
+  <ul class="festival-overview__highlights" [attr.aria-label]="'festival.detail.overview.highlightsAriaLabel' | t">
     <li class="festival-overview__highlight">
       <svg lucideWavesLadder aria-hidden="true" focusable="false" [size]="20" [strokeWidth]="2"></svg>
-      <span>{{ 'festival.detail.overview.highlights.beach' | t }}</span>
+      <span>{{ k.highlights.beach | t }}</span>
     </li>
     <li class="festival-overview__highlight">
       <svg lucideTentTree aria-hidden="true" focusable="false" [size]="20" [strokeWidth]="2"></svg>
-      <span>{{ 'festival.detail.overview.highlights.camping' | t }}</span>
+      <span>{{ k.highlights.camping | t }}</span>
     </li>
     <li class="festival-overview__highlight">
       <svg lucideGlassWater aria-hidden="true" focusable="false" [size]="20" [strokeWidth]="2"></svg>
-      <span>{{ 'festival.detail.overview.highlights.foodTrucks' | t }}</span>
+      <span>{{ k.highlights.foodTrucks | t }}</span>
     </li>
     <li class="festival-overview__highlight">
       <svg lucideMoonStar aria-hidden="true" focusable="false" [size]="20" [strokeWidth]="2"></svg>
-      <span>{{ 'festival.detail.overview.highlights.afterparties' | t }}</span>
+      <span>{{ k.highlights.afterparties | t }}</span>
     </li>
     <li class="festival-overview__highlight">
       <svg lucideFerrisWheel aria-hidden="true" focusable="false" [size]="20" [strokeWidth]="2"></svg>
-      <span>{{ 'festival.detail.overview.highlights.activities' | t }}</span>
+      <span>{{ k.highlights.activities | t }}</span>
     </li>
   </ul>
 </section>
+}

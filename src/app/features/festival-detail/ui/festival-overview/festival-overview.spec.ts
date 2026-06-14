@@ -11,6 +11,7 @@ describe('FestivalOverviewComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(FestivalOverviewComponent);
+    fixture.componentRef.setInput('slug', 'medusa');
     fixture.detectChanges();
   });
 

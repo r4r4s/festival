@@ -457,29 +457,38 @@ src/app/features/
 │   │   ├── festival-detail.page.scss → Layout de la página: espaciado vertical y responsive.
 │   │   └── festival-detail.page.spec.ts → Tests: creación, stats al hero, facts strip visible.
 │   ├── ui/
-│   │   ├── festival-hero/            → Hero split 42/58 (Medusa): breadcrumb, título Sora, metadata, CTAs e imagen WebP.
-│   │   │   ├── festival-hero.ts         → FestivalHeroComponent (OnPush): `input<ReviewStats>('stats')`,
-│   │   │   │                              `averageLabel` (toLocaleString es-ES, 1 decimal) y
-│   │   │   │                              `countLabel` (plural `reseña`/`reseñas`).
-│   │   │   ├── festival-hero.html       → Badge de reseñas condicional con `@if (hasStats())`.
+│   │   ├── festival-hero/            → Hero split 42/58 dirigido por slug: breadcrumb, título, metadata, CTAs e imagen WebP por festival.
+│   │   │   ├── festival-hero.ts         → FestivalHeroComponent (OnPush): `input.required<string>('slug')` + `input<ReviewStats>('stats')`.
+│   │   │   │                              Resuelve la entrada del catálogo por slug; copy y URLs vienen
+│   │   │   │                              de claves `festival.detail.byFestival.<slug>.*` + catálogo.
+│   │   │   ├── festival-hero.html       → Layout slug-driven. Badge de reseñas condicional con `@if (hasStats())`.
 │   │   │   ├── festival-hero.scss
-│   │   │   └── festival-hero.spec.ts    → 4 tests: creación, badge oculto sin stats, plural, singular.
+│   │   │   └── festival-hero.spec.ts    → Tests: creación, badge oculto sin stats, plural, singular (slug='medusa').
 │   │   ├── festival-detail-facts/    → Tira de datos clave (ubicación, género, precio, edad, horario).
 │   │   │   ├── festival-detail-facts.ts   → Presentacional (OnPush): `input<FestivalDetailFacts | null>`.
 │   │   │   ├── festival-detail-facts.html → 5 cards con iconos Lucide; enlaces oficiales en precio/horario.
 │   │   │   ├── festival-detail-facts.scss → Grid responsive 1→2→5 columnas; tokens `--fv-*`.
 │   │   │   └── festival-detail-facts.spec.ts
-│   │   ├── festival-overview/        → Bloque editorial «Sobre el festival» + chips de highlights.
-│   │   │   ├── festival-overview.ts
+│   │   ├── festival-overview/        → Bloque editorial «Sobre el festival» dirigido por slug + chips de highlights.
+│   │   │   ├── festival-overview.ts     → `input.required<string>('slug')`. Construye claves
+│   │   │   │                              `festival.detail.byFestival.<slug>.overview.*` (incluye highlights).
 │   │   │   ├── festival-overview.html
 │   │   │   ├── festival-overview.scss
 │   │   │   └── festival-overview.spec.ts
-│   │   └── festival-location-map/    → Placeholder del mapa de ubicación (MapLibre en roadmap).
-│   │       ├── festival-location-map.ts
-│   │       ├── festival-location-map.html
+│   │   └── festival-location-map/    → Iframe de Google Maps embebido sobre el fondo de la página, centrado en las coordenadas del festival.
+│   │       ├── festival-location-map.ts   → `input.required<string>('slug')`. Construye la URL
+│   │       │                                `https://maps.google.com/maps?q=lat,lng&output=embed` con
+│   │       │                                las coordenadas del catálogo y la pasa por `DomSanitizer`.
+│   │       ├── festival-location-map.html → Iframe lazy sin marco (sin border/box-shadow), title i18n.
 │   │       ├── festival-location-map.scss
 │   │       └── festival-location-map.spec.ts
 │   ├── data-access/                  → Servicios y datos del detalle.
+│   │   ├── festival-detail-catalogue.ts → Catálogo tipado por slug con claves i18n del hero/overview,
+│   │   │                               URLs oficiales/entradas, poster y coordenadas para el mapa.
+│   │   │                               Expone `findFestivalDetailEntry`, `isFestivalDetailSlug` y
+│   │   │                               `FESTIVAL_DETAIL_SLUGS`.
+│   │   ├── festival-detail.guard.ts → `festivalDetailGuard` (CanActivateFn). Valida `:slug` contra
+│   │   │                               el catálogo; redirige a `/` cuando no existe.
 │   │   ├── festival-detail-facts.model.ts → FestivalDetailFactsSchema (Zod) + tipo inferido.
 │   │   ├── festival-detail-facts.service.ts → Carga `/festival-detail-{slug}.json?day=YYYY-MM-DD`
 │   │   │                               desde `public/`, valida con Zod, refresca a medianoche.
@@ -690,6 +699,7 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | Fecha      | Cambio                                                  | Descripción                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ---------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 2026-06-14 | Festival detail: facts, overview y mapa placeholder (#11) | Añadidos `festival-detail-facts` (UI + `FestivalDetailFactsService` con JSON diario en `public/festival-detail-medusa.json` validado por Zod), `festival-overview` (copy editorial + highlights) y `festival-location-map` (placeholder). `festival-detail.page` orquesta las cuatro secciones. Claves `festival.detail.*` en es/ca/en. Ajuste responsive del título en `festival-hero.scss`. |
+| 2026-06-14 | Festival detail completamente dirigido por `:slug` | `festival-hero`, `festival-overview` y `festival-location-map` reciben `input.required<string>('slug')` y dejan de estar acoplados a Medusa. Nuevo `data-access/festival-detail-catalogue.ts` con entradas tipadas (claves i18n, URLs oficiales, poster y coordenadas) y `data-access/festival-detail.guard.ts` (CanActivateFn) que valida `:slug` contra el catálogo y redirige a `/` si no existe — cableado en `festival-detail.routes.ts`. `festival-location-map` reemplaza el iframe de Google Maps por una instancia MapLibre GL (lazy via `MapLoaderService`, `environment.maps.styleUrl`, marker DOM con tokens, SSR-safe vía `afterNextRender`, `effect` re-encuadra al cambiar slug y `DestroyRef` limpia). `src/styles/styles.scss` importa `maplibre-gl/dist/maplibre-gl.css`. i18n reorganizada: nuevo bloque `festival.detail.hero.*` (breadcrumb, meta, cta, review), `festival.detail.overview.highlightsAriaLabel`, `festival.detail.locationMap.iframeTitle` y árbol `festival.detail.byFestival.{bigsound, latinFest, medusa, rbf, reve, zevra}.*` con nombre, hero y overview por festival; copy de Medusa preservada. JSON de hechos añadidos en `public/festival-detail-{bigsound,latin-fest,rbf,reve,zevra}.json` para alcanzar los 6 slugs del catálogo. Specs actualizadas con `setInput('slug', 'medusa')`; nuevo test del location-map que oculta la sección con slug desconocido. Parity `npm run i18n:check` OK. |
 | 2026-06-14 | Home sin `@defer` en secciones below-fold               | `home.page.html`: retirados los bloques `@defer (on viewport)` de `festival-calendar`, `featured-festivals` y `home-festival-map` (carga eager). `home.page.spec.ts` simplificado: eliminado `DeferBlockBehavior.Manual` y render manual de defer blocks. |
 | 2026-06-14 | Fix logo del nav-bar en modo oscuro (SSR + hidratación) | El `@if (isDark())` del template fallaba contra SSR: `ThemeService.#systemDark` defaultea a `false` en el servidor (sin `matchMedia`), así que el HTML SSR enviaba `festi-val-logo.webp` (texto navy) y NgOptimizedImage con `priority` lo comprometía antes de que la hidratación pudiera reevaluar el signal. Cambiado a swap puramente CSS: `nav-bar.html` ahora renderiza ambos `<img>` (`--light` y `--dark`, este último `aria-hidden`), y `nav-bar.scss` los muestra/oculta vía `:host-context([data-theme='dark'])` + `@media (prefers-color-scheme: dark)` con `:host-context(html:not([data-theme]))` para el modo system. Funciona instantáneamente en el primer paint sin depender de la hidratación. Test `nav-bar.spec.ts` actualizado: ahora verifica que ambos `<img>` están en el DOM con sus respectivos `ngSrc` y que el `--dark` lleva `aria-hidden`. |
 | 2026-06-14 | `festival-detail`: eliminados scaffolds `lineup-grid` y `venue-map` | Borradas las carpetas `features/festival-detail/ui/{lineup-grid,venue-map}/` (componentes vacíos que solo renderizaban un `<div>` sin contenido). `festival-detail.page.html` queda con un único `<fv-festival-hero [stats]>`; retirados los dos bloques `@defer (on viewport)` y sus placeholders, junto con la regla `.festival-detail-page__placeholder` en `festival-detail.page.scss`. Imports actualizados en `festival-detail.page.ts`. Spec simplificada: ya no necesita `DeferBlockBehavior.Manual`. Cuando se implementen cartel y mapa de recinto se volverán a scaffoldar. |
