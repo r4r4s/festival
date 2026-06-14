@@ -332,6 +332,17 @@
           "overview": {
             "paragraph1": "Bigsound Festival has established itself as one of the leading pop and indie events in the Valencian Community. Hosted in the city of Valencia, it pairs international headliners with emerging Spanish artists and delivers a polished production aimed at a multi-generational audience.",
             "paragraph2": "Two days of live music, Mediterranean food trucks and chill zones tuned to the Valencian summer. Easy public-transport access from downtown and a side programme of activities that kicks off in the afternoon.",
+            "posterGallery": {
+              "title": "Official Posters",
+              "intro": "The main festival poster and, when available, its supporting visual rollout.",
+              "dialog": {
+                "ariaLabel": "Expanded festival poster",
+                "close": "Close expanded poster"
+              },
+              "labels": {
+                "general": "Main Poster"
+              }
+            },
             "highlights": {
               "beach": "City",
               "camping": "Nearby hotels",
@@ -352,6 +363,18 @@
           "overview": {
             "paragraph1": "Latin Fest is the reference festival for reggaeton and Latin urban music in the Valencian Community. Tight lineup of major names in the genre and a production designed for a young crowd looking for spectacle, dance and Mediterranean energy.",
             "paragraph2": "The main venue is in Valencia city, usually paired with a stop in Benidorm. Easy public-transport access, hydration zones, Latin food trucks and a festive summer atmosphere.",
+            "posterGallery": {
+              "title": "Official Posters",
+              "intro": "The main festival poster and its city variations so each edition can be compared at a glance.",
+              "dialog": {
+                "ariaLabel": "Expanded festival poster",
+                "close": "Close expanded poster"
+              },
+              "labels": {
+                "general": "Valencia",
+                "benidorm": "Benidorm"
+              }
+            },
             "highlights": {
               "beach": "City",
               "camping": "Nearby hotels",
@@ -427,6 +450,17 @@
           "overview": {
             "paragraph1": "Reve Festival is the night-time pop highlight of the Valencian summer, with a mainstream-oriented lineup and large-format visual spectacle. Built for large audiences, it prioritises staging and sound quality over the classic open-air festival formula.",
             "paragraph2": "Located in Valencia city, it offers a comfortable experience with strong public-transport access, nearby hotels, food zones, and audiovisual productions that stretch the night until late.",
+            "posterGallery": {
+              "title": "Official Posters",
+              "intro": "The main festival poster, ready to view in full detail.",
+              "dialog": {
+                "ariaLabel": "Expanded festival poster",
+                "close": "Close expanded poster"
+              },
+              "labels": {
+                "general": "Roig Arena"
+              }
+            },
             "highlights": {
               "beach": "City",
               "camping": "Nearby hotels",
@@ -447,6 +481,20 @@
           "overview": {
             "paragraph1": "Zevra Festival is an urban and Latin experience held by the Mediterranean, on Cullera beach (Valencia). Four days with a lineup centered on reggaeton, latin and urban, in a venue designed to combine music, beach, and summer party.",
             "paragraph2": "Large-scale production, multiple stages, Mediterranean and Latin food-truck zones, and an afterparty calendar that extends to nearby clubs. Easy drive from Valencia city.",
+            "posterGallery": {
+              "title": "Official Posters",
+              "intro": "The main festival poster and the day-by-day visual schedule for the full weekend.",
+              "dialog": {
+                "ariaLabel": "Expanded festival poster",
+                "close": "Close expanded poster"
+              },
+              "labels": {
+                "general": "Main Poster",
+                "friday": "Friday",
+                "saturday": "Saturday",
+                "sunday": "Sunday"
+              }
+            },
             "highlights": {
               "beach": "Beach",
               "camping": "Camping",

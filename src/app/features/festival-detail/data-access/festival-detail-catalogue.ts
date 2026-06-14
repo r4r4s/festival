@@ -64,6 +64,16 @@ const ENTRIES: readonly FestivalDetailEntry[] = [
       ticketUrl: 'https://bigsoundfestival.com/entradas',
       officialUrl: 'https://bigsoundfestival.com/',
     },
+    posters: [
+      {
+        labelKey: 'festival.detail.byFestival.bigsound.overview.posterGallery.labels.general',
+        src: '/assets/images/festivals/bigsound/cartel-bigsound-valencia-2026.webp',
+        alt: 'Cartel de Bigsound Festival Valencia 2026',
+        width: 550,
+        height: 688,
+        featured: true,
+      },
+    ],
     map: {
       lat: 39.42903614897183,
       lng: -0.46784232712277507,
@@ -88,6 +98,23 @@ const ENTRIES: readonly FestivalDetailEntry[] = [
       ticketUrl: 'https://latinfest.es/entradas',
       officialUrl: 'https://latinfest.es/',
     },
+    posters: [
+      {
+        labelKey: 'festival.detail.byFestival.latinFest.overview.posterGallery.labels.general',
+        src: '/assets/images/festivals/latin-fest/cartel-latin-fest-valencia-2026.webp',
+        alt: 'Cartel principal de Latin Fest Valencia 2026',
+        width: 941,
+        height: 1672,
+        featured: true,
+      },
+      {
+        labelKey: 'festival.detail.byFestival.latinFest.overview.posterGallery.labels.benidorm',
+        src: '/assets/images/festivals/latin-fest/cartel-latin-fest-benidorm-2026.webp',
+        alt: 'Cartel de Latin Fest Benidorm 2026',
+        width: 1048,
+        height: 1394,
+      },
+    ],
     map: {
       lat: 39.49454399416732,
       lng: -0.364468709822233,
@@ -198,6 +225,16 @@ const ENTRIES: readonly FestivalDetailEntry[] = [
       ticketUrl: 'https://revefestival.com/entradas',
       officialUrl: 'https://revefestival.com/',
     },
+    posters: [
+      {
+        labelKey: 'festival.detail.byFestival.reve.overview.posterGallery.labels.general',
+        src: '/assets/images/festivals/reve/cartel-reve-roig-arena-valencia-2026.webp',
+        alt: 'Cartel de Reve Festival Roig Arena Valencia 2026',
+        width: 1920,
+        height: 1080,
+        featured: true,
+      },
+    ],
     map: {
       lat: 39.44921869967149,
       lng: -0.3643244397614549,
@@ -222,6 +259,37 @@ const ENTRIES: readonly FestivalDetailEntry[] = [
       ticketUrl: 'https://zevrafestival.com/entradas',
       officialUrl: 'https://zevrafestival.com/',
     },
+    posters: [
+      {
+        labelKey: 'festival.detail.byFestival.zevra.overview.posterGallery.labels.general',
+        src: '/assets/images/festivals/zevra/cartel-zevra-2026.webp',
+        alt: 'Cartel general de Zevra Festival 2026',
+        width: 1080,
+        height: 1350,
+        featured: true,
+      },
+      {
+        labelKey: 'festival.detail.byFestival.zevra.overview.posterGallery.labels.friday',
+        src: '/assets/images/festivals/zevra/cartel-zevra-viernes-2026.webp',
+        alt: 'Cartel del viernes de Zevra Festival 2026',
+        width: 1290,
+        height: 1610,
+      },
+      {
+        labelKey: 'festival.detail.byFestival.zevra.overview.posterGallery.labels.saturday',
+        src: '/assets/images/festivals/zevra/cartel-zevra-sabado-2026.webp',
+        alt: 'Cartel del sábado de Zevra Festival 2026',
+        width: 1122,
+        height: 1402,
+      },
+      {
+        labelKey: 'festival.detail.byFestival.zevra.overview.posterGallery.labels.sunday',
+        src: '/assets/images/festivals/zevra/cartel-zevra-domingo-2026.webp',
+        alt: 'Cartel del domingo de Zevra Festival 2026',
+        width: 1119,
+        height: 1405,
+      },
+    ],
     map: {
       lat: 39.154847058872114,
       lng: -0.2437427679436067,

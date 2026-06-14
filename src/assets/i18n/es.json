@@ -332,6 +332,17 @@
           "overview": {
             "paragraph1": "Bigsound Festival se ha consolidado como uno de los grandes encuentros pop e indie de la Comunitat Valenciana. Programado en Valencia capital, combina cabezas de cartel internacionales con artistas emergentes de la escena nacional, y apuesta por una producción cuidada y un público intergeneracional.",
             "paragraph2": "Dos jornadas de música en vivo, food trucks de cocina mediterránea y zonas chill orientadas al verano valenciano. Buena conectividad en transporte público desde el centro y una agenda de actividades paralelas que arranca por la tarde.",
+            "posterGallery": {
+              "title": "Carteles oficiales",
+              "intro": "El cartel principal del festival y, cuando existe, su recorrido visual complementario.",
+              "dialog": {
+                "ariaLabel": "Cartel ampliado del festival",
+                "close": "Cerrar cartel ampliado"
+              },
+              "labels": {
+                "general": "Cartel general"
+              }
+            },
             "highlights": {
               "beach": "Ciudad",
               "camping": "Hoteles cercanos",
@@ -352,6 +363,18 @@
           "overview": {
             "paragraph1": "Latin Fest es el festival de referencia para el reggaeton y la música urbana latina en la Comunitat Valenciana. Cartel concentrado en grandes nombres del género y una producción pensada para un público joven que busca espectáculo, baile y energía mediterránea.",
             "paragraph2": "El recinto principal está en Valencia capital y suele complementarse con una parada en Benidorm. Conexión sencilla en transporte público, zonas de hidratación, food trucks de cocina latina y un ambiente festivo de verano.",
+            "posterGallery": {
+              "title": "Carteles oficiales",
+              "intro": "El cartel principal del festival y sus variaciones por ciudad para comparar cada edición de un vistazo.",
+              "dialog": {
+                "ariaLabel": "Cartel ampliado del festival",
+                "close": "Cerrar cartel ampliado"
+              },
+              "labels": {
+                "general": "Valencia",
+                "benidorm": "Benidorm"
+              }
+            },
             "highlights": {
               "beach": "Ciudad",
               "camping": "Hoteles cercanos",
@@ -427,6 +450,17 @@
           "overview": {
             "paragraph1": "Reve Festival es la cita pop nocturna del verano valenciano, con un cartel orientado al mainstream y al espectáculo visual de gran formato. Concebido para grandes audiencias, prioriza la puesta en escena y la calidad de sonido sobre la fórmula clásica de festival al aire libre.",
             "paragraph2": "Ubicado en Valencia capital, ofrece una experiencia cómoda con buena conectividad en transporte público, hoteles cercanos, zonas de restauración y producciones audiovisuales que prolongan la noche hasta tarde.",
+            "posterGallery": {
+              "title": "Carteles oficiales",
+              "intro": "El cartel principal del festival para consultar su propuesta visual completa.",
+              "dialog": {
+                "ariaLabel": "Cartel ampliado del festival",
+                "close": "Cerrar cartel ampliado"
+              },
+              "labels": {
+                "general": "Roig Arena"
+              }
+            },
             "highlights": {
               "beach": "Ciudad",
               "camping": "Hoteles cercanos",
@@ -447,6 +481,20 @@
           "overview": {
             "paragraph1": "Zevra Festival es una experiencia urbana y latina celebrada frente al Mediterráneo, en la playa de Cullera (Valencia). Cuatro jornadas con cartel centrado en reggaeton, latin y urban, en un recinto pensado para combinar música, playa y fiesta de verano.",
             "paragraph2": "Producción a gran escala, varios escenarios, zonas de food trucks de cocina mediterránea y latina, y un calendario de afterparties que se extiende a los clubes cercanos. Conexión sencilla en coche desde Valencia capital.",
+            "posterGallery": {
+              "title": "Carteles oficiales",
+              "intro": "El cartel principal del festival y la programación visual por días para seguir el fin de semana completo.",
+              "dialog": {
+                "ariaLabel": "Cartel ampliado del festival",
+                "close": "Cerrar cartel ampliado"
+              },
+              "labels": {
+                "general": "Cartel general",
+                "friday": "Viernes",
+                "saturday": "Sábado",
+                "sunday": "Domingo"
+              }
+            },
             "highlights": {
               "beach": "Playa",
               "camping": "Camping",

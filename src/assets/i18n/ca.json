@@ -332,6 +332,17 @@
           "overview": {
             "paragraph1": "Bigsound Festival s'ha consolidat com una de les grans cites pop i indie de la Comunitat Valenciana. Programat a València ciutat, combina caps de cartell internacionals amb artistes emergents de l'escena nacional, amb una producció acurada i un públic intergeneracional.",
             "paragraph2": "Dues jornades de música en viu, food trucks de cuina mediterrània i zones chill orientades a l'estiu valencià. Bona connectivitat en transport públic des del centre i una agenda d'activitats paral·leles que comença a la tarda.",
+            "posterGallery": {
+              "title": "Cartells oficials",
+              "intro": "El cartell principal del festival i, quan existix, el seu recorregut visual complementari.",
+              "dialog": {
+                "ariaLabel": "Cartell ampliat del festival",
+                "close": "Tancar cartell ampliat"
+              },
+              "labels": {
+                "general": "Cartell general"
+              }
+            },
             "highlights": {
               "beach": "Ciutat",
               "camping": "Hotels propers",
@@ -352,6 +363,18 @@
           "overview": {
             "paragraph1": "Latin Fest és el festival de referència per al reggaeton i la música urbana llatina a la Comunitat Valenciana. Cartell concentrat en grans noms del gènere i una producció pensada per a un públic jove que busca espectacle, ball i energia mediterrània.",
             "paragraph2": "El recinte principal és a València ciutat i sol complementar-se amb una parada a Benidorm. Connexió senzilla en transport públic, zones d'hidratació, food trucks de cuina llatina i un ambient festiu d'estiu.",
+            "posterGallery": {
+              "title": "Cartells oficials",
+              "intro": "El cartell principal del festival i les seues variacions per ciutat per comparar cada edició d'una ullada.",
+              "dialog": {
+                "ariaLabel": "Cartell ampliat del festival",
+                "close": "Tancar cartell ampliat"
+              },
+              "labels": {
+                "general": "València",
+                "benidorm": "Benidorm"
+              }
+            },
             "highlights": {
               "beach": "Ciutat",
               "camping": "Hotels propers",
@@ -427,6 +450,17 @@
           "overview": {
             "paragraph1": "Reve Festival és la cita pop nocturna de l'estiu valencià, amb un cartell orientat al mainstream i a l'espectacle visual de gran format. Concebut per a grans audiències, prioritza la posada en escena i la qualitat de so sobre la fórmula clàssica de festival a l'aire lliure.",
             "paragraph2": "Ubicat a València ciutat, ofereix una experiència còmoda amb bona connectivitat en transport públic, hotels propers, zones de restauració i produccions audiovisuals que allarguen la nit fins tard.",
+            "posterGallery": {
+              "title": "Cartells oficials",
+              "intro": "El cartell principal del festival per consultar la seua proposta visual completa.",
+              "dialog": {
+                "ariaLabel": "Cartell ampliat del festival",
+                "close": "Tancar cartell ampliat"
+              },
+              "labels": {
+                "general": "Roig Arena"
+              }
+            },
             "highlights": {
               "beach": "Ciutat",
               "camping": "Hotels propers",
@@ -447,6 +481,20 @@
           "overview": {
             "paragraph1": "Zevra Festival és una experiència urbana i llatina celebrada davant el Mediterrani, a la platja de Cullera (València). Quatre jornades amb cartell centrat en reggaeton, latin i urban, en un recinte pensat per combinar música, platja i festa d'estiu.",
             "paragraph2": "Producció a gran escala, diversos escenaris, zones de food trucks de cuina mediterrània i llatina, i un calendari d'afterparties que s'estén als clubs propers. Connexió senzilla en cotxe des de València ciutat.",
+            "posterGallery": {
+              "title": "Cartells oficials",
+              "intro": "El cartell principal del festival i la programació visual per dies per seguir el cap de setmana complet.",
+              "dialog": {
+                "ariaLabel": "Cartell ampliat del festival",
+                "close": "Tancar cartell ampliat"
+              },
+              "labels": {
+                "general": "Cartell general",
+                "friday": "Divendres",
+                "saturday": "Dissabte",
+                "sunday": "Diumenge"
+              }
+            },
             "highlights": {
               "beach": "Platja",
               "camping": "Càmping",
