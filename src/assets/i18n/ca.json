@@ -265,6 +265,52 @@
       }
     }
   },
+  "festival": {
+    "detail": {
+      "facts": {
+        "ariaLabel": "Dades clau del festival",
+        "location": {
+          "label": "Ubicació"
+        },
+        "genre": {
+          "label": "Gènere"
+        },
+        "price": {
+          "label": "Des de",
+          "feesIncluded": "GD inclosos",
+          "feesExcluded": "+ despeses de gestió"
+        },
+        "age": {
+          "label": "Edat mínima",
+          "authorization": "{{ from }} i {{ to }} anys amb autorització paterna.",
+          "adultsOnly": "{{ area }} només 18+."
+        },
+        "schedule": {
+          "label": "Horari",
+          "pendingPrimary": "Pendent",
+          "pendingSecondary": "Consulta la secció HORARIS de la web oficial.",
+          "daily": "Cada dia"
+        }
+      },
+      "overview": {
+        "ariaLabel": "Sobre el festival",
+        "title": "Sobre el festival",
+        "paragraph1": "Medusa Festival és un dels festivals de música electrònica més importants d'Europa i una referència imprescindible de l'estiu a Espanya. Celebrat a l'espectacular platja de Cullera (València), reunix durant cinc dies alguns dels millors DJs i artistes internacionals en un entorn únic al costat del mar Mediterrani.",
+        "paragraph2": "Amb més de 300.000 m² de recinte, impressionants escenaris temàtics, produccions audiovisuals de gran format i una experiència immersiva incomparable, Medusa Festival atrau cada any milers d'assistents de tot el món que busquen música, espectacle i una atmosfera inoblidable.",
+        "highlights": {
+          "beach": "Platja",
+          "camping": "Càmping",
+          "foodTrucks": "Food Trucks",
+          "afterparties": "Afterparties",
+          "activities": "Activitats"
+        }
+      },
+      "locationMap": {
+        "ariaLabel": "Ubicació del festival",
+        "title": "Ubicació"
+      }
+    }
+  },
   "footer": {
     "ariaLabel": "Peu de pàgina",
     "brand": {

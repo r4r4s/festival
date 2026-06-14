@@ -22,7 +22,8 @@ festiVAL/
 ├── .vscode/            → Configuración del editor VS Code
 ├── design/             → Assets de diseño (mockups, paletas de color, fuentes fuente)
 ├── docs/               → Documentación del proyecto
-├── public/             → Ficheros estáticos servidos tal cual (favicon, fuentes runtime)
+├── public/             → Ficheros estáticos servidos tal cual (favicon, fuentes runtime,
+│                          `festival-detail-{slug}.json` con datos verificados del festival)
 ├── src/                → Código fuente de la aplicación
 ├── scripts/            → Scripts de utilidad Node.js no relacionados con el build de Angular
 ├── .editorconfig       → Reglas de formato del editor (indentación, charset, trailing whitespace)
@@ -449,21 +450,39 @@ src/app/features/
 ├── festival-detail/     → Página de detalle de un festival, cargada vía `/festivales/:slug`.
 │   ├── feature/
 │   │   ├── festival-detail.page.ts   → Página smart standalone. Inyecta ActivatedRoute para
-│   │   │                               leer el slug y ReviewRotationService para calcular las
-│   │   │                               estadísticas que pasa al hero. Solo orquesta FestivalHeroComponent.
-│   │   ├── festival-detail.page.html → Sección con un único `<fv-festival-hero [stats]="reviewStats" />`.
+│   │   │                               leer el slug, ReviewRotationService (stats → hero) y
+│   │   │                               FestivalDetailFactsService (facts → strip). Orquesta hero,
+│   │   │                               facts, overview y location-map.
+│   │   ├── festival-detail.page.html → Hero + facts strip + overview + mapa placeholder.
 │   │   ├── festival-detail.page.scss → Layout de la página: espaciado vertical y responsive.
-│   │   └── festival-detail.page.spec.ts → Tests: creación, renderizado de la sección y cableado
-│   │                                       del input `stats` al hero (vía `By.directive`).
+│   │   └── festival-detail.page.spec.ts → Tests: creación, stats al hero, facts strip visible.
 │   ├── ui/
-│   │   └── festival-hero/            → Hero split 42/58 (Medusa): breadcrumb, título Sora, metadata, CTAs e imagen WebP.
-│   │       ├── festival-hero.ts         → FestivalHeroComponent (OnPush): `input<ReviewStats>('stats')`,
-│   │       │                              `averageLabel` (toLocaleString es-ES, 1 decimal) y
-│   │       │                              `countLabel` (plural `reseña`/`reseñas`).
-│   │       ├── festival-hero.html       → Badge de reseñas condicional con `@if (hasStats())`.
-│   │       ├── festival-hero.scss
-│   │       └── festival-hero.spec.ts    → 4 tests: creación, badge oculto sin stats, plural, singular.
-│   ├── data-access/                  → Servicio de rotación, datos de reseñas.
+│   │   ├── festival-hero/            → Hero split 42/58 (Medusa): breadcrumb, título Sora, metadata, CTAs e imagen WebP.
+│   │   │   ├── festival-hero.ts         → FestivalHeroComponent (OnPush): `input<ReviewStats>('stats')`,
+│   │   │   │                              `averageLabel` (toLocaleString es-ES, 1 decimal) y
+│   │   │   │                              `countLabel` (plural `reseña`/`reseñas`).
+│   │   │   ├── festival-hero.html       → Badge de reseñas condicional con `@if (hasStats())`.
+│   │   │   ├── festival-hero.scss
+│   │   │   └── festival-hero.spec.ts    → 4 tests: creación, badge oculto sin stats, plural, singular.
+│   │   ├── festival-detail-facts/    → Tira de datos clave (ubicación, género, precio, edad, horario).
+│   │   │   ├── festival-detail-facts.ts   → Presentacional (OnPush): `input<FestivalDetailFacts | null>`.
+│   │   │   ├── festival-detail-facts.html → 5 cards con iconos Lucide; enlaces oficiales en precio/horario.
+│   │   │   ├── festival-detail-facts.scss → Grid responsive 1→2→5 columnas; tokens `--fv-*`.
+│   │   │   └── festival-detail-facts.spec.ts
+│   │   ├── festival-overview/        → Bloque editorial «Sobre el festival» + chips de highlights.
+│   │   │   ├── festival-overview.ts
+│   │   │   ├── festival-overview.html
+│   │   │   ├── festival-overview.scss
+│   │   │   └── festival-overview.spec.ts
+│   │   └── festival-location-map/    → Placeholder del mapa de ubicación (MapLibre en roadmap).
+│   │       ├── festival-location-map.ts
+│   │       ├── festival-location-map.html
+│   │       ├── festival-location-map.scss
+│   │       └── festival-location-map.spec.ts
+│   ├── data-access/                  → Servicios y datos del detalle.
+│   │   ├── festival-detail-facts.model.ts → FestivalDetailFactsSchema (Zod) + tipo inferido.
+│   │   ├── festival-detail-facts.service.ts → Carga `/festival-detail-{slug}.json?day=YYYY-MM-DD`
+│   │   │                               desde `public/`, valida con Zod, refresca a medianoche.
 │   │   ├── reviews.data.ts           → Catálogo estático de 60 reseñas originales en español:
 │   │   │                               10 por festival × 6 slugs (bigsound, latin-fest, medusa,
 │   │   │                               rbf, reve, zevra). Ratings 2–5, texto original. Exporta
@@ -670,6 +689,7 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 
 | Fecha      | Cambio                                                  | Descripción                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ---------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-06-14 | Festival detail: facts, overview y mapa placeholder (#11) | Añadidos `festival-detail-facts` (UI + `FestivalDetailFactsService` con JSON diario en `public/festival-detail-medusa.json` validado por Zod), `festival-overview` (copy editorial + highlights) y `festival-location-map` (placeholder). `festival-detail.page` orquesta las cuatro secciones. Claves `festival.detail.*` en es/ca/en. Ajuste responsive del título en `festival-hero.scss`. |
 | 2026-06-14 | Home sin `@defer` en secciones below-fold               | `home.page.html`: retirados los bloques `@defer (on viewport)` de `festival-calendar`, `featured-festivals` y `home-festival-map` (carga eager). `home.page.spec.ts` simplificado: eliminado `DeferBlockBehavior.Manual` y render manual de defer blocks. |
 | 2026-06-14 | Fix logo del nav-bar en modo oscuro (SSR + hidratación) | El `@if (isDark())` del template fallaba contra SSR: `ThemeService.#systemDark` defaultea a `false` en el servidor (sin `matchMedia`), así que el HTML SSR enviaba `festi-val-logo.webp` (texto navy) y NgOptimizedImage con `priority` lo comprometía antes de que la hidratación pudiera reevaluar el signal. Cambiado a swap puramente CSS: `nav-bar.html` ahora renderiza ambos `<img>` (`--light` y `--dark`, este último `aria-hidden`), y `nav-bar.scss` los muestra/oculta vía `:host-context([data-theme='dark'])` + `@media (prefers-color-scheme: dark)` con `:host-context(html:not([data-theme]))` para el modo system. Funciona instantáneamente en el primer paint sin depender de la hidratación. Test `nav-bar.spec.ts` actualizado: ahora verifica que ambos `<img>` están en el DOM con sus respectivos `ngSrc` y que el `--dark` lleva `aria-hidden`. |
 | 2026-06-14 | `festival-detail`: eliminados scaffolds `lineup-grid` y `venue-map` | Borradas las carpetas `features/festival-detail/ui/{lineup-grid,venue-map}/` (componentes vacíos que solo renderizaban un `<div>` sin contenido). `festival-detail.page.html` queda con un único `<fv-festival-hero [stats]>`; retirados los dos bloques `@defer (on viewport)` y sus placeholders, junto con la regla `.festival-detail-page__placeholder` en `festival-detail.page.scss`. Imports actualizados en `festival-detail.page.ts`. Spec simplificada: ya no necesita `DeferBlockBehavior.Manual`. Cuando se implementen cartel y mapa de recinto se volverán a scaffoldar. |

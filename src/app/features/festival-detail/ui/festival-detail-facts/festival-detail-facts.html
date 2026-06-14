@@ -1,0 +1,100 @@
+@if (facts(); as facts) {
+  <section
+    class="festival-detail-facts"
+    [attr.aria-label]="'festival.detail.facts.ariaLabel' | t"
+    data-testid="festival-detail-facts"
+  >
+    <article class="festival-detail-facts__card">
+      <div class="festival-detail-facts__icon" aria-hidden="true">
+        <svg lucideMapPin focusable="false" [size]="22" [strokeWidth]="2"></svg>
+      </div>
+      <div class="festival-detail-facts__body">
+        <p class="festival-detail-facts__eyebrow">{{ 'festival.detail.facts.location.label' | t }}</p>
+        <p class="festival-detail-facts__value">{{ locationPrimary() }}</p>
+        <p class="festival-detail-facts__meta">{{ facts.location.country }}</p>
+      </div>
+    </article>
+
+    <article class="festival-detail-facts__card">
+      <div class="festival-detail-facts__icon" aria-hidden="true">
+        <svg lucideMusic4 focusable="false" [size]="22" [strokeWidth]="2"></svg>
+      </div>
+      <div class="festival-detail-facts__body">
+        <p class="festival-detail-facts__eyebrow">{{ 'festival.detail.facts.genre.label' | t }}</p>
+        <p class="festival-detail-facts__value">{{ facts.genre.primary }}</p>
+        <p class="festival-detail-facts__meta">{{ genreSecondary() }}</p>
+      </div>
+    </article>
+
+    <article class="festival-detail-facts__card">
+      <div class="festival-detail-facts__icon" aria-hidden="true">
+        <svg lucideTicket focusable="false" [size]="22" [strokeWidth]="2"></svg>
+      </div>
+      <div class="festival-detail-facts__body">
+        <p class="festival-detail-facts__eyebrow">{{ 'festival.detail.facts.price.label' | t }}</p>
+        <p class="festival-detail-facts__value">
+          {{ facts.ticket.fromPrice | currency : 'EUR' : 'symbol-narrow' : '1.0-0' : 'es-ES' }}
+        </p>
+        <p class="festival-detail-facts__meta">
+          {{
+            (facts.ticket.feeIncluded
+              ? 'festival.detail.facts.price.feesIncluded'
+              : 'festival.detail.facts.price.feesExcluded') | t
+          }}
+        </p>
+      </div>
+    </article>
+
+    <article class="festival-detail-facts__card">
+      <div class="festival-detail-facts__icon" aria-hidden="true">
+        <svg lucideIdCard focusable="false" [size]="22" [strokeWidth]="2"></svg>
+      </div>
+      <div class="festival-detail-facts__body">
+        <p class="festival-detail-facts__eyebrow">{{ 'festival.detail.facts.age.label' | t }}</p>
+        <p class="festival-detail-facts__value">{{ facts.age.minimumAccess }}+</p>
+        <p class="festival-detail-facts__meta">
+          @if (hasAuthorizationNote()) {
+            {{
+              'festival.detail.facts.age.authorization' | t : {
+                from: facts.age.authorizationRequiredFrom,
+                to: facts.age.authorizationRequiredTo
+              }
+            }}
+          }
+          @if (adultAreasLabel()) {
+            <span>
+              {{
+                'festival.detail.facts.age.adultsOnly' | t : {
+                  area: adultAreasLabel()
+                }
+              }}
+            </span>
+          }
+        </p>
+      </div>
+    </article>
+
+    <article class="festival-detail-facts__card">
+      <div class="festival-detail-facts__icon" aria-hidden="true">
+        <svg lucideClock3 focusable="false" [size]="22" [strokeWidth]="2"></svg>
+      </div>
+      <div class="festival-detail-facts__body">
+        <p class="festival-detail-facts__eyebrow">{{ 'festival.detail.facts.schedule.label' | t }}</p>
+        <p class="festival-detail-facts__value">
+          @if (facts.schedule.published && facts.schedule.opensAt && facts.schedule.closesAt) {
+            {{ facts.schedule.opensAt }} – {{ facts.schedule.closesAt }}
+          } @else {
+            {{ 'festival.detail.facts.schedule.pendingPrimary' | t }}
+          }
+        </p>
+        <p class="festival-detail-facts__meta">
+          @if (facts.schedule.published) {
+            {{ 'festival.detail.facts.schedule.daily' | t }}
+          } @else {
+            {{ 'festival.detail.facts.schedule.pendingSecondary' | t }}
+          }
+        </p>
+      </div>
+    </article>
+  </section>
+}

@@ -1,0 +1,83 @@
+@use 'styles/breakpoints' as *;
+
+:host {
+  display: block;
+}
+
+.festival-detail-facts {
+  display: grid;
+  gap: var(--fv-space-3);
+  grid-template-columns: 1fr;
+  max-width: 1320px;
+  margin: 0 auto;
+
+  @include from(md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include from(lg) {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.festival-detail-facts__card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--fv-space-3);
+  align-items: start;
+  align-content: center;
+  min-height: 100%;
+  padding: var(--fv-space-4);
+  border-radius: var(--fv-radius-xl);
+  background: var(--fv-bg-card-light);
+  border: 1px solid var(--fv-border-nav);
+  box-shadow: var(--fv-shadow-card);
+}
+
+.festival-detail-facts__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--fv-radius-md);
+  background: color-mix(in srgb, var(--fv-accent-blue) 10%, var(--fv-bg-card-light));
+  color: var(--fv-accent-blue);
+}
+
+.festival-detail-facts__body {
+  display: grid;
+  gap: var(--fv-space-1);
+  min-width: 0;
+  align-content: center;
+}
+
+.festival-detail-facts__eyebrow,
+.festival-detail-facts__value,
+.festival-detail-facts__meta {
+  margin: 0;
+}
+
+.festival-detail-facts__eyebrow {
+  color: var(--fv-text-footer-muted);
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-xs);
+  font-weight: 800;
+  letter-spacing: var(--fv-tracking-wide);
+  text-transform: uppercase;
+}
+
+.festival-detail-facts__value {
+  color: var(--fv-text-nav);
+  font-family: var(--fv-font-heading);
+  font-size: var(--fv-text-xl);
+  line-height: var(--fv-leading-tight);
+  overflow-wrap: anywhere;
+}
+
+.festival-detail-facts__meta {
+  color: var(--fv-text-footer-muted);
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-sm);
+  line-height: var(--fv-leading-relaxed);
+  overflow-wrap: anywhere;
+}
