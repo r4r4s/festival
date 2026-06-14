@@ -95,9 +95,13 @@
   font-size: clamp(52px, 5.5vw, 84px);
   font-weight: 800;
   line-height: 0.92;
-  letter-spacing: 0.38em; // "F E S T I V A L" spread
+  letter-spacing: 0.14em;
   color: var(--fv-text-nav);
   margin: 0 0 0 2px; // optical align with MEDUSA
+
+  @include from(lg) {
+    letter-spacing: 0.18em;
+  }
 }
 
 // ---- Meta -------------------------------------------------------------------

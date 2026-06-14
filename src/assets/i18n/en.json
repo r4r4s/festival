@@ -145,22 +145,6 @@
       }
     }
   },
-  "festival": {
-    "reviews": {
-      "title": "Reviews",
-      "summary": {
-        "basedOn": "Based on {{ count }} reviews"
-      },
-      "featured": {
-        "title": "Featured reviews"
-      },
-      "verified": "Verified",
-      "rating": {
-        "aria": "Rating: {rating} out of 5 stars"
-      },
-      "empty": "No reviews available yet"
-    }
-  },
   "festivales": {
     "map": {
       "page": {

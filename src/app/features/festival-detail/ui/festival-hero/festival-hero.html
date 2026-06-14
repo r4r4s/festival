@@ -25,13 +25,15 @@
         <svg lucideCalendar aria-hidden="true" focusable="false" [size]="16" [strokeWidth]="2"></svg>
         <time datetime="2026-08-07/2026-08-11">7 – 11 Agosto 2026</time>
       </li>
-      <li class="festival-hero__meta-rating">
-        <span class="festival-hero__rating">
-          <svg lucideStar aria-hidden="true" focusable="false" [size]="16" [strokeWidth]="0" class="festival-hero__star-icon"></svg>
-          <strong>4,6</strong>
-          <span class="festival-hero__rating-count">(2,3K reseñas)</span>
-        </span>
-      </li>
+      @if (hasStats()) {
+        <li class="festival-hero__meta-rating" data-testid="festival-hero-rating">
+          <span class="festival-hero__rating">
+            <svg lucideStar aria-hidden="true" focusable="false" [size]="16" [strokeWidth]="0" class="festival-hero__star-icon"></svg>
+            <strong>{{ averageLabel() }}</strong>
+            <span class="festival-hero__rating-count">{{ countLabel() }}</span>
+          </span>
+        </li>
+      }
     </ul>
 
     <div class="festival-hero__ctas">

@@ -1,24 +1,3 @@
 <section class="festival-detail-page" data-testid="festival-detail-page">
-  <fv-festival-hero />
-
-  @defer (on viewport) {
-    <fv-lineup-grid />
-  } @placeholder {
-    <div class="festival-detail-page__placeholder" aria-hidden="true"></div>
-  }
-
-  @defer (on viewport) {
-    <fv-venue-map />
-  } @placeholder {
-    <div class="festival-detail-page__placeholder" aria-hidden="true"></div>
-  }
-
-  @defer (on viewport) {
-    <fv-featured-reviews
-      [reviews]="featuredReviews"
-      [stats]="reviewStats"
-    />
-  } @placeholder {
-    <div class="festival-detail-page__placeholder" aria-hidden="true"></div>
-  }
+  <fv-festival-hero [stats]="reviewStats" />
 </section>

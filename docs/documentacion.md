@@ -449,40 +449,20 @@ src/app/features/
 ├── festival-detail/     → Página de detalle de un festival, cargada vía `/festivales/:slug`.
 │   ├── feature/
 │   │   ├── festival-detail.page.ts   → Página smart standalone. Inyecta ActivatedRoute para
-│   │   │                               leer el slug de la URL. Orquesta FestivalHeroComponent,
-│   │   │                               LineupGridComponent y VenueMapComponent.
-│   │   ├── festival-detail.page.html → Sección principal con el hero y secciones secundarias
-│   │   │                               (lineup-grid y venue-map) envueltas en @defer.
+│   │   │                               leer el slug y ReviewRotationService para calcular las
+│   │   │                               estadísticas que pasa al hero. Solo orquesta FestivalHeroComponent.
+│   │   ├── festival-detail.page.html → Sección con un único `<fv-festival-hero [stats]="reviewStats" />`.
 │   │   ├── festival-detail.page.scss → Layout de la página: espaciado vertical y responsive.
-│   │   └── festival-detail.page.spec.ts → Tests de creación y renderizado de la sección.
+│   │   └── festival-detail.page.spec.ts → Tests: creación, renderizado de la sección y cableado
+│   │                                       del input `stats` al hero (vía `By.directive`).
 │   ├── ui/
-│   │   ├── festival-hero/            → Hero split 42/58 (Medusa): breadcrumb, título Sora, metadata, CTAs e imagen WebP.
-│   │   │   ├── festival-hero.ts
-│   │   │   ├── festival-hero.html
-│   │   │   ├── festival-hero.scss
-│   │   │   └── festival-hero.spec.ts
-│   │   ├── lineup-grid/              → Rejilla de artistas del cartel del festival.
-│   │   │   ├── lineup-grid.ts
-│   │   │   ├── lineup-grid.html
-│   │   │   ├── lineup-grid.scss
-│   │   │   └── lineup-grid.spec.ts
-│   │   ├── venue-map/                → Mapa interactivo del recinto del festival.
-│   │   │   ├── venue-map.ts
-│   │   │   ├── venue-map.html
-│   │   │   ├── venue-map.scss
-│   │   │   └── venue-map.spec.ts
-│   │   └── featured-reviews/         → Bloque de opiniones con rotación diaria determinista.
-│   │       ├── featured-reviews.ts   → FeaturedReviewsComponent (OnPush): inputs reviews y
-│   │       │                           stats. Métodos starsFor(n) y formatAverage(n).
-│   │       │                           Importa SlicePipe, LucideStar, LucideShieldCheck y
-│   │       │                           TranslatePipe. Cargado en festival-detail.page con @defer.
-│   │       ├── featured-reviews.html → Sección con resumen (media + estrellas + total) y
-│   │       │                           lista de 3 cards (autor, badge verificado, rating visual,
-│   │       │                           comentario, fecha). Estado vacío condicional.
-│   │       ├── featured-reviews.scss → Grid 1→3 columnas (md). Tokens semánticos --fv-*.
-│   │       │                           Badge verificado con color-mix() y fallback rgba (@compat).
-│   │       └── featured-reviews.spec.ts → 10 tests: render, conteo de cards, resumen, badges
-│   │                                      verificados, estado vacío, starsFor, formatAverage.
+│   │   └── festival-hero/            → Hero split 42/58 (Medusa): breadcrumb, título Sora, metadata, CTAs e imagen WebP.
+│   │       ├── festival-hero.ts         → FestivalHeroComponent (OnPush): `input<ReviewStats>('stats')`,
+│   │       │                              `averageLabel` (toLocaleString es-ES, 1 decimal) y
+│   │       │                              `countLabel` (plural `reseña`/`reseñas`).
+│   │       ├── festival-hero.html       → Badge de reseñas condicional con `@if (hasStats())`.
+│   │       ├── festival-hero.scss
+│   │       └── festival-hero.spec.ts    → 4 tests: creación, badge oculto sin stats, plural, singular.
 │   ├── data-access/                  → Servicio de rotación, datos de reseñas.
 │   │   ├── reviews.data.ts           → Catálogo estático de 60 reseñas originales en español:
 │   │   │                               10 por festival × 6 slugs (bigsound, latin-fest, medusa,
@@ -692,7 +672,8 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | ---------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 2026-06-14 | Home sin `@defer` en secciones below-fold               | `home.page.html`: retirados los bloques `@defer (on viewport)` de `festival-calendar`, `featured-festivals` y `home-festival-map` (carga eager). `home.page.spec.ts` simplificado: eliminado `DeferBlockBehavior.Manual` y render manual de defer blocks. |
 | 2026-06-14 | Fix logo del nav-bar en modo oscuro (SSR + hidratación) | El `@if (isDark())` del template fallaba contra SSR: `ThemeService.#systemDark` defaultea a `false` en el servidor (sin `matchMedia`), así que el HTML SSR enviaba `festi-val-logo.webp` (texto navy) y NgOptimizedImage con `priority` lo comprometía antes de que la hidratación pudiera reevaluar el signal. Cambiado a swap puramente CSS: `nav-bar.html` ahora renderiza ambos `<img>` (`--light` y `--dark`, este último `aria-hidden`), y `nav-bar.scss` los muestra/oculta vía `:host-context([data-theme='dark'])` + `@media (prefers-color-scheme: dark)` con `:host-context(html:not([data-theme]))` para el modo system. Funciona instantáneamente en el primer paint sin depender de la hidratación. Test `nav-bar.spec.ts` actualizado: ahora verifica que ambos `<img>` están en el DOM con sus respectivos `ngSrc` y que el `--dark` lleva `aria-hidden`. |
-| 2026-06-14 | Auditoría `/audit-structure`: tokens de la brand-gradient y limpieza de assets | **Design system**: añadidos primitivos `$fv-violet-500` (#A855F7), `$fv-pink-500` (#FF5A7A) y `$fv-amber-400` (#F59E0B) en `src/styles/_tokens.scss`; expuestos como `--fv-accent-violet`, `--fv-accent-pink` y `--fv-accent-amber` en `_semantic.scss`. **Componente**: `nav-progress-bar.scss` consume ahora los tokens en su gradiente (sustituidos los cuatro hex literales `#4e8cff/#a855f7/#ff5a7a/#f59e0b`), cerrando el último bypass del sistema de tokens. **Assets**: eliminado el directorio vacío `src/assets/images-src/festivals/rbf/` (sin fuente original que reflejar). |
+| 2026-06-14 | `festival-detail`: eliminados scaffolds `lineup-grid` y `venue-map` | Borradas las carpetas `features/festival-detail/ui/{lineup-grid,venue-map}/` (componentes vacíos que solo renderizaban un `<div>` sin contenido). `festival-detail.page.html` queda con un único `<fv-festival-hero [stats]>`; retirados los dos bloques `@defer (on viewport)` y sus placeholders, junto con la regla `.festival-detail-page__placeholder` en `festival-detail.page.scss`. Imports actualizados en `festival-detail.page.ts`. Spec simplificada: ya no necesita `DeferBlockBehavior.Manual`. Cuando se implementen cartel y mapa de recinto se volverán a scaffoldar. |
+| 2026-06-14 | Reseñas reducidas al badge del hero | Eliminada la sección `featured-reviews` de `festival-detail/ui/` (componente, template, SCSS y spec) y su `@defer` en `festival-detail.page.html`. `FestivalHeroComponent` pasa a aceptar `input<ReviewStats>('stats')` y renderiza la media (`toLocaleString('es-ES', { minimumFractionDigits: 1 })`) y el contador con plural ES (`reseña`/`reseñas`) mediante `@if (hasStats())`; el badge desaparece cuando no hay datos. `festival-detail.page.ts` simplificado: solo expone `reviewStats` (vía `ReviewRotationService.getStats`) y lo enlaza al hero — `featuredReviews` ya no se calcula. Specs actualizadas: `festival-hero.spec.ts` cubre badge oculto, plural y singular; `festival-detail.page.spec.ts` verifica el cableado del input vía `By.directive`. Claves i18n `festival.reviews.*` retiradas de `es.json`, `ca.json` y `en.json` (parity OK, 5 top-level keys). `ReviewRotationService` y `reviews.data.ts` se conservan: la media y el total se calculan en runtime. |
 | 2026-06-14 | Sistema de opiniones con rotación diaria determinista      | Añadidos `shared/domain/review.model.ts` (FestivalReviewSchema Zod + ReviewStats), `festival-detail/data-access/reviews.data.ts` (60 reseñas originales × 6 festivales), `festival-detail/data-access/review-rotation.service.ts` (+ spec, 12 tests: seed djb2 + utcDateKey, 3 reseñas circulares sin Math.random()), y `festival-detail/ui/featured-reviews/` (componente + template + SCSS + spec, 10 tests). Integrado en `festival-detail.page` con `@defer (on viewport)`. Pipe `| t` extendido con `params?: Record<string, unknown>` y helper `interpolate()` en `TranslationService`. Claves `festival.reviews.*` propagadas a es/ca/en. `featured-festivals` ahora enlaza a `/festivales/:slug` vía `RouterLink`. |
 | 2026-06-13 | Nav-bar sticky en `:host`                                 | `nav-bar.scss`: `position: sticky`, `top: 0` y `z-index: 50` movidos de `.nav-bar` a `:host` para que el header permanezca fijo al hacer scroll (el sticky en el hijo interno no anclaba correctamente al viewport). |
 | 2026-06-13 | Progress bar glow con tokens                              | `nav-progress-bar.scss`: `box-shadow` del glow sustituido por `color-mix` con `--fv-accent-blue` y `--fv-accent-med-blue` (cumple gate B.3 sin colores hardcodeados). |

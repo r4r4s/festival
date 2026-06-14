@@ -145,22 +145,6 @@
       }
     }
   },
-  "festival": {
-    "reviews": {
-      "title": "Opiniones",
-      "summary": {
-        "basedOn": "Basado en {{ count }} opiniones"
-      },
-      "featured": {
-        "title": "Opiniones destacadas"
-      },
-      "verified": "Verificada",
-      "rating": {
-        "aria": "Valoración: {rating} de 5 estrellas"
-      },
-      "empty": "Todavía no hay opiniones disponibles"
-    }
-  },
   "festivales": {
     "map": {
       "page": {
