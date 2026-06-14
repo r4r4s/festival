@@ -156,47 +156,6 @@
   color: var(--fv-text-footer-muted);
 }
 
-.festival-hero__meta-sep {
-  color: var(--fv-text-footer-faint);
-  user-select: none;
-}
-
-.festival-hero__save {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--fv-space-1);
-  background: transparent;
-  border: 0;
-  padding: 0;
-  cursor: pointer;
-  font-family: var(--fv-font-ui);
-  font-size: var(--fv-text-sm);
-  color: var(--fv-text-footer-muted);
-
-  svg {
-    color: var(--fv-text-nav);
-    opacity: 0.6;
-    transition: color 150ms ease, opacity 150ms ease;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      color: var(--fv-text-nav);
-
-      svg {
-        color: var(--fv-accent-danger);
-        opacity: 1;
-      }
-    }
-  }
-
-  &:focus-visible {
-    outline: none;
-    box-shadow: var(--fv-shadow-focus);
-    border-radius: var(--fv-radius-sm);
-  }
-}
-
 // ---- CTAs -------------------------------------------------------------------
 
 .festival-hero__ctas {
