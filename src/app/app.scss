@@ -1,14 +1,9 @@
 // ============================================================================
 // app.scss — festiVAL · Root component
 // ============================================================================
+// The chrome lives in `layout/shell` — this host is a transparent passthrough
+// so the shell drives layout, theming and page transitions.
 
 :host {
-  --app-nav-height: 72px;
-  display: block;
-  min-height: 100vh;
-  background: var(--fv-bg-page);
-}
-
-.app__main {
-  min-height: calc(100vh - var(--app-nav-height));
+  display: contents;
 }

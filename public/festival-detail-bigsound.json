@@ -1,0 +1,30 @@
+{
+  "slug": "bigsound",
+  "checkedAt": "2026-06-14",
+  "location": {
+    "city": "Valencia",
+    "province": "Valencia",
+    "country": "España"
+  },
+  "genre": {
+    "primary": "Pop",
+    "tags": ["Indie", "Electrónica"]
+  },
+  "ticket": {
+    "fromPrice": 55,
+    "feeIncluded": false,
+    "officialUrl": "https://bigsoundfestival.com/entradas"
+  },
+  "age": {
+    "minimumAccess": 16,
+    "authorizationRequiredFrom": 16,
+    "authorizationRequiredTo": 17,
+    "adultsOnlyAreas": []
+  },
+  "schedule": {
+    "published": false,
+    "opensAt": null,
+    "closesAt": null,
+    "noteUrl": "https://bigsoundfestival.com/info"
+  }
+}

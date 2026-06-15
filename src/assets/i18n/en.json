@@ -265,6 +265,248 @@
       }
     }
   },
+  "festival": {
+    "detail": {
+      "facts": {
+        "ariaLabel": "Key festival facts",
+        "location": {
+          "label": "Location"
+        },
+        "genre": {
+          "label": "Genre"
+        },
+        "price": {
+          "label": "From",
+          "feesIncluded": "Fees included",
+          "feesExcluded": "+ booking fees"
+        },
+        "age": {
+          "label": "Minimum age",
+          "authorization": "Ages {{ from }} and {{ to }} require parental authorization.",
+          "adultsOnly": "{{ area }} is 18+ only."
+        },
+        "schedule": {
+          "label": "Schedule",
+          "pendingPrimary": "Pending",
+          "pendingSecondary": "Check the official website schedule section.",
+          "daily": "Every day"
+        }
+      },
+      "hero": {
+        "breadcrumb": {
+          "ariaLabel": "Breadcrumb navigation",
+          "home": "Home",
+          "festivals": "Festivals"
+        },
+        "meta": {
+          "ariaLabel": "Festival information"
+        },
+        "cta": {
+          "tickets": "BUY TICKETS",
+          "official": "VISIT OFFICIAL SITE"
+        },
+        "review": {
+          "singular": "review",
+          "plural": "reviews"
+        }
+      },
+      "overview": {
+        "ariaLabel": "About the festival",
+        "title": "About the festival",
+        "highlightsAriaLabel": "Festival highlights"
+      },
+      "locationMap": {
+        "ariaLabel": "Festival location",
+        "title": "Location",
+        "iframeTitle": "Location map of {festival}"
+      },
+      "byFestival": {
+        "bigsound": {
+          "name": "Bigsound Festival",
+          "hero": {
+            "title": "BIGSOUND",
+            "subtitle": "FESTIVAL",
+            "location": "Valencia",
+            "dates": "26 – 27 Jun 2026"
+          },
+          "overview": {
+            "paragraph1": "Bigsound Festival has established itself as one of the leading pop and indie events in the Valencian Community. Hosted in the city of Valencia, it pairs international headliners with emerging Spanish artists and delivers a polished production aimed at a multi-generational audience.",
+            "paragraph2": "Two days of live music, Mediterranean food trucks and chill zones tuned to the Valencian summer. Easy public-transport access from downtown and a side programme of activities that kicks off in the afternoon.",
+            "posterGallery": {
+              "title": "Official Posters",
+              "intro": "The main festival poster and, when available, its supporting visual rollout.",
+              "dialog": {
+                "ariaLabel": "Expanded festival poster",
+                "close": "Close expanded poster"
+              },
+              "labels": {
+                "general": "Main Poster"
+              }
+            },
+            "highlights": {
+              "beach": "City",
+              "camping": "Nearby hotels",
+              "foodTrucks": "Food Trucks",
+              "afterparties": "Afterparties",
+              "activities": "Activities"
+            }
+          }
+        },
+        "latinFest": {
+          "name": "Latin Fest",
+          "hero": {
+            "title": "LATIN",
+            "subtitle": "FEST",
+            "location": "Valencia",
+            "dates": "17 – 18 Jul 2026"
+          },
+          "overview": {
+            "paragraph1": "Latin Fest is the reference festival for reggaeton and Latin urban music in the Valencian Community. Tight lineup of major names in the genre and a production designed for a young crowd looking for spectacle, dance and Mediterranean energy.",
+            "paragraph2": "The main venue is in Valencia city, usually paired with a stop in Benidorm. Easy public-transport access, hydration zones, Latin food trucks and a festive summer atmosphere.",
+            "posterGallery": {
+              "title": "Official Posters",
+              "intro": "The main festival poster and its city variations so each edition can be compared at a glance.",
+              "dialog": {
+                "ariaLabel": "Expanded festival poster",
+                "close": "Close expanded poster"
+              },
+              "labels": {
+                "general": "Valencia",
+                "benidorm": "Benidorm"
+              }
+            },
+            "highlights": {
+              "beach": "City",
+              "camping": "Nearby hotels",
+              "foodTrucks": "Food Trucks",
+              "afterparties": "Afterparties",
+              "activities": "Activities"
+            }
+          }
+        },
+        "medusa": {
+          "name": "Medusa Festival",
+          "hero": {
+            "title": "MEDUSA",
+            "subtitle": "FESTIVAL",
+            "location": "Cullera, Valencia",
+            "dates": "7 – 11 August 2026"
+          },
+          "overview": {
+            "paragraph1": "Medusa Festival is one of the most important electronic music festivals in Europe and a must-watch highlight of the Spanish summer. Held on the spectacular beach of Cullera, Valencia, it brings together some of the best international DJs and artists for five days in a unique setting by the Mediterranean Sea.",
+        "paragraph2": "With more than 300,000 m² of venue space, spectacular themed stages, large-format audiovisual production, and an unmatched immersive experience, Medusa Festival attracts thousands of attendees from all over the world every year in search of music, spectacle, and an unforgettable atmosphere.",
+        "posterGallery": {
+          "title": "Official Posters",
+          "intro": "The main poster and the day-by-day visual line-up so the whole week can be scanned at a glance.",
+          "dialog": {
+            "ariaLabel": "Expanded festival poster",
+            "close": "Close expanded poster"
+          },
+          "labels": {
+            "general": "Main Poster",
+            "thursday": "Thursday",
+            "friday": "Friday",
+            "saturday": "Saturday",
+            "sunday": "Sunday"
+          }
+        },
+        "highlights": {
+          "beach": "Beach",
+          "camping": "Camping",
+              "foodTrucks": "Food Trucks",
+              "afterparties": "Afterparties",
+              "activities": "Activities"
+            }
+          }
+        },
+        "rbf": {
+          "name": "Reggaeton Beach Festival",
+          "hero": {
+            "title": "RBF",
+            "subtitle": "REGGAETON BEACH",
+            "location": "Benidorm, Alicante",
+            "dates": "4 – 5 Jul 2026"
+          },
+          "overview": {
+            "paragraph1": "Reggaeton Beach Festival turns the Alicante coast into an epicentre of Latin urban music for a weekend. Main stop in Benidorm with a lineup of major reggaeton names, a beach-club format and a daytime party crowd.",
+            "paragraph2": "Beachside venue, Latin food trucks, themed bars and an afterparty calendar at clubs in the area. Easy access from Alicante and connections to the main Benidorm hotels.",
+            "highlights": {
+              "beach": "Beach",
+              "camping": "Nearby hotels",
+              "foodTrucks": "Food Trucks",
+              "afterparties": "Afterparties",
+              "activities": "Activities"
+            }
+          }
+        },
+        "reve": {
+          "name": "Reve Festival",
+          "hero": {
+            "title": "REVE",
+            "subtitle": "FESTIVAL",
+            "location": "Valencia",
+            "dates": "16 – 17 Jul 2026"
+          },
+          "overview": {
+            "paragraph1": "Reve Festival is the night-time pop highlight of the Valencian summer, with a mainstream-oriented lineup and large-format visual spectacle. Built for large audiences, it prioritises staging and sound quality over the classic open-air festival formula.",
+            "paragraph2": "Located in Valencia city, it offers a comfortable experience with strong public-transport access, nearby hotels, food zones, and audiovisual productions that stretch the night until late.",
+            "posterGallery": {
+              "title": "Official Posters",
+              "intro": "The main festival poster, ready to view in full detail.",
+              "dialog": {
+                "ariaLabel": "Expanded festival poster",
+                "close": "Close expanded poster"
+              },
+              "labels": {
+                "general": "Roig Arena"
+              }
+            },
+            "highlights": {
+              "beach": "City",
+              "camping": "Nearby hotels",
+              "foodTrucks": "Food Trucks",
+              "afterparties": "Afterparties",
+              "activities": "Activities"
+            }
+          }
+        },
+        "zevra": {
+          "name": "Zevra Festival",
+          "hero": {
+            "title": "ZEVRA",
+            "subtitle": "FESTIVAL",
+            "location": "Cullera, Valencia",
+            "dates": "24 – 27 Jul 2026"
+          },
+          "overview": {
+            "paragraph1": "Zevra Festival is an urban and Latin experience held by the Mediterranean, on Cullera beach (Valencia). Four days with a lineup centered on reggaeton, latin and urban, in a venue designed to combine music, beach, and summer party.",
+            "paragraph2": "Large-scale production, multiple stages, Mediterranean and Latin food-truck zones, and an afterparty calendar that extends to nearby clubs. Easy drive from Valencia city.",
+            "posterGallery": {
+              "title": "Official Posters",
+              "intro": "The main festival poster and the day-by-day visual schedule for the full weekend.",
+              "dialog": {
+                "ariaLabel": "Expanded festival poster",
+                "close": "Close expanded poster"
+              },
+              "labels": {
+                "general": "Main Poster",
+                "friday": "Friday",
+                "saturday": "Saturday",
+                "sunday": "Sunday"
+              }
+            },
+            "highlights": {
+              "beach": "Beach",
+              "camping": "Camping",
+              "foodTrucks": "Food Trucks",
+              "afterparties": "Afterparties",
+              "activities": "Activities"
+            }
+          }
+        }
+      }
+    }
+  },
   "footer": {
     "ariaLabel": "Footer",
     "brand": {

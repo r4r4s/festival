@@ -1,0 +1,30 @@
+{
+  "slug": "rbf",
+  "checkedAt": "2026-06-14",
+  "location": {
+    "city": "Benidorm",
+    "province": "Alicante",
+    "country": "España"
+  },
+  "genre": {
+    "primary": "Latin",
+    "tags": ["Reggaeton", "Urban"]
+  },
+  "ticket": {
+    "fromPrice": 65,
+    "feeIncluded": false,
+    "officialUrl": "https://reggaetonbeachfestival.com/entradas"
+  },
+  "age": {
+    "minimumAccess": 18,
+    "authorizationRequiredFrom": null,
+    "authorizationRequiredTo": null,
+    "adultsOnlyAreas": ["Recinto principal"]
+  },
+  "schedule": {
+    "published": false,
+    "opensAt": null,
+    "closesAt": null,
+    "noteUrl": "https://reggaetonbeachfestival.com/info"
+  }
+}

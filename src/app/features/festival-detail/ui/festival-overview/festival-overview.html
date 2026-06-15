@@ -1,0 +1,39 @@
+@if (entry()) {
+@let k = keys();
+<section
+  class="festival-overview"
+  [attr.aria-label]="'festival.detail.overview.ariaLabel' | t"
+  data-testid="festival-overview"
+>
+  <div class="festival-overview__copy">
+    <p class="festival-overview__eyebrow">{{ 'festival.detail.overview.title' | t }}</p>
+    <p class="festival-overview__body">{{ k.paragraph1 | t }}</p>
+    <p class="festival-overview__body">{{ k.paragraph2 | t }}</p>
+  </div>
+
+  <fv-festival-poster-gallery [slug]="slug()" />
+
+  <ul class="festival-overview__highlights" [attr.aria-label]="'festival.detail.overview.highlightsAriaLabel' | t">
+    <li class="festival-overview__highlight">
+      <svg lucideWavesLadder aria-hidden="true" focusable="false" [size]="20" [strokeWidth]="2"></svg>
+      <span>{{ k.highlights.beach | t }}</span>
+    </li>
+    <li class="festival-overview__highlight">
+      <svg lucideTentTree aria-hidden="true" focusable="false" [size]="20" [strokeWidth]="2"></svg>
+      <span>{{ k.highlights.camping | t }}</span>
+    </li>
+    <li class="festival-overview__highlight">
+      <svg lucideGlassWater aria-hidden="true" focusable="false" [size]="20" [strokeWidth]="2"></svg>
+      <span>{{ k.highlights.foodTrucks | t }}</span>
+    </li>
+    <li class="festival-overview__highlight">
+      <svg lucideMoonStar aria-hidden="true" focusable="false" [size]="20" [strokeWidth]="2"></svg>
+      <span>{{ k.highlights.afterparties | t }}</span>
+    </li>
+    <li class="festival-overview__highlight">
+      <svg lucideFerrisWheel aria-hidden="true" focusable="false" [size]="20" [strokeWidth]="2"></svg>
+      <span>{{ k.highlights.activities | t }}</span>
+    </li>
+  </ul>
+</section>
+}

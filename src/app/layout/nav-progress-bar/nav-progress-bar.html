@@ -1,0 +1,12 @@
+@if (transition.progressState() !== 'hidden') {
+  <div
+    class="nav-progress-bar"
+    [class.nav-progress-bar--completing]="transition.progressState() === 'completing'"
+    role="progressbar"
+    aria-label="Cargando página"
+    aria-valuemin="0"
+    aria-valuemax="100"
+  >
+    <div class="nav-progress-bar__track"></div>
+  </div>
+}

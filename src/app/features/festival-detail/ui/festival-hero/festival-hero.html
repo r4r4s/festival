@@ -1,0 +1,75 @@
+@let e = entry();
+@if (e) {
+<article class="festival-hero" data-testid="festival-hero">
+
+  <div class="festival-hero__content">
+
+    <nav class="festival-hero__breadcrumb" [attr.aria-label]="'festival.detail.hero.breadcrumb.ariaLabel' | t">
+      <a routerLink="/" class="festival-hero__bc-link">{{ 'festival.detail.hero.breadcrumb.home' | t }}</a>
+      <svg lucideChevronRight aria-hidden="true" focusable="false" [size]="12" [strokeWidth]="2"></svg>
+      <a routerLink="/festivales" class="festival-hero__bc-link">{{ 'festival.detail.hero.breadcrumb.festivals' | t }}</a>
+      <svg lucideChevronRight aria-hidden="true" focusable="false" [size]="12" [strokeWidth]="2"></svg>
+      <span class="festival-hero__bc-current" aria-current="page">{{ e.hero.breadcrumbCurrentKey | t }}</span>
+    </nav>
+
+    <div class="festival-hero__title-block">
+      <h1 class="festival-hero__title-main">{{ e.hero.titleKey | t }}</h1>
+      <p class="festival-hero__title-sub" aria-hidden="true">{{ e.hero.subtitleKey | t }}</p>
+    </div>
+
+    <ul class="festival-hero__meta" [attr.aria-label]="'festival.detail.hero.meta.ariaLabel' | t">
+      <li class="festival-hero__meta-item">
+        <svg lucideMapPin aria-hidden="true" focusable="false" [size]="16" [strokeWidth]="2"></svg>
+        <span>{{ e.hero.locationKey | t }}</span>
+      </li>
+      <li class="festival-hero__meta-item">
+        <svg lucideCalendar aria-hidden="true" focusable="false" [size]="16" [strokeWidth]="2"></svg>
+        <time [attr.datetime]="e.hero.datetime">{{ e.hero.datesKey | t }}</time>
+      </li>
+      @if (hasStats()) {
+        <li class="festival-hero__meta-rating" data-testid="festival-hero-rating">
+          <span class="festival-hero__rating">
+            <svg lucideStar aria-hidden="true" focusable="false" [size]="16" [strokeWidth]="0" class="festival-hero__star-icon"></svg>
+            <strong>{{ averageLabel() }}</strong>
+            <span class="festival-hero__rating-count">{{ countLabel() }}</span>
+          </span>
+        </li>
+      }
+    </ul>
+
+    <div class="festival-hero__ctas">
+      <a
+        [href]="e.hero.ticketUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="festival-hero__cta festival-hero__cta--primary"
+      >
+        <svg lucideTicket aria-hidden="true" focusable="false" [size]="18" [strokeWidth]="2"></svg>
+        {{ 'festival.detail.hero.cta.tickets' | t }}
+      </a>
+      <a
+        [href]="e.hero.officialUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="festival-hero__cta festival-hero__cta--secondary"
+      >
+        {{ 'festival.detail.hero.cta.official' | t }}
+        <svg lucideExternalLink aria-hidden="true" focusable="false" [size]="16" [strokeWidth]="2"></svg>
+      </a>
+    </div>
+
+  </div>
+
+  <div class="festival-hero__img-wrap" aria-hidden="true">
+    <img
+      [ngSrc]="e.hero.poster.src"
+      [alt]="e.hero.poster.alt"
+      fill
+      priority
+      sizes="(min-width: 1024px) 58vw, 100vw"
+    />
+    <div class="festival-hero__img-fade"></div>
+  </div>
+
+</article>
+}

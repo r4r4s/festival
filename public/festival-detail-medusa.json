@@ -1,0 +1,30 @@
+{
+  "slug": "medusa",
+  "checkedAt": "2026-06-14",
+  "location": {
+    "city": "Cullera",
+    "province": "Valencia",
+    "country": "España"
+  },
+  "genre": {
+    "primary": "Electrónica",
+    "tags": ["Techno", "House", "EDM"]
+  },
+  "ticket": {
+    "fromPrice": 77,
+    "feeIncluded": true,
+    "officialUrl": "https://www.medusasunbeach.com/guia-compra"
+  },
+  "age": {
+    "minimumAccess": 16,
+    "authorizationRequiredFrom": 16,
+    "authorizationRequiredTo": 17,
+    "adultsOnlyAreas": ["River Town Resort"]
+  },
+  "schedule": {
+    "published": false,
+    "opensAt": null,
+    "closesAt": null,
+    "noteUrl": "https://www.medusasunbeach.com/faqs"
+  }
+}

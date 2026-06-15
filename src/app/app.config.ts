@@ -8,7 +8,7 @@ import {
 import { IMAGE_LOADER, ImageLoaderConfig, registerLocaleData } from '@angular/common';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import localeEs from '@angular/common/locales/es';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideTransloco, TranslocoService } from '@jsverse/transloco';
 import * as Sentry from '@sentry/angular';
@@ -53,7 +53,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     { provide: ErrorHandler, useClass: FestivalErrorHandler },
     { provide: LOCALE_ID, useValue: 'es-ES' },
-    provideRouter(routes),
+    provideRouter(routes, withInMemoryScrolling({ scrollPositionRestoration: 'top' })),
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch(), withInterceptors([errorInterceptor])),
     { provide: IMAGE_LOADER, useValue: festivalImageLoader },

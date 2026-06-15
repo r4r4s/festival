@@ -22,7 +22,8 @@ festiVAL/
 ├── .vscode/            → Configuración del editor VS Code
 ├── design/             → Assets de diseño (mockups, paletas de color, fuentes fuente)
 ├── docs/               → Documentación del proyecto
-├── public/             → Ficheros estáticos servidos tal cual (favicon, fuentes runtime)
+├── public/             → Ficheros estáticos servidos tal cual (favicon, fuentes runtime,
+│                          `festival-detail-{slug}.json` con datos verificados del festival)
 ├── src/                → Código fuente de la aplicación
 ├── scripts/            → Scripts de utilidad Node.js no relacionados con el build de Angular
 ├── .editorconfig       → Reglas de formato del editor (indentación, charset, trailing whitespace)
@@ -158,6 +159,9 @@ scripts/
 │                                        y en.json usando el valor español como placeholder. Acepta --check para
 │                                        modo de sólo lectura (exit 1 si hay divergencias, útil en CI).
 │                                        Uso: npm run i18n:sync | npm run i18n:check
+├── convert-images.mjs                 → Conversor Sharp: recorre `src/assets/images-src/` recursivamente y genera
+│                                        WebP en `src/assets/images/` (presets hero/og/default; soporte JXL vía djxl).
+│                                        Uso: npm run images:convert
 ├── merge-develop-into-branches.sh     → Variante simple: fusiona develop en cada rama remota (excepto main/develop/HEAD),
 │                                        empuja a origin y termina en develop. Para en el primer conflicto (`set -e`).
 │                                        Uso: npm run branches:merge-develop-into-all
@@ -283,14 +287,13 @@ src/assets/
 │   │   ├── home-hero-sunset-beach-800.webp
 │   │   ├── home-hero-sunset-beach-1200.webp
 │   │   └── home-hero-sunset-beach-1600.webp
-│   ├── festivals/       → Logos de festivales en WebP listos para runtime, organizados por slug.
-│   │   │                  La generación multiresolución sigue el pipeline Sharp cuando aplique.
-│   │   ├── bigsound/    → logo-bigsound.webp
-│   │   ├── latin-fest/  → logo-latin-fest.webp
-│   │   ├── medusa/      → logo-medusa-2026.webp
+│   ├── festivals/       → Logos y carteles de festivales en WebP listos para runtime, por slug.
+│   │   ├── bigsound/    → logo-bigsound.webp, cartel-bigsound-valencia-2026.webp
+│   │   ├── latin-fest/  → logo-latin-fest.webp, cartel-latin-fest-{benidorm,valencia}-2026.webp
+│   │   ├── medusa/      → logo-medusa-2026.webp, cartel-medusa-2026.webp, cartel-medusa-{jueves,viernes,sabado,domingo}-2026.webp
 │   │   ├── rbf/         → logo-rbf.webp
-│   │   ├── reve/        → logo-reve.webp
-│   │   └── zevra/       → logo-zevra.webp
+│   │   ├── reve/        → logo-reve.webp, cartel-reve-roig-arena-valencia-2026.webp
+│   │   └── zevra/       → logo-zevra.webp, cartel-zevra-2026.webp, cartel-zevra-{viernes,sabado,domingo}-2026.webp
 │   └── maps/            → Imágenes WebP del mapa de la Comunitat Valenciana usadas por home-festival-map.
 │       ├── valencia-map.webp
 │       ├── valencia-community-map-gradient.webp
@@ -377,9 +380,16 @@ src/app/core/
     │                         persiste en localStorage('fv-theme'), reacciona a cambios de
     │                         matchMedia y sincroniza <meta name="theme-color">. Expone mode,
     │                         resolvedTheme, setMode() y toggle().
-    └── theme.service.spec.ts → Tests del ThemeService: default system (device light/dark),
-                              cambio de dispositivo en runtime, toggle + persistencia, restauración
-                              tras recarga y elección explícita por encima del dispositivo.
+    ├── theme.service.spec.ts → Tests del ThemeService: default system (device light/dark),
+    │                         cambio de dispositivo en runtime, toggle + persistencia, restauración
+    │                         tras recarga y elección explícita por encima del dispositivo.
+    ├── page-transition.service.ts → PageTransitionService (providedIn: 'root'): escucha los
+    │                         eventos del Router (NavigationStart/End/Cancel/Error) y gestiona el
+    │                         estado de la barra de progreso (signal<ProgressBarState>: hidden |
+    │                         loading | completing). Solo activa 'loading' si la navegación supera
+    │                         200 ms; pasa a 'completing' al terminar y vuelve a 'hidden' tras
+    │                         500 ms. Instanciado en App para capturar eventos desde el inicio.
+    └── page-transition.service.spec.ts → Tests del PageTransitionService.
 ```
 
 ### `src/app/layout/` — Shell de la aplicación
@@ -388,10 +398,13 @@ Cargado eagerly. Compone la estructura visual que envuelve todas las rutas.
 
 ```
 src/app/layout/
-├── shell/               → (roadmap) Componente host del <router-outlet> que organizará nav-bar +
-│   └── .gitkeep           contenido + footer. Hoy ese papel lo cumple `app.html`; la carpeta es un
-│                          placeholder hasta que se implemente.
-├── nav-bar/             → Cabecera estática del sitio (sticky). Logo `assets/branding/festi-val-logo.webp`
+├── shell/               → `ShellComponent` (selector `fv-shell`, OnPush). Compone el banner de
+│   ├── shell.ts           notificaciones, la nav-bar, la barra de progreso de navegación, el
+│   ├── shell.html         `<router-outlet>` dentro de `<main #mainEl>` y el footer. Maneja la
+│   ├── shell.scss         animación `fv-page-enter` al cambiar de ruta (escucha `NavigationEnd`
+│   └── shell.spec.ts      con `takeUntilDestroyed`). `app.ts` queda como root mínimo que delega
+│                          en `<fv-shell />` e inicializa Hreflang/Theme/PageTransition.
+├── nav-bar/             → Cabecera sticky del sitio (`position: sticky` en `:host`). Logo `assets/branding/festi-val-logo.webp`
 │   ├── nav-bar.ts         vía `NgOptimizedImage` (`priority`), navegación principal (Home,
 │   ├── nav-bar.html       Festivals, Calendar, Explore, About), icono de búsqueda y toggle de
 │   ├── nav-bar.scss       tema (cableado a ThemeService: icono sol/luna, aria-pressed y
@@ -400,6 +413,13 @@ src/app/layout/
 │                          hamburguesa. aria-current="page" en el enlace activo vía
 │                          routerLinkActive. (El selector de idioma ES/CA/EN está en el roadmap
 │                          de la fase multilingüe; aún no existe.)
+├── nav-progress-bar/    → Indicador de navegación lenta. Solo aparece si la navegación tarda
+│   ├── nav-progress-bar.ts    más de 200 ms (lazy chunks no cacheados). Barra de 3 px fija en
+│   ├── nav-progress-bar.html  la parte superior (z-index 200, sobre el nav-bar). Gradiente de
+│   ├── nav-progress-bar.scss  marca (#4E8CFF → #A855F7 → #FF5A7A → #F59E0B) con glow azul.
+│   └── nav-progress-bar.spec.ts  Dos fases CSS: fv-progress-load (llena hasta ~80 %) →
+│                          fv-progress-complete (llena a 100 % y se desvanece). Consume
+│                          PageTransitionService. Cableado en `app.html`.
 └── footer/              → Pie de página premium (superficie clara #F4F4FA). Divisoria superior sutil
     ├── footer.ts          y grid editorial de 4 columnas: marca (logo `NgOptimizedImage` + claim +
     ├── footer.html        iconos sociales monocromos Instagram/X/YouTube/Spotify) y columnas Explora,
@@ -430,6 +450,76 @@ features/<nombre>/
 
 ```
 src/app/features/
+├── festival-detail/     → Página de detalle de un festival, cargada vía `/festivales/:slug`.
+│   ├── feature/
+│   │   ├── festival-detail.page.ts   → Página smart standalone. Inyecta ActivatedRoute para
+│   │   │                               leer el slug, ReviewRotationService (stats → hero) y
+│   │   │                               FestivalDetailFactsService (facts → strip). Orquesta hero,
+│   │   │                               facts, overview y location-map.
+│   │   ├── festival-detail.page.html → Hero + facts strip + overview + mapa placeholder.
+│   │   ├── festival-detail.page.scss → Layout de la página: espaciado vertical y responsive.
+│   │   └── festival-detail.page.spec.ts → Tests: creación, stats al hero, facts strip visible.
+│   ├── ui/
+│   │   ├── festival-hero/            → Hero split 42/58 dirigido por slug: breadcrumb, título, metadata, CTAs e imagen WebP por festival.
+│   │   │   ├── festival-hero.ts         → FestivalHeroComponent (OnPush): `input.required<string>('slug')` + `input<ReviewStats>('stats')`.
+│   │   │   │                              Resuelve la entrada del catálogo por slug; copy y URLs vienen
+│   │   │   │                              de claves `festival.detail.byFestival.<slug>.*` + catálogo.
+│   │   │   ├── festival-hero.html       → Layout slug-driven. Badge de reseñas condicional con `@if (hasStats())`.
+│   │   │   ├── festival-hero.scss
+│   │   │   └── festival-hero.spec.ts    → Tests: creación, badge oculto sin stats, plural, singular (slug='medusa').
+│   │   ├── festival-detail-facts/    → Tira de datos clave (ubicación, género, precio, edad, horario).
+│   │   │   ├── festival-detail-facts.ts   → Presentacional (OnPush): `input<FestivalDetailFacts | null>`.
+│   │   │   ├── festival-detail-facts.html → 5 cards con iconos Lucide; enlaces oficiales en precio/horario.
+│   │   │   ├── festival-detail-facts.scss → Grid responsive 1→2→5 columnas; tokens `--fv-*`.
+│   │   │   └── festival-detail-facts.spec.ts
+│   │   ├── festival-overview/        → Bloque editorial «Sobre el festival» dirigido por slug + chips de highlights.
+│   │   │   ├── festival-overview.ts     → `input.required<string>('slug')`. Construye claves
+│   │   │   │                              `festival.detail.byFestival.<slug>.overview.*` (incluye highlights)
+│   │   │   │                              y monta `fv-festival-poster-gallery` cuando hay carteles.
+│   │   │   ├── festival-overview.html   → Copy editorial + galería de carteles + lista de highlights accesible.
+│   │   │   ├── festival-overview.scss
+│   │   │   └── festival-overview.spec.ts
+│   │   ├── festival-poster-gallery/  → Composición editorial con cartel destacado + carrusel continuo de jornadas, ampliación modal y pausa por hover/foco.
+│   │   │   ├── festival-poster-gallery.ts   → `input.required<string>('slug')`, signals `isPaused`/`activePoster`,
+│   │   │   │                                  `featuredPoster`/`carouselPosters`, cierre por Escape y resolución de carteles desde el catálogo tipado.
+│   │   │   ├── festival-poster-gallery.html → Sección condicional con bloque destacado y track duplicado para marquee,
+│   │   │   │                                  botón por cartel y diálogo accesible para la vista ampliada.
+│   │   │   ├── festival-poster-gallery.scss → Layout responsive mobile-first, animación `fv-poster-marquee`,
+│   │   │   │                                  fallback de motion y tokens temáticos `--fv-*`.
+│   │   │   └── festival-poster-gallery.spec.ts → Tests: render, duplicado del carrusel, pausa/reanudación,
+│   │   │                                          apertura/cierre del diálogo y ocultación sin carteles.
+│   │   └── festival-location-map/    → Iframe de Google Maps embebido sobre el fondo de la página, centrado en las coordenadas del festival.
+│   │       ├── festival-location-map.ts   → `input.required<string>('slug')`. Construye la URL
+│   │       │                                `https://maps.google.com/maps?q=lat,lng&output=embed` con
+│   │       │                                las coordenadas del catálogo y la pasa por `DomSanitizer`.
+│   │       ├── festival-location-map.html → Iframe lazy sin marco (sin border/box-shadow), title i18n.
+│   │       ├── festival-location-map.scss
+│   │       └── festival-location-map.spec.ts
+│   ├── data-access/                  → Servicios y datos del detalle.
+│   │   ├── festival-detail-catalogue.ts → Catálogo tipado por slug con claves i18n del hero/overview,
+│   │   │                               URLs oficiales/entradas, poster del hero, carteles por jornada
+│   │   │                               (`FestivalDetailPoster[]`) y coordenadas para el mapa.
+│   │   │                               Expone `findFestivalDetailEntry`, `isFestivalDetailSlug` y
+│   │   │                               `FESTIVAL_DETAIL_SLUGS`.
+│   │   ├── festival-detail.guard.ts → `festivalDetailGuard` (CanActivateFn). Valida `:slug` contra
+│   │   │                               el catálogo; redirige a `/` cuando no existe.
+│   │   ├── festival-detail-facts.model.ts → FestivalDetailFactsSchema (Zod) + tipo inferido.
+│   │   ├── festival-detail-facts.service.ts → Carga `/festival-detail-{slug}.json?day=YYYY-MM-DD`
+│   │   │                               desde `public/`, valida con Zod, refresca a medianoche.
+│   │   ├── reviews.data.ts           → Catálogo estático de 60 reseñas originales en español:
+│   │   │                               10 por festival × 6 slugs (bigsound, latin-fest, medusa,
+│   │   │                               rbf, reve, zevra). Ratings 2–5, texto original. Exporta
+│   │   │                               FESTIVAL_REVIEWS (array plano) y REVIEWS_BY_FESTIVAL
+│   │   │                               (ReadonlyMap<string, readonly FestivalReview[]>).
+│   │   ├── review-rotation.service.ts → ReviewRotationService (providedIn: 'root'): rotación
+│   │   │                               diaria determinista de reseñas. getFeaturedReviews(slug,
+│   │   │                               date?) devuelve 3 reseñas circulares usando semilla
+│   │   │                               (utcDateKey × 1_000_003 + djb2Hash(slug)) >>> 0.
+│   │   │                               getStats(slug) calcula media y total. Sin Math.random().
+│   │   └── review-rotation.service.spec.ts → 12 tests: determinismo, rotación por festival,
+│   │                                          días distintos, estado vacío, stats y wrap circular.
+│   └── festival-detail.routes.ts    → Superficie pública. Expone FESTIVAL_DETAIL_ROUTES con
+│                                       loadComponent hacia festival-detail.page.
 ├── home/                → Página de inicio. Muestra festivales destacados, hero con glow
 │                          atmosférico, acceso rápido a búsqueda y filtros.
 │   ├── feature/
@@ -459,12 +549,14 @@ src/app/features/
 │   │   │                                   `focusFestival()` y semántica del autoplay con fake timers.
 │   │   ├── featured-festivals/
 │   │   │   ├── featured-festivals.ts      → Componente local standalone con datos de festivales
-│   │   │   │                                destacados.
-│   │   │   ├── featured-festivals.html    → Header "Festivales destacados" y tarjetas con imagen,
-│   │   │   │                                fecha, nombre y ubicación.
+│   │   │   │                                destacados. Importa RouterLink: cada tarjeta enlaza a
+│   │   │   │                                `/festivales/:slug`.
+│   │   │   ├── featured-festivals.html    → Header "Festivales destacados" y tarjetas `<a>` con imagen,
+│   │   │   │                                fecha, nombre y ubicación, con routerLink por festival.
 │   │   │   ├── featured-festivals.scss    → Carrusel horizontal sin fondo propio: movimiento continuo
 │   │   │   │                                en desktop, avance cada 3 s en móvil y sin lift en hover.
-│   │   │   └── featured-festivals.spec.ts → Tests de render y pista duplicada.
+│   │   │   │                                `.featured-festivals__card` como bloque (display: block).
+│   │   │   └── featured-festivals.spec.ts → Tests de render y pista duplicada. Usa provideRouter([]).
 │   │   └── home-festival-map/
 │   │       ├── home-festival-map.ts      → Componente interactivo de pines sobre imagen del mapa
 │   │       │                               valenciano. Recibe las localizaciones por
@@ -489,7 +581,7 @@ src/app/features/
 │   └── home.routes.ts   → Superficie pública de la feature. Expone HOME_ROUTES con loadComponent
 ```
 
-> `festival-list/`, `festival-detail/`, `artist-detail/`, `search/` y `about/` están en el roadmap del proyecto y todavía no existen en el árbol: se documentarán aquí cuando se creen sus scaffolds.
+> `festival-list/`, `artist-detail/`, `search/` y `about/` están en el roadmap del proyecto y todavía no existen en el árbol: se documentarán aquí cuando se creen sus scaffolds.
 
 ### `src/app/shared/` — Toolbox horizontal
 
@@ -529,8 +621,12 @@ src/app/shared/
 │   │                                Forma canónica del catálogo: slug, nombre, provincia, ciudad,
 │   │                                fechaInicio/Fin, generos, cartel, precioDesde, urlOficial,
 │   │                                poster, ubicacion. Usado en la frontera HTTP (safeParse).
-│   └── festival-error.model.ts    → FestivalError (extends Error): code FestivalErrorCode,
-│                                    originalError. Método estático fromHttpStatus().
+│   ├── festival-error.model.ts    → FestivalError (extends Error): code FestivalErrorCode,
+│   │                                originalError. Método estático fromHttpStatus().
+│   └── review.model.ts            → FestivalReviewSchema (Zod) + tipo inferido FestivalReview:
+│                                    id, festivalSlug, author, rating (1–5), comment, date ISO,
+│                                    verified, source?. Exporta también ReviewStats { averageRating,
+│                                    totalCount }.
 ├── pipes/               → Pipes genéricos reutilizables.
 │   ├── translate.pipe.ts      → Pipe impuro `| t` que delega en `TranslationService`.
 │   │                            Lee la signal `activeLang` para que Angular detecte cambios
@@ -616,6 +712,21 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 
 | Fecha      | Cambio                                                  | Descripción                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ---------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-06-14 | `festival-poster-gallery`: catálogo ampliado y composición editorial (#11) | `festival-detail-catalogue.ts` añade carteles para Bigsound, Latin Fest, Reve y Zevra, además de Medusa; `festival-poster-gallery` y `festival-overview` ya los consumen para mostrar un cartel destacado por festival y un rail diario cuando existe programación visual; `src/assets/i18n/{es,ca,en}.json` amplía las etiquetas y textos de `festival.detail.byFestival.*.overview.posterGallery.*` para los nuevos slugs. |
+| 2026-06-14 | `festival-poster-gallery`: cartel destacado + rail diario (#11) | Refinada `src/app/features/festival-detail/ui/festival-poster-gallery/` sin cambiar su estructura: `festival-poster-gallery.ts` separa `featuredPoster` y `carouselPosters`, `festival-poster-gallery.html` eleva el cartel marcado como `featured` a un bloque principal y deja el marquee para los carteles por jornada, `festival-poster-gallery.scss` añade la nueva composición responsive de dos columnas en `lg`, y `festival-poster-gallery.spec.ts` actualiza las expectativas DOM para 1 cartel destacado + 4 carteles diarios duplicados en el rail. |
+| 2026-06-14 | Auditoría `/audit-structure`: promoción de `layout/shell` | Creado `src/app/layout/shell/shell.{ts,html,scss,spec.ts}` (`ShellComponent`, selector `fv-shell`, OnPush) que asume el chrome (notification-banner, nav-bar, nav-progress-bar, `<main>` con `<router-outlet>`, footer) y la animación `fv-page-enter` por `NavigationEnd`. `app.ts` queda como root mínimo que renderiza `<fv-shell />` e inicializa `HreflangService` / `ThemeService` / `PageTransitionService`; `app.html` reducido a `<fv-shell />`; `app.scss` pasa a `:host { display: contents }`. Eliminado el `.gitkeep` placeholder de `layout/shell/`. Specs (`app.spec.ts`, `shell.spec.ts`) actualizadas con `provideHttpClient[Testing]` + `provideTransloco` stub. Cierra el warning de `/audit-structure` sobre `layout/shell` vacío. |
+| 2026-06-14 | Galería de carteles en `festival-detail` (#11)         | Añadida la carpeta `src/app/features/festival-detail/ui/festival-poster-gallery/` con `festival-poster-gallery.{ts,html,scss,spec.ts}`: carrusel continuo de carteles oficiales con pausa por hover/foco, modal ampliada y cierre por Escape/backdrop. `festival-overview.{ts,html}` ahora monta la galería por slug, `festival-detail-catalogue.ts` incorpora la interfaz `FestivalDetailPoster` y la colección `posters` para Medusa, y `src/assets/i18n/{es,ca,en}.json` amplía `festival.detail.byFestival.medusa.overview.posterGallery.*` para títulos, diálogo y etiquetas por jornada. |
+| 2026-06-14 | Festival detail: facts, overview y mapa placeholder (#11) | Añadidos `festival-detail-facts` (UI + `FestivalDetailFactsService` con JSON diario en `public/festival-detail-medusa.json` validado por Zod), `festival-overview` (copy editorial + highlights) y `festival-location-map` (placeholder). `festival-detail.page` orquesta las cuatro secciones. Claves `festival.detail.*` en es/ca/en. Ajuste responsive del título en `festival-hero.scss`. |
+| 2026-06-14 | Festival detail completamente dirigido por `:slug` | `festival-hero`, `festival-overview` y `festival-location-map` reciben `input.required<string>('slug')` y dejan de estar acoplados a Medusa. Nuevo `data-access/festival-detail-catalogue.ts` con entradas tipadas (claves i18n, URLs oficiales, poster y coordenadas) y `data-access/festival-detail.guard.ts` (CanActivateFn) que valida `:slug` contra el catálogo y redirige a `/` si no existe — cableado en `festival-detail.routes.ts`. `festival-location-map` reemplaza el iframe de Google Maps por una instancia MapLibre GL (lazy via `MapLoaderService`, `environment.maps.styleUrl`, marker DOM con tokens, SSR-safe vía `afterNextRender`, `effect` re-encuadra al cambiar slug y `DestroyRef` limpia). `src/styles/styles.scss` importa `maplibre-gl/dist/maplibre-gl.css`. i18n reorganizada: nuevo bloque `festival.detail.hero.*` (breadcrumb, meta, cta, review), `festival.detail.overview.highlightsAriaLabel`, `festival.detail.locationMap.iframeTitle` y árbol `festival.detail.byFestival.{bigsound, latinFest, medusa, rbf, reve, zevra}.*` con nombre, hero y overview por festival; copy de Medusa preservada. JSON de hechos añadidos en `public/festival-detail-{bigsound,latin-fest,rbf,reve,zevra}.json` para alcanzar los 6 slugs del catálogo. Specs actualizadas con `setInput('slug', 'medusa')`; nuevo test del location-map que oculta la sección con slug desconocido. Parity `npm run i18n:check` OK. |
+| 2026-06-14 | Home sin `@defer` en secciones below-fold               | `home.page.html`: retirados los bloques `@defer (on viewport)` de `festival-calendar`, `featured-festivals` y `home-festival-map` (carga eager). `home.page.spec.ts` simplificado: eliminado `DeferBlockBehavior.Manual` y render manual de defer blocks. |
+| 2026-06-14 | Fix logo del nav-bar en modo oscuro (SSR + hidratación) | El `@if (isDark())` del template fallaba contra SSR: `ThemeService.#systemDark` defaultea a `false` en el servidor (sin `matchMedia`), así que el HTML SSR enviaba `festi-val-logo.webp` (texto navy) y NgOptimizedImage con `priority` lo comprometía antes de que la hidratación pudiera reevaluar el signal. Cambiado a swap puramente CSS: `nav-bar.html` ahora renderiza ambos `<img>` (`--light` y `--dark`, este último `aria-hidden`), y `nav-bar.scss` los muestra/oculta vía `:host-context([data-theme='dark'])` + `@media (prefers-color-scheme: dark)` con `:host-context(html:not([data-theme]))` para el modo system. Funciona instantáneamente en el primer paint sin depender de la hidratación. Test `nav-bar.spec.ts` actualizado: ahora verifica que ambos `<img>` están en el DOM con sus respectivos `ngSrc` y que el `--dark` lleva `aria-hidden`. |
+| 2026-06-14 | `festival-detail`: eliminados scaffolds `lineup-grid` y `venue-map` | Borradas las carpetas `features/festival-detail/ui/{lineup-grid,venue-map}/` (componentes vacíos que solo renderizaban un `<div>` sin contenido). `festival-detail.page.html` queda con un único `<fv-festival-hero [stats]>`; retirados los dos bloques `@defer (on viewport)` y sus placeholders, junto con la regla `.festival-detail-page__placeholder` en `festival-detail.page.scss`. Imports actualizados en `festival-detail.page.ts`. Spec simplificada: ya no necesita `DeferBlockBehavior.Manual`. Cuando se implementen cartel y mapa de recinto se volverán a scaffoldar. |
+| 2026-06-14 | Reseñas reducidas al badge del hero | Eliminada la sección `featured-reviews` de `festival-detail/ui/` (componente, template, SCSS y spec) y su `@defer` en `festival-detail.page.html`. `FestivalHeroComponent` pasa a aceptar `input<ReviewStats>('stats')` y renderiza la media (`toLocaleString('es-ES', { minimumFractionDigits: 1 })`) y el contador con plural ES (`reseña`/`reseñas`) mediante `@if (hasStats())`; el badge desaparece cuando no hay datos. `festival-detail.page.ts` simplificado: solo expone `reviewStats` (vía `ReviewRotationService.getStats`) y lo enlaza al hero — `featuredReviews` ya no se calcula. Specs actualizadas: `festival-hero.spec.ts` cubre badge oculto, plural y singular; `festival-detail.page.spec.ts` verifica el cableado del input vía `By.directive`. Claves i18n `festival.reviews.*` retiradas de `es.json`, `ca.json` y `en.json` (parity OK, 5 top-level keys). `ReviewRotationService` y `reviews.data.ts` se conservan: la media y el total se calculan en runtime. |
+| 2026-06-14 | Sistema de opiniones con rotación diaria determinista      | Añadidos `shared/domain/review.model.ts` (FestivalReviewSchema Zod + ReviewStats), `festival-detail/data-access/reviews.data.ts` (60 reseñas originales × 6 festivales), `festival-detail/data-access/review-rotation.service.ts` (+ spec, 12 tests: seed djb2 + utcDateKey, 3 reseñas circulares sin Math.random()), y `festival-detail/ui/featured-reviews/` (componente + template + SCSS + spec, 10 tests). Integrado en `festival-detail.page` con `@defer (on viewport)`. Pipe `| t` extendido con `params?: Record<string, unknown>` y helper `interpolate()` en `TranslationService`. Claves `festival.reviews.*` propagadas a es/ca/en. `featured-festivals` ahora enlaza a `/festivales/:slug` vía `RouterLink`. |
+| 2026-06-13 | Nav-bar sticky en `:host`                                 | `nav-bar.scss`: `position: sticky`, `top: 0` y `z-index: 50` movidos de `.nav-bar` a `:host` para que el header permanezca fijo al hacer scroll (el sticky en el hijo interno no anclaba correctamente al viewport). |
+| 2026-06-13 | Progress bar glow con tokens                              | `nav-progress-bar.scss`: `box-shadow` del glow sustituido por `color-mix` con `--fv-accent-blue` y `--fv-accent-med-blue` (cumple gate B.3 sin colores hardcodeados). |
+| 2026-06-13 | Page transition UX (scroll top + fade-in + progress bar) | Añadidos `page-transition.service.ts` (+ spec): estado `hidden/loading/completing`, activación tras 200 ms y auto-limpieza en `NavigationEnd/Cancel/Error`. Cableados `nav-progress-bar` (ts, html, spec). `provideRouter` con `withInMemoryScrolling({ scrollPositionRestoration: 'top' })`. `app.ts` reinicia `fv-page-enter` vía `Renderer2` en cada `NavigationEnd`. Keyframes `fv-page-enter`, `fv-progress-load` y `fv-progress-complete` en `_animations.scss`. `app.html`: `<fv-nav-progress-bar />` y `#mainEl`. |
+| 2026-06-13 | Medusa Festival hero (`festival-detail`)                  | Implementado `fv-festival-hero` con layout split 42/58: breadcrumb, título display Sora con letter-spacing en "FESTIVAL", metadata (ubicación, fecha, rating, guardar) y dos CTAs. Imagen `hero-medusa-festival-2026.webp` en `src/assets/images/festivals/medusa/`. Spec con `provideRouter([])`. Iconos Lucide + `NgOptimizedImage`. |
 | 2026-06-10 | Eliminación de `festivales-map` y ajuste de nav-bar     | Borrada la feature `src/app/features/festivales-map/` completa (page, ui, data-access, routes). Eliminada la ruta `/mapa` de `app.routes.ts`. Nav-bar actualizada: retirado el link "Mapa", añadido "Inicio" (`/`, exact match). Claves huérfanas `nav.map` y `nav.cta` eliminadas de `es.json`, `ca.json` y `en.json`. Tests de `nav-bar.spec.ts` actualizados para reflejar los nuevos links. |
 | 2026-06-10 | Comando `/merge-to-develop`                             | Añadidos `.claude/commands/merge-to-develop.md` y espejo en `.codex/commands/`. El comando, invocado desde cualquier rama, valida el árbol limpio, ejecuta el gate (lint + tests), pide confirmación, actualiza develop desde origin, fusiona con `--no-ff`, resuelve conflictos (con reglas por área de código), ejecuta el gate en develop, empuja a origin y restaura la rama original. Nunca toca `main`. Complemento inverso de `/update-branches-from-develop`. |
 | 2026-06-10 | Auditoría completa: limpieza y optimización             | Eliminado `src/.DS_Store` (archivo de sistema no versionable ya cubierto por `.gitignore`). Corregido `focus-ring` double-nesting en 7 localizaciones SCSS (notification-banner, home.page, featured-festivals, home-festival-map ×2, festivales-map ×4). Retirado `@keyframes fv-featured-marquee` duplicado de `_animations.scss` (el componente `featured-festivals` define su propia versión correcta). Tokens `--fv-radius-1`/`--fv-radius-2` en `_liquid-glass.scss` reemplazados por `--fv-radius-sm`/`--fv-radius-lg`. Eliminada declaración redundante `standalone: true` en 4 componentes (`festival-calendar`, `featured-festivals`, `home-festival-map`, `notification-banner`) — Angular 19+ la asume por defecto. Hover guard añadido al marcador del mapa en `festivales-map.scss`. Traducidas las secciones `home.calendar` y `footer` de `ca.json` y `en.json` que contenían texto en español. |
@@ -683,7 +794,7 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-07 | Correcciones auditoría (health 66 → 90)                 | **Dominio**: creados `shared/domain/festival.model.ts` (FestivalSchema Zod + tipos Festival/Artist) y `festival-error.model.ts` (FestivalError, FestivalErrorCode, fromHttpStatus). **Error handling**: añadidos `core/handlers/festival-error.handler.ts` (FestivalErrorHandler, provisto en app.config) y `core/interceptors/error.interceptor.ts` (errorInterceptor funcional). `app.config.ts`: ErrorHandler → FestivalErrorHandler, `withInterceptors([errorInterceptor])`. **Feature mapa**: creada `features/festivales-map/` completa: `festivales-map.page.{ts,html,scss}`, `festivales-map.routes.ts` (FESTIVALES_MAP_ROUTES), ruta `/mapa` añadida a `app.routes.ts`. **Shared map**: creados `shared/ui/festivales-map/festivales-map.{ts,html,scss}` (FestivalesMapComponent, MapLibre GL JS lazy-loaded, sidebar ordenable, SSR-safe). **Data**: `shared/data-access/festival-locations.ts` (FESTIVAL_LOCATIONS readonly) y `map-loader.service.ts` (MapLoaderService). **Entornos**: bloque `maps` (styleUrl, center, zoom) añadido a ambos `environment*.ts`. `maplibre-gl` instalado. **Assets**: `src/assets/maps/festival-dark.json` placeholder para Protomaps. **Nits**: comentario "5s → 3s" en `featured-festivals.scss`; excepción arquitectónica documentada en `transloco.loader.ts`. |
 | 2026-06-09 | Etiquetas callout en pines del mapa                     | Añadidas etiquetas de nombre (`pin-callout`) a los pines del mapa interactivo `home-festival-map` para identificar festivales sin interacción. Nuevas propiedades `mapLabel`, `labelOffsetX`, `labelOffsetY` en `HomeMapFestival`. Estilos de posicionamiento con offsets por festival para evitar colisiones. Tests de etiquetas y asignación de offsets. Actualizados `home-festival-map.{ts,html,scss,spec.ts}`. |
 | 2026-06-10 | Sistema de gestión de tareas en `tasks/` (workflow por tarea) | Reemplazada la planificación previa por un workflow por tarea. **Añadidos**: `tasks/README.md` (workflow GitHub Project → Issue → `current-task.md` → desarrollo → autocommit → PR → review → done, ciclo de vida y convenciones), `tasks/templates/task-template.md` (plantilla canónica: título, issue, descripción, requisitos, criterios de aceptación, ficheros afectados, checklist de progreso, estado, notas y completion summary), `tasks/current-task.md` (tarea activa única, con un ejemplo seed de integración de MiniSearch) y las carpetas `tasks/backlog/` y `tasks/completed/` (cada una con `.gitkeep`). Añadida la sección "Active task workflow (MANDATORY)" a `.claude/CLAUDE.md` y `.codex/AGENTS.md` (leer `tasks/current-task.md` primero, no salir del alcance, mantener checklist/estado, commits vía `commands/autocommit.md`, cierre y reset del fichero). No duplica los gates ni la política i18n: los referencia desde `autocommit.md`. **Eliminados**: los docs de planificación antiguos `tasks/ROADMAP.md`, `tasks/BACKLOG.md`, `tasks/IN_PROGRESS.md` y `tasks/COMPLETED.md` (superados por el nuevo sistema); actualizada la referencia del roadmap en `README.md` a `tasks/README.md`. |
-| 2026-06-10 | Validación del workflow de tareas (Issue #1)            | Prueba end-to-end del sistema de tareas: `tasks/current-task.md` poblado desde el Issue #1 ("Prueba") y añadido `tasks/test-workflow.md` (marcador no funcional, temporal). Sin cambios de desarrollo ni en `src/`. |
+| 2026-06-10 | Validación del workflow de tareas (Issue #11)           | Prueba end-to-end del sistema de tareas: `tasks/current-task.md` poblado desde el Issue #11 ("Prueba") y añadido `tasks/test-workflow.md` (marcador no funcional, temporal). Sin cambios de desarrollo ni en `src/`. |
 | 2026-06-10 | Comando `new-task`                                      | Añadido `.claude/commands/new-task.md` (pregunta el nº de issue, lo lee, rechaza si no existe y puebla `tasks/current-task.md` desde la plantilla con `Status: In Progress`). Integrado con el sistema de tareas; no duplica ni elude las reglas de `autocommit.md`. |
 | 2026-06-10 | Referencia de issue integrada en `autocommit`           | Eliminado `.claude/commands/commit-task.md`; su comportamiento se integra en `autocommit.md` (`.claude` y `.codex`): el paso 2 pasa de "detectar issue key" a **preguntar los números de issue de forma repetida hasta que el usuario introduce `0`** y añadir las referencias `(#n)` / `(#n, #m)` al resumen de cada commit. Formato y ejemplos de commit actualizados al estilo sufijo `(#n)` (antes prefijo `<issue-key>:`). README actualizado. |
 | 2026-06-10 | Eliminación del sistema `tasks/` y `/new-task`          | Eliminada la carpeta `tasks/` (README, current-task, backlog, completed, templates, test-workflow) y el comando `.claude/commands/new-task.md`. Retirada la sección "Active task workflow" de `CLAUDE.md` y `AGENTS.md`. `README.md` simplificado a flujo Issue → desarrollo → `/autocommit` → PR. Actualizado el árbol raíz y la sección de commands en esta documentación. |
@@ -698,4 +809,6 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-12 | Comando `/new-branch`: base `develop` en lugar de `main` | Actualizados `.claude/commands/new-branch.md` y `.codex/commands/new-branch.md`: la rama por defecto pasa a ser `develop` (`git switch develop && git pull --ff-only origin develop`). Referencias cruzadas en `merge-to-develop`, `update-branches-from-develop` y `merge-develop-into-branches` alineadas. |
 | 2026-06-12 | Skill `angular-developer` (Google Angular Team) integrada | Movida la skill oficial `angular-developer` de `.agents/skills/` a `.claude/skills/` y `.codex/skills/`. Eliminada `.agents/` por completo (no es leída por Claude Code ni Codex). Adaptaciones al contrato del proyecto: `tailwind-css.md` eliminado (Tailwind fuera de scope), `e2e-testing.md` reescrito para Playwright (en vez de Cypress/DevTools), gate de build actualizado a `npm run lint && npm test -- --run`, referencia a Tailwind CSS eliminada del `SKILL.md` en ambas carpetas. `angular-new-app` descartada (irrelevante para proyecto existente). |
 | 2026-06-10 | Auditoría `/audit-structure`: health score 75 → 100 | **Error handling completo**: creado `core/notifications/notification.service.ts` (signal `AppNotification|null`, `show()`/`dismiss()`); `festival-error.handler.ts` actualizado (inyecta `NotificationService`, llama `Sentry.captureException` en producción, mapea `FestivalErrorCode` a claves i18n `error.*`); `app.config.ts` inicializa Sentry con `environment.sentry.dsn`; bloque `sentry: { dsn }` añadido a ambos `environment*.ts`. **Shell**: creado `shared/ui/notification-banner/` (`NotificationBannerComponent`), cableado en `app.ts`/`app.html`. **i18n**: claves `error.network/notFound/unknown/dismiss` añadidas a `es.json`, `ca.json` y `en.json`. **Datos en data-access**: creado `features/home/data-access/home-catalogue.ts` (extrae `FEATURED_FESTIVALS`, `CALENDAR_MONTH_SEGMENTS`, `CALENDAR_FESTIVALS` y sus tipos de los componentes `ui/`); `featured-festivals.ts` y `festival-calendar.ts` actualizados para importar desde `data-access/`. **SCSS (hover guards)**: `nav-bar.scss` y `festivales-map.scss` envuelven sus `:hover` en `@media (hover: hover) and (pointer: fine)`. **SCSS (font-size tokens)**: `festival-calendar.scss` extrae 5 tamaños literales a custom properties en `:host`; `home-festival-map.scss` extrae `10px`/`9px` a `:host`. **Limpieza**: eliminados los `.gitkeep` redundantes de `features/home/data-access/` y `shared/ui/` (ambos reemplazados por ficheros reales). |
+| 2026-06-12 | Carteles WebP + script `images:convert` | Añadido `scripts/convert-images.mjs` (Sharp + djxl para JXL) y `npm run images:convert`. Generados 12 carteles `.webp` en `src/assets/images/festivals/` desde `images-src/` (bigsound, latin-fest, medusa, reve, zevra). DevDependency `sharp@^0.34`. |
+| 2026-06-12 | Scaffold `festival-detail` (boilerplate Angular) | Creada la feature `src/app/features/festival-detail/` completa: `festival-detail.routes.ts` (FESTIVAL_DETAIL_ROUTES, loadComponent), `feature/festival-detail.page.{ts,html,scss,spec.ts}` (página smart que lee el slug de ActivatedRoute, orquesta los tres componentes ui/ en @defer), `ui/festival-hero/`, `ui/lineup-grid/` y `ui/venue-map/` (componentes dumb con boilerplate mínimo: TS, HTML, SCSS, spec). La ruta `/festivales/:slug` registrada en `app.routes.ts` con `loadChildren`. `data-access/` reservada con `.gitkeep` para el store y resolver futuros. |
 | 2026-06-12 | Auditoría `/audit-structure`: re-extracción del calendario a data-access | Tras el merge a `develop`, `festival-calendar.ts` había vuelto a tener los datos inline (regresión de la extracción del 2026-06-10) y `home-catalogue.ts` quedaba con `CALENDAR_FESTIVALS`/`CALENDAR_MONTH_SEGMENTS` huérfanos y **datos obsoletos** (un solo `latin-fest` en día 17). Corregido: `CALENDAR_FESTIVALS` actualizado al modelo de 5 entradas (`bigsound`, `latin-fest-valencia` 17–18 jul, `latin-fest`/Benidorm 4–5 jul, `zevra`, `medusa`); `festival-calendar.ts` re-cableado para importar `CALENDAR_FESTIVALS`/`CALENDAR_MONTH_SEGMENTS` y sus tipos desde `data-access/`, eliminando arrays y tipos inline duplicados. Sin cambios en i18n (claves ya presentes). |

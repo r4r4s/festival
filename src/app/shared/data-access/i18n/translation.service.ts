@@ -34,19 +34,27 @@ export class TranslationService {
    * Falls back to the Spanish static bundle and finally to the raw key so
    * templates never throw.
    */
-  t(key: TranslationKey): string {
+  t(key: TranslationKey, params?: Record<string, unknown>): string {
     if (this.#transloco) {
-      const value = this.#transloco.translate<string>(key);
+      const value = this.#transloco.translate<string>(key, params);
       // Transloco returns the key itself when the key is not yet loaded
-      return value !== key ? value : (resolveKey(this.#static(), key) ?? key);
+      return value !== key ? value : interpolate(resolveKey(this.#static(), key) ?? key, params);
     }
-    return resolveKey(this.#static(), key) ?? key;
+    return interpolate(resolveKey(this.#static(), key) ?? key, params);
   }
 
   /** Replace the static dictionary — used by tests. */
   setTranslations(next: Translations): void {
     this.#static.set(next);
   }
+}
+
+/** Replaces `{{ key }}` placeholders with values from params. */
+function interpolate(template: string, params?: Record<string, unknown>): string {
+  if (!params) return template;
+  return template.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, k: string) =>
+    k in params ? String(params[k]) : `{{ ${k} }}`,
+  );
 }
 
 function resolveKey(dict: Translations, key: string): string | undefined {

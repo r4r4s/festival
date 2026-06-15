@@ -1,0 +1,233 @@
+@use 'styles/breakpoints' as *;
+@use 'styles/mixins' as *;
+
+:host {
+  --poster-card-width: 17.5rem;
+  --poster-card-gap: var(--fv-space-4);
+  display: block;
+
+  @include from(md) {
+    --poster-card-width: 18.5rem;
+    --poster-card-gap: var(--fv-space-5);
+  }
+
+  @include from(lg) {
+    --poster-card-width: 20rem;
+  }
+}
+
+.festival-poster-gallery {
+  display: grid;
+  gap: var(--fv-space-4);
+
+  @include from(md) {
+    gap: var(--fv-space-5);
+  }
+}
+
+.festival-poster-gallery__copy {
+  display: grid;
+  gap: var(--fv-space-2);
+}
+
+.festival-poster-gallery__layout {
+  display: grid;
+  gap: var(--fv-space-5);
+
+  @include from(lg) {
+    grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.festival-poster-gallery__title,
+.festival-poster-gallery__intro,
+.festival-poster-gallery__label {
+  margin: 0;
+}
+
+.festival-poster-gallery__title {
+  color: var(--fv-text-nav);
+  font-family: var(--fv-font-hero-emphasis);
+  font-size: clamp(var(--fv-text-2xl), 4.2vw, var(--fv-text-3xl));
+  font-weight: 700;
+  line-height: var(--fv-leading-tight);
+}
+
+.festival-poster-gallery__intro {
+  max-width: 70ch;
+  color: var(--fv-text-footer-muted);
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-base);
+  line-height: var(--fv-leading-relaxed);
+}
+
+.festival-poster-gallery__label {
+  color: var(--fv-text-nav);
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-sm);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: var(--fv-leading-snug);
+  text-transform: uppercase;
+}
+
+.festival-poster-gallery__viewport {
+  overflow: hidden;
+  transform: translateZ(0); // @compat
+  outline: none;
+
+  @include focus-ring;
+
+  &:focus-visible {
+    border-radius: var(--fv-radius-2xl);
+  }
+}
+
+.festival-poster-gallery__featured,
+.festival-poster-gallery__poster {
+  display: grid;
+  gap: var(--fv-space-2);
+  margin: 0;
+}
+
+.festival-poster-gallery__track {
+  display: flex;
+  gap: var(--poster-card-gap);
+  width: max-content;
+  animation: fv-poster-marquee 44s linear infinite;
+}
+
+.festival-poster-gallery__track--paused {
+  animation-play-state: paused;
+}
+
+.festival-poster-gallery__group {
+  display: flex;
+  gap: var(--poster-card-gap);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.festival-poster-gallery__item {
+  flex: 0 0 auto;
+  width: var(--poster-card-width);
+}
+
+.festival-poster-gallery__trigger,
+.festival-poster-gallery__dialog-close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+}
+
+.festival-poster-gallery__trigger {
+  display: block;
+  cursor: zoom-in;
+  border-radius: var(--fv-radius-2xl);
+  outline: none;
+
+  @include focus-ring;
+}
+
+.festival-poster-gallery__trigger--featured {
+  width: 100%;
+}
+
+.festival-poster-gallery__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--fv-radius-2xl);
+  border: 1px solid color-mix(in srgb, var(--fv-border-nav) 80%, transparent);
+  box-shadow: var(--fv-shadow-card);
+  object-fit: cover;
+}
+
+.festival-poster-gallery__dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: var(--fv-space-4);
+  background: color-mix(in srgb, var(--fv-bg-overlay) 88%, transparent);
+
+  @include from(md) {
+    padding: var(--fv-space-6);
+  }
+}
+
+.festival-poster-gallery__dialog {
+  position: relative;
+  width: auto;
+  max-width: none;
+  display: grid;
+  justify-items: center;
+  gap: var(--fv-space-2);
+}
+
+.festival-poster-gallery__dialog-close {
+  position: absolute;
+  top: 0;
+  right: calc(var(--fv-space-3) * -1);
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--fv-bg-card-light) 88%, transparent);
+  color: var(--fv-text-nav);
+  cursor: pointer;
+  box-shadow: var(--fv-shadow-card);
+  font-size: 2rem;
+  line-height: 1;
+
+  @include focus-ring;
+
+  @include from(md) {
+    right: calc(var(--fv-space-4) * -1);
+  }
+}
+
+.festival-poster-gallery__dialog-poster {
+  display: grid;
+  gap: var(--fv-space-2);
+  margin: 0;
+}
+
+.festival-poster-gallery__dialog-image {
+  display: block;
+  width: auto;
+  max-width: min(94vw, 52rem);
+  max-height: calc(100vh - 1.5rem);
+  height: min(calc(100vh - 1.5rem), 78rem);
+  object-fit: contain;
+  border-radius: var(--fv-radius-2xl);
+  border: 1px solid color-mix(in srgb, var(--fv-border-nav) 80%, transparent);
+  box-shadow: var(--fv-shadow-card);
+}
+
+@media (max-width: 767px) {
+  .festival-poster-gallery__dialog-close {
+    top: calc(var(--fv-space-3) * -1);
+    right: calc(var(--fv-space-2) * -1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .festival-poster-gallery__track {
+    animation: none;
+    transform: none;
+  }
+}
+
+@keyframes fv-poster-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}

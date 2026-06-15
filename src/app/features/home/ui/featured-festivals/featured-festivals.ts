@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { LucideCalendar, LucideMapPin } from '@lucide/angular';
 
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
@@ -7,7 +8,7 @@ import { FEATURED_FESTIVALS } from '../../data-access/home-catalogue';
 
 @Component({
   selector: 'fv-featured-festivals',
-  imports: [NgOptimizedImage, LucideCalendar, LucideMapPin, TranslatePipe],
+  imports: [NgOptimizedImage, RouterLink, LucideCalendar, LucideMapPin, TranslatePipe],
   templateUrl: './featured-festivals.html',
   styleUrl: './featured-festivals.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

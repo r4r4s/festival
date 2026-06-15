@@ -1,0 +1,37 @@
+@use 'styles/breakpoints' as *;
+
+:host {
+  display: block;
+}
+
+.festival-location-map {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: grid;
+  gap: var(--fv-space-4);
+}
+
+.festival-location-map__title {
+  margin: 0;
+  color: var(--fv-text-nav);
+  font-family: var(--fv-font-hero-emphasis);
+  font-size: clamp(var(--fv-text-3xl), 5vw, var(--fv-text-4xl));
+  font-weight: 700;
+  line-height: var(--fv-leading-tight);
+}
+
+.festival-location-map__iframe {
+  display: block;
+  width: 100%;
+  height: 22rem;
+  border: 0;
+  background: transparent;
+
+  @include from(md) {
+    height: 28rem;
+  }
+
+  @include from(lg) {
+    height: 34rem;
+  }
+}

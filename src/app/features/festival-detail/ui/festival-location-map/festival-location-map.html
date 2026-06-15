@@ -1,0 +1,18 @@
+@if (entry()) {
+<section
+  class="festival-location-map"
+  [attr.aria-label]="'festival.detail.locationMap.ariaLabel' | t"
+  data-testid="festival-location-map"
+>
+  <h2 class="festival-location-map__title">{{ 'festival.detail.locationMap.title' | t }}</h2>
+
+  <iframe
+    class="festival-location-map__iframe"
+    [src]="mapSrc()"
+    [title]="mapTitle()"
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    allowfullscreen
+  ></iframe>
+</section>
+}

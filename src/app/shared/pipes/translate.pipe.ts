@@ -16,8 +16,8 @@ import type { TranslationKey } from '@shared/data-access/i18n/translations';
 export class TranslatePipe implements PipeTransform {
   readonly #translator = inject(TranslationService);
 
-  transform(key: TranslationKey): string {
+  transform(key: TranslationKey, params?: Record<string, unknown>): string {
     this.#translator.activeLang(); // read Signal → Angular tracks lang changes
-    return this.#translator.t(key);
+    return this.#translator.t(key, params);
   }
 }

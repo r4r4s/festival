@@ -212,6 +212,27 @@ export class FilterChipComponent {
 />
 ```
 
+## Hard rule — genre/category chips
+
+**Never add genre or category badge chips (e.g. "ELECTRÓNICA", "REGGAETON") to any UI unless the user explicitly requests them.**
+
+These are decorative pill-shaped labels with colored text on a dark/tinted background. They add visual noise and were flagged by the product owner as unwanted default decoration. The pattern to avoid:
+
+```scss
+// ❌ Do NOT add this kind of chip unprompted
+.some-genre-chip {
+  background: rgba(78, 140, 255, 0.12);
+  color: var(--fv-accent-blue);
+  border-radius: var(--fv-radius-pill);
+  font-size: var(--fv-text-xs);
+  font-weight: 700;
+  letter-spacing: var(--fv-tracking-wider);
+  text-transform: uppercase;
+}
+```
+
+If genre information needs to be displayed, use plain text (e.g. within a metadata list) rather than a styled chip, unless the user explicitly asks for a chip treatment.
+
 ## Related skills
 
 - [[theming-styling]]
