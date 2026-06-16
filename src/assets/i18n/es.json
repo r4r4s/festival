@@ -143,6 +143,31 @@
         "label": "Añadir a favoritos",
         "add": "Favoritos"
       }
+    },
+    "playlists": {
+      "eyebrow": "Banda sonora",
+      "title": "Playlists oficiales",
+      "subtitle": "Escucha el sonido de los principales festivales de la Comunitat Valenciana.",
+      "cta": "Ver en Spotify",
+      "iframeTitle": "Playlist oficial de {festival} en Spotify",
+      "cards": {
+        "zevra": {
+          "name": "ZEVRA Festival",
+          "description": "Los sonidos urbanos que definen el verano."
+        },
+        "medusa": {
+          "name": "Medusa Festival",
+          "description": "La esencia electrónica del Mediterráneo."
+        },
+        "rbf": {
+          "name": "Reggaeton Beach Festival",
+          "description": "Hits latinos para bailar frente al mar."
+        },
+        "latinFest": {
+          "name": "Latin Fest",
+          "description": "La mejor selección latina del verano."
+        }
+      }
     }
   },
   "festivales": {

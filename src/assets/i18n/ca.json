@@ -143,6 +143,31 @@
         "artists": "Artistes en escena",
         "provinces": "Províncies per descobrir"
       }
+    },
+    "playlists": {
+      "eyebrow": "Banda sonora",
+      "title": "Playlists oficiales",
+      "subtitle": "Escucha el sonido de los principales festivales de la Comunitat Valenciana.",
+      "cta": "Ver en Spotify",
+      "iframeTitle": "Playlist oficial de {festival} en Spotify",
+      "cards": {
+        "zevra": {
+          "name": "ZEVRA Festival",
+          "description": "Los sonidos urbanos que definen el verano."
+        },
+        "medusa": {
+          "name": "Medusa Festival",
+          "description": "La esencia electrónica del Mediterráneo."
+        },
+        "rbf": {
+          "name": "Reggaeton Beach Festival",
+          "description": "Hits latinos para bailar frente al mar."
+        },
+        "latinFest": {
+          "name": "Latin Fest",
+          "description": "La mejor selección latina del verano."
+        }
+      }
     }
   },
   "festivales": {
@@ -394,25 +419,25 @@
           },
           "overview": {
             "paragraph1": "Medusa Festival és un dels festivals de música electrònica més importants d'Europa i una referència imprescindible de l'estiu a Espanya. Celebrat a l'espectacular platja de Cullera (València), reunix durant cinc dies alguns dels millors DJs i artistes internacionals en un entorn únic al costat del mar Mediterrani.",
-        "paragraph2": "Amb més de 300.000 m² de recinte, impressionants escenaris temàtics, produccions audiovisuals de gran format i una experiència immersiva incomparable, Medusa Festival atrau cada any milers d'assistents de tot el món que busquen música, espectacle i una atmosfera inoblidable.",
-        "posterGallery": {
-          "title": "Cartells oficials",
-          "intro": "El cartell general i la programació visual per jornades per seguir el festival d'una ullada.",
-          "dialog": {
-            "ariaLabel": "Cartell ampliat del festival",
-            "close": "Tancar cartell ampliat"
-          },
-          "labels": {
-            "general": "Cartell general",
-            "thursday": "Dijous",
-            "friday": "Divendres",
-            "saturday": "Dissabte",
-            "sunday": "Diumenge"
-          }
-        },
-        "highlights": {
-          "beach": "Platja",
-          "camping": "Càmping",
+            "paragraph2": "Amb més de 300.000 m² de recinte, impressionants escenaris temàtics, produccions audiovisuals de gran format i una experiència immersiva incomparable, Medusa Festival atrau cada any milers d'assistents de tot el món que busquen música, espectacle i una atmosfera inoblidable.",
+            "posterGallery": {
+              "title": "Cartells oficials",
+              "intro": "El cartell general i la programació visual per jornades per seguir el festival d'una ullada.",
+              "dialog": {
+                "ariaLabel": "Cartell ampliat del festival",
+                "close": "Tancar cartell ampliat"
+              },
+              "labels": {
+                "general": "Cartell general",
+                "thursday": "Dijous",
+                "friday": "Divendres",
+                "saturday": "Dissabte",
+                "sunday": "Diumenge"
+              }
+            },
+            "highlights": {
+              "beach": "Platja",
+              "camping": "Càmping",
               "foodTrucks": "Food Trucks",
               "afterparties": "Afterparties",
               "activities": "Activitats"

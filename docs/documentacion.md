@@ -557,6 +557,15 @@ src/app/features/
 │   │   │   │                                en desktop, avance cada 3 s en móvil y sin lift en hover.
 │   │   │   │                                `.featured-festivals__card` como bloque (display: block).
 │   │   │   └── featured-festivals.spec.ts → Tests de render y pista duplicada. Usa provideRouter([]).
+│   │   ├── spotify-playlists/
+│   │   │   ├── spotify-playlists.ts      → Componente standalone que embebe playlists oficiales de
+│   │   │   │                               Spotify de cuatro festivales (Zevra, Medusa, RBF,
+│   │   │   │                               Latin Fest) mediante iframes. Usa DomSanitizer para
+│   │   │   │                               URLs seguras y TranslationKey tipada para i18n.
+│   │   │   ├── spotify-playlists.html    → Sección con título, subtítulo, grid responsivo (1/2/4 cols)
+│   │   │   │                               de tarjetas con logo del festival + iframe de Spotify.
+│   │   │   └── spotify-playlists.scss    → Glow radial, divisor sutil, tarjetas transparentes sobre
+│   │   │                                   fondo de página. Tokens semánticos y color-mix().
 │   │   └── home-festival-map/
 │   │       ├── home-festival-map.ts      → Componente interactivo de pines sobre imagen del mapa
 │   │       │                               valenciano. Recibe las localizaciones por
@@ -812,3 +821,4 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-12 | Carteles WebP + script `images:convert` | Añadido `scripts/convert-images.mjs` (Sharp + djxl para JXL) y `npm run images:convert`. Generados 12 carteles `.webp` en `src/assets/images/festivals/` desde `images-src/` (bigsound, latin-fest, medusa, reve, zevra). DevDependency `sharp@^0.34`. |
 | 2026-06-12 | Scaffold `festival-detail` (boilerplate Angular) | Creada la feature `src/app/features/festival-detail/` completa: `festival-detail.routes.ts` (FESTIVAL_DETAIL_ROUTES, loadComponent), `feature/festival-detail.page.{ts,html,scss,spec.ts}` (página smart que lee el slug de ActivatedRoute, orquesta los tres componentes ui/ en @defer), `ui/festival-hero/`, `ui/lineup-grid/` y `ui/venue-map/` (componentes dumb con boilerplate mínimo: TS, HTML, SCSS, spec). La ruta `/festivales/:slug` registrada en `app.routes.ts` con `loadChildren`. `data-access/` reservada con `.gitkeep` para el store y resolver futuros. |
 | 2026-06-12 | Auditoría `/audit-structure`: re-extracción del calendario a data-access | Tras el merge a `develop`, `festival-calendar.ts` había vuelto a tener los datos inline (regresión de la extracción del 2026-06-10) y `home-catalogue.ts` quedaba con `CALENDAR_FESTIVALS`/`CALENDAR_MONTH_SEGMENTS` huérfanos y **datos obsoletos** (un solo `latin-fest` en día 17). Corregido: `CALENDAR_FESTIVALS` actualizado al modelo de 5 entradas (`bigsound`, `latin-fest-valencia` 17–18 jul, `latin-fest`/Benidorm 4–5 jul, `zevra`, `medusa`); `festival-calendar.ts` re-cableado para importar `CALENDAR_FESTIVALS`/`CALENDAR_MONTH_SEGMENTS` y sus tipos desde `data-access/`, eliminando arrays y tipos inline duplicados. Sin cambios en i18n (claves ya presentes). |
+| 2026-06-16 | Sección Spotify Playlists en home | Creado `features/home/ui/spotify-playlists/` (TS, HTML, SCSS): embebe playlists oficiales de Zevra, Medusa, RBF y Latin Fest vía iframes de Spotify. Integrado en `home.page.{ts,html}`. Claves i18n `home.playlists.*` añadidas a `es.json`, sincronizadas a `ca.json` y `en.json`. |

@@ -1,0 +1,67 @@
+<section
+  class="spotify-playlists"
+  [attr.aria-label]="'home.playlists.title' | t"
+  data-testid="spotify-playlists"
+>
+  <div class="spotify-playlists__glow" aria-hidden="true"></div>
+  <div class="spotify-playlists__divider" aria-hidden="true"></div>
+
+  <div class="spotify-playlists__shell">
+    <header class="spotify-playlists__header">
+      <div class="spotify-playlists__copy">
+        <h2 class="spotify-playlists__title" data-testid="spotify-playlists-title">
+          <span class="spotify-playlists__title-icon" aria-hidden="true">🎵</span>
+          {{ 'home.playlists.title' | t }}
+        </h2>
+        <p class="spotify-playlists__subtitle">
+          {{ 'home.playlists.subtitle' | t }}
+        </p>
+      </div>
+
+    </header>
+
+    <ul class="spotify-playlists__grid" role="list">
+      @for (playlist of playlists; track playlist.slug) {
+        <li
+          class="spotify-playlists__item"
+          [attr.data-testid]="'spotify-playlists-card-' + playlist.slug"
+        >
+          <article class="spotify-playlists__card">
+            <header class="spotify-playlists__card-header">
+              <span class="spotify-playlists__card-logo" aria-hidden="true">
+                <img
+                  [ngSrc]="playlist.logoSrc"
+                  alt=""
+                  width="56"
+                  height="56"
+                  loading="lazy"
+                />
+              </span>
+              <div class="spotify-playlists__card-meta">
+                <h3 class="spotify-playlists__card-title">
+                  {{ playlist.nameKey | t }}
+                </h3>
+                <p class="spotify-playlists__card-description">
+                  {{ playlist.descriptionKey | t }}
+                </p>
+              </div>
+            </header>
+
+            <div class="spotify-playlists__embed">
+              <iframe
+                class="spotify-playlists__iframe"
+                [src]="playlist.safeUrl"
+                [title]="playlist.iframeTitle"
+                width="100%"
+                height="352"
+                loading="lazy"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                referrerpolicy="strict-origin-when-cross-origin"
+              ></iframe>
+            </div>
+          </article>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
