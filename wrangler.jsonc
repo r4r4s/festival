@@ -3,6 +3,9 @@
   "name": "festival",
   "compatibility_date": "2026-06-16",
   "compatibility_flags": ["nodejs_compat"],
+  "build": {
+    "command": "npm run build"
+  },
   "assets": {
     "directory": "./dist/festival/browser",
     "not_found_handling": "single-page-application"
