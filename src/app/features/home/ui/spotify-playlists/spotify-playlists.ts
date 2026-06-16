@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
-import { LucideArrowUpRight } from '@lucide/angular';
 
 import { TranslationService } from '@shared/data-access/i18n/translation.service';
 import type { TranslationKey } from '@shared/data-access/i18n/translations';
@@ -53,7 +52,7 @@ interface SpotifyPlaylistView extends SpotifyPlaylistEntry {
 
 @Component({
   selector: 'fv-spotify-playlists',
-  imports: [NgOptimizedImage, LucideArrowUpRight, TranslatePipe],
+  imports: [NgOptimizedImage, TranslatePipe],
   templateUrl: './spotify-playlists.html',
   styleUrl: './spotify-playlists.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
