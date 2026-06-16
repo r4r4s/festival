@@ -10,38 +10,34 @@
 .home-page {
   width: 100%;
   background: var(--fv-bg-page);
-  padding: var(--fv-space-4) var(--fv-space-4) var(--fv-space-7);
+  padding: 0 var(--fv-space-4) var(--fv-space-7);
   display: grid;
   gap: var(--fv-space-6);
 
   @include from(md) {
     padding:
-      var(--fv-space-5)
+      0
       calc(var(--fv-space-6) + var(--fv-space-1))
       var(--fv-space-7);
   }
 
   @include from(lg) {
-    padding: var(--fv-space-5) var(--fv-space-7) var(--fv-space-8);
+    padding: 0 var(--fv-space-7) var(--fv-space-8);
   }
 }
 
 .home-page__card {
   position: relative;
-  width: 100%;
-  max-width: 1320px;
-  margin: 0 auto;
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
   overflow: hidden;
   isolation: isolate;
-  // Default (mobile): --fv-radius-xl (24px) — falls back to token below at md+
-  border-radius: var(--fv-radius-xl);
+  border-radius: 0;
   // Editorial portrait ratio (~1:1.3) — taller than 4/5 so the hero copy
   // breathes under the image on small viewports.
   aspect-ratio: 4 / 5.2;
 
   @include from(md) {
-    // Slightly larger radius on wider viewports — between xl (24px) and 2xl (32px)
-    border-radius: calc(var(--fv-radius-xl) + var(--fv-space-1));
     aspect-ratio: 16 / 8;
   }
 

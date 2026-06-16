@@ -287,6 +287,18 @@
   border: 1px solid rgba(15, 23, 42, 0.07); // @compat
   border: 1px solid color-mix(in srgb, var(--fv-border-nav) 60%, transparent);
   box-shadow: var(--fv-shadow-card);
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--fv-duration-base) var(--fv-ease-standard),
+    box-shadow var(--fv-duration-base) var(--fv-ease-standard);
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--fv-shadow-card-hover, var(--fv-shadow-card));
+    }
+  }
 }
 
 .festival-calendar__card-date {

@@ -7,6 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { LucideMapPin } from '@lucide/angular';
 
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
@@ -25,7 +26,7 @@ type FestivalDayLookup = Record<string, CalendarFestivalEntry>;
 
 @Component({
   selector: 'fv-festival-calendar',
-  imports: [NgOptimizedImage, LucideMapPin, TranslatePipe],
+  imports: [NgOptimizedImage, RouterLink, LucideMapPin, TranslatePipe],
   templateUrl: './festival-calendar.html',
   styleUrl: './festival-calendar.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

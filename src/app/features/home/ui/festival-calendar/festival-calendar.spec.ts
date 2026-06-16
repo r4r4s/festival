@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { FestivalCalendarComponent } from './festival-calendar';
@@ -11,6 +12,7 @@ describe('FestivalCalendarComponent', () => {
     vi.useFakeTimers();
     await TestBed.configureTestingModule({
       imports: [FestivalCalendarComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FestivalCalendarComponent);
