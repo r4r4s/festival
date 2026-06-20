@@ -1,0 +1,86 @@
+<section class="calendar-page" [attr.aria-label]="'calendar.page.ariaLabel' | t">
+
+  <!-- Header -->
+  <header class="calendar-page__header">
+    <div class="calendar-page__title-area">
+      <h1 class="calendar-page__title">
+        {{ monthLabel() | t }} de {{ yearLabel() }}
+      </h1>
+    </div>
+
+    <div class="calendar-page__controls">
+      <button
+        class="calendar-page__nav-btn"
+        type="button"
+        [attr.aria-label]="'calendar.controls.prev' | t"
+        (click)="goPrev()"
+      >
+        <svg lucideChevronLeft aria-hidden="true" focusable="false" size="20" strokeWidth="2"></svg>
+      </button>
+
+      <button
+        class="calendar-page__today-btn"
+        type="button"
+        [class.calendar-page__today-btn--active]="!isCurrentMonth()"
+        [attr.aria-label]="'calendar.controls.today' | t"
+        (click)="goToday()"
+      >
+        {{ monthLabel() | t }}
+      </button>
+
+      <button
+        class="calendar-page__nav-btn"
+        type="button"
+        [attr.aria-label]="'calendar.controls.next' | t"
+        (click)="goNext()"
+      >
+        <svg lucideChevronRight aria-hidden="true" focusable="false" size="20" strokeWidth="2"></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Desktop: Monthly Grid -->
+  <div class="calendar-page__grid">
+    <fv-calendar-grid
+      [year]="currentYear()"
+      [month]="currentMonth()"
+      [events]="visibleEvents()"
+      (eventHover)="onEventHover($event)"
+      (eventClick)="onEventClick($event)"
+    />
+  </div>
+
+  <!-- Mobile: Agenda View -->
+  <div class="calendar-page__agenda" role="list" [attr.aria-label]="'calendar.agenda.ariaLabel' | t">
+    @for (event of agendaEvents(); track event.slug) {
+      <button
+        class="calendar-page__agenda-item"
+        type="button"
+        role="listitem"
+        (click)="onEventClick(event)"
+      >
+        <time class="calendar-page__agenda-date">
+          {{ formatAgendaDate(event.startDate) }}
+        </time>
+        <div class="calendar-page__agenda-content">
+          <span
+            class="calendar-page__agenda-dot calendar-page__agenda-dot--{{ event.category }}"
+          ></span>
+          <span class="calendar-page__agenda-name">{{ event.nameKey | t }}</span>
+        </div>
+      </button>
+    } @empty {
+      <p class="calendar-page__agenda-empty">{{ 'calendar.agenda.empty' | t }}</p>
+    }
+  </div>
+
+  <!-- Tooltip -->
+  @if (tooltipData(); as data) {
+    <fv-event-tooltip
+      [event]="data.event"
+      [anchorRect]="data.rect"
+      (navigate)="onTooltipNavigate($event)"
+    />
+  }
+
+</section>

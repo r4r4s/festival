@@ -1,0 +1,200 @@
+@use 'styles/breakpoints' as *;
+@use 'styles/mixins' as *;
+
+:host {
+  display: block;
+
+  --fv-cal-electronic: var(--fv-accent-blue);
+  --fv-cal-electronic-bg: color-mix(in srgb, var(--fv-accent-blue) 15%, transparent);
+  --fv-cal-urban: var(--fv-accent-violet);
+  --fv-cal-urban-bg: color-mix(in srgb, var(--fv-accent-violet) 15%, transparent);
+  --fv-cal-pop: var(--fv-accent-orange);
+  --fv-cal-pop-bg: color-mix(in srgb, var(--fv-accent-orange) 15%, transparent);
+  --fv-cal-latin: var(--fv-accent-pink);
+  --fv-cal-latin-bg: color-mix(in srgb, var(--fv-accent-pink) 15%, transparent);
+  --fv-cal-cultural: var(--fv-accent-warning);
+  --fv-cal-cultural-bg: color-mix(in srgb, var(--fv-accent-warning) 15%, transparent);
+}
+
+.cal-grid {
+  border: 1px solid var(--fv-border-subtle);
+  border-radius: var(--fv-radius-xl);
+  overflow: hidden;
+  background: var(--fv-bg-card-light);
+}
+
+.cal-grid__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid var(--fv-border-subtle);
+}
+
+.cal-grid__weekday {
+  padding: var(--fv-space-3) var(--fv-space-2);
+  text-align: center;
+  font-size: var(--fv-text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--fv-tracking-wider);
+  color: var(--fv-text-muted);
+
+  @include from(md) {
+    padding: var(--fv-space-3) var(--fv-space-4);
+  }
+}
+
+.cal-grid__week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: auto;
+  position: relative;
+  min-height: 100px;
+  border-bottom: 1px solid var(--fv-border-subtle);
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+
+  @include from(md) {
+    min-height: 120px;
+  }
+
+  @include from(lg) {
+    min-height: 140px;
+  }
+}
+
+.cal-grid__cell {
+  padding: var(--fv-space-2);
+  border-right: 1px solid var(--fv-border-subtle);
+  position: relative;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  &--outside {
+    opacity: 0.35;
+  }
+
+  &--today {
+    background: var(--fv-bg-elevated);
+  }
+}
+
+.cal-grid__day-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin-left: auto;
+  font-size: var(--fv-text-sm);
+  font-weight: 500;
+  color: var(--fv-text-secondary);
+  line-height: 1;
+  border-radius: 50%;
+
+  @include from(md) {
+    width: 32px;
+    height: 32px;
+    font-size: var(--fv-text-base);
+  }
+
+  &--today {
+    background: var(--fv-accent-blue);
+    color: var(--fv-bg-page);
+    font-weight: 700;
+  }
+}
+
+.cal-grid__events-layer {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px 0;
+  padding: 0 2px;
+  pointer-events: none;
+
+  @include from(md) {
+    top: 44px;
+    gap: 4px 0;
+    padding: 0 4px;
+  }
+}
+
+.cal-grid__event {
+  all: unset;
+  box-sizing: border-box;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--fv-space-2);
+  height: 26px;
+  padding: 0 var(--fv-space-3);
+  background: var(--event-bg);
+  border: 1px solid transparent;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    transform var(--fv-duration-fast) var(--fv-ease-standard),
+    box-shadow var(--fv-duration-fast) var(--fv-ease-standard),
+    background var(--fv-duration-fast) var(--fv-ease-standard);
+
+  @include from(md) {
+    height: 28px;
+  }
+
+  &--start {
+    border-top-left-radius: var(--fv-radius-pill);
+    border-bottom-left-radius: var(--fv-radius-pill);
+    margin-left: 2px;
+  }
+
+  &--end {
+    border-top-right-radius: var(--fv-radius-pill);
+    border-bottom-right-radius: var(--fv-radius-pill);
+    margin-right: 2px;
+  }
+
+  &--start.cal-grid__event--end {
+    border-radius: var(--fv-radius-pill);
+  }
+
+  &--hovered,
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: var(--fv-glass-shadow-sm);
+    z-index: 2;
+  }
+
+  @include focus-ring;
+
+  &:focus-visible {
+    z-index: 3;
+  }
+}
+
+.cal-grid__event-dot {
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--event-color);
+}
+
+.cal-grid__event-label {
+  @include truncate;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--fv-tracking-wide);
+  color: var(--event-color);
+
+  @include from(md) {
+    font-size: var(--fv-text-xs);
+  }
+}

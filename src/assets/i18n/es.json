@@ -532,6 +532,92 @@
       }
     }
   },
+  "calendar": {
+    "page": {
+      "ariaLabel": "Calendario mensual de festivales"
+    },
+    "grid": {
+      "ariaLabel": "Cuadrícula mensual de festivales"
+    },
+    "months": {
+      "january": "Enero",
+      "february": "Febrero",
+      "march": "Marzo",
+      "april": "Abril",
+      "may": "Mayo",
+      "june": "Junio",
+      "july": "Julio",
+      "august": "Agosto",
+      "september": "Septiembre",
+      "october": "Octubre",
+      "november": "Noviembre",
+      "december": "Diciembre"
+    },
+    "weekdays": {
+      "mon": "Lun",
+      "tue": "Mar",
+      "wed": "Mié",
+      "thu": "Jue",
+      "fri": "Vie",
+      "sat": "Sáb",
+      "sun": "Dom"
+    },
+    "controls": {
+      "prev": "Mes anterior",
+      "next": "Mes siguiente",
+      "today": "Ir al mes actual",
+      "todayLabel": "Hoy"
+    },
+    "tooltip": {
+      "cta": "Ver festival"
+    },
+    "agenda": {
+      "ariaLabel": "Lista de festivales del mes",
+      "empty": "No hay festivales este mes."
+    },
+    "events": {
+      "bigsound": {
+        "name": "Bigsound Festival",
+        "location": "Valencia",
+        "genre": "Pop & directo"
+      },
+      "rbf": {
+        "name": "Reggaeton Beach Festival",
+        "location": "Alicante",
+        "genre": "Urbano"
+      },
+      "latinFestBenidorm": {
+        "name": "Latin Fest Benidorm",
+        "location": "Benidorm, Alicante",
+        "genre": "Latino"
+      },
+      "reve": {
+        "name": "Reve Festival",
+        "location": "Valencia",
+        "genre": "Pop & directo"
+      },
+      "latinFestValencia": {
+        "name": "Latin Fest Valencia",
+        "location": "Valencia",
+        "genre": "Latino"
+      },
+      "zevra": {
+        "name": "Zevra Festival",
+        "location": "Cullera, Valencia",
+        "genre": "Urbano"
+      },
+      "medusa": {
+        "name": "Medusa Festival",
+        "location": "Cullera, Valencia",
+        "genre": "Electrónica"
+      },
+      "sanJuan": {
+        "name": "Nit de Sant Joan",
+        "location": "Comunitat Valenciana",
+        "genre": "Cultural"
+      }
+    }
+  },
   "footer": {
     "ariaLabel": "Pie de página",
     "brand": {

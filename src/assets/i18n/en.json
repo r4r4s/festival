@@ -532,6 +532,92 @@
       }
     }
   },
+  "calendar": {
+    "page": {
+      "ariaLabel": "Monthly festival calendar"
+    },
+    "grid": {
+      "ariaLabel": "Monthly festival grid"
+    },
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    },
+    "weekdays": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    },
+    "controls": {
+      "prev": "Previous month",
+      "next": "Next month",
+      "today": "Go to current month",
+      "todayLabel": "Today"
+    },
+    "tooltip": {
+      "cta": "View festival"
+    },
+    "agenda": {
+      "ariaLabel": "Festival list for the month",
+      "empty": "No festivals this month."
+    },
+    "events": {
+      "bigsound": {
+        "name": "Bigsound Festival",
+        "location": "Valencia",
+        "genre": "Pop & live"
+      },
+      "rbf": {
+        "name": "Reggaeton Beach Festival",
+        "location": "Alicante",
+        "genre": "Urban"
+      },
+      "latinFestBenidorm": {
+        "name": "Latin Fest Benidorm",
+        "location": "Benidorm, Alicante",
+        "genre": "Latin"
+      },
+      "reve": {
+        "name": "Reve Festival",
+        "location": "Valencia",
+        "genre": "Pop & live"
+      },
+      "latinFestValencia": {
+        "name": "Latin Fest Valencia",
+        "location": "Valencia",
+        "genre": "Latin"
+      },
+      "zevra": {
+        "name": "Zevra Festival",
+        "location": "Cullera, Valencia",
+        "genre": "Urban"
+      },
+      "medusa": {
+        "name": "Medusa Festival",
+        "location": "Cullera, Valencia",
+        "genre": "Electronic"
+      },
+      "sanJuan": {
+        "name": "St John's Eve",
+        "location": "Valencian Community",
+        "genre": "Cultural"
+      }
+    }
+  },
   "footer": {
     "ariaLabel": "Footer",
     "brand": {
