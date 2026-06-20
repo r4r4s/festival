@@ -1,0 +1,35 @@
+<div
+  class="tooltip"
+  [style.top]="style().top"
+  [style.left]="style().left"
+  role="tooltip"
+>
+  @if (hasImage()) {
+    <div class="tooltip__poster">
+      <img
+        class="tooltip__poster-img"
+        [ngSrc]="event().imageSrc"
+        width="320"
+        height="180"
+        [alt]="event().nameKey | t"
+      />
+    </div>
+  }
+
+  <div class="tooltip__body">
+    <h3 class="tooltip__name">{{ event().nameKey | t }}</h3>
+    <p class="tooltip__location">{{ event().locationKey | t }}</p>
+    <p class="tooltip__dates">{{ formattedDates() }}</p>
+    <span class="tooltip__genre">{{ event().genreKey | t }}</span>
+  </div>
+
+  @if (hasDetail()) {
+    <button
+      class="tooltip__cta"
+      type="button"
+      (click)="onNavigate()"
+    >
+      {{ 'calendar.tooltip.cta' | t }}
+    </button>
+  }
+</div>

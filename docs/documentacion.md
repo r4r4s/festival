@@ -450,6 +450,32 @@ features/<nombre>/
 
 ```
 src/app/features/
+├── calendar/            → Página de calendario mensual de festivales, cargada vía `/calendario`.
+│   ├── feature/
+│   │   ├── calendar.page.ts       → Página smart standalone (OnPush). Signals para mes/año actual,
+│   │   │                            navegación entre meses, filtrado de eventos visibles y tooltip.
+│   │   ├── calendar.page.html     → Header con título (mes + año) + controles de navegación +
+│   │   │                            grid mensual (desktop) + vista agenda (mobile) + tooltip flotante.
+│   │   ├── calendar.page.scss     → Layout responsive: header flex, grid oculto en mobile,
+│   │   │                            agenda oculta en desktop. Tokens `--fv-*`.
+│   │   └── calendar.page.spec.ts  → Test de creación del componente.
+│   ├── ui/
+│   │   ├── calendar-grid/         → Grid mensual tipo Apple Calendar con eventos multi-día.
+│   │   │   ├── calendar-grid.ts      → Componente presentacional (OnPush). Algoritmo de layout
+│   │   │   │                           por carriles (lanes) para eventos multi-día sin solapamiento.
+│   │   │   ├── calendar-grid.html    → 7 columnas (lun–dom), filas por semana, capa de eventos
+│   │   │   │                           superpuesta con pills horizontales coloreadas por categoría.
+│   │   │   └── calendar-grid.scss    → Celdas con bordes sutiles, pill con dot + label uppercase,
+│   │   │                               hover scale, colores por categoría vía custom properties.
+│   │   └── event-tooltip/         → Tooltip flotante glassmorphism al hacer hover sobre un evento.
+│   │       ├── event-tooltip.ts      → Componente presentacional. Posicionamiento fijo relativo al
+│   │       │                           anchorRect del evento. Formateo de fechas en `es-ES`.
+│   │       ├── event-tooltip.html    → Poster del festival + nombre + ubicación + fechas + género + CTA.
+│   │       └── event-tooltip.scss    → Glass panel con blur, animación de entrada, shadow md.
+│   ├── data-access/
+│   │   └── calendar-events.ts     → Catálogo estático de eventos del calendario con fechas ISO,
+│   │                                 categorías (electronic, urban, pop, latin, cultural) y rutas.
+│   └── calendar.routes.ts         → Superficie pública. Expone CALENDAR_ROUTES con loadComponent.
 ├── festival-detail/     → Página de detalle de un festival, cargada vía `/festivales/:slug`.
 │   ├── feature/
 │   │   ├── festival-detail.page.ts   → Página smart standalone. Inyecta ActivatedRoute para
@@ -822,3 +848,4 @@ Estas reglas están forzadas por `eslint-plugin-boundaries` (configurado en `esl
 | 2026-06-12 | Scaffold `festival-detail` (boilerplate Angular) | Creada la feature `src/app/features/festival-detail/` completa: `festival-detail.routes.ts` (FESTIVAL_DETAIL_ROUTES, loadComponent), `feature/festival-detail.page.{ts,html,scss,spec.ts}` (página smart que lee el slug de ActivatedRoute, orquesta los tres componentes ui/ en @defer), `ui/festival-hero/`, `ui/lineup-grid/` y `ui/venue-map/` (componentes dumb con boilerplate mínimo: TS, HTML, SCSS, spec). La ruta `/festivales/:slug` registrada en `app.routes.ts` con `loadChildren`. `data-access/` reservada con `.gitkeep` para el store y resolver futuros. |
 | 2026-06-12 | Auditoría `/audit-structure`: re-extracción del calendario a data-access | Tras el merge a `develop`, `festival-calendar.ts` había vuelto a tener los datos inline (regresión de la extracción del 2026-06-10) y `home-catalogue.ts` quedaba con `CALENDAR_FESTIVALS`/`CALENDAR_MONTH_SEGMENTS` huérfanos y **datos obsoletos** (un solo `latin-fest` en día 17). Corregido: `CALENDAR_FESTIVALS` actualizado al modelo de 5 entradas (`bigsound`, `latin-fest-valencia` 17–18 jul, `latin-fest`/Benidorm 4–5 jul, `zevra`, `medusa`); `festival-calendar.ts` re-cableado para importar `CALENDAR_FESTIVALS`/`CALENDAR_MONTH_SEGMENTS` y sus tipos desde `data-access/`, eliminando arrays y tipos inline duplicados. Sin cambios en i18n (claves ya presentes). |
 | 2026-06-16 | Sección Spotify Playlists en home | Creado `features/home/ui/spotify-playlists/` (TS, HTML, SCSS): embebe playlists oficiales de Zevra, Medusa, RBF y Latin Fest vía iframes de Spotify. Integrado en `home.page.{ts,html}`. Claves i18n `home.playlists.*` añadidas a `es.json`, sincronizadas a `ca.json` y `en.json`. |
+| 2026-06-20 | Página de calendario mensual `/calendario` | Creada la feature `src/app/features/calendar/` completa: `calendar.routes.ts`, `feature/calendar.page.{ts,html,scss,spec.ts}` (página smart con signals para mes/año, navegación, tooltip), `ui/calendar-grid/` (grid mensual con algoritmo de carriles para eventos multi-día sin solapamiento, pills coloreadas por categoría), `ui/event-tooltip/` (tooltip flotante glassmorphism con poster, datos y CTA), `data-access/calendar-events.ts` (catálogo de 8 eventos con fechas ISO y categorías). Vista agenda en mobile (< md), grid en desktop. Ruta `/calendario` registrada en `app.routes.ts` con `loadChildren`. Claves i18n `calendar.*` añadidas a `es.json`, `ca.json` y `en.json` (meses, días de semana, controles, eventos). |

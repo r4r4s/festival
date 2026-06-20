@@ -1,0 +1,66 @@
+<div class="cal-grid" role="grid" [attr.aria-label]="'calendar.grid.ariaLabel' | t">
+  <div class="cal-grid__weekdays" role="row">
+    @for (day of weekdays; track day) {
+      <div class="cal-grid__weekday" role="columnheader">
+        {{ day | t }}
+      </div>
+    }
+  </div>
+
+  @for (week of weeks(); track trackWeek($index, week); let wi = $index) {
+    <div class="cal-grid__week" role="row">
+      @for (day of week; track trackDay($index, day); let di = $index) {
+        <div
+          class="cal-grid__cell"
+          [ngClass]="{
+            'cal-grid__cell--outside': !day.isCurrentMonth,
+            'cal-grid__cell--weekend': day.isWeekend,
+            'cal-grid__cell--today': day.isToday
+          }"
+          role="gridcell"
+          [attr.aria-label]="day.date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })"
+        >
+          <span
+            class="cal-grid__day-number"
+            [ngClass]="{ 'cal-grid__day-number--today': day.isToday }"
+          >
+            {{ day.dayNumber }}
+          </span>
+        </div>
+      }
+
+      <div class="cal-grid__events-layer">
+        @for (segment of eventRows()[wi]; track trackSegment($index, segment)) {
+          <button
+            class="cal-grid__event"
+            type="button"
+            [ngClass]="{
+              'cal-grid__event--start': segment.isStart,
+              'cal-grid__event--end': segment.isEnd,
+              'cal-grid__event--hovered': hoveredSlug() === segment.event.slug,
+              'cal-grid__event--continuation': !segment.isStart
+            }"
+            [style.grid-column]="(segment.colStart + 1) + ' / span ' + segment.spanInRow"
+            [style.grid-row]="segment.lane + 1"
+            [style.--event-color]="categoryColor(segment.event)"
+            [style.--event-bg]="categoryBg(segment.event)"
+            [attr.aria-label]="segment.event.nameKey | t"
+            [attr.data-testid]="'cal-event-' + segment.event.slug"
+            #eventEl
+            (mouseenter)="onEventMouseEnter(segment.event, eventEl)"
+            (mouseleave)="onEventMouseLeave()"
+            (focus)="onEventMouseEnter(segment.event, eventEl)"
+            (blur)="onEventMouseLeave()"
+            (click)="onEventClicked(segment.event)"
+            (keydown)="onEventKeydown($event, segment.event)"
+          >
+            @if (segment.isStart) {
+              <span class="cal-grid__event-dot"></span>
+              <span class="cal-grid__event-label">{{ segment.event.nameKey | t }}</span>
+            }
+          </button>
+        }
+      </div>
+    </div>
+  }
+</div>
