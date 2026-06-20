@@ -618,6 +618,69 @@
       }
     }
   },
+  "festivals": {
+    "page": {
+      "title": "Festivals",
+      "subtitle": "Descobreix els millors festivals de música a Espanya i viu experiències inoblidables.",
+      "ariaLabel": "Catàleg de festivals"
+    },
+    "search": {
+      "placeholder": "Buscar festivals, artistes, ciutats...",
+      "ariaLabel": "Buscar festivals, artistes o ciutats"
+    },
+    "filters": {
+      "ariaLabel": "Filtrar festivals per gènere",
+      "all": "Tots",
+      "electronica": "Electrònica",
+      "urbano": "Urbà",
+      "pop": "Pop & Directe",
+      "latino": "Llatí",
+      "more": "Més filtres",
+      "moreAriaLabel": "Obrir filtres avançats"
+    },
+    "categories": {
+      "electronica": "Electrònica",
+      "urbano": "Urbà",
+      "pop": "Pop & Directe",
+      "latino": "Llatí"
+    },
+    "view": {
+      "ariaLabel": "Canviar vista de festivals",
+      "cards": "Targetes",
+      "list": "Llista"
+    },
+    "section": {
+      "featured": "Destacats",
+      "seeAll": "Veure tots"
+    },
+    "cards": {
+      "favouriteLabel": "Afegir a favorits",
+      "bigsound": {
+        "name": "Bigsound Festival",
+        "location": "València",
+        "date": "24 – 29 Juny 2026",
+        "dateBadge": "24–29 JUN"
+      },
+      "medusa": {
+        "name": "Medusa Festival",
+        "location": "Cullera, València",
+        "date": "10 – 12 Juliol 2026",
+        "dateBadge": "10–12 JUL"
+      },
+      "zevra": {
+        "name": "Zevra Festival",
+        "location": "Cullera, València",
+        "date": "16 – 18 Juliol 2026",
+        "dateBadge": "16–18 JUL"
+      },
+      "rbf": {
+        "name": "RBF Isla de Feria",
+        "location": "Benidorm, Alacant",
+        "date": "31 Juliol – 2 Agost 2026",
+        "dateBadge": "31 JUL – 2 AGO"
+      }
+    }
+  },
   "footer": {
     "ariaLabel": "Peu de pàgina",
     "brand": {

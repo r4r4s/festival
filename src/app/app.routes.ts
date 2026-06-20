@@ -7,6 +7,13 @@ export const routes: Routes = [
       import('@features/home/home.routes').then((m) => m.HOME_ROUTES),
   },
   {
+    path: 'festivales',
+    loadChildren: () =>
+      import('@features/festival-list/festival-list.routes').then(
+        (m) => m.FESTIVAL_LIST_ROUTES,
+      ),
+  },
+  {
     path: 'calendario',
     loadChildren: () =>
       import('@features/calendar/calendar.routes').then(

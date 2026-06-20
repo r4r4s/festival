@@ -1,0 +1,55 @@
+<article
+  class="festival-card"
+  [class.festival-card--electronica]="festival().category === 'electronica'"
+  [class.festival-card--urbano]="festival().category === 'urbano'"
+  [class.festival-card--pop]="festival().category === 'pop'"
+  [class.festival-card--latino]="festival().category === 'latino'"
+  tabindex="0"
+  role="link"
+  (click)="onCardClick()"
+  (keydown.enter)="onCardClick()"
+  [attr.aria-label]="festival().nameKey | t"
+>
+  <div class="festival-card__poster">
+    <img
+      class="festival-card__image"
+      [ngSrc]="festival().posterSrc"
+      [alt]="festival().posterAlt"
+      fill
+      sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
+    />
+
+    <span class="festival-card__date-badge">
+      {{ festival().dateBadgeKey | t }}
+    </span>
+
+    <button
+      class="festival-card__favourite"
+      type="button"
+      [attr.aria-label]="'festivals.cards.favouriteLabel' | t"
+      (click)="onFavouriteClick($event)"
+    >
+      <svg lucideHeart focusable="false" aria-hidden="true" size="16" strokeWidth="2"></svg>
+    </button>
+  </div>
+
+  <div class="festival-card__body">
+    <div class="festival-card__category">
+      <span class="festival-card__category-dot" aria-hidden="true"></span>
+      <span class="festival-card__category-label">{{ festival().categoryKey | t }}</span>
+    </div>
+
+    <h3 class="festival-card__name">{{ festival().nameKey | t }}</h3>
+
+    <div class="festival-card__meta">
+      <span class="festival-card__meta-item">
+        <svg lucideMapPin focusable="false" aria-hidden="true" size="14" strokeWidth="2"></svg>
+        {{ festival().locationKey | t }}
+      </span>
+      <span class="festival-card__meta-item">
+        <svg lucideCalendar focusable="false" aria-hidden="true" size="14" strokeWidth="2"></svg>
+        {{ festival().dateKey | t }}
+      </span>
+    </div>
+  </div>
+</article>

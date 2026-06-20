@@ -1,0 +1,293 @@
+@use 'styles/breakpoints' as *;
+@use 'styles/mixins' as *;
+
+:host {
+  display: block;
+  background: var(--fv-bg-page);
+  min-height: 100vh;
+}
+
+.festival-list {
+  @include container;
+  padding-top: var(--fv-space-7);
+  padding-bottom: var(--fv-space-9);
+}
+
+// --- Header ---
+
+.festival-list__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fv-space-5);
+  margin-bottom: var(--fv-space-6);
+
+  @include from(lg) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+.festival-list__header-left {
+  max-width: 560px;
+}
+
+.festival-list__title {
+  margin: 0 0 var(--fv-space-3);
+  font-family: var(--fv-font-hero-emphasis);
+  font-size: clamp(var(--fv-text-3xl), 5vw, var(--fv-text-4xl));
+  font-weight: 700;
+  line-height: var(--fv-leading-tight);
+  letter-spacing: var(--fv-tracking-tight);
+  color: var(--fv-text-nav);
+}
+
+.festival-list__subtitle {
+  margin: 0;
+  font-size: var(--fv-text-sm);
+  line-height: var(--fv-leading-relaxed);
+  color: var(--fv-text-footer-muted);
+  max-width: 480px;
+}
+
+.festival-list__header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--fv-space-3);
+}
+
+// --- Search ---
+
+.festival-list__search {
+  display: flex;
+  align-items: center;
+  gap: var(--fv-space-3);
+  height: 44px;
+  padding: 0 var(--fv-space-4);
+  border-radius: var(--fv-radius-md);
+  background: var(--fv-bg-card-light);
+  border: 1px solid var(--fv-border-nav);
+  transition: border-color var(--fv-duration-fast) var(--fv-ease-standard);
+  width: 100%;
+
+  @include from(md) {
+    width: 320px;
+  }
+
+  &:focus-within {
+    border-color: var(--fv-accent-blue);
+  }
+}
+
+.festival-list__search-icon {
+  color: var(--fv-text-footer-muted);
+  flex-shrink: 0;
+}
+
+.festival-list__search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-sm);
+  color: var(--fv-text-nav);
+  outline: none;
+  min-width: 0;
+
+  &::placeholder {
+    color: var(--fv-text-footer-muted);
+  }
+}
+
+.festival-list__filter-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--fv-radius-md);
+  border: 1px solid var(--fv-border-nav);
+  background: var(--fv-bg-card-light);
+  color: var(--fv-text-footer-muted);
+  cursor: pointer;
+  transition:
+    border-color var(--fv-duration-fast) var(--fv-ease-standard),
+    color var(--fv-duration-fast) var(--fv-ease-standard);
+
+  &:hover {
+    border-color: var(--fv-accent-blue);
+    color: var(--fv-text-nav);
+  }
+
+  @include focus-ring;
+}
+
+// --- Controls (pills + view switch) ---
+
+.festival-list__controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fv-space-4);
+  margin-bottom: var(--fv-space-6);
+
+  @include from(md) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.festival-list__pills {
+  display: flex;
+  gap: var(--fv-space-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.festival-list__pill {
+  --_pill-dot-color: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fv-space-2);
+  height: 36px;
+  padding: 0 var(--fv-space-4);
+  border-radius: var(--fv-radius-pill);
+  border: 1px solid var(--fv-border-nav);
+  background: var(--fv-bg-card-light);
+  color: var(--fv-text-footer-muted);
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-sm);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background var(--fv-duration-fast) var(--fv-ease-standard),
+    color var(--fv-duration-fast) var(--fv-ease-standard),
+    border-color var(--fv-duration-fast) var(--fv-ease-standard);
+
+  &:hover {
+    border-color: var(--fv-accent-blue);
+    color: var(--fv-text-nav);
+  }
+
+  @include focus-ring;
+
+  &--active {
+    background: var(--fv-accent-violet);
+    border-color: var(--fv-accent-violet);
+    color: var(--fv-bg-page);
+
+    &:hover {
+      border-color: var(--fv-accent-violet);
+    }
+  }
+
+  &--electronica { --_pill-dot-color: var(--fv-accent-blue); }
+  &--urbano      { --_pill-dot-color: var(--fv-accent-violet); }
+  &--pop         { --_pill-dot-color: var(--fv-accent-orange); }
+  &--latino      { --_pill-dot-color: var(--fv-accent-pink); }
+}
+
+.festival-list__pill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--_pill-dot-color);
+  flex-shrink: 0;
+}
+
+.festival-list__view-switch {
+  display: flex;
+  border-radius: var(--fv-radius-md);
+  border: 1px solid var(--fv-border-nav);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.festival-list__view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fv-space-2);
+  height: 36px;
+  padding: 0 var(--fv-space-4);
+  border: none;
+  background: transparent;
+  color: var(--fv-text-footer-muted);
+  font-family: var(--fv-font-ui);
+  font-size: var(--fv-text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background var(--fv-duration-fast) var(--fv-ease-standard),
+    color var(--fv-duration-fast) var(--fv-ease-standard);
+
+  &:hover {
+    color: var(--fv-text-nav);
+  }
+
+  @include focus-ring;
+
+  &--active {
+    background: var(--fv-bg-card-light);
+    color: var(--fv-text-nav);
+  }
+}
+
+// --- Section header ---
+
+.festival-list__section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--fv-space-5);
+}
+
+.festival-list__section-title {
+  margin: 0;
+  font-family: var(--fv-font-heading);
+  font-size: var(--fv-text-lg);
+  font-weight: 600;
+  color: var(--fv-text-nav);
+  letter-spacing: var(--fv-tracking-snug);
+}
+
+.festival-list__see-all {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fv-space-1);
+  font-size: var(--fv-text-sm);
+  font-weight: 500;
+  color: var(--fv-accent-blue);
+  text-decoration: none;
+  transition: gap var(--fv-duration-fast) var(--fv-ease-standard);
+
+  &:hover {
+    gap: var(--fv-space-2);
+  }
+}
+
+// --- Grid ---
+
+.festival-list__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--fv-space-5);
+
+  @include from(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include from(lg) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  &--list {
+    grid-template-columns: 1fr;
+  }
+}

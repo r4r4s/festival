@@ -618,6 +618,69 @@
       }
     }
   },
+  "festivals": {
+    "page": {
+      "title": "Festivals",
+      "subtitle": "Discover the best music festivals in Spain and live unforgettable experiences.",
+      "ariaLabel": "Festival catalogue"
+    },
+    "search": {
+      "placeholder": "Search festivals, artists, cities...",
+      "ariaLabel": "Search festivals, artists or cities"
+    },
+    "filters": {
+      "ariaLabel": "Filter festivals by genre",
+      "all": "All",
+      "electronica": "Electronic",
+      "urbano": "Urban",
+      "pop": "Pop & Live",
+      "latino": "Latin",
+      "more": "More filters",
+      "moreAriaLabel": "Open advanced filters"
+    },
+    "categories": {
+      "electronica": "Electronic",
+      "urbano": "Urban",
+      "pop": "Pop & Live",
+      "latino": "Latin"
+    },
+    "view": {
+      "ariaLabel": "Change festival view",
+      "cards": "Cards",
+      "list": "List"
+    },
+    "section": {
+      "featured": "Featured",
+      "seeAll": "See all"
+    },
+    "cards": {
+      "favouriteLabel": "Add to favourites",
+      "bigsound": {
+        "name": "Bigsound Festival",
+        "location": "Valencia",
+        "date": "24 – 29 June 2026",
+        "dateBadge": "24–29 JUN"
+      },
+      "medusa": {
+        "name": "Medusa Festival",
+        "location": "Cullera, Valencia",
+        "date": "10 – 12 July 2026",
+        "dateBadge": "10–12 JUL"
+      },
+      "zevra": {
+        "name": "Zevra Festival",
+        "location": "Cullera, Valencia",
+        "date": "16 – 18 July 2026",
+        "dateBadge": "16–18 JUL"
+      },
+      "rbf": {
+        "name": "RBF Isla de Feria",
+        "location": "Benidorm, Alicante",
+        "date": "31 July – 2 August 2026",
+        "dateBadge": "31 JUL – 2 AUG"
+      }
+    }
+  },
   "footer": {
     "ariaLabel": "Footer",
     "brand": {
