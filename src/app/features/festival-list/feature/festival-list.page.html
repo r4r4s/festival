@@ -1,0 +1,60 @@
+<section class="festival-list" [attr.aria-label]="'festivals.page.ariaLabel' | t">
+  <header class="festival-list__header">
+    <div class="festival-list__header-left">
+      <h1 class="festival-list__title">{{ 'festivals.page.title' | t }}</h1>
+      <p class="festival-list__subtitle">{{ 'festivals.page.subtitle' | t }}</p>
+    </div>
+
+    <div class="festival-list__header-right">
+      <div class="festival-list__search">
+        <svg
+          lucideSearch
+          class="festival-list__search-icon"
+          focusable="false"
+          aria-hidden="true"
+          size="18"
+          strokeWidth="2"
+        ></svg>
+        <input
+          class="festival-list__search-input"
+          type="search"
+          [attr.placeholder]="'festivals.search.placeholder' | t"
+          [attr.aria-label]="'festivals.search.ariaLabel' | t"
+          [value]="searchQuery()"
+          (input)="onSearch($event)"
+        />
+      </div>
+
+      <button
+        class="festival-list__filter-btn"
+        type="button"
+        [attr.aria-label]="'festivals.filters.moreAriaLabel' | t"
+      >
+        <svg
+          lucideSlidersHorizontal
+          focusable="false"
+          aria-hidden="true"
+          size="18"
+          strokeWidth="2"
+        ></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="festival-list__section-header">
+    <h2 class="festival-list__section-title">{{ 'festivals.section.featured' | t }}</h2>
+    <a class="festival-list__see-all" href="javascript:void(0)">
+      {{ 'festivals.section.seeAll' | t }}
+      <svg lucideArrowRight focusable="false" aria-hidden="true" size="16" strokeWidth="2"></svg>
+    </a>
+  </div>
+
+  <div class="festival-list__grid">
+    @for (festival of filteredFestivals(); track festival.slug) {
+      <fv-festival-card
+        [festival]="festival"
+        (navigate)="onCardNavigate($event)"
+      />
+    }
+  </div>
+</section>
