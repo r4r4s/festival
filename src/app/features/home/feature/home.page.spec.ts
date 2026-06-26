@@ -49,19 +49,19 @@ describe('HomePageComponent', () => {
     );
   });
 
-  it('renders the hero copy and static buttons', () => {
+  it('renders the hero copy and CTA links', () => {
     const root = fixture.nativeElement as HTMLElement;
     const overlay = root.querySelector('.home-page__overlay');
     const title = root.querySelector('[data-testid="home-hero-title"]');
     const description = root.querySelector('[data-testid="home-hero-description"]');
-    const buttons = root.querySelectorAll('.home-page__button');
+    const links = root.querySelectorAll<HTMLAnchorElement>('.home-page__button');
 
     expect(overlay).not.toBeNull();
     expect(title?.textContent?.trim()).toBeTruthy();
     expect(description?.textContent?.trim()).toBeTruthy();
-    expect(buttons).toHaveLength(2);
-    expect(buttons[0]?.getAttribute('type')).toBe('button');
-    expect(buttons[1]?.getAttribute('type')).toBe('button');
+    expect(links).toHaveLength(2);
+    expect(links[0]?.getAttribute('href')).toBe('/festivales');
+    expect(links[1]?.getAttribute('href')).toBe('/calendario');
   });
 
   it('renders the calendar, featured festivals section and the interactive map section', () => {

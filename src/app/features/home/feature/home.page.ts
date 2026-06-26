@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { LucideArrowRight, LucideCalendar } from '@lucide/angular';
 
 import { FeaturedFestivalsComponent } from '../ui/featured-festivals/featured-festivals';
@@ -13,6 +14,7 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
   selector: 'fv-home-page',
   imports: [
     NgOptimizedImage,
+    RouterLink,
     LucideArrowRight,
     LucideCalendar,
     FestivalCalendarComponent,
