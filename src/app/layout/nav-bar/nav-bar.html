@@ -80,8 +80,14 @@
         data-testid="nav-btn-buscar"
         type="button"
         [attr.aria-label]="'nav.search' | t"
+        [attr.aria-expanded]="searchOpen()"
+        (click)="toggleSearch()"
       >
-        <svg lucideSearch aria-hidden="true" focusable="false" size="20" strokeWidth="2"></svg>
+        @if (searchOpen()) {
+          <svg lucideX aria-hidden="true" focusable="false" size="20" strokeWidth="2"></svg>
+        } @else {
+          <svg lucideSearch aria-hidden="true" focusable="false" size="20" strokeWidth="2"></svg>
+        }
       </button>
 
       <button
@@ -109,4 +115,58 @@
       </button>
     </div>
   </div>
+
+  @if (searchOpen()) {
+    <div class="nav-search" role="search" aria-label="Búsqueda de festivales">
+      <div class="nav-search__backdrop" aria-hidden="true" (click)="closeSearch()"></div>
+      <div class="nav-search__panel">
+        <div class="nav-search__input-wrap">
+          <svg lucideSearch class="nav-search__input-icon" aria-hidden="true" focusable="false" size="18" strokeWidth="2"></svg>
+          <input
+            #searchInput
+            class="nav-search__input"
+            type="search"
+            [placeholder]="'nav.search.placeholder' | t"
+            autocomplete="off"
+            [value]="searchQuery()"
+            (input)="onSearchInput($event)"
+            (keydown.escape)="closeSearch()"
+          />
+        </div>
+
+        @if (searchResults().length > 0) {
+          <ul class="nav-search__results" role="list">
+            @for (festival of searchResults(); track festival.slug) {
+              <li role="listitem" class="nav-search__result-item">
+                <button
+                  class="nav-search__result-btn"
+                  type="button"
+                  (click)="navigateToFestival(festival.slug)"
+                >
+                  <span class="nav-search__result-logo-wrap">
+                    <img
+                      class="nav-search__result-logo"
+                      [src]="festival.logoSrc"
+                      [alt]="festival.name"
+                      width="48"
+                      height="48"
+                    />
+                  </span>
+                  <span class="nav-search__result-info">
+                    <span class="nav-search__result-name">{{ festival.name }}</span>
+                    <span class="nav-search__result-city">{{ festival.city }}</span>
+                  </span>
+                  <svg lucideChevronRight class="nav-search__result-arrow" aria-hidden="true" focusable="false" size="14" strokeWidth="2"></svg>
+                </button>
+              </li>
+            }
+          </ul>
+        } @else if (searchQuery().trim().length > 0) {
+          <p class="nav-search__no-results">
+            {{ 'nav.search.noResults' | t : { query: searchQuery() } }}
+          </p>
+        }
+      </div>
+    </div>
+  }
 </header>

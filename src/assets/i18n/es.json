@@ -5,6 +5,8 @@
     "calendar": "Calendario",
     "map": "Mapa",
     "search": "Buscar",
+    "search.placeholder": "Búsqueda Festival",
+    "search.noResults": "Sin resultados para \"{query}\"",
     "theme": {
       "toDark": "Activar modo oscuro",
       "toLight": "Activar modo claro"

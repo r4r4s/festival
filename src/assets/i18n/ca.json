@@ -5,6 +5,8 @@
     "calendar": "Calendari",
     "map": "Mapa",
     "search": "Buscar",
+    "search.placeholder": "Cerca de Festival",
+    "search.noResults": "Sense resultats per a \"{query}\"",
     "theme": {
       "toDark": "Activar el mode fosc",
       "toLight": "Activar el mode clar"

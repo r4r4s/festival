@@ -5,6 +5,8 @@
     "calendar": "Calendar",
     "map": "Map",
     "search": "Search",
+    "search.placeholder": "Festival Search",
+    "search.noResults": "No results for \"{query}\"",
     "theme": {
       "toDark": "Switch to dark mode",
       "toLight": "Switch to light mode"
